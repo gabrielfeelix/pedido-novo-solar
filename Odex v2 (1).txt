@@ -1,0 +1,372 @@
+# Odex v2
+
+  Meeting started: 08/04/2026, 09:38:48
+  Duration: 74 minutes
+  Participants: Speaker, Speaker 1, Speaker 2, Speaker 3
+
+  [View original transcript](https://app.tactiq.io/api/2/u/m/r/PA1qXRYd6s1zbBrJxiJQ?o=txt)
+
+    
+
+  
+
+  
+
+  ## Transcript
+
+  00:00 Speaker 1: Tá só ia sentar todo mundo de perto.
+00:26 Speaker 2: Chamei vocês, na verdade, o Arthur liberou um pouco o Gabriel e o
+00:31 Speaker 1: Rodrigo para
+00:35 Speaker 2: dar uma mexida na nossa plataforma. Na nossa plataforma, a gente não tem investimento de Martinela porque ela vive trabalhando. Então não dá para a gente colocar dinheiro no ex, sendo que vai cair, o cliente vai cair, ele não vai carregar, não vai terminar o processo. Basicamente hoje... Quem mais utiliza a nossa plataforma são os vendedores, cara. Os nossos vendedores utilizam como uma ferramenta de venda. Então ele pega o login do cliente, olha que absurdo. Loga como o cliente faz para o cliente. Aqui virou a casa da serventia. O cliente liga, faz aí para mim e tal. Se a gente não faz isso hoje, a gente deixa de vender, é verdade. É o jeito errado? É. Mas é o jeito que a gente consegue vender hoje.
+01:23 Speaker 2: Então, para eu poder jogar o cara para lá, eu tenho que estar em pleno funcionamento. Fora isso, o meu sistema de vendas não é integrado com a plataforma diretamente. Então, como foi feito? Foi feito um orçamento em um sistema e o orçamento da plataforma independente. É isso, né? Mais ou menos. Então, o cara mexe lá na plataforma, não cai para a tela do vendedor dele editar. E se ele editar, não muda na plataforma. Então o nosso time de TI está fazendo o CRM, o orçamento, a parte de menos, para ser algo integrado. Mas beleza, a ideia era melhorar a plataforma e achamos umas travas aí e ontem não travou. O que nós temos hoje? Temos esse site que está em magento, que não serve para nada.
+02:09 Speaker 2: É mais para capitalismo. Esse site faz com que... O Martin fica travado. Sempre para ele atualizar alguma coisa, ele depende do departamento de TI. Só que não compensa eu mexer. Só que a gente... Quanto tempo está parado assim? Um ano?
+02:37 Speaker 1: A única vez que a gente atualizou foi esses loucos aí.
+02:43 Speaker 2: Então, a gente vai precisar desse site futuramente e vai precisar da plataforma. Por que eu te chamei? Justamente para ajudar a gente a pensar nisso. Nós temos outras frentes para atacar. Então, se futuramente a gente quiser captar o consumidor final e eu atender uma venda de carregador de carro, por exemplo,
+03:08 Speaker 2: para o consumidor, eu utilizaria isso aqui. Quando eu vou para o instalador, eu venho para esse ambiente aqui. Beleza? Então nós vamos precisar disso aqui. Isso aqui futuramente pode ser sim uma loja. Aí entra a questão da V2 que a gente falou. Ou até mesmo um projeto. O cara quer pôr energia solar na Paraíba, onde quiser. Beleza? O cara faz o projeto aqui. A descarga resistência, né? Faz o projeto e a gente contrata. subcontratam o integrador para fazer a instalação. Futuramente, tá? Isso não é uma necessidade atual. Só estou avisando para que, se a gente for pensar em fazer algo, não ter duas tecnologias, ou ter as duas tecnologias. Eu acho que é o caminho, porque eu já tenho a que a gente vai falar agora.
+04:04 Speaker 2: Muita coisa, muita coisa. O próprio Luiz, por exemplo, do laboratório, falou, cara, por que a gente não faz homologação? Eu tenho aqui o know-how, eu tenho a parte técnica para liberar e tal. Eu falei, porque a gente não tem processo, cara, a gente não tem sistema, a gente não tem nada. Só que a partir do momento que eu crio o negócio, eu tenho todo o... Quantos programador precisar? Agora sim, a conta, entendeu? . . . . .
+05:14 Speaker 2: Isso aqui foi feito, cara, a gente demorou anos para fazer e nunca ficou bom. O projeto inicial era o quê? Quem que é meu cliente aqui? Meu cliente é quem instala o produto. Instalador, a gente chama de integrador
+05:30 Speaker 1: no solar.
+05:32 Speaker 2: É o cara que instala, ele vai lá na casa do cliente dele, gera uma
+05:36 Speaker 1: venda,
+05:39 Speaker 2: um orçamento por aqui, sai até com a logo dele o orçamento. E ele já coloca a comissão. O Diogo, ele já fez um estudo e mostrou onde são os itens mais clicados. O mais clicado é onde são o kit. Que cada casa tem uma necessidade. Tem uma conta de luz e um telhado diferente. Então eu vendo tudo. Vendo a estrutura, vendo o carro.
+06:02 Speaker 2: Às vezes o cliente só quer comprar o painel e o inversor. Então ele faz isso. Mas também... Pra nossa surpresa, o segundo item mais explicado foi a loja. A loja é triste, cara. Nossa, ele nunca focou na loja. Entendeu?
+06:18 Speaker 3: Mas a solução que mais acessa é o vendedor ou o instalador?
+06:21 Speaker 2: Era pra ser o instalador. Ele acessa também. Ele
+06:24 Speaker 1: acessa também. Isso é uma correção. Esse login e senha que o integrador faz pelo integrador não existe mais. A gente cortou ano passado. Ah, é verdade. Mas ele faz todas as funções que o integrador faz de... Orçamento, cadastrar cliente, subpedido pelo login do vendedor. Então a gente consegue ver o que é interno e o que é externo. Mas a gente tem o percentual interno maior mesmo. Nessa análise que foi feita, foi verificado
+06:51 Speaker 3: isso interno externamente? O mapa de calor?
+06:55 Speaker 1: Foi o mapa de calor.
+06:56 Speaker 3: Mas foi verificado o acesso
+06:58 Speaker 2: externo e interno. Ele tirou o interno.
+07:01 Speaker 3: Ele tirou o interno.
+07:03 Speaker 2: Os números não estão colherentes também, Ricardo, de acesso. Está muito menor do que a gente tem. Deve ter alguma coisa errada ali. Só que a proporção, eu acredito, está certa. Percentualmente. Percentualmente, tenho certeza que está certa. Essa plataforma foi pensada para concluir o processo inteiro. No final dela, era para ter o quê? O cliente dele cadastrou o cliente dele. O meu cliente cadastrou o dele. Ele vai cadastrar o dono da casa, do estabelecimento. E ia aparecer as opções de financiamento.
+07:36 Speaker 2: Essa era a jogada. Então ia estar lá, BV Financeira, Santander e Odex Crédito. Por exemplo, se eu tiver meu crédito, eu tenho planos de ter isso daí. Urgente, tá? Para Odex e para Odex.
+07:52 Speaker 2: E aí ele ia mostrar quantos por cento de juros ia ter e as parcelas. Só que, cara, a gente não conseguiu fazer. Isso foi antes de você entrar, bem antes. Tinha lá a telinha que aparecia. Aí no final a gente falou assim, tira. Então era para fazer o processo completo. Se eu arrumar essa parte do crédito, quando eu tiver pronto isso, na hora que eu jogar para o e-commerce, para oodex.com.br, já vai estar pronto também. Financia aqui. Eu quero arrumar uma financeira que aporta, que faz todo o processo e a gente ganha com esse financiamento. Já tem isso com a BDAB, já tem isso com o Santander. Só que se a gente tivesse um crédito melhor, diferenciado do mercado, a gente ia vender muito mais hoje. Como tem outras empresas que têm. Sim.
+08:35 Speaker 1: Só um ponto antes que isso foi analisado nesse relatório, o que é feito internamente. Porque tem muitas funcionalidades que os vendedores não conseguem fazer na plataforma, e por consequência o cliente final também não, o treinador, e eles fazem pelo Azulx. Então acho que tem que colocar essa comparação também. Porque tem muitos pedidos que são feitos, orçamentos, pedidos que são feitos pelo Azul, que não
+08:57 Speaker 2: passam pela... Mas aí isso vai ser resolvido quando ele soltar o CRM. Assim que soltar o CRM, toda essa parte deveria ser resolvida.
+09:07 Speaker 1: É que eu digo assim, às vezes o número de acessos pode ser menor, porque o pedido, o orçamento está sendo feito pelo Azul, se não pela plataforma. Com certeza.
+09:18 Speaker 2: Com certeza. Assim que resolver isso vai mudar completamente. Porque a gente tem que ter maneiras de resolver para o cliente e ele se resolver também. Então beleza. Vou mostrar essa parte aqui, Rodrigo, para você. A principal que ela deveria ser o dashboard mesmo. Só que ela não é muito clicada.
+09:38 Speaker 2: É que eu estou com o login da Odex, no caso. Ela não é muito clicada, mas aqui, se o cara compra muito aqui, tipo a WM, Quer um cliente que 90% compra aqui? Por aí, né? Ele tinha que ter o sistema dele, quantas vendas ele fez, para quem que ele fez, quanto que ele vendeu, quanto que ele lucrou, porque ele põe o lucro dele aqui. Essa é a diferença, tá? É um sistema.
+10:04 Speaker 2: Então eu vou montar um kit para você ter uma ideia. Coisa rápida. Então aqui, o título do orçamento. Vamos tentar fazer um momento direito aqui. Rodrigão.
+10:18 Speaker 1: Aqui é
+10:22 Speaker 2: quando está cadastrado? Então não dá, né? Então aqui coloca o que? Beleza. Aqui eu posso colocar antes ou depois a comissão. Eu posso colocar ela agora em percentual ou ela em valor. Quero ganhar mil reais nas peças. Sai lá milão. A mais no orçamento. Aqui que entra o UX, tá? Eu acho que dá pra melhorar muito, muito. Eu chamei o Martin também, porque o Martin não tem ferramenta aqui, pra pôr promoção, entendeu? Então assim, a gente tá com o Bez aí. Pode ser olhinho.
+11:04 Speaker 1: É verdade.
+11:06 Speaker 2: Então o Monofaz com o Vs20, beleza, ele escolhe pelo tipo da ligação, do inversor. E o estado aqui é porque a gente tá com o nosso login, é isso? O preço já está com o frete embutido. Depois que você resolver a questão do frete também, a gente vai melhorar aqui. Porque aqui eu trabalho com uma média. O Ricardo põe o preço lá. No Paraná sai a média de frete. Em Rondônia, o preço do... Eu só trabalho com frete grátis. Mas está imutido no preço. E eu não posso ter um preço para o Brasil só. Porque senão eu fico competitivo no meu estado. Tanto é que em estado que o frete é muito alto, eu não entendo. O gerador solar, o kit solar, ele representa às vezes 5, 8% de vida.
+11:55 Speaker 1: O que é muito pesado.
+11:57 Speaker 2: Dentro do Paraná a gente consegue mais negociação do que está aqui perto, mas se você for jogar para longe, complica. É um problema que a gente tem também com o setor de logística, se a gente colocar essa ferramenta aí vai melhorar muito. Tanto é que a gente está perto de vender para algumas regiões, né, hoje no Calvo. Só que como a média está rodando, a gente está deixando ali.
+12:18 Speaker 3: Seria legal se fosse fazer com média, seria mais competitivo.
+12:23 Speaker 2: Na verdade, tem dado que a gente está cobrando menos.
+12:26 Speaker 1: Mas eu digo assim, a
+12:29 Speaker 3: média nossa estava 5%, mas a gente cobra mais que 5%.
+12:33 Speaker 2: Então, eu joguei 220 aqui, e aí eu vou escolher a que vai estar os painéis que a gente trabalha. Trava não para trabalhar. Você pode ver que está bem pequenininho as fotos dos
+12:49 Speaker 1: produtos.
+12:52 Speaker 2: Dá pra você clicar, ampliar, aí você vê mais eficiência. São as principais informações e a logo do fabricante. Pode ser feito diferente. Depois a gente passa os cinco principais, os líderes de mercado, quem vende. O líder de mercado é 30, 40 vezes maior que a gente. É absurdo a diferença. Não é uma coisa... Então próximo assim, então nós temos que ver o que eles estão fazendo. Muitos são plataformas e outros são no próprio e-commerce mesmo.
+13:30 Speaker 2: Aqui, só tem três agora? Beleza, então a gente tem três modelos de painel. Isso aqui o Ricardo tinha alguns problemas com integração também, né Ricardo? Aí você adiciona. Aqui está com área de calor também, esse maizinho aqui. Então coloca 6, aí já vai para o inversor. Qual que é a ordenação que tem aqui? Você lembra?
+14:01 Speaker 3: Aí não tem, aí ele puxa não.
+14:03 Speaker 2: Não, acho que existe. Põe o inversor e vai puxar.
+14:06 Speaker 3: A gente já pediu para colocar de menor valor para baixo, não tem como. A gente disse que tem que fazer ordenado. Tem que ir atrás. O que é? O João não está com valor, tem que ir. Já está com valor.
+14:18 Speaker 1: Já está ficando ordenado por
+14:19 Speaker 2: valor. Está por menor para maior. Está vendo aqui, 700.
+14:23 Speaker 1: Não pagou não. Mas por que então? Mas
+14:27 Speaker 3: não estava, ele também não está mexendo.
+14:28 Speaker 1: Não, mas faz tempo. Não, não faz tempo. A gente não mete na plataforma. Estou louco.
+14:34 Speaker 2: Sempre aparece o micro da
+14:35 Speaker 3: Grover. Mostra a conversa para você, com o micro da Thalia. Não está, recente.
+14:39 Speaker 2: Talvez é outra tela. Tá, beleza. Enfim, vamos andar. Então vamos colocar um desse aqui, pode ser? Esse aqui já sai dois. É
+14:51 Speaker 3: porque é um micro, a quantidade mínima.
+14:56 Speaker 2: String box. Nós estamos sem estoque?
+15:01 Speaker 3: Esse que você escolheu, não tem importância. Está sem estoque, que é de um S.
+15:06 Speaker 1: Eu já fiz pedido.
+15:09 Speaker 2: Estrutura. Aqui está o micro, cara. Essa tela aqui. Confunde, cara. Eu não consigo montar, velho. De verdade. Pega aqui, você escolhe o tipo de telha, né?
+15:22 Speaker 3: Essa ali ainda está boa, Matheus, pega uma colonial.
+15:31 Speaker 2: Como você quer ter o cliente? Não, não. Eu falo isso aqui
+15:34 Speaker 3: que confunde, né? Porque, por exemplo, hoje nós temos estrutura da Pratik e da Solar Group. Pratik traz como kit completo. Solar Group traz como estrutura acessório e mais perfil. Então, isso confunde o cliente. Às vezes, historicamente, o kit da Pratik está mais barato do que na Solar Group. E sei lá, por exemplo, o primeiro item lá daria 300 reais. Aí se você pegar a outra roupa, ele daria 310. Você soma o acessório, mas tudo. Mas isso aí não tem como fazer. Isso aí é conforme o vento do fornecedor e de entrada.
+16:03 Speaker 2: Tá, mas não deveria apresentar na plataforma, tipo, um como um item só, na hora de faturar sair os dois? Isso resolve, sim.
+16:13 Speaker 1: No cadastro do produto, cadastrar ele.
+16:18 Speaker 3: A entrada é bem separada da nota, então como na entrada... Não, a entrada
+16:22 Speaker 2: tudo bem, operacional sim, mas...
+16:24 Speaker 3: Dá
+16:28 Speaker 1: para
+16:31 Speaker 2: mostrar. Você não pode colocar aí, agrupar o produto, sei lá, dá para fazer. Como se fosse um kit. Não necessariamente precisa ser um kit, mas mostrar.
+16:44 Speaker 1: É, o Angélia aparece embaixo, ele não consegue colocar a quantidade no perfil. Mas se você colocar a quantidade na estrutura em cima, ele já está crescendo.
+16:52 Speaker 2: Seria essa a primeira? Segunda.
+16:54 Speaker 1: Mas o Ricardo falou que a primeira está
+16:56 Speaker 2: 143. Não, é a primeira, pô.
+16:58 Speaker 1: A primeira é a primeira.
+17:00 Speaker 3: A primeira é a primeira. A primeira é a seguinte.
+17:01 Speaker 2: A primeira é a seguinte. Aí se você descer um pouquinho,
+17:03 Speaker 1: a gente vai colocar uma aqui e só uns dois ou dois.
+17:10 Speaker 2: O que
+17:11 Speaker 3: confunde os clientes é esse tipo de produto aí. Se você somar esses dois aí, esse é o kit.
+17:31 Speaker 2: Não, eu falo visualmente, ele não consegue ver aqui, né? A soma só da estrutura, né? É isso, né? Você queria que aparecesse tipo 200 e 300, que vai dar que deu, 290. E
+17:43 Speaker 1: aí os
+17:54 Speaker 2: acessórios, que são os cabos, coletores. Vou jogar um continuário aqui. É obrigado, né? Mas os caras vendem tudo que sem carro? Beleza. Por aqui em reais.
+18:23 Speaker 1: Por que eles colocam o valor também aqui do freio, né, Carlos? Porque daí o cara vai financiar na nota ali, tipo, deu 5 mil de produto. Só que ele vai pegar e colocar 10 mil reais ali na nota fiscal. Porque quando ele financiar lá no banco, ele financia os 10 mil. É o orçamento lá. Você viu aqui, né?
+18:39 Speaker 2: Dá para pôr com esse total também. Vou procurar imprimir. O do cliente aqui.
+18:56 Speaker 3: Aquele momento ali eu só impresso. Fazer orçamento ali.
+19:08 Speaker 1: Fazer orçamento, ele vai mandar para o IP daí, ele vai criar o produto, criar essa ONU. Mas
+19:13 Speaker 3: não dispara o e-mail já automático.
+19:16 Speaker 1: Tem a opção depois que
+19:18 Speaker 3: finaliza.
+19:21 Speaker 2: Tem que dar uma olhada no ciclo também. Aqui vem a área de entrega, a área urbana, a área rural, o CEP, o Estado.
+19:39 Speaker 1: Aí nós temos um problema também, cada CEP aqui, a gente não tem todas as cidades mapeadas, aí chega o pedido para a gente, a gente tem que cadastrar manualmente. E o prazo que aparece aí não é o prazo correto de entrega. Já que tipo o João, o Ti, isso prejudica bastante as linhas. Porque é nesse momento que o cliente vê a viabilidade da entrega no Acre. Ah, vocês entregam em quantos dias? Tantos dias. E o meu cliente está aí contando. Aí quando ele finaliza o pedido de fatura, daí vai fazer o rastreio.
+20:24 Speaker 1: O prazo é muito menor ou muito maior.
+21:02 Speaker 3: E aí E
+21:03 Speaker 1: aí E aí E aí E
+21:08 Speaker 2: aí E
+21:10 Speaker 1: aí
+21:18 Speaker 3: É, que aí, no caso do integrador da frete rápida, apareceria já os prazos. Poderia ser um CIF com prazo do X, e se quisesse mais rápido, apareceria outro, só que com valor cobrado.
+21:31 Speaker 1: Dá uma opção aí,
+21:32 Speaker 3: se a pessoa quiser pagar o frete, ou escolha o prazo do CIF, mesmo que é grátis. E aí tem as transportadoras corretas também que vai levar.
+21:45 Speaker 1: Porque
+21:46 Speaker 3: aí de acordo com a região, no frete rápido, a gente consegue mapear as transportadoras e as regiões. Que aí vai ter uma tabela de frete mais competitiva também.
+21:59 Speaker 2: Aqui dá pra pôr o cliente também, ele já busca
+22:01 Speaker 1: todos os dados, né? Envio.
+22:13 Speaker 3: Envio.
+22:21 Speaker 2: Olha aí. Tá, o que mais? Relatórios. Carneiro? Talvez não tenha os relatórios. Acho
+22:29 Speaker 1: que por aí eles nem aparecem, só aparecem pra gente. Um que é muito pedido, eu acho
+22:36 Speaker 2: importantíssimo, é o de prêmio de venda. Esse aqui? É.
+22:40 Speaker 1: Se o pedido é vindo internamente, o cliente não consegue viver, ele não tem uma regra para saber, ele faz uma nota e manda para a gente pagar o pagamento para ele. Ele não sabe se a nota foi recebida, se o pagamento está agendado, se o pagamento foi feito, ele liga para o vendedor. Nós também não temos que visualizar isso. Eu falo com a contabilidade para ver se a nota foi lançada.
+23:06 Speaker 1: E aqui, se ele é dentro do dash dele, ele tem que ter um funil de vendas dele também. Ele fez quantos orçamentos, quantos ele fechou, quantos abertos. E depois o que ele tem para receber de
+23:18 Speaker 2: prêmio de venda para a gente. Tem que desenvolver isso, entendeu?
+23:21 Speaker 1: E a gente tem esse frio também? Os consultores estão acompanhados? Não. Quantos caminhos? Pois é, João.
+23:37 Speaker 3: Bastante coisa, já chegaram a fazer uma conversa com os clientes, os principais pontos, além dessa da premiação, outras dores que eles têm, para a gente poder mapear certinho, o que mais dói, o que menos dói, para eles poderem estar usando a solução.
+24:06 Speaker 1: Se esse orçamento foi transformado em pedido? Eu vou ir nesse, que tem pedidos de solicitação de bilharia na plataforma. Então a gente já tem alguma coisa.
+24:18 Speaker 3: E tem essa também? Que é um orçamento para o pedido, que é só um
+24:22 Speaker 1: orçamento? Não. E é só um orçamento? Nem não.
+24:26 Speaker 3: Aí você só consegue pegar um exemplo. Aquele SKU lá, ele não sabe digitar o pedido e colocar aquele SKU. Que
+24:32 Speaker 1: é esse kit que ele montou. Parece como que os endereços trabalham. O cliente, no caso, ele só vai na tela do orçamento e transforma esse orçamento em pedido. Ele já deu o pedido a partir daqui.
+24:43 Speaker 3: Vai ter gravado o pedido, se eu quiser... Sim. Fica impedido.
+25:09 Speaker 1: O
+25:10 Speaker 3: que eles
+25:12 Speaker 1: reclamam da plataforma? A gente tem clientes que usam, que a gente ensina, quando o cadastro é novo também a gente orienta. mas eu tenho desde um cliente pequenininho que ele fala, ah, não sei, eu não tenho tempo, nananã, e o cliente que é enorme, a Plaza Solares que a gente começou a atender aqui, tem filiais,
+25:34 Speaker 1: 200 funcionários, ah, eu não tenho tempo de ficar entrando em todas as plataformas, preciso de um vendedor que faça para mim e me encaminhe. Seria muito mais produtivo, inclusive, para nós a gente trabalhar com um integrador acessando a plataforma. A gente tem esse problema de mercado que os outros servidores fazem e a gente acaba fazendo.
+25:58 Speaker 2: Sabe o monte do seu computador? Sim. Ele tem bastante validação também, o monte do seu kit, que é um gerador. Ele sai de peças e vira gerador, não certo? Pela lei, tem que colocar isso, um gerador de energia. Então tem essas validações. Quando eu converso com o Giovanni, eu sempre pergunto, vale a pena a gente mexer aqui ou fazer tudo de novo? Entendeu? Essa é a questão. Aqui,
+26:28 Speaker 1: roda.
+26:31 Speaker 2: Gira. Tá rodando.
+26:33 Speaker 3: A pergunta é uma só, né? Prazo.
+26:37 Speaker 2: Hoje foi o primeiro dia que a gente rodou sem bug. Acho que vocês combinaram com o vendedor, não é possível. Me caiu proibido de reclamar a plataforma aí. Meia-noite o momento para hoje, agora eu posso reclamar? Isso aqui é o que a gente desenhou para fazer e não faz, basicamente. Foi, cara, muito erro de projeto. muita coisa errada. Teve PO na época, teve bastante gente em cima disso, travou o site da PCS por dois anos para ser feito e não ficou bom.
+27:16 Speaker 2: Essa é a questão que o Arthur fala, cara, quero que os caras terminem lá para não colocar outra coisa e fazer duas
+27:22 Speaker 3: meia-boca. Eu acho que é o seguinte, com relação a V2, é que a V2 é só um update do que a gente já tem. A gente espera que a gente tenha um processo de aplicação da V2 mais rápido que foi isso da PCS por conta de todos esses intervalos aí que aconteceu. Agora, no caso aqui, entre melhorar, fazer um update ou fazer um do zero, e assim, estou falando por cima, só em cima do que a gente está falando aqui. O Giovanni tem mais propriedade para falar. Para fazer do zero, claro... 6 meses pra cima.
+28:03 Speaker 2: E pra melhorar não é tanto tempo assim. Oi? Pra
+28:06 Speaker 3: melhorar não vai ser tanto tempo assim. Porque eu acho
+28:09 Speaker 2: que com a entrada do CRM a gente vai estar muito boa inclusive a plataforma.
+28:16 Speaker 1: Se
+28:16 Speaker 2: eu chegar no vendedor e falar assim, cara, todos aqueles botões ali funcionam, pra ele tá ótimo. E já é uma coisa a menos pra gente ter de desculpa, né? Que hoje a gente tá cobrando os caras ali que estão contando um frete pra fazer alguma coisa, né?
+28:30 Speaker 3: Eu acho que se funciona a plataforma minimamente e tem essa necessidade de fazer o próprio cliente, ele por si só gosta desse atendimento, o vendedor precisa da ferramenta que funciona
+28:42 Speaker 1: de forma plena, é o que você tá dizendo.
+28:44 Speaker 3: E aí as melhorias, né? Talvez a integração com a financiadora, as outras que as financiadoras têm, né? A forma de você integrar e você fazer um... O banco tem. uma usabilidade melhor nesse ponto e adquirir mais funcionalidades, como mandar um orçamento
+28:58 Speaker 2: por e-mail. Eu queria que ele não falasse por ninguém, cara.
+29:03 Speaker 3: Aí é só um negócio de financiar o pedido, o cliente, o emendor consegue aplicar um desconto na plataforma. Por isso que ele não consegue financiar. Então,
+29:11 Speaker 2: aí é uma coisa que eu queria mudar um pouco a cultura, só que eu não consigo agora. Eu não queria dar desconto, queria que aquele fosse o preço. Se o cara quisesse desconto, ele tinha que falar com o vendedor, entendeu? Mas não
+29:26 Speaker 1: existe
+29:27 Speaker 2: isso. Por exemplo, pega uma empresa grande, tipo a Solar, é aquele preço nítido. Dificilmente você vai conseguir um negócio diferente. É ou não é? É, mas ele trabalha diferente. Ele trabalha diferente, ele tem 500 containers, ele tem um preço mais agressivo que o nosso. Eu não consigo, mas eu preciso ter. E outra, pega a descarbonize, por exemplo. Ele trabalha com preço geralmente acima do nosso
+29:48 Speaker 1: e ele não é de desconto. Mas a Solar e a Bellas aplicam desconto com o vendedor. Sempre que a gente recebe o orçamento, não encarga. Tem o orçamento e o vendedor fala, eu consigo fazer para você por tanto.
+30:02 Speaker 2: Aplica tipo mais 5%. Essa é uma questão cultural nossa. A gente já chega a oferecer desconto aqui. Isso aí tem que ter o campo para poder mexer no pedido. Mas não tem que ser a minha regra de negócio. Hoje a minha regra de negócio é uma merda. Minha equipe é esconder e acabou. Ricardo, coloca o preço. Estou errado ou não estou? Você coloca o preço acima para o cara estar escondo.
+30:26 Speaker 1: Eu acho que a gente melhora isso, Matheus, trabalhando com o comissionamento do vendedor. Quanto mais desconto ele der, menos comissão ele tem. Porque hoje é assim, não é? Tá pra todo mundo mesmo desconto. Ah, beleza, você tem na mão lá 5%, só que a cada 1% você dá desconto, você tem menos 1% na sua comissão.
+30:45 Speaker 2: Tá, isso a gente vai definir na política daí. Isso era o que a plataforma era pra entregar, né? Esses são os produtos que a gente vende hoje, que vocês viram. Painel, inversor, string box, estrutura e capa. Beleza. Agora entrou armazenamento.
+31:01 Speaker 1: Que são
+31:03 Speaker 2: aquelas baterias que a gente tem ali embaixo, que vai instalar no texto. Armazenamento. Está entrando inversor híbrido, está entrando bateria. Isso tudo entra no monte do seu gerador agora. Ele entra no monte do seu kit. Como que nós vamos fazer? O produto está aí. Cada item é 250 pau. Não está lá ainda na plataforma. Para montar o seu kit. Não está. E é o primeiro. E a gente chegou primeiro que todo mundo.
+31:31 Speaker 2: Nesse mercado. Já estamos perdendo de não estar
+31:33 Speaker 3: disponível. Para o nosso cliente. Ela roda de forma isolada ou está integrada? Algum RB? Está integrado com RB?
+31:41 Speaker 2: Aí nós temos que pensar nesse dimensionamento. É um dimensionamento diferente. O Luiz, lá do laboratório, ele valida os
+31:51 Speaker 1: pontos.
+31:52 Speaker 2: E vai entrar isso aqui. Nós estamos negociando com a BioID. Eu acho que essa semana aí deve sair algum pedido já. Que já vai vir os carregadores. Que também entra no monte o seu kit. E se eu colocar ele junto, eles entram também no CMS. E também pode entrar a bateria pequena, pode entrar grande, pode entrar o painel, pode entrar tudo. Então é três coisas que entraram. Então eu vou deixar de ter a tecnologia porque eu não atendo, aí eu entro no impasse. Meu vendedor tem medo de vender isso aqui.
+32:23 Speaker 2: Eu abri 10 vagas. Então eu não vou esperar. Eu estou colocando gente para fazer o trabalho para sal porque eu não tenho a tecnologia ainda para vender automático. Temos as ideias, temos os produtos, temos os maiores fabricantes do mundo. Número 1 da China, top 10 da China, top 50 da China. Número 1 do mundo em painel, esse aqui é o top 5. Então assim, cara, a gente está com as melhores marcas, as melhores empresas. Nós não vamos parar porque a plataforma não fornece aplicação. Só que aí eu fico o quê? Minha venda hoje tem 16 servidores. 80% da minha venda é dentro do Paraná.
+33:02 Speaker 2: Nós somos apenas uma empresa regional. Apenas uma empresa regional. Então eu preciso investir. Hoje, o que é meu ponto de vista agora como CEO? Quanto mais vaca, mais vizinho, velho. Mais leite. Tipo assim, o que eu posso fazer? Só com a vendedor. Eu não vou esperar a plataforma ficar pronta, nem o gerador, nem isso. Vou colocar um cara pra vender o pedro. Vou colocar um cara pra vender o carregador. A gente precisa desse sistema rodando para poder fazer acontecer.
+33:43 Speaker 3: Acho que tem bastante regrinha de negócio para melhorar.
+33:47 Speaker 2: Eu acho que o pior já passou na verdade.
+33:54 Speaker 3: Ele tem mais uma rodada, você vai ter que pontar mapeado esses pontos, se eu disser aqui, mas escrito mesmo, né? E aí passar por... Não sei como a TI também está em relação ao desenvolvimento, os desenvolvedores, para aplicar, que são as dores, para deixar de forma... Hoje está estável, né? Mas para ter a garantia de estabilidade, para que o marketing consiga atuar aí,
+34:15 Speaker 2: com relação... E aí, por exemplo, a loja também, cara, tem que dar uma olhada. A loja a gente... Não vende quase na loja. Muito pouco. É mínima. Não está convidativa.
+34:28 Speaker 1: Porque a
+34:29 Speaker 2: loja é o mesmo produto do gerador, só que ele é bolso. A gente nem foca nisso.
+34:36 Speaker 3: Normalmente quem compra é o instalador. Ele bate o olho e já sabe. Precisa de mais informação, detalhes. Mas aí quando eu preciso de informação técnica, tem um data-x no
+34:48 Speaker 1: produto também.
+34:52 Speaker 3: Ou ele pergunta para o empreendedor.
+34:54 Speaker 1: Semana que vem tem um integro aqui. Acho que seria
+34:56 Speaker 2: legal esse participado para pelo
+34:59 Speaker 1: menos fazer o relacionamento com os integradores, que já estão com os clientes, conversar com eles. E acho que seria legal também tanto o Giovanni e eles irem para o intercelar um dia para acompanhar os nossos componentes lá. Acho
+35:10 Speaker 2: que não. Seria legal. Já tem
+35:17 Speaker 1: bastante solução que os caras apresentam na hora.
+35:25 Speaker 3: Vamos ver. É, ao mais entender o negócio, a gente pode mudar melhor, tanto da forma de usabilidade como de negócio mesmo.
+35:32 Speaker 2: Eles precisam entender como é que funciona a coisa, entendeu? A Pieta Tech, que ofereceu para nós, que tem da Helt, o Ricardo tem um monte de login também, cara. Pega os login que o Ricardo tem e dá uma olhada lá. Essa Pieta é a que fornece para os distribuidores. A plataforma. A gente não quis comprar deles, quis fazer a nossa. Se eu olhar pra trás era um bom negócio.
+36:02 Speaker 1: Chegaram a olhar.
+36:03 Speaker 2: Chegaram bem de bola. O cara tirou sal da cara do Shinagi lá. Aí o Shinagin ficou burro. E o cara tava sem burro. Aí o Shinagin saiu, a gente se deu.
+36:16 Speaker 3: Shinagin é Pio.
+36:18 Speaker 2: Ele foi o Pio depois. Também não foi... dele, a culpa, não interessa quem é ocupado, vamos arrumar a solução, não adianta mais. Mas o... quem que tem o Pietro é o Helt, né?
+36:35 Speaker 1: Helt.
+36:49 Speaker 2: Tem de cabeça aí, alguém tem de cabeça. Tem o Helt, tem o Pietro, tinha o Michael Tricks, não tinha? Descarbonize. Acabou aquilo lá, o site?
+37:11 Speaker 1: Tá,
+37:13 Speaker 3: mas agora é esse aí.
+37:14 Speaker 2: Pensando lá pra fora a gente tem. É deles que fizeram lá? Saíram do site?
+37:32 Speaker 1: É aquilo, né?
+37:34 Speaker 2: É bonito ver os outros, né? Vai lá, vai lá trabalhar pra você ver se isso é tudo bem maravilhoso. Aí você falou, velho, ali na aldeia você tava tão bom e eu reclamava.
+37:46 Speaker 3: Pô, essa história da aldeia vizinha.
+37:48 Speaker 2: A aldeia vizinha é foda, né? Mulher de aldeia vizinha era mais bonito, ficamos sabendo que ela... Não era mulher a gente no passado. É verdade isso, tá?
+38:00 Speaker 1: Descobrindo esses dias aí lá no prédio.
+38:03 Speaker 2: Na verdade tinha uma tromba, não sei o que era isso. Mas dá pra gente fazer melhor. Quanto vem de uma aula hoje? A
+38:39 Speaker 1: gente vende
+38:43 Speaker 2: 10,12 hoje. Vende mão puxada. Sem preço, a gente vende 5,6.
+38:55 Speaker 1: Eu
+38:55 Speaker 3: sou mais ou menos, eu sou mais ou menos, eu sou mais ou menos, eu sou mais ou menos, eu sou mais ou menos, eu sou mais ou menos, eu sou mais ou
+39:01 Speaker 1: menos,
+39:06 Speaker 2: eu sou mais ou menos.
+39:10 Speaker 2: Sabe aquela coisa, Rodrigo, que o cara já está acostumado e, tipo assim, às vezes o pior é melhor porque ele não quer mexer na cara dele, ou não apresentar algo mais rápido? Tipo o check-out. Uma vez eu fui lá na Gazin, o cara tem 7 mil funcionários. Eles não conseguiram implantar o RP. Isso tem, cara, 15 anos atrás. Porque antes tinha aqueles RP de Anker, do Paulo Cinco lá, Ricardo. Aí você vai colocar um negócio que o cara tem que preencher, tem que fazer. Sem qualitação, já sei o que eu estou fazendo, irmão. Rápido, rápido, aí dá tudo a merda, depois resolve aqui, né? Você pega um back-off, você coloca 30 colaboradores para resolver os problemas que você não resolve aqui, com o próprio cliente. Talvez é isso, mas essa empresa aqui, ela está vendendo muito já.
+40:04 Speaker 2: Gera todas as possibilidades? Isso. Quando nós começamos, antes de um cartão solar, a gente usava o site da Oderson, antes de uma plataforma. Então a gente criou, o Renan criou um sistema que gerava todas as possibilidades ali e jogava no site, enchia de código, velho. Foram cento e poucos mil SKU na primeira passada. Cento e poucos mil SKU, jogou lá.
+40:31 Speaker 2: Todo pedido eu tinha que criar um escão novo do mesmo jeito. Todos os pedidos, assim, ninguém comprava assim, isso aqui é ilusão. Se eu for lá no Joquinha, ele vai falar, o cara clica aqui e fala, manda cabo, manda mouse, manda... Ah,
+40:50 Speaker 1: tá, então eu
+40:51 Speaker 2: pregunto aqui e continuo aqui.
+40:57 Speaker 3: Aqui?
+41:06 Speaker 2: Esse que é o Vue. Mas você não conhece o Vue? Até eu conheço.
+41:16 Speaker 3: Não, o Vue nunca. Tem de JS em solução.
+41:21 Speaker 2: É tão ruim assim que você não conhece, Vue? Ou é muito
+41:24 Speaker 1: bom? É ruim, que é bom. Que é bom e se
+41:26 Speaker 3: funciona, Vue.
+41:30 Speaker 2: Olha, você chega no Ricardo e os caras falam, tá arrumado. Daí o Ricardo vai lá e clica no tá. Daí o que você fala? Não, é que amanhã só está atualizado.
+41:38 Speaker 1: Você clica no cara.
+41:41 Speaker 2: Era assim, né Ricardo?
+41:44 Speaker 3: Ela vai na veia, né?
+41:46 Speaker 2: O Shinagra falava, mostra para o cara depois de atualizado. Não vai mais lá para trás. Toda vez que eu vou lá, o bordo me bate. Mostra as coisas para o cara. Não funciona? Cara, esse cara está vendendo muito, mas ele é uma empresa 100% focada no solar. É um cara que tem muita experiência nesse mercado de anos. Quando começou o solar no Brasil, ele saiu de uma empresa e foi para outra. Ele é bom comercialmente.
+42:26 Speaker 3: O que você falou, se a maioria é o integrador que usa,
+42:29 Speaker 1: pode ser o cintrão.
+42:31 Speaker 3: Funcionando para ele...
+42:33 Speaker 2: Muito integrador, ele não quer... A gente tem até o app, cara. O app é esse negócio top para o integrador. O cara está lá na casa do cliente. A gente chegou a pensar um negócio tão massa, né? O cara ia tirar foto do telhado e usar aquela... de medida e tudo mais, já ia dar mais ou menos ali as medidas com os nossos painéis.
+42:55 Speaker 1: Daí deixa quieto,
+42:57 Speaker 3: tá longe. O arroz com o peijão bem preparadinho, às vezes é melhor do que fazer um gato só pechicado.
+43:07 Speaker 2: O app a gente também não sabe se é bom ou ruim, porque a gente não investe em
+43:12 Speaker 1: publicidade.
+43:13 Speaker 2: Ele vai ser o que a plataforma é. É mais ou menos isso. Se arrumar o app e colocar a grana, eu acho que vale a pena para o integrador.
+43:24 Speaker 3: E para tudo isso? Eu sei que falar prazo seria ontem. Não, a gente está numa primeira
+43:31 Speaker 2: conversa aqui. Qual que é a nossa ideia? Se essa estabilização que teve ontem continuar, eu não quero falar para o vendedor que olha estabilizando, olha. Queria dar uma cara nova, pelo menos. Atualizamos, entendeu? A gente atualizou o nosso cliente e deixava mais fácil apenas o passo a passo. Deixei pouco no código agora, mais visual.
+43:58 Speaker 1: O mais problema hoje que a gente tem é que a plataforma é ser 100% independente dos sistemas internos. Então, por exemplo, trava o banco do ERP, trava a plataforma. Então, a gente dá uma internet aqui, nossa, deixa a plataforma dentro do ERP. Tipo, o ERP é totalmente independente. É, na proposta que a gente matou, seria a gente isolar a plataforma, tirar tudo o vídeo, a
+44:19 Speaker 3: gente... Essa
+44:22 Speaker 1: era o projeto de gente fazer
+44:23 Speaker 2: isso, a gente vai começar a...
+44:27 Speaker 1: o primeiro elemento do CRM já vai ajudar bastante com isso. E vai ser um formato onde não vai ser tão moroso que nem é hoje, com os vendedores principalmente. Então assim, com o CRM funcionando com a parte dos salários, eles não precisam mais apontar. Então o X0 é o uso deles. Com o CRM vão
+44:45 Speaker 3: usar mais RB, nesse caso, com a renta do banco.
+44:51 Speaker 1: A possibilidade é eu voltar no front do... da plataforma, uma aula intelectualmente, direto do CRM e
+44:59 Speaker 2: usar o CRM direto.
+45:04 Speaker 3: Falar em CRM é um ótimo treinamento, né? Mas tem essa questão de como se relacionar com o cliente. Trabalho de recorrência, recontato. Tem uma coisa que o cara faz no orçamento, mas aí, entre fazer o orçamento e fechar, quanto tempo de média se leva. Quais são as dores para manter esse contato
+45:25 Speaker 2: com o cliente? O CRM vai ser a virada de chave aqui na empresa. Vai otimizar bem a questão de contato, pedido. A gente já fez reunião com a Salesforce, na época também. Cara, eu fiz reunião com a Salesforce sete anos atrás e fiz há seis anos atrás.
+45:42 Speaker 3: Você ouviu falar no clube isso? Não. É um bom CRM, não é ser robusteio ou Salesforce. Eu acho que os esforços são meio
+45:52 Speaker 1: traumatizados. O
+45:54 Speaker 3: cara te vende um sonho, um tanque de guerra, um preço absurdo, e às vezes a aderência à empresa, à cultura,
+46:03 Speaker 1: 5
+46:04 Speaker 3: % da ferramenta oferece, e às vezes não viva. E às vezes tem outros, como os clubes, por exemplo, o B2B, com esse tipo de relação, tem muito intermediário no meio. Funciona muito bem. A gente chegou a olhar vários
+46:21 Speaker 1: dos cabelos verdes, eu cheguei a olhar outros, a gente chegou a testar até os motores. Só que aqui a gente tem uma cultura muito forte, então pra ele você mudar o botão de lugar e deixar pra ele que funciona no CR.
+46:51 Speaker 3: O sistema se adapte à necessidade da pessoa e não a pessoa se adaptar muitas vezes ao sistema. É a mesma coisa de falar, que o Excel faça isso e também. Não é o Excel, ele faz isso. Se quiser, é o uso. Então a pessoa aprende a usar da forma como é a ferramenta. Na maioria das vezes é assim, você tem que aculturar também o time aos recursos que a ferramenta tem. Porque às vezes está lá o recurso, vamos lá com aquela usabilidade, com aquela carinha que ele gostaria naquele momento, mas depois pode ser que a gente consiga evoluir.
+47:30 Speaker 1: Tem
+47:31 Speaker 3: muito dinheiro na mesa.
+47:32 Speaker 2: Tem muito dinheiro na mesa e a gente não está sabendo também. A gente está buscando profissionais que já tem o know-how para trazer a cultura também, para criar essa cultura de uso. Reclamação, velho. Todo o sistema que mudou aqui, desde a Eco Ricardo, está aqui desde 2001, velho.
+47:52 Speaker 2: Sobrevivente. O que mais reclamo é esse filho da mãe, tá? Ele tá aqui, ele vai bater. Só que 90% ele tem razão. Mas é foda, velho. É foda, velho. Cultura é foda. Nós vamos ter que... Tem que isso, cara. Eu tentei comprar um carro elétrico. Um Guili,
+48:11 Speaker 1: esses dias.
+48:12 Speaker 2: Um carro novo aí que tem. Cara, eu mandei lá mensagem pra... Não tem concessionária, aí mandaram o Cascavel entrar, não entraram em contato. Aí ele veio e falou assim, como é que foi seu contato? Não mandaram, não entraram em contato. Aí, cinco minutos depois, seis da tarde, olá, sou um fulano aqui de Cascavel. Então é foda, velho, os caras estão mapeando, o cliente, o chinês está mapeando o quê? A concessionária que não entrou em contato é aquele usuário final. Tipo, você não está atendendo meu cliente. Baixinho, fantástico. Não é a Guille que está falando comigo, é a concessionária. E a concessionária não me deu suporte. Veio sim uma secretária. Oi, tudo bem? Vou te encaminhar para o vendedor. Dois dias atrás.
+48:58 Speaker 2: Nada. Ah, eu vi que faz tempo que você não fala comigo. A Guille, né? Entraram de rodada e falaram assim. Não. Cara, não deu cinco minutos. Olá, tudo bem? Eu vou te mandar ouvir.
+49:24 Speaker 2: Só que tem que ser um caminho que não tem como o usuário não preencher. Se você der dois jeitos do cara fazer a coisa...
+49:53 Speaker: E tá assim, cara. Esse é o usuário pra gente ir. O cara não quer trabalhar, velho. Ele está desenvolvendo. É, ele está desenvolvendo. Então, a gente corta o pessoal. É, tirar o pincel, tirar o pincel, tirar o pincel, tirar o pincel. Eu não consigo ver, por exemplo, quantas noções que um precedor específico fez sobre naquele dia que estão pendentes. Então, eles jogaram o pincel, trabalharam na matéria, para poder fazer o pincel. Seria muito legal trabalhar guiar para o cliente de CRM. Então, a gente fala com o integrador pelo WhatsApp. Ao invés de ele pegar, colocar tudo lá, é a gente pega aqui e coloca a conversa.
+51:07 Speaker: Rapaz, eu tenho um processo de conversa apenas. Tecnologia a gente investe pesado. Olha a nossa infraestrutura aqui. Só que tem coisa que não rolou. Essa é a pele. Estamos na fase final. Estamos lá com a integradora. Ele entrou no meio do processo. Ele falou, não vai rodar. Paramos de entrar. Já tinha sido pago as coisas. Ainda bem que não deu. Depois a gente já está mais ferrado. Prometeram tudo e entregaram nada. A sorte é que a maioria das coisas está falando no escuro.
+51:52 Speaker: A gente não consegue estabelecer algum prazo? Na verdade, o primeiro é o seguinte, porque nós estamos sem equipe. A gente está contratando os caras para fazer freelancer para nós, para agilizar. A ideia era estabilizar a plataforma e colocar uma cara nova. E aí a gente cria sim um projeto. Mas não adianta entrar as coisas do peito ser reto. Nesse momento, esse ideal seria só mudar a interface.
+53:49 Speaker 3: Porque também já está com outras coisas lá, né? Tem a tela de precificação lá. Não sei como é que está
+53:55 Speaker 1: tudo certo. Mas agora é uma tarefa da Aldex que tem que fazer, né? Inclusive dessa atividade que a gente estava conversando. Isso. A gente já fez uma cauta sobre isso, inclusive. Agora é
+54:21 Speaker 1: a parte administrativa.
+54:28 Speaker 2: Tá lá, eu saio da UDERS, tá sem projeto. Mas aí fica TI, financeiro, contabilidade, RH e alguns mecanismos. Até futuramente mudar de prédio mesmo. A logística. A logística não tem nada a ver, cara.
+54:47 Speaker 1: Tá uma
+54:47 Speaker 2: salada ali. Se a gente solta 150 gerador, ferrou 40 meses, cara. Os caras vêm trabalhar até a noite, sábado e domingo. E aí ele reclama. Aí eu vou lá falar com o Luciano. Aí eu vejo, ele está certo. Na maioria das vezes. Está parado. Não, está tudo resolvido. Chega lá, tem 100 caras, 100 pedidos.
+55:07 Speaker 1: Parabéns. Atrapalha tudo, né?
+55:09 Speaker 2: Todo fluxo da empresa. E a gente vê, por exemplo, quando a gente foi na auto, né, Ricardo? O cara soltava um gerador cada 4 minutos. Olha a logística do cara. O que você faz se eu só faço isso?
+55:23 Speaker 1: Hoje eu vou agirar.
+55:29 Speaker 3: A gente tem a perdão da B2 para o dia 1º de agosto. Esse tal é um caso natural para a gente também trabalhando em paralelo.
+55:40 Speaker 1: Ou pelo menos a questão do nosso militério.
+55:44 Speaker 2: Eu só precisei falar isso para vocês. Vamos fazer duas vezes o negócio.
+55:49 Speaker 1: Para
+55:50 Speaker 2: a gente pensar em algo para...
+56:19 Speaker 2: Esse BS é um produto de 3 paneladas. Ele é frete a pagar. Ainda vai ser pago. Com a ferramenta, a gente pode dar as opções. Na frente, eu posso pôr uma sobremargem aí, negociar e deixar a opção do frete a pagar. Se você conseguir integrar essa ferramenta, a gente coloca. E não dá, velho. E tem uma negociação que é para gerir um norte, né? Tem rodando do tetônico, tem? Qual é o nordeste? Pará. É norte. O cara já vai mandar para o Pará.
+56:55 Speaker 3: E
+56:56 Speaker 1: aí
+57:09 Speaker: Bom, é
+57:14 Speaker 2: isso aí, cara. Vamos lá com vocês aí. Depois aí eu vou falar com o financeiro em paralelo sobre os produtos que a gente precisa desenvolver para ser uma grande empresa. Hoje a gente tem um distribuidor que ele tinha uma financeira, que agora todo mundo boicotou ele. Ele ofereceu o produto.
+57:40 Speaker 2: E tá pegando os leads todos agora. Então chega lá o orçamento do Nerds pro cara, ele pega e joga com a distribuidora própria e fala, ó, bate lá, tá 10 mil aqui, tá 10 mil aqui, mais 9.500 aí dá os nossos créditos, o cara fala. Então tá acontecendo isso. A gente tá usando a Dauda ali ainda, né? De crédito Dauda, mas não teve nenhum problema não.
+58:01 Speaker 1: Ah, não teve aí, não, a Dauda, não foi interessante porque ficou exposto o recurso. Comercial Dauda. Ah, mas tem a financeira que é nossa, a gente não tem nenhuma vantagem, nem a gente não tem. Eles quiserem pegar o mercado, realmente.
+58:16 Speaker 2: Por enquanto, mas a voz é dele.
+58:22 Speaker 1: Nada.
+58:22 Speaker 2: Você pode até não furiar esse orçamento, mas eu posso ganhar um lead. Certeza, cara. Olha essa base.
+58:30 Speaker 3: O integrador tem que trabalhar com ele.
+58:33 Speaker 2: A gente só
+58:35 Speaker 3: manda uma cadeira de serviço.
+58:37 Speaker 2: Quero cortar isso aqui. Só que eu preciso ferramenta. Como é que eu passo para minha equipe que... Estou perdendo porque, às vezes, o cara tem crédito em uma financeira e outra não. Ou juros também é mais
+58:48 Speaker 3: alto. Eu sou mais? Sou
+58:51 Speaker 1: mais creche? Em baixo. A
+58:58 Speaker 3: gente precisa pegar um Pintech, né?
+59:00 Speaker 1: É, um Pintech. Exatamente. E é aquilo que o cara está montando.
+59:05 Speaker 3: A montanha de piscininha, né?
+59:17 Speaker 1: Tipo um private label, né? É
+59:19 Speaker 2: isso mesmo.
+59:21 Speaker 1: O cara que veio oferecer.
+59:49 Speaker 2: Pra ganhar 0,5, cara, melhor negócio do mundo, de toda tua operação. Não é você que paga, mas ele recebe,
+59:56 Speaker 3: fica mais forte. Ganhar dinheiro é isso aí hoje em dia, né? Ninguém ama dinheiro vendendo carro, não. Ganhar dinheiro vendendo crédito. Crédito, cara.
+01:00:04 Speaker 1: Os caras da Gazin, o app deles, do banco deles, eles falam assim, cara, por trás, a gente não tem nada, né? No banco, a velocidade, é só visual, só e a gente bate na letra. Cara,
+01:00:14 Speaker 2: é incrível, porque você vê a empresa ali da Gazin Seguros e da Gazin Crédito, lá em Doradilha, é outro prédio, cara, tem mais de 200 pessoas trabalhando, cara. Tem uma só de crédito e seguro lá, cara. O cara tá faturando... Quase oito mil por ano já. 7 mil colaboradores, oito mil.
+01:00:40 Speaker 3: A Magalu hoje está ganhando mais dinheiro com prinhas de crédito do que com produtos.
+01:00:46 Speaker 2: A Magalu comprou um monte de empresa, comprou cabum,
+01:00:49 Speaker 1: comprou ex-form, comprou um monte. Um monte.
+01:00:51 Speaker 3: Não pagou a época completo.
+01:00:54 Speaker 2: Mas eles também? Quem foi que viu uma placa de vinho na NetJuice esse dia?
+01:00:59 Speaker 3: Canaltech, é, pode ser. Tinha uma placa de vinho na
+01:01:02 Speaker 2: NetJuice, vendida pela Magalu. Ah, mas o cara tá comprando tênis, né? Comprou, pagou? É isso aí, cara.
+01:01:16 Speaker 1: É isso aí.
+01:01:18 Speaker 3: A entrega vai ser essa, tá vendendo ar-condicionado, acabou.
+01:01:22 Speaker 1: Então,
+01:01:23 Speaker 3: os caras estão misturando todo tipo de produto, usando todos os canais para poder distribuir. O MercadoLibre
+01:01:28 Speaker 2: está financiando o carro, né? Sim. Você sabe qual foi a Raval, né? Eu tive com o caso da
+01:01:35 Speaker 1: Zacarias
+01:01:38 Speaker 2: Sidney, um grupo que eu participo de empresários e tal, e ele foi falar, falou, cara, o MercadoLibre, o chinês obrigou a gente vender a marca deles, porque ninguém quis vir com a GWM, ninguém quis. Daí o MercadoLibre falou, eu quero. e pode deixar que eu faço tudo bem aí todo mundo não vou pegar logo isso aí senão
+01:01:59 Speaker 1: esse
+01:02:02 Speaker 2: aí é o homo da Diego esse aí é outra marca mas o rabal é do
+01:02:07 Speaker 1: GWM a
+01:02:08 Speaker 3: maior
+01:02:17 Speaker 2: do mundo é a PYG hoje um carro E essa de entrada maior do mundo é essa guia que eu falei para vocês, também de carro. E daqui quatro anos eu troco de nome, pelo menos 70%, 80%, porque não vai estar com elétrica. De nome, hein? Não vai ser hoje, sei lá. Não tem como, cara, não tem
+01:02:38 Speaker 1: como. Não, cara,
+01:02:40 Speaker 2: eu estou com um carro em 2019, né, e o carro
+01:02:46 Speaker 1: é...
+01:02:47 Speaker 2: O carro esportivo, 470 cavalos combinados. Cara, ele faz mais de 20 quilômetros por litro, velho. O carro de 2019, velho. V6 de turbo. Economiza mais que o Uno. O carro, tipo... Só que agora você pega o carro aí fazendo 40 quilômetros por litro, cara. Lá fora. Combinado, né? Falando de híbrido, né? Agora o que eu tô dizendo é que daqui a quatro anos vai voltar no V. É.
+01:03:20 Speaker 2: Estou vendo um carro para adesivar de Odex, que é um carro que a gente quer comprar reserva aí, só que eu estou com medo de comprar porque saiu aquela bateria nova
+01:03:29 Speaker 1: da Rio&G,
+01:03:32 Speaker 2: que é o... Que a autonomia vai ser dobrada do carro e a carga vai ser 70% em 5 minutos agora. A nova. Você viu? 120, né? E é esse que é o carro aqui. Esse aqui que é o canal que eu quero comprar. Esse carro aqui, olha os 0 a 100 do carro. Anda muito mais que o meu. O meu é Porsche. Papanha nesse carro. 530, mas o problema é a autonomia do Inmetro, ele é 350.
+01:04:09 Speaker 2: Ele anda no otimista chinês, eu acredito mais no
+01:04:12 Speaker 1: Inmetro.
+01:04:15 Speaker 2: Aí você pega aqui o carro, esse é 100% elétrico.
+01:04:21 Speaker 1: Não
+01:04:21 Speaker 2: tem fato. Comprar um desses produtos. Por isso que é barato. Só que isso aqui é um carro, velho. Você entendeu? Isso é o carro, basicamente. O resto é lata. E longa vida.
+01:04:53 Speaker 3: Extração só nos eixos.
+01:04:57 Speaker 2: Aí a gente vai entrar na mobilidade, vai comprar um texto, vai colocar um adesivo da U10, buscar um fornecedor, não sei lá, um verso. Vai ser bem bacana. Só que no ano que vem vem um carro com o dobro de autonomia com a carga de quises. Isso aí vai despencar 40% preso no mercado. Foda, né? Esse é o problema do Elétrica agora, ele vai ter uma virada muito... Vai ser muito rápido, cara. Porque o custo é o mesmo da BAP-33.
+01:05:41 Speaker 2: Eu pedi para a Juliana ir para contato com a KTL, eu achei que você falou da UCB. A KTL é a parte do mundo em bateria, ela faz bateria para basicamente todo mundo. Só comporta a bioid, então quem faz para a Volkswagen, para todas as outras máquinas, seja bioid, é essa KTL. Só que se você olhar ela, tem um monte de bateriazinha. Essas trilhas, você troca essas para dar manutenção, senão você ia ter que trocar inteira. Senão, na hora eu reparo. E eu quero... Eu estou atrás de... Hoje, a gente está atrás de maquinário para reparar a bateria e também para vender.
+01:06:19 Speaker 2: Porque esse é o mercado. Olha o cano desse carro, vocês viram? Esse carro... Eu fui na concessionária, sabe? Porque o outro não tem pra entregar, que é melhor que esse. Aquele que eu falei. O IRI. É melhor que esse. Ainda é tração traseira do diabo naquele carro. E é 120 cv. Esse é 14 segundos, é sem outra chance.
+01:06:46 Speaker 1: É
+01:06:47 Speaker 2: foda, velho. Esse aqui parece um mouse, né, velho? Esse é o
+01:06:54 Speaker 1: carro brasileiro. Na hora que eu
+01:06:55 Speaker 2: baixar pra 100 pontos... Esses carros aí. Hoje você pega o quê? O Kwid está 8 mil no
+01:07:03 Speaker 1: palco.
+01:07:05 Speaker 2: Só que aí veio de um jaco elétrico agora, está 100 mil. Só que os caras não viajavam. Os caras que é jaco. Os caras que é isso aqui. Já tem uma marca aí. Os caras aí. É esse carro aqui que eu estava falando hoje em dia para os caras. Esse aqui não. Esse é o mais vendido da China, do Brasil. 90 dias, se quiser, Ricardo. 90 dias? 90 dias. Só que está 130 a cor.
+01:07:43 Speaker 1: Então, nós estamos cozinhando.
+01:07:49 Speaker 2: Tem o porta-malho na frente também, se quiser.
+01:07:52 Speaker 3: É, agora que eu não sei a descapatização, a central para a Able, o CarPlay, que não tinha.
+01:07:59 Speaker 2: CarPlay sem fio, né? É que ela é bem seca, ela é bem seca, ó, mas tem tudo, o CarPlay, ar, traseiro, tudo, CarPlay, toque. Como é, né? Os caras jogam os bancos pra frente e acham que a gente é chinês, não sabe que tem esse espaço aqui, velho? O cara que deu o Rodrigo lá atrás, eu não entendo. Então, nós precisamos entrar ali, pra relacionar com o nosso negócio. Nós vamos vender o carregador, nós vamos ter uma equipe pra isso. E aí, como que eu vou vender, sendo que eu não entendo de carro também. Aí não combina, né? Precisa saber os carros que eu vendendo, pra fazer o carregador certo, pra fornecer o eletroposto. para ter uma equipe que talvez forneça a instalação do eletroposto e cobra, cobra tipo o provedor de internet, que esse é o principal negócio do eletroposto, para chegar no estabelecimento e falar, cara, você não paga nada, você me dá uma mensalidade, você está ali para o teu cliente. Ou, você não paga nada, não me dá mensalidade, o que para aqui é meu e você ainda ganha não sei o que. Tem dois modelos, né? O posto da Ezevonche que inaugurou no Rio de Janeiro uma vez passada, Os caras estão esperando 40 minutos para carregar Por exemplo, lá em Copacabana Não tem lugar para carregar
+01:09:32 Speaker 1: Aquele número que está colocando o carro para ir em forma solar, ele tem que ser 10 centavos quilombáticos solar.
+01:09:40 Speaker 2: E hoje,
+01:09:41 Speaker 1: quando eu estou colocando 2 reais quilombáticos solar,
+01:09:46 Speaker 2: 10 centavos quilombáticos solar, porque
+01:09:49 Speaker 1: quer bateria inteira centavos.
+01:10:22 Speaker 1: Obrigado. O eletroposto não vai ser escolhido. Não adianta eu vender o eletroposto
+01:10:27 Speaker 2: como serviço com a equipe de projetos. Minha
+01:10:30 Speaker 1: equipe não é projeto, tá? A equipe é só as vendas. Eu pego um integrador. Pra ser uma
+01:10:35 Speaker 2: equipe de projetos é diferente, cara.
+01:10:37 Speaker 1: É um cara que não está em contato com um cara que tem ideia de farmácia, tem vídeo, fala, cara, que importante o eletroposto aí? Aí você é o 10, tá? Aí o 10 que me deu, eu não posso fazer o eletroposto que na frente eles vão ter um quarto não. Eu não posso for nada. Já colocamos da BYD, primeiro elétrico para você, automatizamento, que nem está. Já com a lojinha, o cara pega, passa, pega a Coca-Cola dele e completa com o carro. Esse eu vou fazer. Mas até o nome dele, eu vou fazer com o outro. O velho até na arquitetura de aluguel lá da Malala, já falei para ele, aluga para mim. . . .
+01:12:08 Speaker 1: É um pote que tem uma caixa presa, tem uma arma.
+01:12:34 Speaker 1: E aí E aí
+01:12:50 Speaker 2: E na frente da sua casa você pode...
+01:12:53 Speaker 3: Você pode tirar.
+01:12:57 Speaker 2: Nos Estados Unidos... Está aqui o monolário. É um cara cabrando muitos anos.
+01:13:26 Speaker 2: Fechou, pessoal? É isso aí, valeu!
+01:14:05 Speaker 1: Mas
+01:14:06 Speaker 2: pensa no e-commerce. O e-commerce eu falo sem estar logado, sem ser do integrador para os outros projetos. Fechou então.
+01:14:24 Speaker 1: Obrigado. Obrigado.
+  
