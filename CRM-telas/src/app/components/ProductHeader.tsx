@@ -105,7 +105,7 @@ export function ProductHeader({ product, filial, siblingFilials }: ProductHeader
         <div className="flex items-start gap-6 mb-5">
           {/* Back button — aligned to top */}
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/cadastros/formacao-preco')}
             className="p-2 rounded-[var(--radius)] text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer mt-2 shrink-0"
           >
             <ArrowLeft size={20} />

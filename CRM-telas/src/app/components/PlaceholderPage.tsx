@@ -17,6 +17,7 @@ const pageTitles: Record<string, string> = {
   '/produtos/aging': 'Aging',
   '/produtos/aging/sumario': 'Aging — Sumário',
   '/configuracoes': 'Configurações',
+  '/vendas/pedidos': 'Pedidos de Venda (Geral)',
 };
 
 export function PlaceholderPage() {
@@ -38,12 +39,12 @@ export function PlaceholderPage() {
         </p>
       </div>
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/dashboard')}
         className="flex items-center gap-2 px-5 py-2.5 rounded-[var(--radius-button)] bg-primary text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer shadow-[var(--elevation-sm)]"
         style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}
       >
         <ArrowLeft size={16} />
-        Voltar à Formação de Preço
+        Voltar ao Dashboard
       </button>
     </div>
   );

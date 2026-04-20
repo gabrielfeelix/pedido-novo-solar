@@ -7,24 +7,27 @@ import { PlaceholderPage } from './components/PlaceholderPage';
 import { DashboardHome } from './components/DashboardHome';
 import { SolarOrderPage } from './components/SolarOrderPage';
 import { SolarBuilderPage } from './components/SolarBuilderPage';
+import { HandoffPage } from './components/HandoffPage';
 
 const routes: RouteObject[] = [
   {
     Component: Layout,
     children: [
+      // Dashboard (default landing)
+      { path: '/', Component: DashboardHome },
+      { path: '/dashboard', Component: DashboardHome },
+
       // Cadastros > Formação de Preço
-      { path: '/', Component: ProductListing },
+      { path: '/cadastros/formacao-preco', Component: ProductListing },
       { path: '/produto/:id/:filial', Component: PriceFormation },
       { path: '/campanha/:id', Component: CampaignDetails },
-
-      // Dashboard
-      { path: '/dashboard', Component: DashboardHome },
 
       // Vendas
       { path: '/vendas/carteira', Component: PlaceholderPage },
       { path: '/vendas/acoes', Component: PlaceholderPage },
-      { path: '/vendas/pedidos', Component: SolarOrderPage },
-      { path: '/vendas/pedidos/solar-builder', Component: SolarBuilderPage },
+      { path: '/vendas/pedidos', Component: PlaceholderPage },
+      { path: '/vendas/novo-pedido-solar', Component: SolarOrderPage },
+      { path: '/vendas/novo-pedido-solar/solar-builder', Component: SolarBuilderPage },
       { path: '/vendas/comissoes', Component: PlaceholderPage },
 
       // Cadastros
@@ -40,6 +43,7 @@ const routes: RouteObject[] = [
 
       // Configurações
       { path: '/configuracoes', Component: PlaceholderPage },
+      { path: '/handoff', Component: HandoffPage },
 
       // Catch-all
       { path: '*', Component: PlaceholderPage },

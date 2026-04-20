@@ -27,7 +27,18 @@ export interface SolarCatalogItem {
   name: string;
   brand: string;
   unitPrice: number;
-  icon: 'panel' | 'inverter' | 'stringBox' | 'structure' | 'cable' | 'connector' | 'profile' | 'loose';
+  icon:
+    | 'panel'
+    | 'inverter'
+    | 'stringBox'
+    | 'structure'
+    | 'cable'
+    | 'connector'
+    | 'profile'
+    | 'loose'
+    | 'breaker'
+    | 'monitor'
+    | 'tool';
   note?: string;
 }
 
@@ -56,7 +67,13 @@ export interface AccessoryProduct extends SolarCatalogItem {
   lockedQuantity?: number;
 }
 
-export interface LooseItemProduct extends SolarCatalogItem {}
+export type LooseCategory = 'Proteção' | 'Monitoramento' | 'Materiais' | 'Ferramentas';
+
+export interface LooseItemProduct extends SolarCatalogItem {
+  category: LooseCategory;
+}
+
+export const looseCategories: LooseCategory[] = ['Proteção', 'Monitoramento', 'Materiais', 'Ferramentas'];
 
 export const orderMeta: OrderMetaField[] = [
   { label: 'Pedido', value: '#1615449' },
@@ -316,7 +333,17 @@ export const looseItems: LooseItemProduct[] = [
     name: 'Disjuntor Tripolar 63A Curva C',
     brand: 'WEG',
     unitPrice: 138.0,
-    icon: 'loose',
+    icon: 'breaker',
+    category: 'Proteção',
+  },
+  {
+    id: 'loose-disjuntor-40a',
+    sku: '401123',
+    name: 'Disjuntor Bipolar 40A Curva C',
+    brand: 'Schneider',
+    unitPrice: 98.0,
+    icon: 'breaker',
+    category: 'Proteção',
   },
   {
     id: 'loose-monitoramento',
@@ -324,7 +351,17 @@ export const looseItems: LooseItemProduct[] = [
     name: 'Kit Monitoramento Wi-Fi Inversor Solar',
     brand: 'Sofar',
     unitPrice: 285.0,
-    icon: 'loose',
+    icon: 'monitor',
+    category: 'Monitoramento',
+  },
+  {
+    id: 'loose-datalogger',
+    sku: '402002',
+    name: 'Datalogger Smart Growatt ShineWiFi-X',
+    brand: 'Growatt',
+    unitPrice: 320.0,
+    icon: 'monitor',
+    category: 'Monitoramento',
   },
   {
     id: 'loose-quadro',
@@ -333,6 +370,52 @@ export const looseItems: LooseItemProduct[] = [
     brand: 'Odex Solar',
     unitPrice: 892.0,
     icon: 'loose',
+    category: 'Proteção',
+  },
+  {
+    id: 'loose-quadro-4',
+    sku: '402201',
+    name: 'Quadro de Proteção CA/CC 4 MPPT',
+    brand: 'Odex Solar',
+    unitPrice: 1240.0,
+    icon: 'loose',
+    category: 'Proteção',
+  },
+  {
+    id: 'loose-dps',
+    sku: '403001',
+    name: 'DPS Solar 1000V (Par)',
+    brand: 'Clamper',
+    unitPrice: 148.0,
+    icon: 'connector',
+    category: 'Proteção',
+  },
+  {
+    id: 'loose-aterramento',
+    sku: '403010',
+    name: 'Cabo de Aterramento 10mm 50m',
+    brand: 'Cobrecom',
+    unitPrice: 190.0,
+    icon: 'cable',
+    category: 'Materiais',
+  },
+  {
+    id: 'loose-kit-ferramentas',
+    sku: '404100',
+    name: 'Kit Ferramentas Solar Pro 24 peças',
+    brand: 'Tramontina',
+    unitPrice: 389.0,
+    icon: 'tool',
+    category: 'Ferramentas',
+  },
+  {
+    id: 'loose-crimpadora',
+    sku: '404101',
+    name: 'Crimpadora MC4 Solar Profissional',
+    brand: 'Intelli',
+    unitPrice: 215.0,
+    icon: 'tool',
+    category: 'Ferramentas',
   },
 ];
 

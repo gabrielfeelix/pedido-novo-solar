@@ -36,7 +36,7 @@ export function PriceFormation() {
       <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-4">
         <span style={{ fontSize: '48px' }}>404</span>
         <span style={{ fontSize: 'var(--text-sm)' }}>Produto não encontrado</span>
-        <Button onClick={() => navigate('/')}>
+        <Button onClick={() => navigate('/cadastros/formacao-preco')}>
           Voltar à listagem
         </Button>
       </div>

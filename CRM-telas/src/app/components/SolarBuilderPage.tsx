@@ -39,7 +39,6 @@ import {
   type SolarBuilderStep,
   type PrizeMode,
   connectionTypes,
-  orderClients,
   states,
   structureTypes,
 } from '../data/solarOrderMockData';
@@ -160,20 +159,26 @@ export function SolarBuilderPage() {
   const [panelQuantity, setPanelQuantity] = useState(0);
   const [inverterQuantities, setInverterQuantities] = useState<Record<string, number>>({});
   const [stringBoxQuantities, setStringBoxQuantities] = useState<Record<string, number>>({});
-  const [structureType, setStructureType] = useState('Telha Cerâmica/Colonial');
+  const [selectedStructureTypes, setSelectedStructureTypes] = useState<string[]>([...structureTypes]);
   const [structureQuantities, setStructureQuantities] = useState<Record<string, number>>({});
   const [accessoryQuantities, setAccessoryQuantities] = useState<Record<string, number>>({});
 
   const [panelQuery, setPanelQuery] = useState('');
   const [inverterQuery, setInverterQuery] = useState('');
+  const [stringBoxQuery, setStringBoxQuery] = useState('');
   const [structureQuery, setStructureQuery] = useState('');
   const [accessoryQuery, setAccessoryQuery] = useState('');
   const [panelSortField, setPanelSortField] = useState<SortField>('price');
   const [panelSortDirection, setPanelSortDirection] = useState<SortDirection>('asc');
   const [inverterSortField, setInverterSortField] = useState<SortField>('price');
   const [inverterSortDirection, setInverterSortDirection] = useState<SortDirection>('asc');
+  const [stringBoxSortField, setStringBoxSortField] = useState<SortField>('price');
+  const [stringBoxSortDirection, setStringBoxSortDirection] = useState<SortDirection>('asc');
   const [structureSortField, setStructureSortField] = useState<'price' | 'brand'>('price');
   const [structureSortDirection, setStructureSortDirection] = useState<SortDirection>('asc');
+  const [accessoryCategoryFilter, setAccessoryCategoryFilter] = useState<'all' | 'cables' | 'connectors' | 'profiles'>('all');
+  const [accessorySortField, setAccessorySortField] = useState<'price' | 'brand'>('price');
+  const [accessorySortDirection, setAccessorySortDirection] = useState<SortDirection>('asc');
 
   const selectedPanel = useMemo(
     () => panelProducts.find((p) => p.id === selectedPanelId) ?? null,
@@ -390,24 +395,46 @@ export function SolarBuilderPage() {
     return inverterSortDirection === 'asc' ? sorted : sorted.reverse();
   }, [inverterQuery, connectionType, inverterSortField, inverterSortDirection]);
 
+  const filteredStringBoxes = useMemo(() => {
+    const q = normalizeText(stringBoxQuery);
+    const filtered = stringBoxProducts.filter((p) =>
+      normalizeText(`${p.name} ${p.brand} ${p.sku}`).includes(q),
+    );
+    const sorted = [...filtered].sort((a, b) => {
+      if (stringBoxSortField === 'brand') return a.brand.localeCompare(b.brand, 'pt-BR');
+      if (stringBoxSortField === 'power') return a.maxKwp - b.maxKwp;
+      return a.unitPrice - b.unitPrice;
+    });
+    return stringBoxSortDirection === 'asc' ? sorted : sorted.reverse();
+  }, [stringBoxQuery, stringBoxSortField, stringBoxSortDirection]);
+
   const filteredStructures = useMemo(() => {
     const q = normalizeText(structureQuery);
+    const activeStructureTypes = selectedStructureTypes.length > 0 ? selectedStructureTypes : [...structureTypes];
     const filtered = structureProducts.filter(
-      (p) => p.structureType === structureType || p.structureType === 'Universal',
+      (p) => p.structureType === 'Universal' || activeStructureTypes.includes(p.structureType),
     ).filter((p) => normalizeText(`${p.name} ${p.brand} ${p.sku}`).includes(q));
     const sorted = [...filtered].sort((a, b) => {
       if (structureSortField === 'brand') return a.brand.localeCompare(b.brand, 'pt-BR');
       return a.unitPrice - b.unitPrice;
     });
     return structureSortDirection === 'asc' ? sorted : sorted.reverse();
-  }, [structureQuery, structureType, structureSortField, structureSortDirection]);
+  }, [structureQuery, selectedStructureTypes, structureSortField, structureSortDirection]);
 
   const filteredAccessories = useMemo(() => {
     const q = normalizeText(accessoryQuery);
-    return accessoryProducts.filter((p) =>
+    const byCategory = accessoryProducts.filter((p) =>
+      accessoryCategoryFilter === 'all' ? true : p.category === accessoryCategoryFilter,
+    );
+    const filtered = byCategory.filter((p) =>
       normalizeText(`${p.name} ${p.brand} ${p.sku}`).includes(q),
     );
-  }, [accessoryQuery]);
+    const sorted = [...filtered].sort((a, b) => {
+      if (accessorySortField === 'brand') return a.brand.localeCompare(b.brand, 'pt-BR');
+      return a.unitPrice - b.unitPrice;
+    });
+    return accessorySortDirection === 'asc' ? sorted : sorted.reverse();
+  }, [accessoryQuery, accessoryCategoryFilter, accessorySortField, accessorySortDirection]);
 
   const handleNext = () => {
     if (stepIndex < builderStepLabels.length - 1) {
@@ -488,18 +515,27 @@ export function SolarBuilderPage() {
     }
   };
 
-  const canConclude = Boolean(selectedPanel) && panelQuantity > 0 && liveItems.length > 0;
+  const toggleStructureType = (type: string) => {
+    setSelectedStructureTypes((prev) => {
+      if (prev.includes(type)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((item) => item !== type);
+      }
+      return [...prev, type];
+    });
+  };
+
+  const canConclude = (
+    Boolean(pedido.clientePedido)
+    && Boolean(pedido.clienteNota)
+    && Boolean(selectedPanel)
+    && panelQuantity > 0
+    && liveItems.some((item) => item.category === 'Inversores')
+    && liveItems.some((item) => item.category === 'Estrutura')
+  );
 
   function handleConclude() {
     if (!canConclude) return;
-    const defaultClient = orderClients[0] ?? null;
-    const invoiceClient = pedido.clientePedido ?? defaultClient;
-    if (!pedido.clientePedido && defaultClient) {
-      pedido.setClientePedido(defaultClient);
-    }
-    if (!pedido.clienteNota && invoiceClient) {
-      pedido.setClienteNota(invoiceClient);
-    }
     if (!pedido.invoiceObservation.trim()) {
       pedido.setInvoiceObservation('NÃO REALIZAR ENTREGA SEM AGENDAMENTO PRÉVIO COM O CLIENTE.');
     }
@@ -545,7 +581,7 @@ export function SolarBuilderPage() {
       components,
     };
     pedido.addGenerator(generator);
-    navigate('/vendas/pedidos');
+    navigate('/vendas/novo-pedido-solar');
   }
 
   /* ---------------- Product Card ---------------- */
@@ -966,28 +1002,46 @@ export function SolarBuilderPage() {
       <div>
         <h2 className="text-2xl font-semibold tracking-tight text-slate-950">Estrutura de fixação</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Escolha o tipo de telhado e as estruturas que suportam {panelQuantity || '—'} painéis.
+          Todas as categorias de telhado já vêm selecionadas. Use os chips abaixo para filtrar as estruturas que suportam {panelQuantity || '—'} painéis.
         </p>
       </div>
-      <div className="grid gap-4 md:grid-cols-[320px_minmax(0,1fr)] md:items-end">
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Tipo de telhado
-          </label>
-          <Select value={structureType} onValueChange={setStructureType}>
-            <SelectTrigger className={selectTriggerBase}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {structureTypes.map((c) => (
-                <SelectItem key={c} value={c}>
-                  {c}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Categorias de telhado
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-8 border-slate-300 text-xs"
+            onClick={() => setSelectedStructureTypes([...structureTypes])}
+          >
+            Selecionar todas
+          </Button>
         </div>
-        <div />
+        <div className="flex flex-wrap gap-2">
+          {structureTypes.map((type) => {
+            const selected = selectedStructureTypes.includes(type);
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => toggleStructureType(type)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                  selected
+                    ? 'border-blue-200 bg-blue-50 text-blue-700'
+                    : 'border-slate-300 bg-white text-slate-600 hover:border-slate-400'
+                }`}
+              >
+                {type}
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-slate-500">
+          {selectedStructureTypes.length} de {structureTypes.length} categoria(s) ativa(s)
+        </p>
       </div>
       <FilterSortBar
         query={structureQuery}
@@ -1010,7 +1064,7 @@ export function SolarBuilderPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredStructures.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
-            Nenhuma estrutura compatível com este tipo de telhado.
+            Nenhuma estrutura compatível com os filtros aplicados.
           </div>
         ) : (
           filteredStructures.map((p) =>
@@ -1054,17 +1108,53 @@ export function SolarBuilderPage() {
         </div>
       ) : null}
 
-      <div className="relative max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-        <Input
-          value={accessoryQuery}
-          onChange={(e) => setAccessoryQuery(e.target.value)}
-          placeholder="Buscar acessório"
-          className={`${inputBase} pl-9`}
-        />
+      <FilterSortBar
+        query={accessoryQuery}
+        onQueryChange={setAccessoryQuery}
+        queryPlaceholder="Código, nome..."
+        sortField={accessorySortField}
+        onSortFieldChange={(value) => setAccessorySortField(value as 'price' | 'brand')}
+        sortDirection={accessorySortDirection}
+        onSortDirectionToggle={() => setAccessorySortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
+        onClear={() => {
+          setAccessoryQuery('');
+          setAccessoryCategoryFilter('all');
+          setAccessorySortField('price');
+          setAccessorySortDirection('asc');
+        }}
+        options={[
+          { value: 'price', label: 'Preço' },
+          { value: 'brand', label: 'Marca' },
+        ]}
+      />
+      <div className="grid gap-4 md:grid-cols-[280px_minmax(0,1fr)] md:items-end">
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Categoria
+          </label>
+          <Select value={accessoryCategoryFilter} onValueChange={(value) => setAccessoryCategoryFilter(value as 'all' | 'cables' | 'connectors' | 'profiles')}>
+            <SelectTrigger className={selectTriggerBase}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas</SelectItem>
+              <SelectItem value="cables">Cabos</SelectItem>
+              <SelectItem value="connectors">Conectores</SelectItem>
+              <SelectItem value="profiles">Perfis</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="text-xs text-slate-500">
+          {filteredAccessories.length} item(ns) encontrado(s) para os filtros atuais.
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredAccessories.length === 0 ? (
+          <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
+            Nenhum acessório encontrado com esses filtros.
+          </div>
+        ) : null}
         {filteredAccessories.map((product) => {
           const lockedMinimum = requiredAccessoryMinimums[product.id] ?? 0;
           const quantity = Math.max(accessoryQuantities[product.id] ?? 0, lockedMinimum);
@@ -1126,14 +1216,39 @@ export function SolarBuilderPage() {
           Selecione os modelos de String Box compatíveis com a montagem.
         </p>
       </div>
+      <FilterSortBar
+        query={stringBoxQuery}
+        onQueryChange={setStringBoxQuery}
+        queryPlaceholder="Código, nome..."
+        sortField={stringBoxSortField}
+        onSortFieldChange={(value) => setStringBoxSortField(value as SortField)}
+        sortDirection={stringBoxSortDirection}
+        onSortDirectionToggle={() => setStringBoxSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
+        onClear={() => {
+          setStringBoxQuery('');
+          setStringBoxSortField('price');
+          setStringBoxSortDirection('asc');
+        }}
+        options={[
+          { value: 'price', label: 'Preço' },
+          { value: 'brand', label: 'Marca' },
+          { value: 'power', label: 'Potência' },
+        ]}
+      />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {stringBoxProducts.map((product) =>
-          renderProductCard(
-            product,
-            stringBoxQuantities[product.id] || 0,
-            () => updateQuantity(setStringBoxQuantities, product.id, -1),
-            () => updateQuantity(setStringBoxQuantities, product.id, 1),
-          ),
+        {filteredStringBoxes.length === 0 ? (
+          <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
+            Nenhum item de String Box encontrado com esses filtros.
+          </div>
+        ) : (
+          filteredStringBoxes.map((product) =>
+            renderProductCard(
+              product,
+              stringBoxQuantities[product.id] || 0,
+              () => updateQuantity(setStringBoxQuantities, product.id, -1),
+              () => updateQuantity(setStringBoxQuantities, product.id, 1),
+            ),
+          )
         )}
       </div>
     </div>
@@ -1142,11 +1257,29 @@ export function SolarBuilderPage() {
   const renderSummary = () => (
     <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-950">Revisão do gerador</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-slate-950">Revisão do kit</h2>
         <p className="mt-1 text-sm text-slate-600">
-          Confira o kit completo antes de inserir como linha fechada no pedido.
+          Confira o kit completo e valide as pendências visuais antes de inserir como linha fechada no pedido.
         </p>
       </div>
+
+      {!canConclude ? (
+        <Card className="border-amber-200 bg-amber-50 shadow-sm">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
+            <p className="text-sm text-amber-900">
+              Para concluir a montagem, finalize os componentes mínimos do kit e confirme integrador/cliente para faturamento.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/vendas/novo-pedido-solar')}
+              className="border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
+            >
+              Abrir novo pedido solar
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
 
       {liveItems.length === 0 ? (
         <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
@@ -1186,6 +1319,29 @@ export function SolarBuilderPage() {
                         <span className="min-w-[100px] text-right font-semibold text-slate-900">
                           {formatCurrency(i.quantity * i.unitPrice)}
                         </span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className={`h-8 w-8 ${
+                            i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                              ? 'text-amber-500'
+                              : 'text-slate-500 hover:text-red-600'
+                          }`}
+                          onClick={() => removeLiveItem(i.id, i.category)}
+                          disabled={Boolean(i.category === 'Acessórios' && requiredAccessoryMinimums[i.id])}
+                          aria-label="Excluir item da revisão"
+                          title={
+                            i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                              ? 'Item prefixado pela estrutura'
+                              : 'Excluir item'
+                          }
+                        >
+                          {i.category === 'Acessórios' && requiredAccessoryMinimums[i.id] ? (
+                            <LockKeyhole className="h-4 w-4" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -1229,7 +1385,7 @@ export function SolarBuilderPage() {
               variant="ghost"
               size="icon"
               className="rounded-full"
-              onClick={() => navigate('/vendas/pedidos')}
+              onClick={() => navigate('/vendas/novo-pedido-solar')}
               aria-label="Voltar"
             >
               <ArrowLeft className="h-5 w-5 text-slate-600" />
@@ -1253,14 +1409,21 @@ export function SolarBuilderPage() {
               setAccessoryQuantities({});
               setPanelQuery('');
               setInverterQuery('');
+              setStringBoxQuery('');
               setStructureQuery('');
               setAccessoryQuery('');
               setPanelSortField('price');
               setPanelSortDirection('asc');
               setInverterSortField('price');
               setInverterSortDirection('asc');
+              setStringBoxSortField('price');
+              setStringBoxSortDirection('asc');
+              setSelectedStructureTypes([...structureTypes]);
               setStructureSortField('price');
               setStructureSortDirection('asc');
+              setAccessoryCategoryFilter('all');
+              setAccessorySortField('price');
+              setAccessorySortDirection('asc');
               setStep('setup');
             }}
           >

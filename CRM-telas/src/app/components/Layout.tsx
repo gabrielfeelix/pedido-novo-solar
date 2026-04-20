@@ -39,7 +39,8 @@ const topNav: NavItem[] = [
     children: [
       { label: 'Carteira de Clientes', description: 'Acompanhe as metas de carteira de clientes', path: '/vendas/carteira' },
       { label: 'Ações', description: 'Crie e gerencie ações de vendas', path: '/vendas/acoes' },
-      { label: 'Pedidos de Venda', description: 'Veja e edite os pedidos de venda', path: '/vendas/pedidos' },
+      { label: 'Pedidos de Venda', description: 'Fluxo geral de pedidos (não-solar)', path: '/vendas/pedidos' },
+      { label: 'Novo Pedido Solar', description: 'Inicie e acompanhe o fluxo dedicado de pedido solar', path: '/vendas/novo-pedido-solar' },
       { label: 'Comissões Apuradas', description: 'Gerencie as comissões apuradas do sistema', path: '/vendas/comissoes' },
     ],
   },
@@ -49,13 +50,19 @@ const topNav: NavItem[] = [
       { label: 'Clientes', description: 'Gerencie os clientes do sistema', path: '/clientes' },
       { label: 'Produtos', description: 'Gerencie os produtos do sistema', path: '/produtos/texto-garantia' },
       { label: 'Atributos Ecommerce', description: 'Gerencie os atributos do ecommerce', path: '/cadastros/atributos-ecommerce' },
-      { label: 'Formação de Preço', description: 'Gerencie preços e performance do portfólio', path: '/' },
+      { label: 'Formação de Preço', description: 'Gerencie preços e performance do portfólio', path: '/cadastros/formacao-preco' },
     ],
   },
   {
     label: 'Configurações',
     children: [
       { label: 'Geral', description: 'Configurações gerais do sistema', path: '/configuracoes' },
+    ],
+  },
+  {
+    label: 'Handoff',
+    children: [
+      { label: 'Novo Pedido Solar', description: 'Especificação funcional e técnica para desenvolvimento do fluxo solar', path: '/handoff' },
     ],
   },
 ];
@@ -67,23 +74,39 @@ export function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [openNav, setOpenNav] = useState<string | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
-  const isDashboardRoute = location.pathname === '/dashboard';
-  const hideBreadcrumb = isDashboardRoute || location.pathname === '/vendas/pedidos';
+  const navRef = useRef<HTMLDivElement>(null);
+  const isDashboardRoute = location.pathname === '/dashboard' || location.pathname === '/';
+  const hideBreadcrumb = isDashboardRoute || location.pathname === '/vendas/novo-pedido-solar';
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
         setProfileOpen(false);
       }
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenNav(null);
+      }
     }
     document.addEventListener('mousedown', handleClick);
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  useEffect(() => {
+    setOpenNav(null);
+  }, [location.pathname]);
+
   const isNavActive = (item: NavItem): boolean => {
     return item.children.some((c) => {
-      if (c.path === '/') return location.pathname === '/' || location.pathname.startsWith('/produto/') || location.pathname.startsWith('/campanha/');
+      if (c.path === '/dashboard') return location.pathname === '/' || location.pathname === '/dashboard';
+      if (c.path === '/cadastros/formacao-preco') {
+        return (
+          location.pathname.startsWith('/cadastros/formacao-preco') ||
+          location.pathname.startsWith('/produto/') ||
+          location.pathname.startsWith('/campanha/')
+        );
+      }
       return location.pathname.startsWith(c.path);
     });
   };
@@ -96,8 +119,8 @@ export function Layout() {
       const product = allProducts.find(p => p.id === productMatch[1]);
       const productLabel = product ? `SKU ${product.codOderco} · ${productMatch[2]}` : 'Produto';
       return [
-        { label: 'Cadastros', onClick: () => navigate('/') },
-        { label: 'Formação de Preço', onClick: () => navigate('/') },
+        { label: 'Cadastros', onClick: () => navigate('/cadastros/formacao-preco') },
+        { label: 'Formação de Preço', onClick: () => navigate('/cadastros/formacao-preco') },
         { label: productLabel },
       ];
     }
@@ -105,13 +128,13 @@ export function Layout() {
     const campaignMatch = path.match(/^\/campanha\/(\d+)/);
     if (campaignMatch) {
       return [
-        { label: 'Cadastros', onClick: () => navigate('/') },
-        { label: 'Formação de Preço', onClick: () => navigate('/') },
+        { label: 'Cadastros', onClick: () => navigate('/cadastros/formacao-preco') },
+        { label: 'Formação de Preço', onClick: () => navigate('/cadastros/formacao-preco') },
         { label: `Campanha #${campaignMatch[1]}` },
       ];
     }
 
-    if (path === '/') {
+    if (path === '/cadastros/formacao-preco') {
       return [
         { label: 'Cadastros' },
         { label: 'Formação de Preço' },
@@ -163,60 +186,73 @@ export function Layout() {
             </div>
 
             {/* Navigation items → NavigationMenu DS component */}
-            <NavigationMenu>
-              <NavigationMenuList className="gap-1">
-                {topNav.map((item) => {
-                  const active = isNavActive(item);
-                  const isSingle = item.children.length === 1;
+            <div ref={navRef}>
+              <NavigationMenu
+                viewport={false}
+                value={openNav ?? ''}
+                onValueChange={() => {
+                  // Controlled by click in trigger to avoid hover-open behavior.
+                }}
+              >
+                <NavigationMenuList className="gap-1">
+                  {topNav.map((item) => {
+                    const active = isNavActive(item);
+                    const isSingle = item.children.length === 1;
 
-                  return (
-                    <NavigationMenuItem key={item.label}>
-                      <NavigationMenuTrigger
-                        style={{
-                          color: 'rgba(255,255,255,1)',
-                          background: active ? 'rgba(255,255,255,0.1)' : 'transparent',
-                          opacity: active ? 1 : 0.7,
-                          fontSize: '14px',
-                        }}
-                        className="hover:!bg-[rgba(255,255,255,0.1)] hover:!opacity-100 data-[state=open]:!bg-[rgba(255,255,255,0.1)] data-[state=open]:!opacity-100 focus:!bg-[rgba(255,255,255,0.1)]"
-                      >
-                        {item.label}
-                      </NavigationMenuTrigger>
+                    return (
+                      <NavigationMenuItem key={item.label} value={item.label}>
+                        <NavigationMenuTrigger
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenNav((prev) => (prev === item.label ? null : item.label));
+                          }}
+                          style={{
+                            color: 'rgba(255,255,255,1)',
+                            background: active ? 'rgba(255,255,255,0.1)' : 'transparent',
+                            opacity: active ? 1 : 0.7,
+                            fontSize: '14px',
+                          }}
+                          className="hover:!bg-[rgba(255,255,255,0.1)] hover:!opacity-100 data-[state=open]:!bg-[rgba(255,255,255,0.1)] data-[state=open]:!opacity-100 focus:!bg-[rgba(255,255,255,0.1)]"
+                        >
+                          {item.label}
+                        </NavigationMenuTrigger>
 
-                      <NavigationMenuContent
-                        style={{
-                          width: isSingle ? '320px' : '480px',
-                          background: 'var(--card)',
-                          border: '1px solid color-mix(in srgb, var(--border) 25%, transparent)',
-                          boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
-                        }}
-                      >
-                        <div className={isSingle ? '' : 'grid grid-cols-2'} style={{ padding: '4px' }}>
-                          {item.children.map((child) => (
-                            <NavigationMenuLink
-                              key={child.path}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                navigate(child.path);
-                              }}
-                              className="cursor-pointer"
-                              style={{ padding: '10px 12px' }}
-                            >
-                              <NavigationMenuLinkTitle>
-                                {child.label}
-                              </NavigationMenuLinkTitle>
-                              <NavigationMenuLinkDescription style={{ fontSize: '12px', lineHeight: '1.4' }}>
-                                {child.description}
-                              </NavigationMenuLinkDescription>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  );
-                })}
-              </NavigationMenuList>
-            </NavigationMenu>
+                        <NavigationMenuContent
+                          style={{
+                            width: isSingle ? '320px' : '480px',
+                            background: 'var(--card)',
+                            border: '1px solid color-mix(in srgb, var(--border) 25%, transparent)',
+                            boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+                          }}
+                        >
+                          <div className={isSingle ? '' : 'grid grid-cols-2'} style={{ padding: '4px' }}>
+                            {item.children.map((child) => (
+                              <NavigationMenuLink
+                                key={child.path}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setOpenNav(null);
+                                  navigate(child.path);
+                                }}
+                                className="cursor-pointer"
+                                style={{ padding: '10px 12px' }}
+                              >
+                                <NavigationMenuLinkTitle>
+                                  {child.label}
+                                </NavigationMenuLinkTitle>
+                                <NavigationMenuLinkDescription style={{ fontSize: '12px', lineHeight: '1.4' }}>
+                                  {child.description}
+                                </NavigationMenuLinkDescription>
+                              </NavigationMenuLink>
+                            ))}
+                          </div>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    );
+                  })}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
 
           {/* Right: User avatar + Theme toggle */}
