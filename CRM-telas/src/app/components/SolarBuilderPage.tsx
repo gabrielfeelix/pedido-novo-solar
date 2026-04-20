@@ -1545,9 +1545,23 @@ export function SolarBuilderPage() {
                     <button
                       type="button"
                       onClick={() => setStep(s.id)}
-                      className="group flex w-full min-w-0 flex-col rounded-xl px-2 py-2 text-center transition hover:bg-slate-50"
+                      className="group flex w-full min-w-0 flex-col items-center rounded-xl px-2 py-2 text-center transition hover:bg-slate-50"
                     >
-                      <div className="flex w-full items-center">
+                      <div className="relative flex w-full justify-center">
+                        {idx > 0 ? (
+                          <div
+                            className={`absolute left-0 top-1/2 hidden h-[2px] w-[calc(50%-1.5rem)] -translate-y-1/2 rounded-full transition lg:block ${
+                              idx <= stepIndex ? 'bg-blue-500' : 'bg-slate-200'
+                            }`}
+                          />
+                        ) : null}
+                        {idx < builderStepLabels.length - 1 ? (
+                          <div
+                            className={`absolute right-0 top-1/2 hidden h-[2px] w-[calc(50%-1.5rem)] -translate-y-1/2 rounded-full transition lg:block ${
+                              idx < stepIndex ? 'bg-blue-500' : 'bg-slate-200'
+                            }`}
+                          />
+                        ) : null}
                         <div
                           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${
                             isActive
@@ -1559,16 +1573,9 @@ export function SolarBuilderPage() {
                         >
                           {isPast ? <Check className="h-4 w-4" /> : idx + 1}
                         </div>
-                        {idx < builderStepLabels.length - 1 ? (
-                          <div
-                            className={`ml-2 hidden h-[2px] flex-1 rounded-full transition lg:block ${
-                              idx < stepIndex ? 'bg-blue-500' : 'bg-slate-200'
-                            }`}
-                          />
-                        ) : null}
                       </div>
                       <span
-                        className={`mt-2 line-clamp-2 min-h-[2.5rem] text-xs font-semibold leading-tight ${
+                        className={`mt-2 line-clamp-2 min-h-[2.5rem] w-full text-center text-xs font-semibold leading-tight ${
                           isActive ? 'text-slate-950' : isPast ? 'text-slate-700' : 'text-slate-500'
                         }`}
                       >
