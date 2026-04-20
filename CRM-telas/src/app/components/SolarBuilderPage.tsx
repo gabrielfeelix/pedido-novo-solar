@@ -1535,44 +1535,46 @@ export function SolarBuilderPage() {
       <div className="mx-auto flex w-full max-w-[1800px] gap-8 px-6 py-8 xl:px-10">
         <main className="min-w-0 flex-1">
           {/* Stepper */}
-          <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-            <div className="flex items-center justify-between gap-2 overflow-x-auto">
+          <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-4 lg:grid-cols-7">
               {builderStepLabels.map((s, idx) => {
                 const isActive = s.id === step;
                 const isPast = idx < stepIndex;
                 return (
-                  <div key={s.id} className="flex flex-1 items-center">
+                  <div key={s.id} className="min-w-0">
                     <button
                       type="button"
                       onClick={() => setStep(s.id)}
-                      className="group flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2 py-2 text-left transition hover:bg-slate-50"
+                      className="group flex w-full min-w-0 flex-col rounded-xl px-2 py-2 text-center transition hover:bg-slate-50"
                     >
-                      <div
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${
-                          isActive
-                            ? 'bg-blue-600 text-white ring-4 ring-blue-600/15'
-                            : isPast
-                              ? 'bg-blue-100 text-blue-700'
-                              : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
-                        }`}
-                      >
-                        {isPast ? <Check className="h-4 w-4" /> : idx + 1}
+                      <div className="flex w-full items-center">
+                        <div
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${
+                            isActive
+                              ? 'bg-blue-600 text-white ring-4 ring-blue-600/15'
+                              : isPast
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'
+                          }`}
+                        >
+                          {isPast ? <Check className="h-4 w-4" /> : idx + 1}
+                        </div>
+                        {idx < builderStepLabels.length - 1 ? (
+                          <div
+                            className={`ml-2 hidden h-[2px] flex-1 rounded-full transition lg:block ${
+                              idx < stepIndex ? 'bg-blue-500' : 'bg-slate-200'
+                            }`}
+                          />
+                        ) : null}
                       </div>
                       <span
-                        className={`truncate text-xs font-semibold ${
+                        className={`mt-2 line-clamp-2 min-h-[2.5rem] text-xs font-semibold leading-tight ${
                           isActive ? 'text-slate-950' : isPast ? 'text-slate-700' : 'text-slate-500'
                         }`}
                       >
                         {s.shortLabel ?? s.label}
                       </span>
                     </button>
-                    {idx < builderStepLabels.length - 1 ? (
-                      <div
-                        className={`mx-1 h-[2px] w-6 shrink-0 rounded-full transition ${
-                          idx < stepIndex ? 'bg-blue-500' : 'bg-slate-200'
-                        }`}
-                      />
-                    ) : null}
                   </div>
                 );
               })}
