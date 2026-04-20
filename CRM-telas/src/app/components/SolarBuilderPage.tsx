@@ -600,6 +600,25 @@ export function SolarBuilderPage() {
     && liveItems.some((item) => item.category === 'Inversores')
     && liveItems.some((item) => item.category === 'Estrutura')
   );
+  const missingIntegrator = !pedido.clientePedido;
+  const missingBillingClient = !pedido.clienteNota;
+  const missingPanel = !selectedPanel || panelQuantity <= 0;
+  const missingInverter = !liveItems.some((item) => item.category === 'Inversores');
+  const missingStructure = !liveItems.some((item) => item.category === 'Estrutura');
+  const missingItems = [
+    missingPanel ? 'Selecionar ao menos 1 painel com quantidade maior que zero.' : null,
+    missingInverter ? 'Adicionar ao menos 1 inversor ao kit.' : null,
+    missingStructure ? 'Adicionar ao menos 1 item de estrutura de fixação.' : null,
+    missingIntegrator ? 'Definir o integrador no Novo Pedido Solar.' : null,
+    missingBillingClient ? 'Definir o cliente para faturamento no Novo Pedido Solar.' : null,
+  ].filter((item): item is string => Boolean(item));
+  const firstMissingBuilderStep: SolarBuilderStep | null = missingPanel
+    ? 'panels'
+    : missingInverter
+      ? 'inverters'
+      : missingStructure
+        ? 'structure'
+        : null;
 
   function handleConclude() {
     if (!canConclude) return;
@@ -1339,18 +1358,44 @@ export function SolarBuilderPage() {
 
       {!canConclude ? (
         <Card className="border-amber-200 bg-amber-50 shadow-sm">
-          <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
-            <p className="text-sm text-amber-900">
-              Para concluir a montagem, finalize os componentes mínimos do kit e confirme integrador/cliente para faturamento.
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate('/vendas/novo-pedido-solar')}
-              className="border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
-            >
-              Abrir novo pedido solar
-            </Button>
+          <CardContent className="space-y-4 py-4">
+            <div>
+              <p className="text-sm font-semibold text-amber-950">
+                Ainda falta concluir estes pontos para inserir o kit no pedido:
+              </p>
+              <div className="mt-3 space-y-2">
+                {missingItems.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-lg border border-amber-200 bg-white/70 px-3 py-2 text-sm text-amber-900"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {firstMissingBuilderStep ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setStep(firstMissingBuilderStep)}
+                  className="border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
+                >
+                  Corrigir montagem
+                </Button>
+              ) : null}
+              {(missingIntegrator || missingBillingClient) ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/vendas/novo-pedido-solar')}
+                  className="border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
+                >
+                  Abrir novo pedido solar
+                </Button>
+              ) : null}
+            </div>
           </CardContent>
         </Card>
       ) : null}
