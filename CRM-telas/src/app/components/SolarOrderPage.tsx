@@ -89,6 +89,24 @@ type OrderTab =
   | 'billing'
   | 'blocks';
 
+type HistoryEntry = {
+  id: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  tone?: 'default' | 'success' | 'warning';
+};
+
+type ActionDialogState =
+  | { kind: 'discard' }
+  | { kind: 'finalize' }
+  | { kind: 'reopen' }
+  | { kind: 'history' }
+  | { kind: 'email' }
+  | { kind: 'pdf' }
+  | { kind: 'blocked'; reasons: string[]; targetTab: OrderTab }
+  | null;
+
 const DEFAULT_DISCOUNT_PCT = 4.15;
 const ORIGIN_OPTIONS = ['ERP', 'Televendas', 'WhatsApp', 'Marketplace', 'Representante'] as const;
 
@@ -105,6 +123,16 @@ function formatNumber(value: number, fraction = 2) {
 
 function normalizeText(value: string) {
   return value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+}
+
+function formatNow() {
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date());
 }
 
 function statusStyles(status: SolarTechnicalApprovalStatus) {
@@ -812,6 +840,11 @@ export function SolarOrderPage() {
   const [itemFilter, setItemFilter] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
+  const [reviewFinalizedAt, setReviewFinalizedAt] = useState<string | null>(null);
+  const [reviewSnapshot, setReviewSnapshot] = useState<string | null>(null);
+  const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
+  const [actionDialog, setActionDialog] = useState<ActionDialogState>(null);
+  const [emptyStateNotice, setEmptyStateNotice] = useState<string | null>(null);
 
   const orderTotals = useMemo(() => {
     const subtotal = pedido.orderItems.reduce((t, i) => t + (i.type === 'generator' ? i.subtotal : i.total), 0);
@@ -829,10 +862,40 @@ export function SolarOrderPage() {
   }, [pedido.orderItems, pedido.deliveryArea]);
 
   const generators = pedido.orderItems.filter((i): i is SolarGenerator => i.type === 'generator');
+  const generatorCount = generators.length;
+  const looseCount = pedido.orderItems.filter((i) => i.type === 'loose').length;
   const pendingApprovals = generators.filter((g) => g.approvalStatus === 'pending').length;
   const hasGeneratedOrder = pedido.orderItems.length > 0;
   const orderNumber = orderMeta.find((item) => item.label === 'Pedido')?.value ?? '#1615449';
   const createdAt = orderMeta.find((item) => item.label === 'Cadastro no CRM')?.value ?? '01/04/2026 01:46:11';
+  const reviewFingerprint = useMemo(
+    () => JSON.stringify({
+      items: pedido.orderItems,
+      clientePedido: pedido.clientePedido?.id ?? null,
+      clienteNota: pedido.clienteNota?.id ?? null,
+      deliveryArea: pedido.deliveryArea,
+      freightType: pedido.freightType,
+      financialCondition: pedido.financialCondition,
+      orderObservation: pedido.orderObservation,
+      invoiceObservation: pedido.invoiceObservation,
+      operation,
+      origin,
+      priceTable,
+    }),
+    [
+      pedido.orderItems,
+      pedido.clientePedido,
+      pedido.clienteNota,
+      pedido.deliveryArea,
+      pedido.freightType,
+      pedido.financialCondition,
+      pedido.orderObservation,
+      pedido.invoiceObservation,
+      operation,
+      origin,
+      priceTable,
+    ],
+  );
 
   const filteredItems = useMemo(() => {
     const q = normalizeText(itemFilter);
@@ -866,6 +929,33 @@ export function SolarOrderPage() {
     }
   }, [currentPage, totalPages]);
 
+  const appendHistory = (title: string, description: string, tone: HistoryEntry['tone'] = 'default') => {
+    setHistoryEntries((prev) => [
+      {
+        id: `${Date.now()}-${prev.length}`,
+        title,
+        description,
+        timestamp: formatNow(),
+        tone,
+      },
+      ...prev,
+    ]);
+  };
+
+  useEffect(() => {
+    if (hasGeneratedOrder && historyEntries.length === 0) {
+      setHistoryEntries([
+        {
+          id: 'entry-created',
+          title: 'Pedido solar em edição',
+          description: 'Fluxo de pedido solar iniciado com itens no pedido.',
+          timestamp: createdAt,
+          tone: 'default',
+        },
+      ]);
+    }
+  }, [hasGeneratedOrder, historyEntries.length, createdAt]);
+
   function handleAddMany(picks: { productId: string; quantity: number }[]) {
     picks.forEach(({ productId, quantity }) => {
       const product = looseItems.find((i) => i.id === productId);
@@ -881,10 +971,59 @@ export function SolarOrderPage() {
         total: product.unitPrice * quantity,
       });
     });
+    if (picks.length > 0) {
+      appendHistory(
+        'Produtos avulsos adicionados',
+        `${picks.length} item(ns) foram preparados e adicionados ao pedido.`,
+        'default',
+      );
+    }
   }
 
   function toggleExpanded(id: string) {
     setExpandedItems((s) => ({ ...s, [id]: !s[id] }));
+  }
+
+  function handleDiscardOrder() {
+    const discardedSummary = [
+      generatorCount > 0 ? `${generatorCount} kit(s)` : null,
+      looseCount > 0 ? `${looseCount} produto(s) avulso(s)` : null,
+      hasIntegrator ? 'integrador vinculado' : null,
+      hasBillingClient ? 'cliente para faturamento vinculado' : null,
+    ].filter(Boolean).join(', ');
+
+    pedido.resetOrder();
+    setActionDialog(null);
+    setExpandedItems({});
+    setItemFilter('');
+    setCurrentPage(1);
+    setHistoryEntries([]);
+    setReviewFinalizedAt(null);
+    setReviewSnapshot(null);
+    setActiveTab('items');
+    setEmptyStateNotice(
+      discardedSummary
+        ? `Pedido descartado. Foram removidos: ${discardedSummary}.`
+        : 'Pedido descartado. Nenhum item permaneceu em rascunho.',
+    );
+  }
+
+  function handleFinalizeReview() {
+    if (hasReviewBeenFinalized) {
+      setActionDialog({ kind: 'reopen' });
+      return;
+    }
+
+    if (unresolvedReviewReasons.length > 0) {
+      setActionDialog({
+        kind: 'blocked',
+        reasons: unresolvedReviewReasons,
+        targetTab: pendingApprovals > 0 ? 'approval' : 'blocks',
+      });
+      return;
+    }
+
+    setActionDialog({ kind: 'finalize' });
   }
 
   const hasIntegrator = Boolean(pedido.clientePedido);
@@ -903,12 +1042,36 @@ export function SolarOrderPage() {
     : flowStage === 'Em revisão'
       ? 'bg-amber-100 text-amber-800'
       : 'bg-slate-200 text-slate-800';
+  const hasReviewBeenFinalized = Boolean(reviewFinalizedAt);
+  const unresolvedReviewReasons = [
+    !hasIntegrator ? 'Definir o integrador do pedido.' : null,
+    !hasBillingClient ? 'Definir o cliente para faturamento.' : null,
+    pendingApprovals > 0 ? `${pendingApprovals} gerador(es) ainda aguardam aprovação técnica.` : null,
+  ].filter((item): item is string => Boolean(item));
 
   useEffect(() => {
     if (!triangulationEnabled && activeTab === 'triangulation') {
       setActiveTab('items');
     }
   }, [triangulationEnabled, activeTab]);
+
+  useEffect(() => {
+    if (hasGeneratedOrder && emptyStateNotice) {
+      setEmptyStateNotice(null);
+    }
+  }, [hasGeneratedOrder, emptyStateNotice]);
+
+  useEffect(() => {
+    if (reviewFinalizedAt && reviewSnapshot && reviewFingerprint !== reviewSnapshot) {
+      setReviewFinalizedAt(null);
+      setReviewSnapshot(null);
+      appendHistory(
+        'Revisão reaberta automaticamente',
+        'Uma alteração comercial ou estrutural foi feita após a finalização da revisão.',
+        'warning',
+      );
+    }
+  }, [reviewFinalizedAt, reviewSnapshot, reviewFingerprint]);
 
   /* =========================== EMPTY STATE =========================== */
   if (!hasGeneratedOrder) {
@@ -926,6 +1089,11 @@ export function SolarOrderPage() {
               <p className="mt-2 max-w-3xl text-sm text-slate-600">
                 Monte o gerador, adicione produtos avulsos e feche o pedido — sem sair do CRM.
               </p>
+              {emptyStateNotice ? (
+                <div className="mt-4 max-w-3xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+                  {emptyStateNotice}
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -1020,10 +1188,18 @@ export function SolarOrderPage() {
             </h1>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="border-slate-300">
+            <Button
+              variant="outline"
+              className="border-slate-300"
+              onClick={() => setActionDialog({ kind: 'email' })}
+            >
               <Mail className="h-4 w-4" /> Enviar e-mail
             </Button>
-            <Button variant="outline" className="border-slate-300 text-rose-600">
+            <Button
+              variant="outline"
+              className="border-slate-300 text-rose-600"
+              onClick={() => setActionDialog({ kind: 'pdf' })}
+            >
               <FileText className="h-4 w-4" /> Gerar PDF
             </Button>
           </div>
@@ -1819,26 +1995,278 @@ export function SolarOrderPage() {
         <div className="mx-auto flex w-full max-w-[1480px] items-center justify-between gap-3 px-6 py-3">
           <div className="flex items-center gap-5 text-sm text-slate-600">
             <span className="flex items-center gap-1.5">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100">
-                <Check className="h-3 w-3 text-emerald-700" />
+              <span className={`flex h-5 w-5 items-center justify-center rounded-full ${hasReviewBeenFinalized ? 'bg-blue-100' : 'bg-emerald-100'}`}>
+                {hasReviewBeenFinalized ? (
+                  <History className="h-3 w-3 text-blue-700" />
+                ) : (
+                  <Check className="h-3 w-3 text-emerald-700" />
+                )}
               </span>
-              Tudo salvo
+              {hasReviewBeenFinalized ? `Revisão finalizada em ${reviewFinalizedAt}` : 'Tudo salvo'}
             </span>
-            <button type="button" className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+            <button
+              type="button"
+              onClick={() => setActionDialog({ kind: 'history' })}
+              className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900"
+            >
               <Clock className="h-4 w-4" />
               Histórico
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={pedido.resetOrder}>
+            <Button variant="outline" onClick={() => setActionDialog({ kind: 'discard' })}>
               <Trash2 className="h-4 w-4" /> Descartar
             </Button>
-            <Button className="bg-[#001233] text-white hover:bg-[#001233]/90">
-              <History className="h-4 w-4" /> Finalizar revisão
+            <Button
+              className="bg-[#001233] text-white hover:bg-[#001233]/90"
+              onClick={handleFinalizeReview}
+            >
+              {hasReviewBeenFinalized ? (
+                <TimerReset className="h-4 w-4" />
+              ) : (
+                <History className="h-4 w-4" />
+              )}{' '}
+              {hasReviewBeenFinalized ? 'Reabrir revisão' : 'Finalizar revisão'}
             </Button>
           </div>
         </div>
       </div>
+
+      <Dialog open={Boolean(actionDialog)} onOpenChange={(open) => !open && setActionDialog(null)}>
+        <DialogContent className="sm:max-w-[560px]">
+          {actionDialog?.kind === 'discard' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Descartar pedido atual?</DialogTitle>
+                <DialogDescription>
+                  Essa ação remove kits, produtos avulsos, clientes vinculados e observações do pedido solar atual.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+                {[
+                  generatorCount > 0 ? `${generatorCount} kit(s)` : null,
+                  looseCount > 0 ? `${looseCount} produto(s) avulso(s)` : null,
+                  hasIntegrator ? 'integrador vinculado' : null,
+                  hasBillingClient ? 'cliente para faturamento vinculado' : null,
+                ].filter(Boolean).join(', ') || 'Nenhum dado relevante será mantido.'}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Continuar editando
+                </Button>
+                <Button variant="destructive" onClick={handleDiscardOrder}>
+                  Descartar pedido
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'finalize' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Finalizar revisão do pedido?</DialogTitle>
+                <DialogDescription>
+                  Isso registra que a revisão comercial do pedido foi concluída no protótipo.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+                <p>O pedido continuará editável, mas qualquer alteração relevante reabrirá a revisão automaticamente.</p>
+                <p>Use essa ação quando os dados comerciais, clientes, frete e aprovações já estiverem coerentes.</p>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Revisar mais
+                </Button>
+                <Button
+                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                  onClick={() => {
+                    const timestamp = formatNow();
+                    setReviewFinalizedAt(timestamp);
+                    setReviewSnapshot(reviewFingerprint);
+                    appendHistory(
+                      'Revisão finalizada',
+                      'A revisão comercial do pedido foi marcada como concluída.',
+                      'success',
+                    );
+                    setActionDialog(null);
+                  }}
+                >
+                  Confirmar finalização
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'reopen' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Reabrir revisão?</DialogTitle>
+                <DialogDescription>
+                  Reabra a revisão se quiser voltar a tratar o pedido como pendente de validação comercial.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Manter finalizada
+                </Button>
+                <Button
+                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                  onClick={() => {
+                    setReviewFinalizedAt(null);
+                    setReviewSnapshot(null);
+                    appendHistory(
+                      'Revisão reaberta manualmente',
+                      'A revisão comercial foi reaberta para novos ajustes.',
+                      'warning',
+                    );
+                    setActionDialog(null);
+                  }}
+                >
+                  Reabrir revisão
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'blocked' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Não é possível finalizar a revisão</DialogTitle>
+                <DialogDescription>
+                  Ainda existem pendências obrigatórias no pedido atual.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                {actionDialog.reasons.map((reason) => (
+                  <p key={reason}>{reason}</p>
+                ))}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Fechar
+                </Button>
+                <Button
+                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                  onClick={() => {
+                    setActiveTab(actionDialog.targetTab);
+                    setActionDialog(null);
+                  }}
+                >
+                  {actionDialog.targetTab === 'approval' ? 'Ir para Aprovação Técnica' : 'Ir para Bloqueios'}
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'history' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Histórico do pedido</DialogTitle>
+                <DialogDescription>
+                  Linha do tempo das ações relevantes registradas neste protótipo.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="max-h-[420px] space-y-3 overflow-y-auto pr-1">
+                {historyEntries.length === 0 ? (
+                  <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                    Nenhum evento registrado ainda.
+                  </div>
+                ) : (
+                  historyEntries.map((entry) => (
+                    <div key={entry.id} className="rounded-xl border border-slate-200 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-sm font-semibold text-slate-900">{entry.title}</p>
+                        <Badge
+                          variant="outline"
+                          className={
+                            entry.tone === 'success'
+                              ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                              : entry.tone === 'warning'
+                                ? 'border-amber-200 bg-amber-50 text-amber-700'
+                                : 'border-slate-200 bg-slate-50 text-slate-600'
+                          }
+                        >
+                          {entry.timestamp}
+                        </Badge>
+                      </div>
+                      <p className="mt-2 text-sm text-slate-600">{entry.description}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Fechar
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'email' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Enviar e-mail</DialogTitle>
+                <DialogDescription>
+                  No protótipo, este botão apenas simula a saída operacional do pedido.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                A implementação final deve abrir fluxo de envio com destinatários, template, anexos e confirmação de disparo.
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Fechar
+                </Button>
+                <Button
+                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                  onClick={() => {
+                    appendHistory(
+                      'Simulação de envio por e-mail',
+                      'Usuário acionou a saída de envio de e-mail do pedido.',
+                      'default',
+                    );
+                    setActionDialog(null);
+                  }}
+                >
+                  Registrar ação
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'pdf' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Gerar PDF</DialogTitle>
+                <DialogDescription>
+                  No protótipo, este botão representa a exportação do espelho do pedido.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                A versão final deve gerar PDF com cabeçalho do pedido, clientes, composição do kit, condições comerciais e totalizadores.
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Fechar
+                </Button>
+                <Button
+                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                  onClick={() => {
+                    appendHistory(
+                      'Simulação de geração de PDF',
+                      'Usuário acionou a exportação do PDF do pedido.',
+                      'default',
+                    );
+                    setActionDialog(null);
+                  }}
+                >
+                  Registrar ação
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+        </DialogContent>
+      </Dialog>
 
       <AvulsoDialog open={avulsoOpen} onOpenChange={setAvulsoOpen} onAddMany={handleAddMany} />
     </div>

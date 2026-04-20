@@ -31,6 +31,14 @@ import {
   SelectValue,
 } from './ui/select';
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import {
   panelProducts,
   inverterProducts,
   structureProducts,
@@ -180,6 +188,7 @@ export function SolarBuilderPage() {
   const [accessoryCategoryFilter, setAccessoryCategoryFilter] = useState<'all' | 'cables' | 'connectors' | 'profiles'>('all');
   const [accessorySortField, setAccessorySortField] = useState<'price' | 'brand'>('price');
   const [accessorySortDirection, setAccessorySortDirection] = useState<SortDirection>('asc');
+  const [resetDialogOpen, setResetDialogOpen] = useState(false);
 
   const selectedPanel = useMemo(
     () => panelProducts.find((p) => p.id === selectedPanelId) ?? null,
@@ -525,6 +534,52 @@ export function SolarBuilderPage() {
         return next;
       });
     }
+  };
+
+  const hasBuilderProgress = Boolean(
+    selectedPanelId
+    || panelQuantity > 0
+    || Object.keys(inverterQuantities).length > 0
+    || Object.keys(stringBoxQuantities).length > 0
+    || Object.keys(structureQuantities).length > 0
+    || Object.keys(accessoryQuantities).length > 0
+    || title !== 'Gerador Personalizado'
+    || connectionType !== 'Trifásico 380V'
+    || state !== 'PR'
+    || prizeMode !== 'percent'
+    || prizeValue !== 0,
+  );
+
+  const resetBuilderFlow = () => {
+    setSelectedPanelId('');
+    setPanelQuantity(0);
+    setInverterQuantities({});
+    setStringBoxQuantities({});
+    setStructureQuantities({});
+    setAccessoryQuantities({});
+    setPanelQuery('');
+    setInverterQuery('');
+    setStringBoxQuery('');
+    setStructureQuery('');
+    setAccessoryQuery('');
+    setPanelSortField('price');
+    setPanelSortDirection('asc');
+    setInverterSortField('price');
+    setInverterSortDirection('asc');
+    setStringBoxSortField('price');
+    setStringBoxSortDirection('asc');
+    setSelectedStructureTypes([...structureTypes]);
+    setStructureSortField('price');
+    setStructureSortDirection('asc');
+    setAccessoryCategoryFilter('all');
+    setAccessorySortField('price');
+    setAccessorySortDirection('asc');
+    setTitle('Gerador Personalizado');
+    setConnectionType('Trifásico 380V');
+    setState('PR');
+    setPrizeMode('percent');
+    setPrizeValue(0);
+    setStep('setup');
   };
 
   const toggleStructureType = (type: string) => {
@@ -1420,30 +1475,11 @@ export function SolarBuilderPage() {
             variant="outline"
             className="border-slate-300"
             onClick={() => {
-              setSelectedPanelId('');
-              setPanelQuantity(0);
-              setInverterQuantities({});
-              setStringBoxQuantities({});
-              setStructureQuantities({});
-              setAccessoryQuantities({});
-              setPanelQuery('');
-              setInverterQuery('');
-              setStringBoxQuery('');
-              setStructureQuery('');
-              setAccessoryQuery('');
-              setPanelSortField('price');
-              setPanelSortDirection('asc');
-              setInverterSortField('price');
-              setInverterSortDirection('asc');
-              setStringBoxSortField('price');
-              setStringBoxSortDirection('asc');
-              setSelectedStructureTypes([...structureTypes]);
-              setStructureSortField('price');
-              setStructureSortDirection('asc');
-              setAccessoryCategoryFilter('all');
-              setAccessorySortField('price');
-              setAccessorySortDirection('asc');
-              setStep('setup');
+              if (!hasBuilderProgress) {
+                resetBuilderFlow();
+                return;
+              }
+              setResetDialogOpen(true);
             }}
           >
             <TimerReset className="h-4 w-4" /> Reiniciar
@@ -1644,6 +1680,36 @@ export function SolarBuilderPage() {
           </div>
         </aside>
       </div>
+
+      <Dialog open={resetDialogOpen} onOpenChange={setResetDialogOpen}>
+        <DialogContent className="sm:max-w-[520px]">
+          <DialogHeader>
+            <DialogTitle>Reiniciar montagem do kit?</DialogTitle>
+            <DialogDescription>
+              Isso limpa componentes selecionados, filtros e parâmetros comerciais da montagem atual.
+              O pedido solar em si não será descartado.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            Componentes, quantidades e estrutura serão removidos. Use essa ação somente se quiser
+            começar a montagem novamente do zero.
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setResetDialogOpen(false)}>
+              Continuar editando
+            </Button>
+            <Button
+              className="bg-[#001233] text-white hover:bg-[#001233]/90"
+              onClick={() => {
+                resetBuilderFlow();
+                setResetDialogOpen(false);
+              }}
+            >
+              Reiniciar fluxo
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
