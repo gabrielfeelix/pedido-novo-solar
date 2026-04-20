@@ -139,6 +139,7 @@ type PrefixedAccessory = {
   name: string;
   sku: string;
   brand: string;
+  icon: keyof typeof PRODUCT_IMAGE_BY_ICON;
   quantity: number;
   unitPrice: number;
   sourceStructures: string[];
@@ -216,12 +217,23 @@ export function SolarBuilderPage() {
         return;
       }
 
+      const inferredIcon: keyof typeof PRODUCT_IMAGE_BY_ICON = matchedAccessory?.icon ?? (
+        requiredNameNormalized.includes('perfil')
+          ? 'profile'
+          : requiredNameNormalized.includes('cabo')
+            ? 'cable'
+            : requiredNameNormalized.includes('conector')
+              ? 'connector'
+              : 'connector'
+      );
+
       byKey[key] = {
         id: key,
         productId: matchedAccessory?.id,
         name: matchedAccessory?.name ?? structure.requiredComponentName,
         sku: matchedAccessory?.sku ?? 'DERIVADO',
         brand: matchedAccessory?.brand ?? structure.brand,
+        icon: inferredIcon,
         quantity,
         unitPrice: matchedAccessory?.unitPrice ?? 0,
         sourceStructures: [structure.name],
@@ -1096,10 +1108,17 @@ export function SolarBuilderPage() {
           <div className="space-y-1.5 text-sm">
             {prefixedAccessories.map((item) => (
               <div key={item.id} className="flex items-start justify-between gap-3 rounded-lg bg-white/70 px-3 py-2">
-                <div>
-                  <p className="font-medium text-slate-900">{item.quantity}x {item.name}</p>
-                  <p className="text-xs text-slate-600">SKU {item.sku} · {item.brand}</p>
-                  <p className="text-xs text-amber-700">Origem: {item.sourceStructures.join(', ')}</p>
+                <div className="flex min-w-0 items-start gap-3">
+                  <img
+                    src={PRODUCT_IMAGE_BY_ICON[item.icon] ?? PRODUCT_IMAGE}
+                    alt={item.name}
+                    className="h-11 w-11 shrink-0 rounded-md border border-amber-200 bg-white object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="font-medium text-slate-900">{item.quantity}x {item.name}</p>
+                    <p className="text-xs text-slate-600">SKU {item.sku} · {item.brand}</p>
+                    <p className="text-xs text-amber-700">Origem: {item.sourceStructures.join(', ')}</p>
+                  </div>
                 </div>
                 <span className="text-sm font-semibold text-slate-900">{formatCurrency(item.quantity * item.unitPrice)}</span>
               </div>

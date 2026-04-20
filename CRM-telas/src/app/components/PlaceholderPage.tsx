@@ -17,6 +17,7 @@ const pageTitles: Record<string, string> = {
   '/produtos/aging': 'Aging',
   '/produtos/aging/sumario': 'Aging — Sumário',
   '/configuracoes': 'Configurações',
+  '/vendas/novo-pedido': 'Novo Pedido (Geral)',
   '/vendas/pedidos': 'Pedidos de Venda (Geral)',
 };
 

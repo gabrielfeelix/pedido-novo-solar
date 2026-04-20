@@ -915,7 +915,7 @@ export function SolarOrderPage() {
     return (
       <div className="min-h-full bg-slate-50 py-8">
         <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6">
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+          <div className="flex flex-col gap-4">
             <div>
               <Badge className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-amber-800 hover:bg-amber-100">
                 Pedido Venda Solar
@@ -926,17 +926,6 @@ export function SolarOrderPage() {
               <p className="mt-2 max-w-3xl text-sm text-slate-600">
                 Monte o gerador, adicione produtos avulsos e feche o pedido — sem sair do CRM.
               </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" onClick={pedido.resetOrder}>
-                <Trash2 className="h-4 w-4" /> Limpar rascunho
-              </Button>
-              <Button
-                className="bg-[#001233] text-white hover:bg-[#001233]/90"
-                disabled={!hasIntegrator}
-              >
-                Salvar pedido
-              </Button>
             </div>
           </div>
 
@@ -990,7 +979,7 @@ export function SolarOrderPage() {
                   className="bg-[#001233] text-white hover:bg-[#001233]/90"
                   onClick={() => navigate('/vendas/novo-pedido-solar/solar-builder')}
                 >
-                  <SunMedium className="h-4 w-4" /> Montar gerador solar
+                  <SunMedium className="h-4 w-4" /> Monte seu kit solar
                 </Button>
                 <Button variant="outline" onClick={() => setAvulsoOpen(true)}>
                   <Plus className="h-4 w-4" /> Produto avulso
@@ -1168,7 +1157,7 @@ export function SolarOrderPage() {
                   className="bg-[#001233] text-white hover:bg-[#001233]/90"
                   onClick={() => navigate('/vendas/novo-pedido-solar/solar-builder')}
                 >
-                  <SunMedium className="h-4 w-4" /> Montar gerador solar
+                  <SunMedium className="h-4 w-4" /> Monte seu kit solar
                 </Button>
               </div>
             </div>

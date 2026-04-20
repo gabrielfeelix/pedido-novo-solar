@@ -62,7 +62,7 @@ const topNav: NavItem[] = [
   {
     label: 'Handoff',
     children: [
-      { label: 'Novo Pedido Solar', description: 'Especificação funcional e técnica para desenvolvimento do fluxo solar', path: '/handoff' },
+      { label: 'Novo Pedido Solar', description: 'Especificação funcional e técnica para desenvolvimento do fluxo solar', path: '/handoff/novo-pedido-solar' },
     ],
   },
 ];
