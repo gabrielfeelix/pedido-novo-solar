@@ -6,6 +6,8 @@ import {
   ArrowRight,
   Cable,
   Check,
+  LayoutGrid,
+  LayoutList,
   Layers3,
   LockKeyhole,
   Minus,
@@ -189,6 +191,7 @@ export function SolarBuilderPage() {
   const [accessorySortField, setAccessorySortField] = useState<'price' | 'brand'>('price');
   const [accessorySortDirection, setAccessorySortDirection] = useState<SortDirection>('asc');
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const selectedPanel = useMemo(
     () => panelProducts.find((p) => p.id === selectedPanelId) ?? null,
@@ -681,6 +684,94 @@ export function SolarBuilderPage() {
   ) => {
     const selectable = Boolean(onClick);
     const imageSrc = PRODUCT_IMAGE_BY_ICON[product.icon] ?? PRODUCT_IMAGE;
+
+    const quantityControls = selectable ? (
+      <div
+        className={`flex h-8 w-8 items-center justify-center rounded-full ${
+          isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'
+        }`}
+      >
+        {isSelected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+      </div>
+    ) : (
+      <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={(e) => { e.stopPropagation(); onDecrease(); }}
+        >
+          <Minus className="h-3.5 w-3.5" />
+        </Button>
+        <span className="min-w-7 text-center text-sm font-semibold text-slate-900">{quantity}</span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7 text-blue-600"
+          onClick={(e) => { e.stopPropagation(); onIncrease(); }}
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+    );
+
+    if (viewMode === 'list') {
+      return (
+        <div
+          key={product.id}
+          onClick={onClick}
+          className={selectable ? 'cursor-pointer' : ''}
+        >
+          <div
+            className={`flex items-center gap-4 rounded-xl border-2 bg-white p-4 transition-all duration-200 ${
+              isSelected
+                ? 'border-blue-600 ring-4 ring-blue-600/10'
+                : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+            }`}
+          >
+            <div className="relative h-[112px] w-[84px] shrink-0 overflow-hidden rounded-lg bg-slate-100">
+              <img src={imageSrc} alt={product.name} className="h-full w-full object-cover mix-blend-multiply" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                <Badge
+                  variant="outline"
+                  className="border-slate-200 bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500"
+                >
+                  {product.brand}
+                </Badge>
+                {product.powerW ? (
+                  <Badge className="border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100">
+                    {product.powerW}W
+                  </Badge>
+                ) : null}
+              </div>
+              <h4 className="text-sm font-semibold leading-snug text-slate-900 line-clamp-1">
+                {product.name}
+              </h4>
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+                <p className="text-xs text-slate-500">SKU {product.sku}</p>
+                {'minKwp' in product && 'maxKwp' in product ? (
+                  <p className="text-xs font-medium text-blue-700">
+                    {product.minKwp}kW – {product.maxKwp}kW
+                  </p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-4">
+              <div className="text-right">
+                <p className="text-[11px] uppercase tracking-wider text-slate-400">Preço unit.</p>
+                <p className="text-base font-bold text-slate-900">{formatCurrency(product.unitPrice)}</p>
+              </div>
+              {quantityControls}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div key={product.id} onClick={onClick} className={selectable ? 'cursor-pointer' : ''}>
         <Card
@@ -727,43 +818,7 @@ export function SolarBuilderPage() {
                   {formatCurrency(product.unitPrice)}
                 </p>
               </div>
-              {selectable ? (
-                <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                    isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'
-                  }`}
-                >
-                  {isSelected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                </div>
-              ) : (
-                <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDecrease();
-                    }}
-                  >
-                    <Minus className="h-3.5 w-3.5" />
-                  </Button>
-                  <span className="min-w-7 text-center text-sm font-semibold text-slate-900">
-                    {quantity}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 text-blue-600"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onIncrease();
-                    }}
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              )}
+              {quantityControls}
             </div>
           </CardContent>
         </Card>
@@ -842,6 +897,28 @@ export function SolarBuilderPage() {
           >
             <X className="h-4 w-4" />
           </Button>
+          <div className="flex rounded-lg border border-slate-300 bg-white p-0.5">
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              title="Visualização em grade"
+              className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
+                viewMode === 'grid' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
+              }`}
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('list')}
+              title="Visualização em lista"
+              className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
+                viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
+              }`}
+            >
+              <LayoutList className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1018,7 +1095,7 @@ export function SolarBuilderPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-2'}>
         {filteredPanels.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
             Nenhum painel encontrado com esses filtros.
@@ -1066,7 +1143,7 @@ export function SolarBuilderPage() {
           { value: 'power', label: 'Potência' },
         ]}
       />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-2'}>
         {filteredInverters.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
             Nenhum inversor encontrado com esses filtros.
@@ -1147,7 +1224,7 @@ export function SolarBuilderPage() {
           { value: 'brand', label: 'Marca' },
         ]}
       />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-2'}>
         {filteredStructures.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
             Nenhuma estrutura compatível com os filtros aplicados.
@@ -1242,7 +1319,7 @@ export function SolarBuilderPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-2'}>
         {filteredAccessories.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
             Nenhum acessório encontrado com esses filtros.
@@ -1252,6 +1329,71 @@ export function SolarBuilderPage() {
           const lockedMinimum = requiredAccessoryMinimums[product.id] ?? 0;
           const quantity = Math.max(accessoryQuantities[product.id] ?? 0, lockedMinimum);
           const locked = lockedMinimum > 0;
+          const controls = (
+            <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7"
+                disabled={locked && quantity <= lockedMinimum}
+                onClick={() => updateAccessoryQuantity(product.id, -1)}
+              >
+                <Minus className="h-3.5 w-3.5" />
+              </Button>
+              <span className="min-w-7 text-center text-sm font-semibold text-slate-900">{quantity}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 text-blue-600"
+                onClick={() => updateAccessoryQuantity(product.id, 1)}
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          );
+
+          if (viewMode === 'list') {
+            return (
+              <div
+                key={product.id}
+                className={`flex items-center gap-4 rounded-xl border-2 bg-white p-4 transition-all duration-200 ${
+                  locked ? 'border-amber-200' : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                }`}
+              >
+                <div className="relative h-[112px] w-[84px] shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                  <img src={PRODUCT_IMAGE_BY_ICON[product.icon] ?? PRODUCT_IMAGE} alt={product.name} className="h-full w-full object-cover mix-blend-multiply" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                    <Badge
+                      variant="outline"
+                      className="border-slate-200 bg-slate-50 text-[10px] uppercase tracking-wider text-slate-500"
+                    >
+                      {product.brand}
+                    </Badge>
+                    {locked ? (
+                      <Badge className="bg-amber-100 text-amber-800 text-[10px]">
+                        <LockKeyhole className="mr-1 h-3 w-3" /> Prefixado
+                      </Badge>
+                    ) : null}
+                  </div>
+                  <p className="text-sm font-semibold leading-snug text-slate-900 line-clamp-1">{product.name}</p>
+                  <div className="mt-0.5 flex flex-wrap items-center gap-x-3">
+                    <p className="text-xs text-slate-500">SKU {product.sku}</p>
+                    {locked ? <p className="text-xs text-amber-700">Mín. obrigatório: {lockedMinimum}</p> : null}
+                  </div>
+                </div>
+                <div className="flex shrink-0 items-center gap-4">
+                  <div className="text-right">
+                    <p className="text-[11px] uppercase tracking-wider text-slate-400">Preço unit.</p>
+                    <p className="text-base font-bold text-slate-900">{formatCurrency(product.unitPrice)}</p>
+                  </div>
+                  {controls}
+                </div>
+              </div>
+            );
+          }
+
           return (
             <Card key={product.id} className="overflow-hidden border-2 border-slate-200 shadow-sm">
               <div className="relative h-36 w-full bg-slate-100">
@@ -1272,26 +1414,7 @@ export function SolarBuilderPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-base font-bold text-slate-900">{formatCurrency(product.unitPrice)}</p>
-                  <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7"
-                      disabled={locked && quantity <= lockedMinimum}
-                      onClick={() => updateAccessoryQuantity(product.id, -1)}
-                    >
-                      <Minus className="h-3.5 w-3.5" />
-                    </Button>
-                    <span className="min-w-7 text-center text-sm font-semibold text-slate-900">{quantity}</span>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7 text-blue-600"
-                      onClick={() => updateAccessoryQuantity(product.id, 1)}
-                    >
-                      <Plus className="h-3.5 w-3.5" />
-                    </Button>
-                  </div>
+                  {controls}
                 </div>
               </CardContent>
             </Card>
@@ -1328,7 +1451,7 @@ export function SolarBuilderPage() {
           { value: 'power', label: 'Potência' },
         ]}
       />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={viewMode === 'grid' ? 'grid gap-4 sm:grid-cols-2 lg:grid-cols-3' : 'flex flex-col gap-2'}>
         {filteredStringBoxes.length === 0 ? (
           <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
             Nenhum item de String Box encontrado com esses filtros.
