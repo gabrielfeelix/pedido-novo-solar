@@ -62,6 +62,7 @@ import {
   usePedido,
   type SolarGenerator,
 } from '../context/PedidoContext';
+import { buildTriangulationInvoiceObservation } from '../lib/solarCommercialRules';
 import {
   calculateCampaignForOrderItem,
   calculateCommissionForOrderItem,
@@ -1578,18 +1579,87 @@ export function SolarOrderPage() {
             <Card className="border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle>Triangulação</CardTitle>
-                <CardDescription>Configure emissor, faturado e entrega caso o pedido tenha três partes.</CardDescription>
+                <CardDescription>
+                  A mercadoria é faturada para o integrador mas remetida ao cliente final. Os dados abaixo
+                  compõem a observação da nota de remessa.
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm text-slate-600">
-                <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-                  <p className="text-sm text-slate-600">
-                    Pedido sem triangulação. Integrador e cliente para faturamento compartilham o mesmo CNPJ neste pedido.
+              <CardContent className="space-y-5">
+                {/* Partes envolvidas */}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">Faturado para (Integrador)</p>
+                    <p className="mt-1.5 text-sm font-semibold text-slate-900">{pedido.clientePedido?.name ?? '—'}</p>
+                    {pedido.clientePedido ? (
+                      <p className="text-xs text-slate-500">
+                        CNPJ {pedido.clientePedido.document} · {pedido.clientePedido.city}/{pedido.clientePedido.state}
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-blue-700">Remetido para (Cliente final)</p>
+                    <p className="mt-1.5 text-sm font-semibold text-slate-900">{pedido.clienteNota?.name ?? '—'}</p>
+                    {pedido.clienteNota ? (
+                      <p className="text-xs text-slate-500">
+                        CNPJ {pedido.clienteNota.document} · {pedido.clienteNota.city}/{pedido.clienteNota.state}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+
+                {/* Dados do cliente final */}
+                {pedido.clienteNota ? (
+                  <div className="rounded-xl border border-slate-200 bg-white p-4">
+                    <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                      Endereço de remessa
+                    </p>
+                    <div className="grid gap-3 text-sm md:grid-cols-2 xl:grid-cols-4">
+                      <div>
+                        <p className="text-[11px] text-slate-500">Logradouro</p>
+                        <p className="font-medium text-slate-900">{pedido.clienteNota.street}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-slate-500">Bairro</p>
+                        <p className="font-medium text-slate-900">{pedido.clienteNota.district}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-slate-500">Cidade / UF</p>
+                        <p className="font-medium text-slate-900">{pedido.clienteNota.city}/{pedido.clienteNota.state}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-slate-500">CEP</p>
+                        <p className="font-medium text-slate-900">{pedido.clienteNota.zipCode}</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Observação da nota de remessa */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-semibold text-slate-800">Observação da nota de remessa</label>
+                    {pedido.clienteNota ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 border-slate-300 text-xs"
+                        onClick={() => pedido.setInvoiceObservation(buildTriangulationInvoiceObservation(pedido.clienteNota!))}
+                      >
+                        Restaurar padrão
+                      </Button>
+                    ) : null}
+                  </div>
+                  <Textarea
+                    value={pedido.invoiceObservation}
+                    onChange={(e) => pedido.setInvoiceObservation(e.target.value)}
+                    placeholder={pedido.clienteNota ? buildTriangulationInvoiceObservation(pedido.clienteNota) : 'Finalize o orçamento informando o cliente final para preencher automaticamente.'}
+                    rows={4}
+                    className="border-slate-300 focus-visible:border-blue-500 focus-visible:ring-blue-500/20"
+                  />
+                  <p className="text-xs text-slate-500">
+                    Este texto é inserido na observação da nota fiscal de remessa. Edite conforme necessário ou use "Restaurar padrão" para regenerar a partir dos dados do cliente.
                   </p>
                 </div>
-                <p className="text-xs text-slate-500">
-                  Para habilitar a triangulação, altere a <strong>Operação</strong> para um código que permita três
-                  partes (ex.: 13 - Venda com Triangulação).
-                </p>
               </CardContent>
             </Card>
           </TabsContent>
