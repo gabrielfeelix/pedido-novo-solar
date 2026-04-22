@@ -61,6 +61,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import {
   financingConditions,
   freightTypes,
@@ -1062,6 +1063,8 @@ export function SolarOrderPage() {
   const whatsappRecipient = pedido.clienteNota ?? pedido.clientePedido;
   const whatsappPhone = whatsappRecipient?.phone ? normalizePhone(whatsappRecipient.phone) : '';
   const whatsappPdfFilename = buildOrderPdfFilename(orderNumber);
+  const outboundActionsEnabled = hasIntegrator && hasBillingClient;
+  const outboundActionsTooltip = 'Selecione o integrador e o cliente para faturamento para liberar esta ação.';
   const whatsappMessage = whatsappRecipient
     ? [
         `Olá, ${whatsappRecipient.contactName}.`,
@@ -1113,7 +1116,7 @@ export function SolarOrderPage() {
                 Novo pedido solar
               </h1>
               <p className="mt-2 max-w-3xl text-sm text-slate-600">
-                Monte o gerador, adicione produtos avulsos e feche o pedido — sem sair do CRM.
+                Selecione os clientes, monte o kit solar e organize os itens do pedido em um fluxo comercial único no CRM.
               </p>
               {emptyStateNotice ? (
                 <div className="mt-4 max-w-3xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
@@ -1214,27 +1217,57 @@ export function SolarOrderPage() {
             </h1>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              className="border-slate-300"
-              onClick={() => setActionDialog({ kind: 'email' })}
-            >
-              <Mail className="h-4 w-4" /> Enviar e-mail
-            </Button>
-            <Button
-              variant="outline"
-              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
-              onClick={() => setActionDialog({ kind: 'whatsapp' })}
-            >
-              <MessageCircle className="h-4 w-4" /> Enviar por WhatsApp
-            </Button>
-            <Button
-              variant="outline"
-              className="border-slate-300 text-rose-600"
-              onClick={() => setActionDialog({ kind: 'pdf' })}
-            >
-              <FileText className="h-4 w-4" /> Gerar PDF
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={outboundActionsEnabled ? -1 : 0} className="inline-flex">
+                  <Button
+                    variant="outline"
+                    className="border-slate-300"
+                    disabled={!outboundActionsEnabled}
+                    onClick={() => setActionDialog({ kind: 'email' })}
+                  >
+                    <Mail className="h-4 w-4" /> Enviar e-mail
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {!outboundActionsEnabled ? (
+                <TooltipContent>{outboundActionsTooltip}</TooltipContent>
+              ) : null}
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={outboundActionsEnabled ? -1 : 0} className="inline-flex">
+                  <Button
+                    variant="outline"
+                    className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 disabled:border-slate-200 disabled:text-slate-400"
+                    disabled={!outboundActionsEnabled}
+                    onClick={() => setActionDialog({ kind: 'whatsapp' })}
+                  >
+                    <MessageCircle className="h-4 w-4" /> Enviar por WhatsApp
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {!outboundActionsEnabled ? (
+                <TooltipContent>{outboundActionsTooltip}</TooltipContent>
+              ) : null}
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={outboundActionsEnabled ? -1 : 0} className="inline-flex">
+                  <Button
+                    variant="outline"
+                    className="border-slate-300 text-rose-600 disabled:border-slate-200 disabled:text-slate-400"
+                    disabled={!outboundActionsEnabled}
+                    onClick={() => setActionDialog({ kind: 'pdf' })}
+                  >
+                    <FileText className="h-4 w-4" /> Gerar PDF
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {!outboundActionsEnabled ? (
+                <TooltipContent>{outboundActionsTooltip}</TooltipContent>
+              ) : null}
+            </Tooltip>
           </div>
         </div>
 
