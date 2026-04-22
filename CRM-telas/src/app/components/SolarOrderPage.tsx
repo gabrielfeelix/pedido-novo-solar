@@ -16,6 +16,7 @@ import {
   Layers3,
   Mail,
   MapPin,
+  MessageCircle,
   Minus,
   Package2,
   Pencil,
@@ -103,6 +104,7 @@ type ActionDialogState =
   | { kind: 'reopen' }
   | { kind: 'history' }
   | { kind: 'email' }
+  | { kind: 'whatsapp' }
   | { kind: 'pdf' }
   | { kind: 'blocked'; reasons: string[]; targetTab: OrderTab }
   | null;
@@ -133,6 +135,15 @@ function formatNow() {
     hour: '2-digit',
     minute: '2-digit',
   }).format(new Date());
+}
+
+function normalizePhone(value: string) {
+  const digits = value.replace(/\D/g, '');
+  return digits.startsWith('55') ? digits : `55${digits}`;
+}
+
+function buildOrderPdfFilename(orderNumber: string) {
+  return `pedido-${orderNumber.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()}.pdf`;
 }
 
 function statusStyles(status: SolarTechnicalApprovalStatus) {
@@ -1048,6 +1059,21 @@ export function SolarOrderPage() {
     !hasBillingClient ? 'Definir o cliente para faturamento.' : null,
     pendingApprovals > 0 ? `${pendingApprovals} gerador(es) ainda aguardam aprovação técnica.` : null,
   ].filter((item): item is string => Boolean(item));
+  const whatsappRecipient = pedido.clienteNota ?? pedido.clientePedido;
+  const whatsappPhone = whatsappRecipient?.phone ? normalizePhone(whatsappRecipient.phone) : '';
+  const whatsappPdfFilename = buildOrderPdfFilename(orderNumber);
+  const whatsappMessage = whatsappRecipient
+    ? [
+        `Olá, ${whatsappRecipient.contactName}.`,
+        `Segue o pedido ${orderNumber} em PDF para conferência.`,
+        `Cliente: ${whatsappRecipient.name}`,
+        `Total do pedido: ${formatCurrency(orderTotals.grandTotal)}`,
+        `Arquivo previsto: ${whatsappPdfFilename}`,
+      ].join('\n')
+    : '';
+  const whatsappUrl = whatsappPhone
+    ? `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`
+    : '';
 
   useEffect(() => {
     if (!triangulationEnabled && activeTab === 'triangulation') {
@@ -1194,6 +1220,13 @@ export function SolarOrderPage() {
               onClick={() => setActionDialog({ kind: 'email' })}
             >
               <Mail className="h-4 w-4" /> Enviar e-mail
+            </Button>
+            <Button
+              variant="outline"
+              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
+              onClick={() => setActionDialog({ kind: 'whatsapp' })}
+            >
+              <MessageCircle className="h-4 w-4" /> Enviar por WhatsApp
             </Button>
             <Button
               variant="outline"
@@ -2219,6 +2252,75 @@ export function SolarOrderPage() {
                   }}
                 >
                   Registrar ação
+                </Button>
+              </DialogFooter>
+            </>
+          ) : null}
+
+          {actionDialog?.kind === 'whatsapp' ? (
+            <>
+              <DialogHeader>
+                <DialogTitle>Enviar por WhatsApp</DialogTitle>
+                <DialogDescription>
+                  O protótipo prepara o espelho do pedido em PDF e abre o WhatsApp com a mensagem pronta para o cliente.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950">
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                      Cliente de envio
+                    </p>
+                    <p className="mt-1 font-semibold">
+                      {whatsappRecipient?.name ?? 'Nenhum cliente definido'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                      Contato
+                    </p>
+                    <p className="mt-1 font-semibold">
+                      {whatsappRecipient?.contactName ?? 'Contato indisponível'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                      Telefone
+                    </p>
+                    <p className="mt-1 font-semibold">
+                      {whatsappRecipient?.phone ?? 'Telefone indisponível'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-emerald-700">
+                      PDF previsto
+                    </p>
+                    <p className="mt-1 font-semibold">{whatsappPdfFilename}</p>
+                  </div>
+                </div>
+                <div className="rounded-lg border border-emerald-200 bg-white/70 p-3 text-slate-700">
+                  Na versão final, o PDF será anexado automaticamente ao envio. Neste protótipo, registramos a geração do PDF e abrimos o WhatsApp com a mensagem pronta.
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setActionDialog(null)}>
+                  Fechar
+                </Button>
+                <Button
+                  className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  disabled={!whatsappUrl}
+                  onClick={() => {
+                    appendHistory(
+                      'Simulação de envio por WhatsApp',
+                      `PDF ${whatsappPdfFilename} preparado e envio por WhatsApp iniciado para ${whatsappRecipient?.name ?? 'cliente'}.`,
+                      'success',
+                    );
+                    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                    setActionDialog(null);
+                  }}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Gerar PDF e abrir WhatsApp
                 </Button>
               </DialogFooter>
             </>
