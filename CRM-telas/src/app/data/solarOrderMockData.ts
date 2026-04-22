@@ -12,6 +12,7 @@ export interface OrderParty {
   id: string;
   name: string;
   document: string;
+  stateRegistration?: string;
   contactName: string;
   phone: string;
   street: string;
@@ -73,6 +74,19 @@ export interface LooseItemProduct extends SolarCatalogItem {
   category: LooseCategory;
 }
 
+export interface CampaignRule {
+  id: string;
+  name: string;
+  brand: string;
+  valuePerUnit: number;
+  active: boolean;
+}
+
+export interface CommissionRule {
+  brand: string;
+  rate: number;
+}
+
 export const looseCategories: LooseCategory[] = ['Proteção', 'Monitoramento', 'Materiais', 'Ferramentas'];
 
 export const orderMeta: OrderMetaField[] = [
@@ -93,6 +107,7 @@ export const orderClients: OrderParty[] = [
     id: 'client-87323',
     name: '87323 · WM Energia Solar LTDA',
     document: '45.827.478/0001-28',
+    stateRegistration: '90834122-17',
     contactName: 'Wagner Martins',
     phone: '(44) 8803-0200',
     street: 'Av. Morangueira, 1121',
@@ -105,6 +120,7 @@ export const orderClients: OrderParty[] = [
     id: 'client-1541',
     name: '1541 · Cliente Teste Odex',
     document: '25.397.679/8280-11',
+    stateRegistration: 'ISENTO',
     contactName: 'Juliana Siqueira',
     phone: '(41) 99882-0044',
     street: 'Rua dos Integradores, 88',
@@ -117,6 +133,7 @@ export const orderClients: OrderParty[] = [
     id: 'client-2055',
     name: '2055 · Solar Colonial Engenharia',
     document: '53.201.199/0001-50',
+    stateRegistration: '257.998.110',
     contactName: 'Ricardo Alberti',
     phone: '(47) 3022-1144',
     street: 'Rua João Pessoa, 455',
@@ -430,6 +447,37 @@ export const freightTypes = [
   'CIF grátis (roteirizado)',
   'Pago expresso',
   'Retirada em filial',
+];
+
+export const campaignRules: CampaignRule[] = [
+  {
+    id: 'camp-jinko-q2',
+    name: 'Campanha Jinko Q2',
+    brand: 'Jinko',
+    valuePerUnit: 18,
+    active: true,
+  },
+  {
+    id: 'camp-chint-boost',
+    name: 'Boost Chint Power',
+    brand: 'Chint Power',
+    valuePerUnit: 120,
+    active: true,
+  },
+  {
+    id: 'camp-sofar-dealer',
+    name: 'Dealer Sofar',
+    brand: 'Sofar',
+    valuePerUnit: 95,
+    active: true,
+  },
+];
+
+export const commissionRules: CommissionRule[] = [
+  { brand: 'Jinko', rate: 0.001 },
+  { brand: 'Chint Power', rate: 0.002 },
+  { brand: 'Sofar', rate: 0.002 },
+  { brand: 'Odex Solar', rate: 0.001 },
 ];
 
 export const builderStepLabels: { id: SolarBuilderStep; label: string; shortLabel: string }[] = [

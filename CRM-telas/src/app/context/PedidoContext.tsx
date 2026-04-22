@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import type { DeliveryArea, OrderParty, SolarTechnicalApprovalStatus } from '../data/solarOrderMockData';
+import {
+  assessGeneratorCustomizationFromComponents,
+  buildTriangulationInvoiceObservation,
+} from '../lib/solarCommercialRules';
 
 export type SaleType = 'normal' | 'direct' | 'triangulation';
 export type OrderStage = 'budget' | 'order';
@@ -152,18 +156,27 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
           .filter((c) => c.quantity > 0);
         const subtotal = components.reduce((t, c) => t + c.unitPrice * c.quantity, 0);
         const prizeAmount = item.prizeMode === 'percent' ? subtotal * (item.prizeValue / 100) : item.prizeValue;
-        const needsReApproval = item.approvalStatus !== 'none';
+        const customization = assessGeneratorCustomizationFromComponents(components);
+        const needsReApproval = customization.isCustomized || item.approvalStatus !== 'none';
+        const nextStatus: SolarTechnicalApprovalStatus = customization.isCustomized
+          ? 'pending'
+          : item.approvalStatus === 'approved'
+            ? 'approved'
+            : 'none';
         return {
           ...item,
           components,
           subtotal,
           total: subtotal + prizeAmount,
           prizeAmount,
-          approvalStatus: needsReApproval ? ('pending' as const) : item.approvalStatus,
+          isCustomized: customization.isCustomized,
+          approvalStatus: nextStatus,
           approvalTimestamp: needsReApproval ? formatDateTime() : item.approvalTimestamp,
-          approvalNote: needsReApproval
-            ? 'Quantidade alterada no pedido. Pendente de revisão técnica.'
-            : item.approvalNote,
+          approvalNote: customization.isCustomized
+            ? `Quantidade alterada no pedido. ${customization.reason} Pendente de revisão técnica.`
+            : item.approvalStatus === 'approved'
+              ? 'Kit ajustado e mantido como aprovado.'
+              : customization.reason,
         };
       }),
     }));
@@ -223,7 +236,15 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
         error = 'Selecione o cliente de faturamento antes de transformar em pedido.';
         return s;
       }
-      return { ...s, stage: 'order', orderNumber: generateOrderNumber() };
+      const defaultInvoiceObservation = s.saleType === 'triangulation' && s.clienteNota && !s.invoiceObservation.trim()
+        ? buildTriangulationInvoiceObservation(s.clienteNota)
+        : s.invoiceObservation;
+      return {
+        ...s,
+        stage: 'order',
+        orderNumber: generateOrderNumber(),
+        invoiceObservation: defaultInvoiceObservation,
+      };
     });
     return error ? { success: false, error } : { success: true };
   };

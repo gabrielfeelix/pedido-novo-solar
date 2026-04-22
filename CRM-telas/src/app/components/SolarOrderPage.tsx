@@ -1,26 +1,18 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Building2,
-  Cable,
   Check,
-  ChevronDown,
-  ChevronRight,
   CircleAlert,
   Clock,
-  Copy,
   FileText,
   History,
   IdCard,
   Info,
-  Layers3,
   Mail,
   MapPin,
   MessageCircle,
-  Minus,
-  Package2,
   Pencil,
-  Plus,
   Search,
   ShieldCheck,
   ShoppingCart,
@@ -29,7 +21,6 @@ import {
   Trash2,
   UserRound,
   Users,
-  Wrench,
   X,
 } from 'lucide-react';
 import { Button } from './ui/button';
@@ -38,14 +29,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './ui/table';
 import {
   Select,
   SelectContent,
@@ -77,10 +60,15 @@ import { imageForSku } from '../data/productImages';
 import { OrderFinalizeDialog } from './OrderFinalizeDialog';
 import {
   usePedido,
-  type GeneratorComponentItem,
-  type OrderItem,
   type SolarGenerator,
 } from '../context/PedidoContext';
+import {
+  calculateCampaignForOrderItem,
+  calculateCommissionForOrderItem,
+} from '../lib/solarCommercialRules';
+import { pricingForOrderItem, type LinePricingAdjustment } from '../lib/solarOrderPricing';
+import { ItemsTable } from './budget/ItemsTable';
+import { BudgetEmptyState } from './budget/BudgetEmptyState';
 
 type OrderTab =
   | 'items'
@@ -111,7 +99,6 @@ type ActionDialogState =
   | { kind: 'blocked'; reasons: string[]; targetTab: OrderTab }
   | null;
 
-const DEFAULT_DISCOUNT_PCT = 4.15;
 const ORIGIN_OPTIONS = ['ERP', 'Televendas', 'WhatsApp', 'Marketplace', 'Representante'] as const;
 
 function formatCurrency(value: number) {
@@ -160,53 +147,6 @@ function statusLabel(status: SolarTechnicalApprovalStatus) {
   if (status === 'pending') return 'Aguardando aprovação técnica';
   if (status === 'rejected') return 'Reprovado';
   return 'Sem aprovação necessária';
-}
-
-function getCategoryIcon(category: GeneratorComponentItem['category']) {
-  if (category === 'Painéis') return <SunMedium className="h-4 w-4" />;
-  if (category === 'Inversores') return <Wrench className="h-4 w-4" />;
-  if (category === 'Estrutura') return <Layers3 className="h-4 w-4" />;
-  if (category === 'Acessórios') return <Cable className="h-4 w-4" />;
-  return <Package2 className="h-4 w-4" />;
-}
-
-type ItemPricing = {
-  quantity: number;
-  unitBruto: number;
-  discountPct: number;
-  vlBruto: number;
-  desconto: number;
-  valorLiquido: number;
-  total: number;
-};
-
-function pricingForItem(item: OrderItem): ItemPricing {
-  if (item.type === 'generator') {
-    const quantity = 1;
-    const totalLiquido = item.total;
-    const discountPct = DEFAULT_DISCOUNT_PCT;
-    const vlBruto = totalLiquido / (1 - discountPct / 100);
-    const desconto = vlBruto - totalLiquido;
-    return {
-      quantity,
-      unitBruto: vlBruto,
-      discountPct,
-      vlBruto,
-      desconto,
-      valorLiquido: totalLiquido,
-      total: totalLiquido,
-    };
-  }
-  const vlBruto = item.unitPrice * item.quantity;
-  return {
-    quantity: item.quantity,
-    unitBruto: item.unitPrice,
-    discountPct: 0,
-    vlBruto,
-    desconto: 0,
-    valorLiquido: vlBruto,
-    total: vlBruto,
-  };
 }
 
 /* ------------------------------ Inline Client Search ------------------------------ */
@@ -859,21 +799,36 @@ export function SolarOrderPage() {
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
   const [actionDialog, setActionDialog] = useState<ActionDialogState>(null);
   const [emptyStateNotice, setEmptyStateNotice] = useState<string | null>(null);
+  const [lineAdjustments, setLineAdjustments] = useState<Record<string, Partial<LinePricingAdjustment>>>({});
 
   const orderTotals = useMemo(() => {
-    const subtotal = pedido.orderItems.reduce((t, i) => t + (i.type === 'generator' ? i.subtotal : i.total), 0);
-    const prizeDirect = pedido.orderItems.reduce((t, i) => (i.type === 'generator' ? t + i.prizeAmount : t), 0);
-    const totalLiquido = pedido.orderItems.reduce((t, i) => t + i.total, 0);
+    const pricingEntries = pedido.orderItems.map((item) => pricingForOrderItem(item, pedido.saleType, lineAdjustments[item.id]));
+    const subtotal = pricingEntries.reduce((total, pricing) => total + pricing.vlBruto, 0);
+    const prizeDirect = pricingEntries.reduce((total, pricing) => total + pricing.prizeAmount, 0);
+    const totalLiquido = pricingEntries.reduce((total, pricing) => total + pricing.total, 0);
+    const commissionEstimated = pedido.orderItems.reduce((t, i) => t + calculateCommissionForOrderItem(i), 0);
+    const campaignEstimated = pedido.orderItems.reduce((t, i) => t + calculateCampaignForOrderItem(i), 0);
     const freight = pedido.deliveryArea === 'rural' ? 440 : 0;
     const grandTotal = totalLiquido + freight;
     const itemCount = pedido.orderItems.reduce((t, i) => {
       if (i.type === 'generator') return t + i.components.reduce((s, c) => s + c.quantity, 0);
       return t + i.quantity;
     }, 0);
-    const vlBruto = pedido.orderItems.reduce((t, i) => t + pricingForItem(i).vlBruto, 0);
-    const desconto = pedido.orderItems.reduce((t, i) => t + pricingForItem(i).desconto, 0);
-    return { subtotal, prizeDirect, totalLiquido, freight, grandTotal, itemCount, vlBruto, desconto };
-  }, [pedido.orderItems, pedido.deliveryArea]);
+    const vlBruto = pricingEntries.reduce((total, pricing) => total + pricing.vlBruto, 0);
+    const desconto = pricingEntries.reduce((total, pricing) => total + pricing.desconto, 0);
+    return {
+      subtotal,
+      prizeDirect,
+      totalLiquido,
+      commissionEstimated,
+      campaignEstimated,
+      freight,
+      grandTotal,
+      itemCount,
+      vlBruto,
+      desconto,
+    };
+  }, [pedido.orderItems, pedido.deliveryArea, pedido.saleType, lineAdjustments]);
 
   const generators = pedido.orderItems.filter((i): i is SolarGenerator => i.type === 'generator');
   const generatorCount = generators.length;
@@ -885,6 +840,9 @@ export function SolarOrderPage() {
   const reviewFingerprint = useMemo(
     () => JSON.stringify({
       items: pedido.orderItems,
+      lineAdjustments,
+      stage: pedido.stage,
+      saleType: pedido.saleType,
       clientePedido: pedido.clientePedido?.id ?? null,
       clienteNota: pedido.clienteNota?.id ?? null,
       deliveryArea: pedido.deliveryArea,
@@ -898,6 +856,9 @@ export function SolarOrderPage() {
     }),
     [
       pedido.orderItems,
+      lineAdjustments,
+      pedido.stage,
+      pedido.saleType,
       pedido.clientePedido,
       pedido.clienteNota,
       pedido.deliveryArea,
@@ -942,6 +903,16 @@ export function SolarOrderPage() {
       setCurrentPage(totalPages);
     }
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    setLineAdjustments((previous) => {
+      const validIds = new Set(pedido.orderItems.map((item) => item.id));
+      const next = Object.fromEntries(
+        Object.entries(previous).filter(([itemId]) => validIds.has(itemId)),
+      );
+      return Object.keys(next).length === Object.keys(previous).length ? previous : next;
+    });
+  }, [pedido.orderItems]);
 
   const appendHistory = (title: string, description: string, tone: HistoryEntry['tone'] = 'default') => {
     setHistoryEntries((prev) => [
@@ -998,6 +969,16 @@ export function SolarOrderPage() {
     setExpandedItems((s) => ({ ...s, [id]: !s[id] }));
   }
 
+  function updateLineAdjustment(itemId: string, patch: Partial<LinePricingAdjustment>) {
+    setLineAdjustments((previous) => ({
+      ...previous,
+      [itemId]: {
+        ...previous[itemId],
+        ...patch,
+      },
+    }));
+  }
+
   function handleDiscardOrder() {
     const discardedSummary = [
       generatorCount > 0 ? `${generatorCount} kit(s)` : null,
@@ -1009,6 +990,7 @@ export function SolarOrderPage() {
     pedido.resetOrder();
     setActionDialog(null);
     setExpandedItems({});
+    setLineAdjustments({});
     setItemFilter('');
     setCurrentPage(1);
     setHistoryEntries([]);
@@ -1107,59 +1089,15 @@ export function SolarOrderPage() {
   /* =========================== EMPTY STATE =========================== */
   if (!hasGeneratedOrder) {
     return (
-      <div className="min-h-full bg-transparent py-8">
-        <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <Badge className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-amber-800 hover:bg-amber-100">
-                  Orçamento Solar
-                </Badge>
-                {pedido.budgetNumber && (
-                  <span className="text-xs font-mono text-slate-400">{pedido.budgetNumber}</span>
-                )}
-              </div>
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                Novo orçamento solar
-              </h1>
-              <p className="mt-2 max-w-3xl text-sm text-slate-600">
-                Monte o kit solar e organize os itens do orçamento. Integrador e tipo de venda serão definidos ao finalizar.
-              </p>
-              {emptyStateNotice ? (
-                <div className="mt-4 max-w-3xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-                  {emptyStateNotice}
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <Card className="border-dashed border-slate-300 bg-white shadow-none">
-            <CardContent className="flex flex-col items-center gap-3 py-16 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
-                <ShoppingCart className="h-7 w-7 text-slate-400" />
-              </div>
-              <p className="text-lg font-semibold text-slate-900">Nenhum item adicionado ainda</p>
-              <p className="max-w-md text-sm text-slate-500">
-                Comece por <strong>Montar kit solar</strong> — o fluxo guiado monta o kit completo.
-                Depois você pode incluir produtos avulsos que não fazem parte do gerador.
-              </p>
-              <div className="mt-2 flex flex-wrap justify-center gap-2">
-                <Button
-                  className="bg-[#001233] text-white hover:bg-[#001233]/90"
-                  onClick={() => navigate('/vendas/novo-pedido-solar/solar-builder')}
-                >
-                  <SunMedium className="h-4 w-4" /> Montar kit solar
-                </Button>
-                <Button variant="outline" onClick={() => setAvulsoOpen(true)}>
-                  <Plus className="h-4 w-4" /> Produto avulso
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
+      <>
+        <BudgetEmptyState
+          budgetNumber={pedido.budgetNumber}
+          emptyStateNotice={emptyStateNotice}
+          onBuildKit={() => navigate('/vendas/novo-pedido-solar/solar-builder')}
+          onAddLooseItem={() => setAvulsoOpen(true)}
+        />
         <AvulsoDialog open={avulsoOpen} onOpenChange={setAvulsoOpen} onAddMany={handleAddMany} />
-      </div>
+      </>
     );
   }
 
@@ -1387,279 +1325,17 @@ export function SolarOrderPage() {
             {/* Items table */}
             <Card className="border-slate-200 shadow-sm">
               <CardContent className="px-0 py-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-slate-50 hover:bg-slate-50">
-                        <TableHead className="sticky top-0 z-10 w-[44px] bg-slate-50" />
-                        <TableHead className="sticky top-0 z-10 w-[80px] bg-slate-50">Produto</TableHead>
-                        <TableHead className="sticky top-0 z-10 min-w-[280px] bg-slate-50">Descrição</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[120px] bg-slate-50">Qtd.</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[140px] bg-slate-50">Vl. Bruto</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[120px] bg-slate-50">Desconto (%)</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[140px] bg-slate-50">Valor Líquido</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[120px] bg-slate-50">Comissão</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[180px] bg-slate-50">Tributação</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[160px] bg-slate-50 text-right">Total</TableHead>
-                        <TableHead className="sticky top-0 z-10 w-[60px] bg-slate-50" />
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredItems.length === 0 ? (
-                        <TableRow>
-                          <TableCell colSpan={11} className="py-12 text-center text-sm text-slate-500">
-                            Nenhum item encontrado com esse filtro.
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        paginatedItems.map((item) => {
-                          const pricing = pricingForItem(item);
-                          const isExpanded = Boolean(expandedItems[item.id]);
-                          const isKit = item.type === 'generator';
-                          const displayName = isKit ? item.title : item.name;
-                          const displayBrand = isKit ? 'ODEX SOLAR' : item.brand;
-                          const componentCount = isKit ? item.components.length : 0;
-
-                          const rowThumb = isKit
-                            ? imageForSku(item.sku, 'Painéis')
-                            : imageForSku(item.sku, undefined, looseItems.find((l) => l.sku === item.sku)?.icon);
-
-                          return (
-                            <Fragment key={item.id}>
-                              <TableRow className="align-top">
-                                {/* Expand chevron */}
-                                <TableCell className="py-4">
-                                  {isKit ? (
-                                    <button
-                                      type="button"
-                                      onClick={() => toggleExpanded(item.id)}
-                                      className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100"
-                                      aria-label={isExpanded ? 'Recolher componentes' : 'Ver componentes'}
-                                    >
-                                      {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                                    </button>
-                                  ) : null}
-                                </TableCell>
-
-                                {/* Thumb */}
-                                <TableCell className="py-4">
-                                  <div className="h-14 w-14 overflow-hidden rounded-md border border-slate-200 bg-slate-100">
-                                    <img
-                                      src={rowThumb}
-                                      alt={displayName}
-                                      className="h-full w-full object-cover mix-blend-multiply"
-                                    />
-                                  </div>
-                                </TableCell>
-
-                                {/* SKU + name */}
-                                <TableCell className="py-4">
-                                  <p className="text-sm font-bold text-slate-900">{item.sku}</p>
-                                  <p className="text-sm font-semibold text-slate-800 line-clamp-1">
-                                    {displayName}
-                                  </p>
-                                  <div className="mt-1 flex items-center gap-2">
-                                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                      {displayBrand}
-                                    </span>
-                                    {isKit ? (
-                                      <>
-                                        <Badge className="bg-blue-100 text-[10px] font-semibold text-blue-700 hover:bg-blue-100">
-                                          KIT · {componentCount} itens
-                                        </Badge>
-                                        <span className="text-xs text-slate-500">
-                                          Múltiplo: 1 · Caixa Mãe: 1
-                                        </span>
-                                      </>
-                                    ) : (
-                                      <span className="text-xs text-slate-500">Avulso</span>
-                                    )}
-                                  </div>
-                                  {isKit ? (
-                                    <Badge
-                                      variant="outline"
-                                      className={`mt-2 ${statusStyles(item.approvalStatus)}`}
-                                    >
-                                      {statusLabel(item.approvalStatus)}
-                                    </Badge>
-                                  ) : null}
-                                </TableCell>
-
-                                {/* Qtd */}
-                                <TableCell className="py-4">
-                                  <Input
-                                    readOnly
-                                    value={pricing.quantity}
-                                    className="h-9 w-16 border-slate-300 bg-white text-center font-semibold"
-                                  />
-                                  <div className="mt-1 max-w-[72px] space-y-0.5 text-[10px] leading-3 sm:text-[11px] sm:leading-4">
-                                    <p className="font-medium text-emerald-600">Estoque 55</p>
-                                    <p className="font-medium text-rose-500">Produção 0</p>
-                                  </div>
-                                </TableCell>
-
-                                {/* Vl. Bruto */}
-                                <TableCell className="py-4">
-                                  <p className="text-sm font-semibold text-slate-900">{formatCurrency(pricing.unitBruto)}</p>
-                                  <p className="text-[11px] text-slate-500">Total: {formatCurrency(pricing.vlBruto)}</p>
-                                </TableCell>
-
-                                {/* Desconto */}
-                                <TableCell className="py-4">
-                                  <Input
-                                    readOnly
-                                    value={formatNumber(pricing.discountPct)}
-                                    className="h-9 w-16 border-slate-300 bg-white text-center"
-                                  />
-                                  <p className="mt-1 text-[11px] text-slate-500">Total: {formatCurrency(pricing.desconto)}</p>
-                                </TableCell>
-
-                                {/* Valor Líquido */}
-                                <TableCell className="py-4">
-                                  <Input
-                                    readOnly
-                                    value={formatCurrency(pricing.valorLiquido)}
-                                    className="h-9 w-28 border-slate-300 bg-white text-right"
-                                  />
-                                  <p className="mt-1 text-[11px] text-slate-500">Total: {formatCurrency(pricing.valorLiquido)}</p>
-                                </TableCell>
-
-                                {/* Comissão */}
-                                <TableCell className="py-4">
-                                  <p className="text-sm font-semibold text-slate-900">R$ 0,00</p>
-                                  <p className="text-[11px] text-slate-500">(0%)</p>
-                                </TableCell>
-
-                                {/* Tributação */}
-                                <TableCell className="py-4">
-                                  <div className="space-y-1 text-[11px]">
-                                    <div>
-                                      <span className="font-semibold text-slate-700">IPI</span>{' '}
-                                      <span className="text-slate-500">(0,00%)</span>
-                                      <p className="text-slate-500">R$ 0,00 / R$ 0,00</p>
-                                    </div>
-                                    <div>
-                                      <span className="font-semibold text-slate-700">ST</span>
-                                      <p className="text-slate-500">R$ 0,00 / R$ 0,00</p>
-                                    </div>
-                                  </div>
-                                </TableCell>
-
-                                {/* Total */}
-                                <TableCell className="py-4 text-right">
-                                  <p className="text-sm font-bold text-slate-950">{formatCurrency(pricing.total)}</p>
-                                  <p className="text-[11px] text-slate-500">UN {formatCurrency(pricing.total)}</p>
-                                  <div className="mt-1 flex items-center justify-end">
-                                    <Info className="h-3.5 w-3.5 text-slate-400" />
-                                  </div>
-                                </TableCell>
-
-                                {/* Actions */}
-                                <TableCell className="py-4">
-                                  <div className="flex flex-col items-end gap-1">
-                                    {isKit ? (
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-7 w-7"
-                                        onClick={() => pedido.duplicateGenerator(item.id)}
-                                        aria-label="Duplicar kit"
-                                        title="Duplicar kit"
-                                      >
-                                        <Copy className="h-3.5 w-3.5 text-slate-500" />
-                                      </Button>
-                                    ) : null}
-                                    <Button
-                                      variant="ghost"
-                                      size="icon"
-                                      className="h-7 w-7"
-                                      onClick={() => pedido.removeItem(item.id)}
-                                      aria-label="Remover item"
-                                      title="Remover do pedido"
-                                    >
-                                      <Trash2 className="h-3.5 w-3.5 text-slate-500" />
-                                    </Button>
-                                  </div>
-                                </TableCell>
-                              </TableRow>
-
-                              {/* Expanded kit components */}
-                              {isKit && isExpanded ? (
-                                <TableRow key={`${item.id}-expanded`} className="bg-slate-50/60 hover:bg-slate-50/60">
-                                  <TableCell colSpan={11} className="py-4">
-                                    <div className="ml-14 space-y-3 border-l-2 border-blue-200 pl-5">
-                                      <div className="flex items-center justify-between">
-                                        <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">
-                                          Componentes do kit {item.sku}
-                                        </p>
-                                        <span className="text-[11px] text-slate-500">
-                                          {componentCount} SKUs distintos · {item.components.reduce((s, c) => s + c.quantity, 0)} unidades
-                                        </span>
-                                      </div>
-                                      <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white">
-                                        {item.components.map((c) => (
-                                          <div
-                                            key={c.id}
-                                            className="flex flex-col gap-2 p-3 md:flex-row md:items-center md:justify-between"
-                                          >
-                                            <div className="flex min-w-0 flex-1 items-center gap-3">
-                                              <img
-                                                src={imageForSku(c.sku, c.category)}
-                                                alt={c.name}
-                                                className="h-12 w-12 shrink-0 rounded-md border border-slate-200 object-cover mix-blend-multiply"
-                                              />
-                                              <div className="min-w-0">
-                                                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                                                  {getCategoryIcon(c.category)}
-                                                  <span>SKU {c.sku}</span>
-                                                </div>
-                                                <p className="truncate text-sm font-medium text-slate-800">{c.name}</p>
-                                                <p className="text-[11px] text-slate-500">
-                                                  {c.brand} · {c.category}
-                                                </p>
-                                              </div>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                              <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
-                                                <Button
-                                                  variant="ghost"
-                                                  size="icon"
-                                                  className="h-7 w-7"
-                                                  onClick={() => pedido.updateGeneratorComponent(item.id, c.id, -1)}
-                                                >
-                                                  <Minus className="h-3.5 w-3.5" />
-                                                </Button>
-                                                <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{c.quantity}</span>
-                                                <Button
-                                                  variant="ghost"
-                                                  size="icon"
-                                                  className="h-7 w-7"
-                                                  onClick={() => pedido.updateGeneratorComponent(item.id, c.id, 1)}
-                                                >
-                                                  <Plus className="h-3.5 w-3.5" />
-                                                </Button>
-                                              </div>
-                                              <div className="min-w-[120px] text-right">
-                                                <p className="text-sm font-semibold text-slate-900">
-                                                  {formatCurrency(c.quantity * c.unitPrice)}
-                                                </p>
-                                                <p className="text-[11px] text-slate-500">{formatCurrency(c.unitPrice)}/un</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
-                              ) : null}
-                            </Fragment>
-                          );
-                        })
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
+                <ItemsTable
+                  items={paginatedItems}
+                  saleType={pedido.saleType}
+                  expandedItems={expandedItems}
+                  pricingAdjustments={lineAdjustments}
+                  toggleExpanded={toggleExpanded}
+                  onPricingAdjustmentChange={updateLineAdjustment}
+                  onDuplicateGenerator={pedido.duplicateGenerator}
+                  onRemoveItem={pedido.removeItem}
+                  onUpdateGeneratorComponent={pedido.updateGeneratorComponent}
+                />
 
                 {/* Pagination */}
                 <div className="flex flex-col gap-2 border-t border-slate-100 px-4 py-3 text-xs text-slate-600 md:flex-row md:items-center md:justify-between">
@@ -1739,7 +1415,8 @@ export function SolarOrderPage() {
                   </DetailGroup>
 
                   <DetailGroup title="Comissões e Verbas">
-                    <DetailItem label="Valor Comissão" value={formatCurrency(0)} />
+                    <DetailItem label="Valor Comissão" value={formatCurrency(orderTotals.commissionEstimated)} />
+                    <DetailItem label="Valor Campanha" value={formatCurrency(orderTotals.campaignEstimated)} />
                     <DetailItem label="Prêmio Venda Direta" value={formatCurrency(orderTotals.prizeDirect)} />
                   </DetailGroup>
 

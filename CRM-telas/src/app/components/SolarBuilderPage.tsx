@@ -53,6 +53,9 @@ import {
   structureTypes,
 } from '../data/solarOrderMockData';
 import { usePedido, type GeneratorComponentItem, type SolarGenerator } from '../context/PedidoContext';
+import { assessGeneratorCustomizationFromPower } from '../lib/solarCommercialRules';
+import { ConfirmationAlert } from './shared/ConfirmationAlert';
+import { HelpTooltip } from './shared/HelpTooltip';
 
 const PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&q=80&w=400';
@@ -191,7 +194,7 @@ export function SolarBuilderPage() {
   const [accessorySortField, setAccessorySortField] = useState<'price' | 'brand'>('price');
   const [accessorySortDirection, setAccessorySortDirection] = useState<SortDirection>('asc');
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
   const selectedPanel = useMemo(
     () => panelProducts.find((p) => p.id === selectedPanelId) ?? null,
@@ -202,6 +205,30 @@ export function SolarBuilderPage() {
     if (!selectedPanel) return 0;
     return (selectedPanel.powerW * panelQuantity) / 1000;
   }, [selectedPanel, panelQuantity]);
+
+  const selectedInverterRanges = useMemo(
+    () =>
+      Object.entries(inverterQuantities).reduce<
+        { label: string; quantity: number; minKwp: number; maxKwp: number }[]
+      >((acc, [id, quantity]) => {
+        if (quantity <= 0) return acc;
+        const inverter = inverterProducts.find((item) => item.id === id);
+        if (!inverter) return acc;
+        acc.push({
+          label: inverter.name,
+          quantity,
+          minKwp: inverter.minKwp,
+          maxKwp: inverter.maxKwp,
+        });
+        return acc;
+      }, []),
+    [inverterQuantities],
+  );
+
+  const customizationAssessment = useMemo(
+    () => assessGeneratorCustomizationFromPower(powerKwp, selectedInverterRanges),
+    [powerKwp, selectedInverterRanges],
+  );
 
   const prefixedAccessories = useMemo<PrefixedAccessory[]>(() => {
     const byKey: Record<string, PrefixedAccessory> = {};
@@ -602,15 +629,11 @@ export function SolarBuilderPage() {
   }, [step]);
 
   const canConclude = (
-    Boolean(pedido.clientePedido)
-    && Boolean(pedido.clienteNota)
-    && Boolean(selectedPanel)
+    Boolean(selectedPanel)
     && panelQuantity > 0
     && liveItems.some((item) => item.category === 'Inversores')
     && liveItems.some((item) => item.category === 'Estrutura')
   );
-  const missingIntegrator = !pedido.clientePedido;
-  const missingBillingClient = !pedido.clienteNota;
   const missingPanel = !selectedPanel || panelQuantity <= 0;
   const missingInverter = !liveItems.some((item) => item.category === 'Inversores');
   const missingStructure = !liveItems.some((item) => item.category === 'Estrutura');
@@ -618,8 +641,6 @@ export function SolarBuilderPage() {
     missingPanel ? 'Selecionar ao menos 1 painel com quantidade maior que zero.' : null,
     missingInverter ? 'Adicionar ao menos 1 inversor ao kit.' : null,
     missingStructure ? 'Adicionar ao menos 1 item de estrutura de fixação.' : null,
-    missingIntegrator ? 'Definir o integrador no Novo Pedido Solar.' : null,
-    missingBillingClient ? 'Definir o cliente para faturamento no Novo Pedido Solar.' : null,
   ].filter((item): item is string => Boolean(item));
   const firstMissingBuilderStep: SolarBuilderStep | null = missingPanel
     ? 'panels'
@@ -650,6 +671,7 @@ export function SolarBuilderPage() {
       unitPrice: i.unitPrice,
     }));
     const now = new Date();
+    const approvalStatus = customizationAssessment.isCustomized ? 'pending' : 'none';
     const generator: SolarGenerator = {
       id: `generator-${Date.now()}`,
       type: 'generator',
@@ -663,7 +685,7 @@ export function SolarBuilderPage() {
       subtotal,
       total,
       powerKwp,
-      approvalStatus: 'pending',
+      approvalStatus,
       approvalResponsible: 'Consultor Solar',
       approvalTimestamp: new Intl.DateTimeFormat('pt-BR', {
         day: '2-digit',
@@ -672,8 +694,11 @@ export function SolarBuilderPage() {
         hour: '2-digit',
         minute: '2-digit',
       }).format(now),
-      approvalNote: 'Gerador recém-montado. Aguardando revisão técnica.',
+      approvalNote: customizationAssessment.isCustomized
+        ? `${customizationAssessment.reason} Gerador recém-montado. Aguardando revisão técnica.`
+        : customizationAssessment.reason,
       components,
+      isCustomized: customizationAssessment.isCustomized,
     };
     pedido.addGenerator(generator);
     navigate('/vendas/novo-pedido-solar');
@@ -960,9 +985,12 @@ export function SolarBuilderPage() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Tipo de ligação
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Tipo de ligação
+            </label>
+            <HelpTooltip content="No protótipo, esta escolha filtra inversores compatíveis e ajuda a montar a combinação elétrica base." />
+          </div>
           <Select value={connectionType} onValueChange={setConnectionType}>
             <SelectTrigger className={selectTriggerBase}>
               <SelectValue />
@@ -977,9 +1005,12 @@ export function SolarBuilderPage() {
           </Select>
         </div>
         <div className="space-y-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-            Prêmio venda direta
-          </label>
+          <div className="flex items-center gap-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              Prêmio venda direta
+            </label>
+            <HelpTooltip content="Esse valor entra como referência inicial do kit e pode ser refinado depois no orçamento quando a venda for direta." />
+          </div>
           <div className="flex gap-2">
             <div className="flex rounded-lg border border-slate-300 bg-white p-0.5">
               <button
@@ -1133,6 +1164,10 @@ export function SolarBuilderPage() {
           Todas as categorias de telhado já vêm selecionadas. Use os chips abaixo para filtrar as estruturas que suportam {panelQuantity || '—'} painéis.
         </p>
       </div>
+      <ConfirmationAlert
+        title="Confirmação de estrutura"
+        description="Antes de seguir, confirme se a estrutura escolhida é compatível com o tipo de telhado e com o painel do kit. No protótipo, isso aparece como alerta educativo e não como bloqueio duro."
+      />
       <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -1473,19 +1508,16 @@ export function SolarBuilderPage() {
                   Corrigir montagem
                 </Button>
               ) : null}
-              {(missingIntegrator || missingBillingClient) ? (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => navigate('/vendas/novo-pedido-solar')}
-                  className="border-amber-300 bg-white text-amber-900 hover:bg-amber-100"
-                >
-                  Abrir novo pedido solar
-                </Button>
-              ) : null}
             </div>
           </CardContent>
         </Card>
+      ) : null}
+
+      {customizationAssessment.isCustomized ? (
+        <ConfirmationAlert
+          title="Kit personalizado"
+          description={`${customizationAssessment.reason} No protótipo, isso força aprovação técnica antes do envio ao cliente.`}
+        />
       ) : null}
 
       {liveItems.length === 0 ? (

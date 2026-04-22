@@ -6,6 +6,7 @@ const pageTitles: Record<string, string> = {
   '/logistica/integracoes-es': 'Integrações ES',
   '/logistica/rastreio-nf': 'Rastreio de Nota Fiscal',
   '/clientes': 'Clientes',
+  '/cadastros/campanhas': 'Campanhas',
   '/clientes/prospex': 'Prospex',
   '/crm/atividades': 'Atividades',
   '/crm/atendimentos': 'Atendimentos',
@@ -24,7 +25,11 @@ const pageTitles: Record<string, string> = {
 export function PlaceholderPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const title = pageTitles[location.pathname] || 'Página';
+  const title = location.pathname.startsWith('/vendas/pedidos/')
+    ? 'Detalhe do Pedido'
+    : location.pathname.startsWith('/clientes/')
+      ? 'Detalhe do Cliente'
+      : pageTitles[location.pathname] || 'Página';
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-6 p-6">

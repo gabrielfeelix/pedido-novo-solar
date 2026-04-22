@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Building2, Check, ChevronRight, HelpCircle, Search, UserRound, X } from 'lucide-react';
+import { Building2, Check, ChevronRight, Search, UserRound, X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import {
@@ -10,9 +10,9 @@ import {
   DialogTitle,
 } from './ui/dialog';
 import { Input } from './ui/input';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { orderClients, type OrderParty } from '../data/solarOrderMockData';
 import { usePedido, type SaleType } from '../context/PedidoContext';
+import { HelpTooltip } from './shared/HelpTooltip';
 
 function normalizeText(s: string) {
   return s
@@ -276,12 +276,7 @@ export function OrderFinalizeDialog({
                 <div className="flex-1">
                   <div className="flex items-center gap-1.5">
                     <p className="text-sm font-semibold text-slate-900">{opt.label}</p>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-3.5 w-3.5 cursor-help text-slate-400 hover:text-slate-600" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-[240px] text-xs">{opt.tooltip}</TooltipContent>
-                    </Tooltip>
+                    <HelpTooltip content={opt.tooltip} />
                   </div>
                   <p className="text-xs text-slate-500">{opt.description}</p>
                 </div>

@@ -8,6 +8,8 @@ import { DashboardHome } from './components/DashboardHome';
 import { SolarOrderPage } from './components/SolarOrderPage';
 import { SolarBuilderPage } from './components/SolarBuilderPage';
 import { HandoffPage } from './components/HandoffPage';
+import { OrderDetailPage } from './components/OrderDetailPage';
+import { ClientDetailPage } from './components/ClientDetailPage';
 
 const routes: RouteObject[] = [
   {
@@ -27,6 +29,7 @@ const routes: RouteObject[] = [
       { path: '/vendas/acoes', Component: PlaceholderPage },
       { path: '/vendas/novo-pedido', Component: PlaceholderPage },
       { path: '/vendas/pedidos', Component: PlaceholderPage },
+      { path: '/vendas/pedidos/:id', Component: OrderDetailPage },
       { path: '/vendas/novo-pedido-solar', Component: SolarOrderPage },
       { path: '/vendas/novo-pedido-solar/solar-builder', Component: SolarBuilderPage },
       // Backward-compatible aliases for older links/buttons
@@ -36,6 +39,8 @@ const routes: RouteObject[] = [
 
       // Cadastros
       { path: '/clientes', Component: PlaceholderPage },
+      { path: '/clientes/:id', Component: ClientDetailPage },
+      { path: '/cadastros/campanhas', Component: PlaceholderPage },
       { path: '/cadastros/atributos-ecommerce', Component: PlaceholderPage },
 
       // Produtos
