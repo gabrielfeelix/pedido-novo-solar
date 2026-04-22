@@ -434,7 +434,7 @@ export const freightTypes = [
 
 export const builderStepLabels: { id: SolarBuilderStep; label: string; shortLabel: string }[] = [
   { id: 'setup', label: 'Dados iniciais', shortLabel: 'Dados iniciais' },
-  { id: 'panels', label: 'Painéis', shortLabel: 'Painéis' },
+  { id: 'panels', label: 'Módulos solares', shortLabel: 'Módulos' },
   { id: 'inverters', label: 'Inversores', shortLabel: 'Inversores' },
   { id: 'stringBox', label: 'String Box', shortLabel: 'String Box' },
   { id: 'structure', label: 'Estrutura', shortLabel: 'Estrutura' },

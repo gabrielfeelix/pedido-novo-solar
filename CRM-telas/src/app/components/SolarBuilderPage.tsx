@@ -587,6 +587,20 @@ export function SolarBuilderPage() {
     });
   };
 
+  const canAdvance = useMemo(() => {
+    if (step === 'panels') return selectedPanelId !== '' && panelQuantity > 0;
+    if (step === 'inverters') return Object.values(inverterQuantities).some((q) => q > 0);
+    if (step === 'structure') return Object.values(structureQuantities).some((q) => q > 0);
+    return true;
+  }, [step, selectedPanelId, panelQuantity, inverterQuantities, structureQuantities]);
+
+  const advanceBlockedReason = useMemo(() => {
+    if (step === 'panels') return 'Selecione um módulo e defina a quantidade para avançar';
+    if (step === 'inverters') return 'Adicione ao menos um inversor para avançar';
+    if (step === 'structure') return 'Adicione ao menos um item de estrutura para avançar';
+    return '';
+  }, [step]);
+
   const canConclude = (
     Boolean(pedido.clientePedido)
     && Boolean(pedido.clienteNota)
@@ -677,13 +691,11 @@ export function SolarBuilderPage() {
     const selectable = Boolean(onClick);
     const imageSrc = PRODUCT_IMAGE_BY_ICON[product.icon] ?? PRODUCT_IMAGE;
 
-    const quantityControls = selectable ? (
+    const quantityControls = selectable && !isSelected ? (
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-full ${
-          isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-400'
-        }`}
+        className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-400"
       >
-        {isSelected ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+        <Plus className="h-4 w-4" />
       </div>
     ) : (
       <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
@@ -840,78 +852,71 @@ export function SolarBuilderPage() {
     onClear: () => void;
     options: Array<{ value: string; label: string }>;
   }) => (
-    <div className="mb-5 grid gap-4 md:grid-cols-[minmax(0,1fr)_360px]">
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Buscar</label>
-        <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <Input
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-            placeholder={queryPlaceholder}
-            className={`${inputBase} pl-9`}
-          />
-        </div>
+    <div className="mb-5 flex flex-wrap items-center gap-2">
+      <div className="relative min-w-[180px] flex-1">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <Input
+          value={query}
+          onChange={(e) => onQueryChange(e.target.value)}
+          placeholder={queryPlaceholder}
+          className={`${inputBase} pl-9`}
+        />
       </div>
 
-      <div className="space-y-1.5">
-        <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Ordenar por</label>
-        <div className="flex items-center gap-2">
-          <Select value={sortField} onValueChange={onSortFieldChange}>
-            <SelectTrigger className={`${selectTriggerBase} flex-1`}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {options.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 border-slate-300"
-            onClick={onSortDirectionToggle}
-            title={sortDirection === 'asc' ? 'Crescente' : 'Decrescente'}
-          >
-            <ArrowUp className={`h-4 w-4 transition ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            className="h-11 w-11 border-slate-300"
-            onClick={onClear}
-            title="Limpar filtros"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-          <div className="flex rounded-lg border border-slate-300 bg-white p-0.5">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              title="Visualização em grade"
-              className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
-                viewMode === 'grid' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
-              }`}
-            >
-              <LayoutGrid className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              title="Visualização em lista"
-              className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
-                viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
-              }`}
-            >
-              <LayoutList className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
+      <Select value={sortField} onValueChange={onSortFieldChange}>
+        <SelectTrigger className={`${selectTriggerBase} w-[140px]`}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        className="h-11 w-11 shrink-0 border-slate-300"
+        onClick={onSortDirectionToggle}
+        title={sortDirection === 'asc' ? 'Crescente' : 'Decrescente'}
+      >
+        <ArrowUp className={`h-4 w-4 transition ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        className="h-11 w-11 shrink-0 border-slate-300"
+        onClick={onClear}
+        title="Limpar filtros"
+      >
+        <X className="h-4 w-4" />
+      </Button>
+      <div className="flex rounded-lg border border-slate-300 bg-white p-0.5">
+        <button
+          type="button"
+          onClick={() => setViewMode('grid')}
+          title="Grade"
+          className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
+            viewMode === 'grid' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
+          }`}
+        >
+          <LayoutGrid className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setViewMode('list')}
+          title="Lista"
+          className={`flex h-9 w-9 items-center justify-center rounded-md transition ${
+            viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-500 hover:bg-slate-50'
+          }`}
+        >
+          <LayoutList className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
@@ -1042,47 +1047,15 @@ export function SolarBuilderPage() {
         ]}
       />
 
-      {selectedPanelId ? (
-        <div className="flex flex-col gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">
-              Painel selecionado
-            </p>
-            <p className="mt-1 text-sm font-semibold text-slate-900">{selectedPanel?.name}</p>
+      {selectedPanelId && panelQuantity > 0 ? (
+        <div className="flex items-center gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold uppercase tracking-wider text-blue-700">Módulo selecionado</p>
+            <p className="truncate text-sm font-semibold text-slate-900">{selectedPanel?.name}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <label className="text-xs font-semibold uppercase tracking-wider text-blue-700">
-              Quantidade
-            </label>
-            <div className="flex items-center gap-1 rounded-lg border border-blue-200 bg-white p-0.5">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPanelQuantity((q) => Math.max(0, q - 1))}
-              >
-                <Minus className="h-4 w-4 text-blue-700" />
-              </Button>
-              <input
-                type="number"
-                min={0}
-                value={panelQuantity}
-                onChange={(e) => setPanelQuantity(Math.max(0, Number(e.target.value) || 0))}
-                className="w-14 border-0 bg-transparent text-center text-base font-bold text-slate-900 outline-none"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPanelQuantity((q) => q + 1)}
-              >
-                <Plus className="h-4 w-4 text-blue-700" />
-              </Button>
-            </div>
-            <div className="rounded-lg bg-white px-3 py-2 text-right">
-              <p className="text-[10px] uppercase tracking-wider text-blue-600">Potência</p>
-              <p className="text-lg font-bold text-slate-950">{powerKwp.toFixed(2)} kWp</p>
-            </div>
+          <div className="shrink-0 rounded-lg bg-white px-3 py-1.5 text-right">
+            <p className="text-[10px] uppercase tracking-wider text-blue-600">Potência total</p>
+            <p className="text-base font-bold text-slate-950">{powerKwp.toFixed(2)} kWp</p>
           </div>
         </div>
       ) : null}
@@ -1096,10 +1069,10 @@ export function SolarBuilderPage() {
           filteredPanels.map((p) =>
             renderProductCard(
               p,
-              0,
-              () => {},
-              () => {},
-              () => setSelectedPanelId(p.id),
+              selectedPanelId === p.id ? panelQuantity : 0,
+              () => { if (selectedPanelId === p.id) setPanelQuantity((q) => Math.max(0, q - 1)); },
+              () => { if (selectedPanelId === p.id) setPanelQuantity((q) => q + 1); },
+              () => { setSelectedPanelId(p.id); if (selectedPanelId !== p.id) setPanelQuantity(1); },
               selectedPanelId === p.id,
             ),
           )
@@ -1620,27 +1593,25 @@ export function SolarBuilderPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-4 px-6 py-4">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex max-w-[1800px] items-center justify-between gap-4 px-6 py-3">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
-              size="icon"
-              className="rounded-full"
+              size="sm"
+              className="gap-1.5 text-slate-600 hover:text-slate-900"
               onClick={() => navigate('/vendas/novo-pedido-solar')}
-              aria-label="Voltar"
+              aria-label="Sair da montagem"
             >
-              <ArrowLeft className="h-5 w-5 text-slate-600" />
+              <ArrowLeft className="h-4 w-4" />
+              <span className="hidden text-xs font-semibold sm:inline">Pedido solar</span>
             </Button>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Montagem de gerador
-              </p>
-              <h1 className="text-lg font-semibold text-slate-900">Kits Personalizados</h1>
-            </div>
+            <span className="text-slate-300">/</span>
+            <h1 className="text-sm font-semibold text-slate-900">Montagem do kit</h1>
           </div>
           <Button
             variant="outline"
-            className="border-slate-300"
+            size="sm"
+            className="border-slate-300 text-xs"
             onClick={() => {
               if (!hasBuilderProgress) {
                 resetBuilderFlow();
@@ -1649,7 +1620,7 @@ export function SolarBuilderPage() {
               setResetDialogOpen(true);
             }}
           >
-            <TimerReset className="h-4 w-4" /> Reiniciar
+            <TimerReset className="h-3.5 w-3.5" /> Reiniciar
           </Button>
         </div>
       </header>
@@ -1658,6 +1629,12 @@ export function SolarBuilderPage() {
         <main className="min-w-0 flex-1">
           {/* Stepper */}
           <div className="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between px-1">
+              <p className="text-xs font-semibold text-slate-500">
+                Passo {stepIndex + 1} de {builderStepLabels.length}
+              </p>
+              <p className="text-xs text-slate-400">{builderStepLabels[stepIndex]?.label}</p>
+            </div>
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-4 lg:grid-cols-7">
               {builderStepLabels.map((s, idx) => {
                 const isActive = s.id === step;
@@ -1716,20 +1693,23 @@ export function SolarBuilderPage() {
 
             <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-5">
               <Button
-                variant="outline"
-                className="border-slate-300"
+                variant="ghost"
+                className="text-slate-600"
                 onClick={handlePrev}
                 disabled={stepIndex === 0}
               >
                 <ArrowLeft className="h-4 w-4" /> Voltar
               </Button>
               {step !== 'summary' ? (
-                <Button
-                  className="bg-blue-600 text-white hover:bg-blue-700"
-                  onClick={handleNext}
-                >
-                  Avançar <ArrowRight className="h-4 w-4" />
-                </Button>
+                <span title={!canAdvance ? advanceBlockedReason : undefined}>
+                  <Button
+                    className="bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                    onClick={handleNext}
+                    disabled={!canAdvance}
+                  >
+                    Avançar <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </span>
               ) : (
                 <Button
                   className="bg-[#001233] text-white hover:bg-[#001233]/90"
@@ -1830,12 +1810,15 @@ export function SolarBuilderPage() {
               </div>
               <div className="flex items-center justify-between text-sm text-slate-600">
                 <span>Prêmio venda direta</span>
-                <span className="font-semibold text-emerald-600">
-                  +{formatCurrency(prizeAmount)}
+                <span className={`font-semibold ${prizeAmount > 0 ? 'text-emerald-600' : 'text-slate-400'}`}>
+                  {prizeAmount > 0 ? '+' : ''}{formatCurrency(prizeAmount)}
                 </span>
               </div>
               <div className="flex items-end justify-between border-t border-slate-200 pt-3">
-                <span className="text-xs uppercase tracking-wider text-slate-500">Total</span>
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-slate-500">Total</span>
+                  <p className="mt-0.5 text-[10px] text-slate-400">Pode variar conforme tributação.</p>
+                </div>
                 <span className="text-2xl font-bold text-slate-950">{formatCurrency(total)}</span>
               </div>
               <Button
@@ -1845,9 +1828,6 @@ export function SolarBuilderPage() {
               >
                 Concluir montagem
               </Button>
-              <p className="text-center text-[11px] text-slate-400">
-                Valor pode variar conforme tributação do cliente final.
-              </p>
             </div>
           </div>
         </aside>
