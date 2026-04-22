@@ -99,7 +99,7 @@ const INITIAL_STATE: PedidoState = {
 export function PedidoProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PedidoState>(INITIAL_STATE);
 
-  const setClientePedido = (c: OrderParty | null) => setState((s) => ({ ...s, clientePedido: c, clienteNota: s.clienteNota ?? c }));
+  const setClientePedido = (c: OrderParty | null) => setState((s) => ({ ...s, clientePedido: c }));
   const setClienteNota = (c: OrderParty | null) => setState((s) => ({ ...s, clienteNota: c }));
   const setDeliveryArea = (a: DeliveryArea) => setState((s) => ({ ...s, deliveryArea: a }));
   const setFreightType = (f: string) => setState((s) => ({ ...s, freightType: f }));

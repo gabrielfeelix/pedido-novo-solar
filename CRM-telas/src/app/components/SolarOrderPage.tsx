@@ -1446,11 +1446,10 @@ export function SolarOrderPage() {
                                     value={pricing.quantity}
                                     className="h-9 w-16 border-slate-300 bg-white text-center font-semibold"
                                   />
-                                  <p className="mt-1 text-[11px]">
-                                    <span className="text-emerald-600">Estoque: 55</span>
-                                    <br />
-                                    <span className="text-rose-500">Produção: 0</span>
-                                  </p>
+                                  <div className="mt-1 max-w-[72px] space-y-0.5 text-[10px] leading-3 sm:text-[11px] sm:leading-4">
+                                    <p className="font-medium text-emerald-600">Estoque 55</p>
+                                    <p className="font-medium text-rose-500">Produção 0</p>
+                                  </div>
                                 </TableCell>
 
                                 {/* Vl. Bruto */}
@@ -1551,68 +1550,59 @@ export function SolarOrderPage() {
                                           {componentCount} SKUs distintos · {item.components.reduce((s, c) => s + c.quantity, 0)} unidades
                                         </span>
                                       </div>
-                                      {Object.entries(
-                                        item.components.reduce<Record<string, GeneratorComponentItem[]>>((acc, c) => {
-                                          acc[c.category] = [...(acc[c.category] ?? []), c];
-                                          return acc;
-                                        }, {}),
-                                      ).map(([group, components]) => (
-                                        <div key={group} className="rounded-xl border border-slate-200 bg-white p-3">
-                                          <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-700">
-                                            {getCategoryIcon(group as GeneratorComponentItem['category'])}
-                                            {group}
-                                            <span className="text-slate-400">· {components.length}</span>
-                                          </div>
-                                          <div className="divide-y divide-slate-100">
-                                            {components.map((c) => (
-                                              <div
-                                                key={c.id}
-                                                className="flex flex-col gap-2 py-2 md:flex-row md:items-center md:justify-between"
-                                              >
-                                                <div className="flex min-w-0 flex-1 items-center gap-3">
-                                                  <img
-                                                    src={imageForSku(c.sku, c.category)}
-                                                    alt={c.name}
-                                                    className="h-12 w-12 shrink-0 rounded-md border border-slate-200 object-cover mix-blend-multiply"
-                                                  />
-                                                  <div className="min-w-0">
-                                                    <p className="text-xs font-bold text-slate-900">SKU {c.sku}</p>
-                                                    <p className="truncate text-sm font-medium text-slate-800">{c.name}</p>
-                                                    <p className="text-[11px] text-slate-500">{c.brand}</p>
-                                                  </div>
+                                      <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                                        {item.components.map((c) => (
+                                          <div
+                                            key={c.id}
+                                            className="flex flex-col gap-2 p-3 md:flex-row md:items-center md:justify-between"
+                                          >
+                                            <div className="flex min-w-0 flex-1 items-center gap-3">
+                                              <img
+                                                src={imageForSku(c.sku, c.category)}
+                                                alt={c.name}
+                                                className="h-12 w-12 shrink-0 rounded-md border border-slate-200 object-cover mix-blend-multiply"
+                                              />
+                                              <div className="min-w-0">
+                                                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
+                                                  {getCategoryIcon(c.category)}
+                                                  <span>SKU {c.sku}</span>
                                                 </div>
-                                                <div className="flex items-center gap-3">
-                                                  <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
-                                                    <Button
-                                                      variant="ghost"
-                                                      size="icon"
-                                                      className="h-7 w-7"
-                                                      onClick={() => pedido.updateGeneratorComponent(item.id, c.id, -1)}
-                                                    >
-                                                      <Minus className="h-3.5 w-3.5" />
-                                                    </Button>
-                                                    <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{c.quantity}</span>
-                                                    <Button
-                                                      variant="ghost"
-                                                      size="icon"
-                                                      className="h-7 w-7"
-                                                      onClick={() => pedido.updateGeneratorComponent(item.id, c.id, 1)}
-                                                    >
-                                                      <Plus className="h-3.5 w-3.5" />
-                                                    </Button>
-                                                  </div>
-                                                  <div className="min-w-[120px] text-right">
-                                                    <p className="text-sm font-semibold text-slate-900">
-                                                      {formatCurrency(c.quantity * c.unitPrice)}
-                                                    </p>
-                                                    <p className="text-[11px] text-slate-500">{formatCurrency(c.unitPrice)}/un</p>
-                                                  </div>
-                                                </div>
+                                                <p className="truncate text-sm font-medium text-slate-800">{c.name}</p>
+                                                <p className="text-[11px] text-slate-500">
+                                                  {c.brand} · {c.category}
+                                                </p>
                                               </div>
-                                            ))}
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                              <div className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white p-0.5">
+                                                <Button
+                                                  variant="ghost"
+                                                  size="icon"
+                                                  className="h-7 w-7"
+                                                  onClick={() => pedido.updateGeneratorComponent(item.id, c.id, -1)}
+                                                >
+                                                  <Minus className="h-3.5 w-3.5" />
+                                                </Button>
+                                                <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{c.quantity}</span>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="icon"
+                                                  className="h-7 w-7"
+                                                  onClick={() => pedido.updateGeneratorComponent(item.id, c.id, 1)}
+                                                >
+                                                  <Plus className="h-3.5 w-3.5" />
+                                                </Button>
+                                              </div>
+                                              <div className="min-w-[120px] text-right">
+                                                <p className="text-sm font-semibold text-slate-900">
+                                                  {formatCurrency(c.quantity * c.unitPrice)}
+                                                </p>
+                                                <p className="text-[11px] text-slate-500">{formatCurrency(c.unitPrice)}/un</p>
+                                              </div>
+                                            </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        ))}
+                                      </div>
                                     </div>
                                   </TableCell>
                                 </TableRow>

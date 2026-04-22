@@ -384,14 +384,6 @@ export function SolarBuilderPage() {
   const total = subtotal + prizeAmount;
 
   const stepIndex = builderStepLabels.findIndex((s) => s.id === step);
-  const countsByCategory = useMemo(() => {
-    const byCat: Record<string, number> = {};
-    liveItems.forEach((i) => {
-      byCat[i.category] = (byCat[i.category] ?? 0) + i.quantity;
-    });
-    return byCat;
-  }, [liveItems]);
-
   const filteredPanels = useMemo(() => {
     const q = normalizeText(panelQuery);
     const filtered = panelProducts.filter((p) =>
@@ -1528,69 +1520,76 @@ export function SolarBuilderPage() {
           Nenhum componente selecionado. Volte aos passos anteriores para montar o kit.
         </div>
       ) : (
-        <div className="space-y-4">
-          {(['Painéis', 'Inversores', 'String Box', 'Estrutura', 'Acessórios'] as const).map((cat) => {
-            const items = liveItems.filter((i) => i.category === cat);
-            if (items.length === 0) return null;
-            return (
-              <div key={cat} className="rounded-xl border border-slate-200 bg-white p-4">
-                <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-800">
-                  {categoryIcon(cat)} {cat}
-                </div>
-                <div className="divide-y divide-slate-100">
-                  {items.map((i) => (
-                    <div
-                      key={i.id}
-                      className="flex items-center justify-between gap-3 py-2 text-sm"
-                    >
-                      <div className="flex min-w-0 items-center gap-3">
-                        <img
-                          src={SUMMARY_IMAGE_BY_CATEGORY[i.category]}
-                          alt={i.name}
-                          className="h-12 w-12 shrink-0 rounded-lg border border-slate-200 object-cover"
-                        />
-                        <div className="min-w-0">
-                          <p className="truncate font-medium text-slate-900">{i.name}</p>
-                          <p className="text-xs text-slate-500">
-                            SKU {i.sku} · {i.brand}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-xs text-slate-500">×{i.quantity}</span>
-                        <span className="min-w-[100px] text-right font-semibold text-slate-900">
-                          {formatCurrency(i.quantity * i.unitPrice)}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className={`h-8 w-8 ${
-                            i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
-                              ? 'text-amber-500'
-                              : 'text-slate-500 hover:text-red-600'
-                          }`}
-                          onClick={() => removeLiveItem(i.id, i.category)}
-                          disabled={Boolean(i.category === 'Acessórios' && requiredAccessoryMinimums[i.id])}
-                          aria-label="Excluir item da revisão"
-                          title={
-                            i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
-                              ? 'Item prefixado pela estrutura'
-                              : 'Excluir item'
-                          }
-                        >
-                          {i.category === 'Acessórios' && requiredAccessoryMinimums[i.id] ? (
-                            <LockKeyhole className="h-4 w-4" />
-                          ) : (
-                            <Trash2 className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Componentes do kit</p>
+              <p className="text-xs text-slate-500">
+                Listagem corrida com todos os SKUs selecionados.
+              </p>
+            </div>
+            <span className="text-xs text-slate-500">
+              {liveItems.length} SKU{liveItems.length !== 1 ? 's' : ''} distintos
+            </span>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {liveItems.map((i) => (
+              <div
+                key={i.id}
+                className="flex flex-col gap-3 px-4 py-3 text-sm md:flex-row md:items-center md:justify-between"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <img
+                    src={SUMMARY_IMAGE_BY_CATEGORY[i.category]}
+                    alt={i.name}
+                    className="h-12 w-12 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge
+                        variant="outline"
+                        className="border-slate-200 bg-slate-50 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-600"
+                      >
+                        {i.category}
+                      </Badge>
+                      <span className="text-xs font-semibold text-slate-900">SKU {i.sku}</span>
                     </div>
-                  ))}
+                    <p className="mt-1 truncate font-medium text-slate-900">{i.name}</p>
+                    <p className="text-xs text-slate-500">{i.brand}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 self-end md:self-auto">
+                  <span className="text-xs text-slate-500">×{i.quantity}</span>
+                  <span className="min-w-[100px] text-right font-semibold text-slate-900">
+                    {formatCurrency(i.quantity * i.unitPrice)}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={`h-8 w-8 ${
+                      i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                        ? 'text-amber-500'
+                        : 'text-slate-500 hover:text-red-600'
+                    }`}
+                    onClick={() => removeLiveItem(i.id, i.category)}
+                    disabled={Boolean(i.category === 'Acessórios' && requiredAccessoryMinimums[i.id])}
+                    aria-label="Excluir item da revisão"
+                    title={
+                      i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                        ? 'Item prefixado pela estrutura'
+                        : 'Excluir item'
+                    }
+                  >
+                    {i.category === 'Acessórios' && requiredAccessoryMinimums[i.id] ? (
+                      <LockKeyhole className="h-4 w-4" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </Button>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -1772,59 +1771,55 @@ export function SolarBuilderPage() {
                   Selecione componentes — eles aparecem aqui em tempo real.
                 </div>
               ) : (
-                (['Painéis', 'Inversores', 'String Box', 'Estrutura', 'Acessórios'] as const).map((cat) => {
-                  const items = liveItems.filter((i) => i.category === cat);
-                  if (items.length === 0) return null;
-                  return (
-                    <div key={cat}>
-                      <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                        {categoryIcon(cat)} {cat}
-                        <span className="text-slate-400">· {countsByCategory[cat]}</span>
+                liveItems.map((i) => (
+                  <div
+                    key={i.id}
+                    className="group flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-2"
+                  >
+                    <img
+                      src={SUMMARY_IMAGE_BY_CATEGORY[i.category]}
+                      alt={i.name}
+                      className="h-10 w-10 shrink-0 rounded-md border border-slate-200 object-cover"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                          {categoryIcon(i.category)} {i.category}
+                        </span>
                       </div>
-                      <div className="space-y-1.5">
-                        {items.map((i) => (
-                          <div
-                            key={i.id}
-                            className="group flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-2"
-                          >
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-xs font-medium text-slate-900">
-                                {i.name}
-                              </p>
-                              <p className="text-[11px] text-slate-500">
-                                {i.quantity} × {formatCurrency(i.unitPrice)}
-                              </p>
-                            </div>
-                            <div className="flex flex-col items-end gap-1">
-                              <span className="text-xs font-semibold text-slate-900">
-                                {formatCurrency(i.quantity * i.unitPrice)}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => removeLiveItem(i.id, i.category)}
-                                className={`transition group-hover:opacity-100 ${
-                                  i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
-                                    ? 'cursor-not-allowed text-amber-500 opacity-100'
-                                    : 'text-slate-300 opacity-0 hover:text-red-500'
-                                }`}
-                                aria-label="Remover"
-                                title={
-                                  i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
-                                    ? 'Item prefixado pela estrutura'
-                                    : 'Remover'
-                                }
-                              >
-                                {i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
-                                  ? <LockKeyhole className="h-3.5 w-3.5" />
-                                  : <Trash2 className="h-3.5 w-3.5" />}
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                      <p className="mt-1 truncate text-xs font-medium text-slate-900">
+                        {i.name}
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        {i.quantity} × {formatCurrency(i.unitPrice)}
+                      </p>
                     </div>
-                  );
-                })
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="text-xs font-semibold text-slate-900">
+                        {formatCurrency(i.quantity * i.unitPrice)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeLiveItem(i.id, i.category)}
+                        className={`transition group-hover:opacity-100 ${
+                          i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                            ? 'cursor-not-allowed text-amber-500 opacity-100'
+                            : 'text-slate-300 opacity-0 hover:text-red-500'
+                        }`}
+                        aria-label="Remover"
+                        title={
+                          i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                            ? 'Item prefixado pela estrutura'
+                            : 'Remover'
+                        }
+                      >
+                        {i.category === 'Acessórios' && requiredAccessoryMinimums[i.id]
+                          ? <LockKeyhole className="h-3.5 w-3.5" />
+                          : <Trash2 className="h-3.5 w-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
 
