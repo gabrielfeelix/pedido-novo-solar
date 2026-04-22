@@ -74,6 +74,7 @@ import {
   type OrderParty,
 } from '../data/solarOrderMockData';
 import { imageForSku } from '../data/productImages';
+import { OrderFinalizeDialog } from './OrderFinalizeDialog';
 import {
   usePedido,
   type GeneratorComponentItem,
@@ -846,6 +847,7 @@ export function SolarOrderPage() {
   const [activeTab, setActiveTab] = useState<OrderTab>('items');
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const [avulsoOpen, setAvulsoOpen] = useState(false);
+  const [finalizeDialogOpen, setFinalizeDialogOpen] = useState(false);
   const [priceTable, setPriceTable] = useState('46 - Tabela Corrente');
   const [operation, setOperation] = useState('11 - Venda de Mercadorias');
   const [origin, setOrigin] = useState('ERP');
@@ -1040,35 +1042,35 @@ export function SolarOrderPage() {
 
   const hasIntegrator = Boolean(pedido.clientePedido);
   const hasBillingClient = Boolean(pedido.clienteNota);
-  const triangulationEnabled = operation.startsWith('13');
-  const errorBlockCount = Number(!hasIntegrator) + Number(!hasBillingClient);
+  const triangulationEnabled = operation.startsWith('13') || pedido.saleType === 'triangulation';
   const warningBlockCount = pendingApprovals > 0 ? 1 : 0;
-  const blockCount = errorBlockCount + warningBlockCount;
-  const flowStage = !hasIntegrator || !hasBillingClient
-    ? 'Rascunho'
-    : pendingApprovals > 0
-      ? 'Em revisão'
-      : 'Finalizado';
+  const blockCount = warningBlockCount;
+  const flowStage = pedido.stage === 'order'
+    ? pendingApprovals > 0 ? 'Em revisão' : 'Finalizado'
+    : 'Orçamento';
   const flowStageClass = flowStage === 'Finalizado'
     ? 'bg-emerald-100 text-emerald-800'
     : flowStage === 'Em revisão'
       ? 'bg-amber-100 text-amber-800'
-      : 'bg-slate-200 text-slate-800';
+      : 'bg-blue-100 text-blue-800';
   const hasReviewBeenFinalized = Boolean(reviewFinalizedAt);
   const unresolvedReviewReasons = [
-    !hasIntegrator ? 'Definir o integrador do pedido.' : null,
-    !hasBillingClient ? 'Definir o cliente para faturamento.' : null,
     pendingApprovals > 0 ? `${pendingApprovals} gerador(es) ainda aguardam aprovação técnica.` : null,
   ].filter((item): item is string => Boolean(item));
   const whatsappRecipient = pedido.clienteNota ?? pedido.clientePedido;
   const whatsappPhone = whatsappRecipient?.phone ? normalizePhone(whatsappRecipient.phone) : '';
-  const whatsappPdfFilename = buildOrderPdfFilename(orderNumber);
-  const outboundActionsEnabled = hasIntegrator && hasBillingClient;
-  const outboundActionsTooltip = 'Selecione o integrador e o cliente para faturamento para liberar esta ação.';
+  const displayOrderNumber = pedido.stage === 'order'
+    ? (pedido.orderNumber ?? orderNumber)
+    : (pedido.budgetNumber ?? orderNumber);
+  const whatsappPdfFilename = buildOrderPdfFilename(displayOrderNumber);
+  const outboundActionsEnabled = pedido.stage === 'order' && pendingApprovals === 0;
+  const outboundActionsTooltip = pedido.stage === 'budget'
+    ? 'Finalize o orçamento e transforme em pedido para liberar esta ação.'
+    : 'Aguardando aprovação técnica dos geradores para liberar esta ação.';
   const whatsappMessage = whatsappRecipient
     ? [
         `Olá, ${whatsappRecipient.contactName}.`,
-        `Segue o pedido ${orderNumber} em PDF para conferência.`,
+        `Segue o pedido ${displayOrderNumber} em PDF para conferência.`,
         `Cliente: ${whatsappRecipient.name}`,
         `Total do pedido: ${formatCurrency(orderTotals.grandTotal)}`,
         `Arquivo previsto: ${whatsappPdfFilename}`,
@@ -1109,14 +1111,19 @@ export function SolarOrderPage() {
         <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6">
           <div className="flex flex-col gap-4">
             <div>
-              <Badge className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-amber-800 hover:bg-amber-100">
-                Pedido Venda Solar
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-amber-800 hover:bg-amber-100">
+                  Orçamento Solar
+                </Badge>
+                {pedido.budgetNumber && (
+                  <span className="text-xs font-mono text-slate-400">{pedido.budgetNumber}</span>
+                )}
+              </div>
               <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">
-                Novo pedido solar
+                Novo orçamento solar
               </h1>
               <p className="mt-2 max-w-3xl text-sm text-slate-600">
-                Selecione os clientes, monte o kit solar e organize os itens do pedido em um fluxo comercial único no CRM.
+                Monte o kit solar e organize os itens do orçamento. Integrador e tipo de venda serão definidos ao finalizar.
               </p>
               {emptyStateNotice ? (
                 <div className="mt-4 max-w-3xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
@@ -1126,41 +1133,6 @@ export function SolarOrderPage() {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {pedido.clientePedido ? (
-              <ClientCardDetailed
-                title="Integrador (cliente do pedido)"
-                client={pedido.clientePedido}
-                onChange={pedido.setClientePedido}
-                onClear={() => pedido.setClientePedido(null)}
-                variant="pedido"
-              />
-            ) : (
-              <ClientInlineSearch
-                title="Integrador (cliente do pedido)"
-                icon={<Building2 className="h-4 w-4" />}
-                helper="Integrador responsável pelo pedido."
-                onSelect={pedido.setClientePedido}
-              />
-            )}
-            {pedido.clienteNota ? (
-              <ClientCardDetailed
-                title="Cliente para faturamento"
-                client={pedido.clienteNota}
-                onChange={pedido.setClienteNota}
-                onClear={() => pedido.setClienteNota(null)}
-                variant="nota"
-              />
-            ) : (
-              <ClientInlineSearch
-                title="Cliente para faturamento"
-                icon={<UserRound className="h-4 w-4" />}
-                helper="Cliente que receberá o faturamento da nota fiscal."
-                onSelect={pedido.setClienteNota}
-              />
-            )}
-          </div>
-
           <Card className="border-dashed border-slate-300 bg-white shadow-none">
             <CardContent className="flex flex-col items-center gap-3 py-16 text-center">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
@@ -1168,15 +1140,15 @@ export function SolarOrderPage() {
               </div>
               <p className="text-lg font-semibold text-slate-900">Nenhum item adicionado ainda</p>
               <p className="max-w-md text-sm text-slate-500">
-                Comece por <strong>Montar gerador solar</strong> — o fluxo guiado monta o kit
-                completo. Depois você pode incluir produtos avulsos que não fazem parte do gerador.
+                Comece por <strong>Montar kit solar</strong> — o fluxo guiado monta o kit completo.
+                Depois você pode incluir produtos avulsos que não fazem parte do gerador.
               </p>
               <div className="mt-2 flex flex-wrap justify-center gap-2">
                 <Button
                   className="bg-[#001233] text-white hover:bg-[#001233]/90"
                   onClick={() => navigate('/vendas/novo-pedido-solar/solar-builder')}
                 >
-                  <SunMedium className="h-4 w-4" /> Monte seu kit solar
+                  <SunMedium className="h-4 w-4" /> Montar kit solar
                 </Button>
                 <Button variant="outline" onClick={() => setAvulsoOpen(true)}>
                   <Plus className="h-4 w-4" /> Produto avulso
@@ -1213,7 +1185,8 @@ export function SolarOrderPage() {
               </Badge>
             </div>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
-              Pedido <span className="text-slate-500">{orderNumber}</span>
+              {pedido.stage === 'order' ? 'Pedido' : 'Orçamento'}{' '}
+              <span className="text-slate-500">{displayOrderNumber}</span>
             </h1>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -1311,40 +1284,47 @@ export function SolarOrderPage() {
         </div>
 
         {/* Clients */}
-        <div className="grid gap-4 md:grid-cols-2">
-          {pedido.clientePedido ? (
-            <ClientCardDetailed
-              title="Integrador"
-              client={pedido.clientePedido}
-              onChange={pedido.setClientePedido}
-              onClear={() => pedido.setClientePedido(null)}
-              variant="pedido"
-            />
-          ) : (
-            <ClientInlineSearch
-              title="Integrador"
-              icon={<Building2 className="h-4 w-4" />}
-              helper="Integrador responsável pelo pedido."
-              onSelect={pedido.setClientePedido}
-            />
-          )}
-          {pedido.clienteNota ? (
-            <ClientCardDetailed
-              title="Cliente para faturamento"
-              client={pedido.clienteNota}
-              onChange={pedido.setClienteNota}
-              onClear={() => pedido.setClienteNota(null)}
-              variant="nota"
-            />
-          ) : (
-            <ClientInlineSearch
-              title="Cliente para faturamento"
-              icon={<UserRound className="h-4 w-4" />}
-              helper="Cliente que receberá o faturamento da nota fiscal."
-              onSelect={pedido.setClienteNota}
-            />
-          )}
-        </div>
+        {pedido.stage === 'budget' ? (
+          <div className="flex items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50/60 px-5 py-4 text-sm text-slate-500">
+            <Users className="h-4 w-4 shrink-0 text-slate-400" />
+            <span>Integrador e tipo de venda serão definidos ao finalizar o orçamento.</span>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {pedido.clientePedido ? (
+              <ClientCardDetailed
+                title="Integrador"
+                client={pedido.clientePedido}
+                onChange={pedido.setClientePedido}
+                onClear={() => pedido.setClientePedido(null)}
+                variant="pedido"
+              />
+            ) : (
+              <ClientInlineSearch
+                title="Integrador"
+                icon={<Building2 className="h-4 w-4" />}
+                helper="Integrador responsável pelo pedido."
+                onSelect={pedido.setClientePedido}
+              />
+            )}
+            {pedido.clienteNota ? (
+              <ClientCardDetailed
+                title="Cliente para faturamento"
+                client={pedido.clienteNota}
+                onChange={pedido.setClienteNota}
+                onClear={() => pedido.setClienteNota(null)}
+                variant="nota"
+              />
+            ) : (
+              <ClientInlineSearch
+                title="Cliente para faturamento"
+                icon={<UserRound className="h-4 w-4" />}
+                helper="Cliente que receberá o faturamento da nota fiscal."
+                onSelect={pedido.setClienteNota}
+              />
+            )}
+          </div>
+        )}
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as OrderTab)}>
@@ -2001,9 +1981,6 @@ export function SolarOrderPage() {
           {/* BLOCKS */}
           <TabsContent value="blocks" className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="outline" className="border-red-200 bg-red-50 text-red-700">
-                Erros: {errorBlockCount}
-              </Badge>
               <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-700">
                 Atenções: {warningBlockCount}
               </Badge>
@@ -2013,19 +1990,11 @@ export function SolarOrderPage() {
                 </Badge>
               ) : null}
             </div>
-            {!hasIntegrator ? (
-              <Card className="border-amber-200 bg-amber-50 shadow-none">
-                <CardContent className="flex items-start gap-3 py-4 text-sm text-amber-900">
-                  <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" />
-                  <p>Pedido sem integrador vinculado. Defina o cliente do pedido para continuar.</p>
-                </CardContent>
-              </Card>
-            ) : null}
-            {!hasBillingClient ? (
-              <Card className="border-red-200 bg-red-50 shadow-none">
-                <CardContent className="flex items-start gap-3 py-4 text-sm text-red-900">
-                  <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" />
-                  <p>Cliente para faturamento não definido. A emissão de nota ficará inconsistente.</p>
+            {pedido.stage === 'budget' ? (
+              <Card className="border-blue-200 bg-blue-50 shadow-none">
+                <CardContent className="flex items-start gap-3 py-4 text-sm text-blue-900">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0" />
+                  <p>Este orçamento ainda não foi transformado em pedido. Integrador e tipo de venda serão definidos ao finalizar.</p>
                 </CardContent>
               </Card>
             ) : null}
@@ -2037,7 +2006,7 @@ export function SolarOrderPage() {
                 </CardContent>
               </Card>
             ) : null}
-            {hasIntegrator && hasBillingClient && pendingApprovals === 0 ? (
+            {pedido.stage === 'order' && pendingApprovals === 0 ? (
               <Card className="border-slate-200 shadow-sm">
                 <CardContent className="py-6 text-center text-sm text-slate-500">Nenhum bloqueio ativo.</CardContent>
               </Card>
@@ -2073,20 +2042,41 @@ export function SolarOrderPage() {
             <Button variant="outline" onClick={() => setActionDialog({ kind: 'discard' })}>
               <Trash2 className="h-4 w-4" /> Descartar
             </Button>
-            <Button
-              className="bg-[#001233] text-white hover:bg-[#001233]/90"
-              onClick={handleFinalizeReview}
-            >
-              {hasReviewBeenFinalized ? (
-                <TimerReset className="h-4 w-4" />
-              ) : (
-                <History className="h-4 w-4" />
-              )}{' '}
-              {hasReviewBeenFinalized ? 'Reabrir revisão' : 'Finalizar revisão'}
-            </Button>
+            {pedido.stage === 'budget' ? (
+              <Button
+                className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                onClick={() => setFinalizeDialogOpen(true)}
+              >
+                <Check className="h-4 w-4" /> Finalizar orçamento
+              </Button>
+            ) : (
+              <Button
+                className="bg-[#001233] text-white hover:bg-[#001233]/90"
+                onClick={handleFinalizeReview}
+              >
+                {hasReviewBeenFinalized ? (
+                  <TimerReset className="h-4 w-4" />
+                ) : (
+                  <History className="h-4 w-4" />
+                )}{' '}
+                {hasReviewBeenFinalized ? 'Reabrir revisão' : 'Finalizar revisão'}
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      <OrderFinalizeDialog
+        open={finalizeDialogOpen}
+        onOpenChange={setFinalizeDialogOpen}
+        onPromoted={() => {
+          appendHistory(
+            'Orçamento transformado em pedido',
+            'Tipo de venda e clientes vinculados. Pedido pronto para revisão.',
+            'success',
+          );
+        }}
+      />
 
       <Dialog open={Boolean(actionDialog)} onOpenChange={(open) => !open && setActionDialog(null)}>
         <DialogContent className="sm:max-w-[560px]">

@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import type { DeliveryArea, OrderParty, SolarTechnicalApprovalStatus } from '../data/solarOrderMockData';
 
+export type SaleType = 'normal' | 'direct' | 'triangulation';
+export type OrderStage = 'budget' | 'order';
+
 export interface GeneratorComponentItem {
   id: string;
   category: 'Painéis' | 'Inversores' | 'String Box' | 'Estrutura' | 'Acessórios';
@@ -30,6 +33,7 @@ export interface SolarGenerator {
   approvalTimestamp: string;
   approvalNote: string;
   components: GeneratorComponentItem[];
+  isCustomized: boolean;
 }
 
 export interface LooseOrderItem {
@@ -46,6 +50,10 @@ export interface LooseOrderItem {
 export type OrderItem = SolarGenerator | LooseOrderItem;
 
 interface PedidoState {
+  stage: OrderStage;
+  saleType: SaleType | null;
+  budgetNumber: string | null;
+  orderNumber: string | null;
   orderItems: OrderItem[];
   clientePedido: OrderParty | null;
   clienteNota: OrderParty | null;
@@ -59,6 +67,7 @@ interface PedidoState {
 interface PedidoContextValue extends PedidoState {
   setClientePedido: (c: OrderParty | null) => void;
   setClienteNota: (c: OrderParty | null) => void;
+  setSaleType: (t: SaleType | null) => void;
   setDeliveryArea: (a: DeliveryArea) => void;
   setFreightType: (f: string) => void;
   setFinancialCondition: (c: string) => void;
@@ -70,6 +79,7 @@ interface PedidoContextValue extends PedidoState {
   updateGeneratorComponent: (generatorId: string, componentId: string, delta: number) => void;
   updateApproval: (generatorId: string, status: SolarTechnicalApprovalStatus, note?: string) => void;
   duplicateGenerator: (generatorId: string) => void;
+  promoteBudgetToOrder: () => { success: boolean; error?: string };
   resetOrder: () => void;
 }
 
@@ -85,7 +95,19 @@ function formatDateTime() {
   }).format(new Date());
 }
 
+function generateBudgetNumber() {
+  return `ORC-${Date.now().toString().slice(-7)}`;
+}
+
+function generateOrderNumber() {
+  return `PED-${Date.now().toString().slice(-7)}`;
+}
+
 const INITIAL_STATE: PedidoState = {
+  stage: 'budget',
+  saleType: null,
+  budgetNumber: generateBudgetNumber(),
+  orderNumber: null,
   orderItems: [],
   clientePedido: null,
   clienteNota: null,
@@ -101,6 +123,7 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
 
   const setClientePedido = (c: OrderParty | null) => setState((s) => ({ ...s, clientePedido: c }));
   const setClienteNota = (c: OrderParty | null) => setState((s) => ({ ...s, clienteNota: c }));
+  const setSaleType = (t: SaleType | null) => setState((s) => ({ ...s, saleType: t }));
   const setDeliveryArea = (a: DeliveryArea) => setState((s) => ({ ...s, deliveryArea: a }));
   const setFreightType = (f: string) => setState((s) => ({ ...s, freightType: f }));
   const setFinancialCondition = (c: string) => setState((s) => ({ ...s, financialCondition: c }));
@@ -129,15 +152,18 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
           .filter((c) => c.quantity > 0);
         const subtotal = components.reduce((t, c) => t + c.unitPrice * c.quantity, 0);
         const prizeAmount = item.prizeMode === 'percent' ? subtotal * (item.prizeValue / 100) : item.prizeValue;
+        const needsReApproval = item.approvalStatus !== 'none';
         return {
           ...item,
           components,
           subtotal,
           total: subtotal + prizeAmount,
           prizeAmount,
-          approvalStatus: 'pending' as const,
-          approvalTimestamp: formatDateTime(),
-          approvalNote: 'Quantidade alterada no pedido. Pendente de revisão técnica.',
+          approvalStatus: needsReApproval ? ('pending' as const) : item.approvalStatus,
+          approvalTimestamp: needsReApproval ? formatDateTime() : item.approvalTimestamp,
+          approvalNote: needsReApproval
+            ? 'Quantidade alterada no pedido. Pendente de revisão técnica.'
+            : item.approvalNote,
         };
       }),
     }));
@@ -182,7 +208,27 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const resetOrder = () => setState(INITIAL_STATE);
+  const promoteBudgetToOrder = (): { success: boolean; error?: string } => {
+    let error: string | undefined;
+    setState((s) => {
+      if (!s.saleType) {
+        error = 'Selecione o tipo de venda antes de transformar em pedido.';
+        return s;
+      }
+      if (!s.clientePedido) {
+        error = 'Selecione o integrador antes de transformar em pedido.';
+        return s;
+      }
+      if ((s.saleType === 'direct' || s.saleType === 'triangulation') && !s.clienteNota) {
+        error = 'Selecione o cliente de faturamento antes de transformar em pedido.';
+        return s;
+      }
+      return { ...s, stage: 'order', orderNumber: generateOrderNumber() };
+    });
+    return error ? { success: false, error } : { success: true };
+  };
+
+  const resetOrder = () => setState({ ...INITIAL_STATE, budgetNumber: generateBudgetNumber() });
 
   return (
     <PedidoContext.Provider
@@ -190,6 +236,7 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
         ...state,
         setClientePedido,
         setClienteNota,
+        setSaleType,
         setDeliveryArea,
         setFreightType,
         setFinancialCondition,
@@ -201,6 +248,7 @@ export function PedidoProvider({ children }: { children: ReactNode }) {
         updateGeneratorComponent,
         updateApproval,
         duplicateGenerator,
+        promoteBudgetToOrder,
         resetOrder,
       }}
     >
