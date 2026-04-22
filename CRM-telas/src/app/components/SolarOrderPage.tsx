@@ -1105,7 +1105,7 @@ export function SolarOrderPage() {
   /* =========================== EMPTY STATE =========================== */
   if (!hasGeneratedOrder) {
     return (
-      <div className="min-h-full bg-slate-50 py-8">
+      <div className="min-h-full bg-transparent py-8">
         <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6">
           <div className="flex flex-col gap-4">
             <div>
