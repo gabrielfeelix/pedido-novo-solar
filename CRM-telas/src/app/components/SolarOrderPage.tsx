@@ -13,6 +13,7 @@ import {
   MapPin,
   MessageCircle,
   Pencil,
+  Plus,
   Search,
   ShieldCheck,
   ShoppingCart,
