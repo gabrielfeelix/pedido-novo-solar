@@ -1193,7 +1193,7 @@ export function SolarOrderPage() {
 
   /* =========================== ORDER (PEDIDO REALIZADO) STATE =========================== */
   return (
-    <div className="min-h-full bg-slate-50 pb-20 pt-8">
+    <div className="min-h-full bg-transparent pb-20 pt-8">
       <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-6">
 
         {/* Header: status + title + actions */}
