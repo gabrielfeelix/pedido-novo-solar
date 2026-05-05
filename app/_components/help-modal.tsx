@@ -1,14 +1,15 @@
 'use client';
 
-import { LifeBuoy, Send, Sparkles } from 'lucide-react';
+import { Lightbulb, Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { Modal } from './ui';
 
 const TOPICS = [
-  { id: 'novo-prototipo', label: 'Novo protótipo' },
-  { id: 'bug', label: 'Erro / bug' },
-  { id: 'feedback', label: 'Feedback' },
-  { id: 'outro', label: 'Outro' },
+  { id: 'sugestao', label: 'Sugestão de UX', hint: 'Ideia, melhoria ou refinamento de fluxo' },
+  { id: 'nova-tela', label: 'Nova tela', hint: 'Pedir uma tela inédita pro produto' },
+  { id: 'nova-feature', label: 'Nova feature', hint: 'Funcionalidade nova que precisa de design' },
+  { id: 'redesign', label: 'Redesign de tela', hint: 'Atualizar uma tela existente' },
+  { id: 'design-review', label: 'Design review', hint: 'Pedir uma avaliação de UX/usabilidade' },
 ] as const;
 
 export function HelpModal({
@@ -18,7 +19,7 @@ export function HelpModal({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
-  const [topic, setTopic] = useState<(typeof TOPICS)[number]['id']>('novo-prototipo');
+  const [topic, setTopic] = useState<(typeof TOPICS)[number]['id']>('sugestao');
   const [text, setText] = useState('');
   const [sent, setSent] = useState(false);
 
@@ -36,8 +37,8 @@ export function HelpModal({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
-      title="Abrir chamado"
-      description="Conte o que precisa. A equipe de UX recebe uma notificação."
+      title="Abrir chamado de UX"
+      description="Pedidos que dependem do time de design — ideias, novas telas, redesign, reviews."
       size="md"
     >
       {sent ? (
@@ -47,7 +48,7 @@ export function HelpModal({
           </div>
           <p className="text-base font-semibold">Chamado enviado</p>
           <p className="text-sm text-ink-500 mt-1">
-            A equipe de UX vai responder no e-mail vinculado.
+            Vai aparecer no seu histórico de atividades.
           </p>
         </div>
       ) : (
@@ -56,7 +57,7 @@ export function HelpModal({
             <label className="text-[11px] font-semibold uppercase tracking-[0.15em] text-ink-400 mb-2 block">
               Tipo
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {TOPICS.map((t) => {
                 const active = topic === t.id;
                 return (
@@ -64,13 +65,20 @@ export function HelpModal({
                     key={t.id}
                     type="button"
                     onClick={() => setTopic(t.id)}
-                    className={`text-xs font-medium px-3 py-1.5 rounded-full border transition ${
+                    className={`text-left rounded-2xl px-3 py-2.5 border transition ${
                       active
                         ? 'bg-[#0B1020] text-white border-[#0B1020]'
-                        : 'bg-white/70 border-white text-ink-500 hover:text-[#0B1020]'
+                        : 'bg-white/70 border-white text-ink-700 hover:border-ink-200'
                     }`}
                   >
-                    {t.label}
+                    <p className="text-xs font-semibold">{t.label}</p>
+                    <p
+                      className={`text-[10px] mt-0.5 ${
+                        active ? 'text-white/70' : 'text-ink-400'
+                      }`}
+                    >
+                      {t.hint}
+                    </p>
                   </button>
                 );
               })}
@@ -85,7 +93,7 @@ export function HelpModal({
               required
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Descreva o pedido com o máximo de contexto que puder..."
+              placeholder="Descreva o pedido com o contexto necessário..."
               className="input-glass"
               rows={5}
             />
@@ -93,12 +101,12 @@ export function HelpModal({
 
           <div className="flex items-center justify-between pt-1">
             <p className="text-[11px] text-ink-400 inline-flex items-center gap-1.5">
-              <LifeBuoy size={12} />
-              Time UX responde em até 24h.
+              <Lightbulb size={12} />
+              Pedidos técnicos vão pro time de dev, não passam por aqui.
             </p>
             <button type="submit" className="btn-primary" disabled={!text.trim()}>
               <Send size={13} />
-              Enviar chamado
+              Enviar pra UX
             </button>
           </div>
         </form>

@@ -2,11 +2,12 @@
 
 import {
   Building2,
-  FolderGit2,
   Layers,
   MessageSquare,
   Plus,
   Sparkles,
+  Trash2,
+  Workflow,
 } from 'lucide-react';
 import Link from 'next/link';
 import { relativeTime } from '../_lib/storage';
@@ -15,16 +16,20 @@ import type { Activity, Workspace } from '../_lib/types';
 const ICONS: Record<Activity['kind'], React.ComponentType<{ size?: number; className?: string }>> = {
   'prototype.created': Plus,
   'prototype.updated': Layers,
+  'prototype.removed': Trash2,
   'version.added': Layers,
   'comment.added': MessageSquare,
+  'handoff.updated': Workflow,
   'company.viewed': Building2,
 };
 
 const TINTS: Record<Activity['kind'], string> = {
   'prototype.created': 'bg-emerald-50 text-emerald-600',
   'prototype.updated': 'bg-violet-50 text-violet-600',
+  'prototype.removed': 'bg-rose-50 text-rose-600',
   'version.added': 'bg-blue-50 text-blue-600',
   'comment.added': 'bg-amber-50 text-amber-600',
+  'handoff.updated': 'bg-cyan-50 text-cyan-600',
   'company.viewed': 'bg-slate-100 text-slate-600',
 };
 

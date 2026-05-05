@@ -1,10 +1,10 @@
 'use client';
 
-import { ArrowLeft, Layers, Search } from 'lucide-react';
+import { ArrowLeft, Layers } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { NotificationBell } from './notifications';
-import { SearchCommand } from './search-command';
+import { SearchDropdown } from './search-dropdown';
 import { HelpModal } from './help-modal';
 import type { Activity, Workspace } from '../_lib/types';
 
@@ -12,38 +12,17 @@ export function TopBar({
   workspace,
   activity,
   left,
-  variant = 'home',
 }: {
   workspace: Workspace;
   activity: Activity[];
   left?: ReactNode;
   variant?: 'home' | 'app';
 }) {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      const isMeta = e.metaKey || e.ctrlKey;
-      if (isMeta && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setSearchOpen((o) => !o);
-      }
-      if (e.key === '/' && !searchOpen) {
-        const tag = (e.target as HTMLElement)?.tagName;
-        if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
-          e.preventDefault();
-          setSearchOpen(true);
-        }
-      }
-    }
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [searchOpen]);
 
   return (
     <div className="sticky-header">
-      <div className="px-6 md:px-10 py-4">
+      <div className="px-6 md:px-10 py-3.5">
         <div className="max-w-7xl mx-auto flex items-center gap-4">
           {left ?? (
             <Link
@@ -61,24 +40,10 @@ export function TopBar({
           )}
 
           <div className="flex-1 hidden md:flex justify-center">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="glass-pill rounded-full pl-4 pr-2 py-2 flex items-center gap-3 w-full max-w-md text-left text-ink-400 hover:text-ink-700 transition"
-            >
-              <Search size={14} />
-              <span className="text-xs flex-1">Buscar empresas, projetos, protótipos...</span>
-              <span className="kbd">⌘K</span>
-            </button>
+            <SearchDropdown workspace={workspace} />
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="icon-btn md:hidden"
-              aria-label="Buscar"
-            >
-              <Search size={15} />
-            </button>
             <button
               onClick={() => setHelpOpen(true)}
               className="btn-ghost !py-2 !px-3 hidden sm:inline-flex"
@@ -96,11 +61,6 @@ export function TopBar({
         </div>
       </div>
 
-      <SearchCommand
-        open={searchOpen}
-        onOpenChange={setSearchOpen}
-        workspace={workspace}
-      />
       <HelpModal open={helpOpen} onOpenChange={setHelpOpen} />
     </div>
   );

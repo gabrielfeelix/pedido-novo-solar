@@ -6,7 +6,6 @@ import {
   Clipboard,
   Code2,
   ExternalLink,
-  Eye,
   Layers,
   MessageSquare,
   Plus,
@@ -21,7 +20,7 @@ import Image from 'next/image';
 import { Drawer, Tabs } from './ui';
 import { FigmaIcon } from './figma-icon';
 import { relativeTime } from '../_lib/storage';
-import type { Comment, Project } from '../_lib/types';
+import type { Comment, Project, Prototype } from '../_lib/types';
 
 type Tab = 'preview' | 'versions' | 'comments' | 'handoff';
 
@@ -460,7 +459,7 @@ function HandoffTab({
   copied,
   onCopy,
 }: {
-  proto: ReturnType<typeof Object>;
+  proto: Prototype;
   project: Project;
   companySlug: string;
   copied: boolean;
@@ -511,7 +510,7 @@ function HandoffTab({
   );
 }
 
-function buildHandoff(proto: any, project: Project, companySlug: string) {
+function buildHandoff(proto: Prototype, project: Project, companySlug: string) {
   return [
     `# Handoff — ${project.name}`,
     ``,

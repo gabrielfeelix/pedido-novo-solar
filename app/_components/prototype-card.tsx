@@ -10,7 +10,7 @@ import {
 import { useState } from 'react';
 import Image from 'next/image';
 import { FigmaIcon } from './figma-icon';
-import type { Prototype, Project } from '../_lib/types';
+import type { Project } from '../_lib/types';
 
 export function PrototypeCard({
   project,

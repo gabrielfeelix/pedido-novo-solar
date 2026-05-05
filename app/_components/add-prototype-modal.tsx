@@ -1,32 +1,43 @@
 'use client';
 
-import { Image as ImageIcon, Link2, Plus } from 'lucide-react';
+import { Image as ImageIcon, Link2, Plus, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Modal } from './ui';
 import { FigmaIcon } from './figma-icon';
+import type { Prototype } from '../_lib/types';
+
+export type PrototypeFormData = {
+  projectSlug: string;
+  name: string;
+  version: string;
+  url: string;
+  figmaUrl: string;
+  preview: string;
+  notes: string;
+  setAsCurrent: boolean;
+  scaffold: boolean;
+};
 
 export function AddPrototypeModal({
   open,
   onOpenChange,
   defaultProjectSlug,
   projects,
+  editing,
+  companyName,
+  brandColor,
   onSubmit,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   defaultProjectSlug?: string;
   projects: { slug: string; name: string }[];
-  onSubmit: (data: {
-    projectSlug: string;
-    name: string;
-    version: string;
-    url: string;
-    figmaUrl: string;
-    preview: string;
-    notes: string;
-    setAsCurrent: boolean;
-  }) => void;
+  editing?: { prototype: Prototype; projectSlug: string } | null;
+  companyName?: string;
+  brandColor?: string;
+  onSubmit: (data: PrototypeFormData) => Promise<void> | void;
 }) {
+  const isEdit = !!editing;
   const [projectSlug, setProjectSlug] = useState(
     defaultProjectSlug || projects[0]?.slug || ''
   );
@@ -37,9 +48,23 @@ export function AddPrototypeModal({
   const [preview, setPreview] = useState('');
   const [notes, setNotes] = useState('');
   const [setAsCurrent, setSetAsCurrent] = useState(true);
+  const [scaffold, setScaffold] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [feedback, setFeedback] = useState<string | null>(null);
 
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+    if (editing) {
+      setProjectSlug(editing.projectSlug);
+      setName(editing.prototype.name);
+      setVersion(editing.prototype.version);
+      setUrl(editing.prototype.url || '');
+      setFigmaUrl(editing.prototype.figmaUrl || '');
+      setPreview(editing.prototype.preview || '');
+      setNotes(editing.prototype.notes || '');
+      setSetAsCurrent(!!editing.prototype.isCurrent);
+      setScaffold(false);
+    } else {
       setProjectSlug(defaultProjectSlug || projects[0]?.slug || '');
       setName('');
       setVersion('v1');
@@ -48,22 +73,62 @@ export function AddPrototypeModal({
       setPreview('');
       setNotes('');
       setSetAsCurrent(true);
+      setScaffold(true);
     }
-  }, [open, defaultProjectSlug, projects]);
+    setFeedback(null);
+  }, [open, editing, defaultProjectSlug, projects]);
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!projectSlug || !name.trim()) return;
-    onSubmit({
+    setBusy(true);
+    setFeedback(null);
+
+    let finalUrl = url.trim();
+
+    // Scaffold real folder /public/p/{slug} when adding (dev only)
+    if (!isEdit && scaffold && !finalUrl) {
+      const slug = `${projectSlug}-${version}`
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, '-')
+        .replace(/-+/g, '-')
+        .slice(0, 60);
+      try {
+        const r = await fetch('/api/prototypes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug,
+            companyName,
+            prototypeName: name.trim(),
+            brandColor,
+            notes: notes.trim(),
+          }),
+        });
+        const j = await r.json();
+        if (j?.ok) {
+          finalUrl = j.path;
+          setFeedback(j.reused ? 'Pasta já existia — reutilizando.' : `Pasta criada em /public${j.path}`);
+        } else {
+          setFeedback(j?.error || 'Não foi possível criar a pasta.');
+        }
+      } catch (err: unknown) {
+        setFeedback(err instanceof Error ? err.message : 'Falha de rede ao criar pasta.');
+      }
+    }
+
+    await onSubmit({
       projectSlug,
       name: name.trim(),
       version: version.trim() || 'v1',
-      url: url.trim(),
+      url: finalUrl,
       figmaUrl: figmaUrl.trim(),
       preview: preview.trim(),
       notes: notes.trim(),
       setAsCurrent,
+      scaffold,
     });
+    setBusy(false);
     onOpenChange(false);
   }
 
@@ -71,8 +136,12 @@ export function AddPrototypeModal({
     <Modal
       open={open}
       onOpenChange={onOpenChange}
-      title="Novo protótipo"
-      description="Adicione uma nova versão ou um protótipo independente. Você pode colar manualmente o link do Figma e do protótipo."
+      title={isEdit ? 'Editar protótipo' : 'Novo protótipo'}
+      description={
+        isEdit
+          ? 'Atualize nome, links e notas. Mudanças ficam salvas localmente.'
+          : 'Crie um protótipo novo. Você pode deixar o sistema scaffoldar a pasta dentro de /public/p/, ou colar manualmente o link.'
+      }
       size="lg"
     >
       <form onSubmit={submit} className="space-y-4">
@@ -82,6 +151,7 @@ export function AddPrototypeModal({
               value={projectSlug}
               onChange={(e) => setProjectSlug(e.target.value)}
               className="input-glass"
+              disabled={isEdit}
             >
               {projects.map((p) => (
                 <option key={p.slug} value={p.slug}>
@@ -114,7 +184,14 @@ export function AddPrototypeModal({
           </Field>
         </div>
 
-        <Field label="Link do protótipo" hint="URL pública (Vercel, S3, /p/...)">
+        <Field
+          label="Link do protótipo"
+          hint={
+            !isEdit && scaffold
+              ? 'opcional — gerado automaticamente'
+              : 'URL pública (Vercel, S3, /p/...)'
+          }
+        >
           <div className="relative">
             <Link2
               size={14}
@@ -124,7 +201,11 @@ export function AddPrototypeModal({
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="input-glass !pl-9"
-              placeholder="https://..."
+              placeholder={
+                !isEdit && scaffold
+                  ? 'deixe em branco pra gerar /p/...'
+                  : 'https://...'
+              }
             />
           </div>
         </Field>
@@ -164,19 +245,38 @@ export function AddPrototypeModal({
             onChange={(e) => setNotes(e.target.value)}
             className="input-glass"
             rows={3}
-            placeholder="O que mudou nessa versão? Decisões de design, escopo..."
+            placeholder="O que mudou nessa versão?"
           />
         </Field>
 
-        <label className="flex items-center gap-2 text-xs text-ink-500 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={setAsCurrent}
-            onChange={(e) => setSetAsCurrent(e.target.checked)}
-            className="accent-[#0B1020]"
-          />
-          Definir como versão atual
-        </label>
+        <div className="flex flex-col gap-2 pt-1">
+          {!isEdit && (
+            <label className="flex items-center gap-2 text-xs text-ink-700 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={scaffold}
+                onChange={(e) => setScaffold(e.target.checked)}
+                className="accent-[#0B1020]"
+              />
+              Criar pasta automaticamente em <code className="font-mono text-[11px] bg-slate-100 px-1.5 py-0.5 rounded">/public/p/&lt;slug&gt;</code>
+            </label>
+          )}
+          <label className="flex items-center gap-2 text-xs text-ink-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={setAsCurrent}
+              onChange={(e) => setSetAsCurrent(e.target.checked)}
+              className="accent-[#0B1020]"
+            />
+            Definir como versão atual
+          </label>
+        </div>
+
+        {feedback && (
+          <div className="text-[11px] text-ink-500 bg-white/70 border border-white rounded-xl px-3 py-2">
+            {feedback}
+          </div>
+        )}
 
         <div className="pt-2 flex items-center justify-end gap-2">
           <button
@@ -186,9 +286,13 @@ export function AddPrototypeModal({
           >
             Cancelar
           </button>
-          <button type="submit" className="btn-primary">
-            <Plus size={13} />
-            Adicionar protótipo
+          <button type="submit" className="btn-primary" disabled={busy}>
+            {isEdit ? <Save size={13} /> : <Plus size={13} />}
+            {busy
+              ? 'Salvando...'
+              : isEdit
+                ? 'Salvar alterações'
+                : 'Adicionar protótipo'}
           </button>
         </div>
       </form>

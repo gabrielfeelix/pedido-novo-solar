@@ -48,8 +48,10 @@ export type Workspace = {
 export type ActivityKind =
   | 'prototype.created'
   | 'prototype.updated'
+  | 'prototype.removed'
   | 'version.added'
   | 'comment.added'
+  | 'handoff.updated'
   | 'company.viewed';
 
 export type Activity = {
@@ -60,4 +62,25 @@ export type Activity = {
   projectSlug?: string;
   prototypeId?: string;
   message: string;
+};
+
+export type HandoffStatus = 'rascunho' | 'pronto' | 'em-dev' | 'entregue';
+
+export type Handoff = {
+  prototypeId: string;
+  status: HandoffStatus;
+  goal: string;
+  decisions: string;
+  components: string;
+  states: string;
+  copy: string;
+  accessibility: string;
+  resources: string;
+  repoUrl: string;
+  updatedAt: string;
+};
+
+export type PatchedPrototype = Prototype & {
+  companySlug: string;
+  projectSlug: string;
 };

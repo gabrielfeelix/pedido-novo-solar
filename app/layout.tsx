@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
+import { WorkspaceProvider } from './_components/workspace-provider';
 import './globals.css';
 
 const poppins = Poppins({
@@ -32,7 +33,7 @@ export default function RootLayout({
           <div className="absolute top-[10%] right-[-10%] w-[55%] h-[60%] rounded-full bg-gradient-to-tl from-[#D8C7F5] via-[#E2D9FB] to-transparent blur-[120px] opacity-70" />
           <div className="absolute bottom-[-15%] left-[20%] w-[55%] h-[55%] rounded-full bg-gradient-to-tr from-[#BFD3F7] to-transparent blur-[120px] opacity-60" />
         </div>
-        {children}
+        <WorkspaceProvider>{children}</WorkspaceProvider>
       </body>
     </html>
   );

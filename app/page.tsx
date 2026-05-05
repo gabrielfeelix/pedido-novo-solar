@@ -6,7 +6,8 @@ import Image from 'next/image';
 import { ArrowUpRight, Building2, Search, Sparkles } from 'lucide-react';
 import { TopBar } from './_components/topbar';
 import { ActivityFeed, buildFallbackActivity } from './_components/activity-feed';
-import { useWorkspace, totalProjects, totalPrototypes } from './_lib/storage';
+import { totalProjects, totalPrototypes } from './_lib/storage';
+import { useWorkspace } from './_components/workspace-provider';
 import type { Company } from './_lib/types';
 
 export default function HomePage() {

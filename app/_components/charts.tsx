@@ -99,7 +99,18 @@ export function Donut({
   const cx = 50;
   const cy = 50;
   const stroke = 14;
-  let acc = 0;
+  const circumference = 2 * Math.PI * r;
+  const segments = data.map((d, i) => {
+    const previous = data
+      .slice(0, i)
+      .reduce((sum, item) => sum + item.value / total, 0);
+    const portion = d.value / total;
+    return {
+      ...d,
+      dash: portion * circumference,
+      offset: -previous * circumference,
+    };
+  });
 
   return (
     <div className="flex items-center gap-5">
@@ -112,11 +123,7 @@ export function Donut({
           stroke="rgba(15,23,42,0.08)"
           strokeWidth={stroke}
         />
-        {data.map((d, i) => {
-          const portion = d.value / total;
-          const dash = portion * (2 * Math.PI * r);
-          const offset = -acc * (2 * Math.PI * r);
-          acc += portion;
+        {segments.map((d, i) => {
           return (
             <circle
               key={i}
@@ -126,8 +133,8 @@ export function Donut({
               fill="none"
               stroke={d.color}
               strokeWidth={stroke}
-              strokeDasharray={`${dash} ${2 * Math.PI * r}`}
-              strokeDashoffset={offset}
+              strokeDasharray={`${d.dash} ${circumference}`}
+              strokeDashoffset={d.offset}
               strokeLinecap="round"
               transform={`rotate(-90 ${cx} ${cy})`}
             />

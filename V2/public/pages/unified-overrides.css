@@ -1,0 +1,1051 @@
+/**
+ * PCYES Apple-style Visual Unification
+ * Makes all injected HTML pages follow the V2 site's clean, editorial aesthetic.
+ * 
+ * Design principles:
+ * - No aggressive glows or shadows
+ * - Clean opacity-based text hierarchy
+ * - Subtle borders, minimal decoration
+ * - Generous spacing
+ * - Apple-like refinement
+ */
+
+/* ═══════════════════════════════════════════
+   DARK MODE — Cinematic, moody, layered
+   ═══════════════════════════════════════════ */
+
+/* Unified colors matching V2 dark mode exactly */
+#pcyes-influencers,
+#pcyes-fale-conosco,
+#pcyes-reseller-locator,
+.landing-page,
+#pcyes-maringa-collab {
+  --red: #ff2b2e;
+  --red-dark: #dc1414;
+  --primary: #ff2b2e;
+  --primary2: #ff5558;
+  --accent: #ff2b2e;
+  --accent-soft: #ff5558;
+  --bg-page: #121212;
+  --bg-section: #161617;
+  --bg-section-alt: #0f0f10;
+  --bg-card: #1a1a1c;
+  --bg-elevated: #1e1e20;
+  --bg-footer: #0a0a0a;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255,255,255,0.7);
+  --text-tertiary: rgba(255,255,255,0.5);
+  --text-quaternary: rgba(255,255,255,0.35);
+  --text-faint: rgba(255,255,255,0.2);
+  --border-default: rgba(255,255,255,0.08);
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-hover: rgba(255,255,255,0.15);
+}
+
+/* Reduce noise to almost nothing — V2 has zero noise */
+#pcyes-influencers .noise-overlay,
+#pcyes-reseller-locator #noise {
+  opacity: 0.008 !important;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — Clean, editorial, Apple-like
+   ═══════════════════════════════════════════ */
+
+:root.light #pcyes-influencers,
+:root.light #pcyes-fale-conosco,
+:root.light #pcyes-reseller-locator,
+:root.light .landing-page,
+:root.light #pcyes-maringa-collab {
+  /* Backgrounds — matching V2 light mode exactly */
+  --bg-page: #fafafa;
+  --bg-section: #f5f5f5;
+  --bg-section-alt: #f0f0f0;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-footer: #f5f5f5;
+  
+  /* Text — matching V2 light mode */
+  --text-primary: #161616;
+  --text-secondary: rgba(22,22,22,0.6);
+  --text-tertiary: rgba(22,22,22,0.4);
+  --text-quaternary: rgba(22,22,22,0.3);
+  --text-faint: rgba(22,22,22,0.15);
+  
+  /* Borders — matching V2 light mode */
+  --border-default: rgba(0,0,0,0.08);
+  --border-subtle: rgba(0,0,0,0.05);
+  --border-hover: rgba(0,0,0,0.15);
+  
+  /* Accent — deeper red for light backgrounds */
+  --red: #dc1414;
+  --red-dark: #b81010;
+  --primary: #dc1414;
+  --primary2: #ff2b2e;
+  --accent: #dc1414;
+  --accent-soft: #ff2b2e;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — INFLUENCIADORES
+   Clean white cards, no red fog
+   ═══════════════════════════════════════════ */
+
+/* Hero section — clean light gradient, no red glow */
+:root.light #pcyes-influencers .creator-hero {
+  background: #fafafa !important;
+}
+:root.light #pcyes-influencers .hero-bg-gradient {
+  background: linear-gradient(180deg, #fafafa 0%, #fafafa 40%, #f5f5f5 60%, #f5f5f5 100%) !important;
+}
+:root.light #pcyes-influencers .hero-bottom-fade {
+  background: linear-gradient(to bottom, transparent 0%, #f5f5f5 100%) !important;
+}
+:root.light #pcyes-influencers .hero-vignette {
+  box-shadow: none !important;
+}
+:root.light #pcyes-influencers .hero-glow {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .hero-watermark {
+  -webkit-text-stroke-color: rgba(220,20,20,0.08) !important;
+  opacity: 0.03 !important;
+}
+:root.light #pcyes-influencers .hero-desc-primary,
+:root.light #pcyes-influencers .hero-desc-secondary {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-influencers .hero-bar {
+  background: #dc1414 !important;
+}
+
+/* Carousel cards — white backgrounds, subtle borders */
+:root.light #pcyes-influencers .creator-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-influencers .creator-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+:root.light #pcyes-influencers .creator-card-overlay {
+  background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 40%, transparent 65%) !important;
+}
+:root.light #pcyes-influencers .creator-card-overlay--side {
+  background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.4) 50%, transparent 70%) !important;
+}
+:root.light #pcyes-influencers .creator-name {
+  color: #161616 !important;
+}
+:root.light #pcyes-influencers .creator-platform {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-influencers .creator-followers {
+  color: #dc1414 !important;
+}
+:root.light #pcyes-influencers .carousel-nav {
+  background: rgba(255,255,255,0.9) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.4) !important;
+  backdrop-filter: blur(20px) !important;
+}
+:root.light #pcyes-influencers .carousel-nav:hover {
+  color: #161616 !important;
+  border-color: rgba(0,0,0,0.12) !important;
+}
+:root.light #pcyes-influencers .pcyes-dot {
+  background: rgba(0,0,0,0.08) !important;
+}
+:root.light #pcyes-influencers .dot--active {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-influencers .card-progress {
+  background: linear-gradient(to right, rgba(220,20,20,0.3), #dc1414, rgba(220,20,20,0.3)) !important;
+}
+
+/* Benefits section — clean white cards */
+:root.light #pcyes-influencers .creator-benefits {
+  background: #f5f5f5 !important;
+}
+:root.light #pcyes-influencers .benefit-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-influencers .benefit-card:hover {
+  border-color: rgba(220,20,20,0.3) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+  transform: translateY(-2px) !important;
+}
+:root.light #pcyes-influencers .benefit-card::before {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .benefit-card::after {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .benefit-card h3 {
+  color: #161616 !important;
+}
+:root.light #pcyes-influencers .benefit-card p {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-influencers .benefit-card:hover p {
+  color: rgba(22,22,22,0.7) !important;
+}
+:root.light #pcyes-influencers .benefit-icon-glow {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .benefit-icon-wrap {
+  background: none !important;
+}
+
+/* Form — clean white inputs */
+:root.light #pcyes-influencers .creator-form {
+  background: #fafafa !important;
+}
+:root.light #pcyes-influencers .form-glow {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .landing-form-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-influencers .landing-form-card-top-line {
+  opacity: 0.3 !important;
+  background: linear-gradient(to right, transparent, rgba(220,20,20,0.3), transparent) !important;
+}
+:root.light #pcyes-influencers .landing-form-card-top-blur {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .landing-form-group-head h3 {
+  color: #161616 !important;
+}
+:root.light #pcyes-influencers .landing-form-group-head p {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-influencers .landing-form-fields input,
+:root.light #pcyes-influencers .landing-form-fields select,
+:root.light #pcyes-influencers .landing-form-fields textarea {
+  background: #f5f5f5 !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-influencers .landing-form-fields input::placeholder,
+:root.light #pcyes-influencers .landing-form-fields textarea::placeholder {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-influencers .landing-form-fields input:focus,
+:root.light #pcyes-influencers .landing-form-fields select:focus,
+:root.light #pcyes-influencers .landing-form-fields textarea:focus {
+  border-color: rgba(220,20,20,0.4) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(220,20,20,0.08) !important;
+}
+:root.light #pcyes-influencers .upload-area {
+  background: #f5f5f5 !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+:root.light #pcyes-influencers .upload-area:hover {
+  border-color: rgba(0,0,0,0.15) !important;
+  background: #f0f0f0 !important;
+}
+:root.light #pcyes-influencers .platform-btn {
+  background: #f5f5f5 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-influencers .platform-btn:hover {
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #161616 !important;
+  background: #f0f0f0 !important;
+}
+:root.light #pcyes-influencers .platform-btn--selected {
+  background: rgba(220,20,20,0.08) !important;
+  border-color: rgba(220,20,20,0.3) !important;
+  color: #dc1414 !important;
+}
+:root.light #pcyes-influencers .step-circle--inactive {
+  background: #f0f0f0 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-influencers .step-connector {
+  background: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-influencers .step-connector-fill {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-influencers .btn-voltar {
+  background: #f5f5f5 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-influencers .btn-voltar:hover {
+  background: #f0f0f0 !important;
+}
+:root.light #pcyes-influencers .landing-btn-proximo {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-influencers .landing-btn-proximo::before {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .cta-button {
+  background: #dc1414 !important;
+  box-shadow: 0 1px 3px rgba(220,20,20,0.2) !important;
+}
+:root.light #pcyes-influencers .cta-button::after {
+  opacity: 0 !important;
+}
+:root.light #pcyes-influencers .gradient-divider::before {
+  background: linear-gradient(to right, transparent, rgba(220,20,20,0.2), transparent) !important;
+}
+:root.light #pcyes-influencers .gradient-divider::after {
+  opacity: 0 !important;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — REVENDEDOR
+   ═══════════════════════════════════════════ */
+
+:root.light .landing-page {
+  background:
+    radial-gradient(circle at 18% 84%, rgba(220,20,20,0.04) 0%, transparent 22%),
+    radial-gradient(circle at 83% 74%, rgba(220,20,20,0.04) 0%, transparent 22%),
+    linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%) !important;
+}
+
+:root.light .landing-page .hero-frame::before {
+  background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(250,250,250,0.8) 25%, rgba(250,250,250,0.3) 55%, transparent 100%) !important;
+}
+:root.light .landing-page .hero-frame::after {
+  background: linear-gradient(270deg, rgba(250,250,250,1) 0%, rgba(250,250,250,0.8) 25%, rgba(250,250,250,0.3) 55%, transparent 100%) !important;
+}
+:root.light .landing-page .hero-media::before {
+  background: linear-gradient(90deg, rgba(250,250,250,0.9) 0%, rgba(250,250,250,0.4) 35%, rgba(250,250,250,0.05) 60%, transparent 100%) !important;
+}
+:root.light .landing-page .hero-media::after {
+  background: linear-gradient(to top, #fafafa 0%, transparent 100%) !important;
+}
+:root.light .landing-page .hero-copy h1 {
+  color: #161616 !important;
+}
+:root.light .landing-page .hero-subtitle {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light .landing-page .hero-description {
+  color: rgba(22,22,22,0.4) !important;
+  border-left-color: rgba(0,0,0,0.08) !important;
+}
+:root.light .landing-page .title-bar {
+  background: #dc1414 !important;
+}
+:root.light .landing-page .cta-button::before {
+  opacity: 0 !important;
+}
+
+:root.light .landing-page .stat-card strong {
+  color: #161616 !important;
+}
+:root.light .landing-page .stat-card span:last-child {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light .landing-page .stat-card i {
+  background: rgba(220,20,20,0.2) !important;
+}
+
+:root.light .landing-page .advantages-section {
+  background:
+    linear-gradient(180deg, #f5f5f5 0%, #f5f5f5 80px, #f5f5f5 calc(100% - 80px), #f5f5f5 100%),
+    radial-gradient(circle at center, rgba(0,0,0,0.01), transparent 52%) !important;
+}
+:root.light .landing-page .kicker {
+  color: #dc1414 !important;
+}
+:root.light .landing-page .section-head h2 {
+  color: #161616 !important;
+}
+:root.light .landing-page .section-head p {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light .landing-page .section-head .title-bar {
+  background: rgba(220,20,20,0.2) !important;
+}
+:root.light .landing-page .advantage-card {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light .landing-page .advantage-card::before {
+  background: rgba(255,255,255,0.6) !important;
+}
+:root.light .landing-page .advantage-card .card-border-ring {
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+}
+:root.light .landing-page .advantage-card:hover {
+  border-color: rgba(220,20,20,0.2) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+}
+:root.light .landing-page .advantage-card::after {
+  opacity: 0 !important;
+}
+:root.light .landing-page .card-copy h3 {
+  color: #161616 !important;
+}
+:root.light .landing-page .card-copy p {
+  color: rgba(22,22,22,0.5) !important;
+}
+
+:root.light .landing-page .warranty-banner {
+  background: rgba(255,255,255,0.8) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light .landing-page .warranty-banner::before {
+  background: rgba(255,255,255,0.6) !important;
+}
+:root.light .landing-page .warranty-banner .card-border-ring {
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light .landing-page .warranty-banner::after {
+  opacity: 0 !important;
+}
+:root.light .landing-page .warranty-icon {
+  background: rgba(0,0,0,0.02) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light .landing-page .warranty-copy h3 {
+  color: #161616 !important;
+}
+:root.light .landing-page .warranty-copy p {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light .landing-page .warranty-copy p strong {
+  color: #161616 !important;
+}
+:root.light .landing-page .warranty-badge strong {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light .landing-page .gallery figcaption strong {
+  color: #161616 !important;
+}
+:root.light .landing-page .gallery figcaption i {
+  background: #dc1414 !important;
+}
+:root.light .landing-page .gallery figure {
+  border-color: rgba(0,0,0,0.04) !important;
+  background: #ffffff !important;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — ONDE ENCONTRAR
+   ═══════════════════════════════════════════ */
+
+:root.light #pcyes-reseller-locator {
+  background: #fafafa !important;
+}
+:root.light #pcyes-reseller-locator .hero__glow {
+  background: radial-gradient(ellipse at top center, rgba(220,20,20,0.04) 0%, transparent 70%) !important;
+}
+:root.light #pcyes-reseller-locator .hero__badge {
+  background: rgba(220,20,20,0.9) !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+:root.light #pcyes-reseller-locator .hero__title {
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .hero__desc {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-reseller-locator .hero__sep {
+  background: linear-gradient(90deg, #dc1414, #ff5558) !important;
+}
+
+:root.light #pcyes-reseller-locator .stats {
+  background: rgba(255,255,255,0.6) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .stat__num {
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .stat__label {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .stat__icon {
+  color: rgba(220,20,20,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .stat-divider {
+  background: rgba(0,0,0,0.06) !important;
+}
+
+:root.light #pcyes-reseller-locator .gdiv__glow {
+  background: radial-gradient(ellipse at center, rgba(220,20,20,0.08) 0%, rgba(220,20,20,0.03) 40%, transparent 70%) !important;
+}
+:root.light #pcyes-reseller-locator .gdiv__line {
+  background: linear-gradient(90deg, transparent, rgba(220,20,20,0.15), transparent) !important;
+}
+
+:root.light #pcyes-reseller-locator .map-panel {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-reseller-locator .map-panel h3 {
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .map-panel p {
+  color: rgba(22,22,22,0.4) !important;
+}
+
+:root.light #pcyes-reseller-locator #brazil-map .region-path {
+  fill: #e8e8e8 !important;
+  stroke: rgba(0,0,0,0.1) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-group.is-hovered .region-path {
+  fill: rgba(0,0,0,0.06) !important;
+  stroke: rgba(0,0,0,0.15) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-group.is-selected .region-path {
+  fill: rgba(220,20,20,0.1) !important;
+  stroke: rgba(220,20,20,0.3) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-label__name {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-group.is-hovered .region-label__name {
+  color: rgba(22,22,22,0.7) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-group.is-selected .region-label__name {
+  color: #dc1414 !important;
+}
+:root.light #pcyes-reseller-locator .region-badge {
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-reseller-locator #brazil-map .region-group.is-selected .region-badge {
+  color: #dc1414 !important;
+  background: rgba(220,20,20,0.08) !important;
+  border-color: rgba(220,20,20,0.2) !important;
+}
+
+:root.light #pcyes-reseller-locator .map-legend {
+  border-top-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .legend-item {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-reseller-locator .legend-dot--default {
+  background: rgba(0,0,0,0.08) !important;
+}
+
+:root.light #pcyes-reseller-locator .map-btn {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .map-btn:hover {
+  border-color: rgba(0,0,0,0.12) !important;
+}
+:root.light #pcyes-reseller-locator .map-btn.active {
+  background: #dc1414 !important;
+  border-color: #dc1414 !important;
+  color: #ffffff !important;
+}
+
+:root.light #pcyes-reseller-locator .search-field__icon {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-reseller-locator .search-field__icon--cep {
+  color: rgba(220,20,20,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .search-input {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .search-input::placeholder {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-reseller-locator .search-input:focus {
+  border-color: rgba(220,20,20,0.3) !important;
+}
+:root.light #pcyes-reseller-locator .search-field--cep .search-input {
+  border-color: rgba(220,20,20,0.12) !important;
+}
+
+:root.light #pcyes-reseller-locator .filter-btn {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-reseller-locator .filter-btn.open {
+  border-color: rgba(220,20,20,0.3) !important;
+}
+:root.light #pcyes-reseller-locator .filter-btn svg {
+  opacity: 0.3 !important;
+}
+:root.light #pcyes-reseller-locator .filter-menu {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .filter-option {
+  color: rgba(22,22,22,0.6) !important;
+}
+:root.light #pcyes-reseller-locator .filter-option:hover {
+  background: rgba(0,0,0,0.02) !important;
+}
+:root.light #pcyes-reseller-locator .filter-option.active {
+  color: #dc1414 !important;
+  background: rgba(220,20,20,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .clear-btn {
+  color: #dc1414 !important;
+}
+
+:root.light #pcyes-reseller-locator .tag--region {
+  color: #dc1414 !important;
+  background: rgba(220,20,20,0.06) !important;
+  border-color: rgba(220,20,20,0.15) !important;
+}
+:root.light #pcyes-reseller-locator .tag--other {
+  color: rgba(22,22,22,0.6) !important;
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+
+:root.light #pcyes-reseller-locator .store-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-reseller-locator .store-card:hover {
+  border-color: rgba(220,20,20,0.15) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .store-card.highlighted {
+  border-color: rgba(220,20,20,0.15) !important;
+}
+:root.light #pcyes-reseller-locator .store-card.highlighted::before {
+  background: linear-gradient(90deg, transparent, #dc1414, transparent) !important;
+}
+:root.light #pcyes-reseller-locator .card__name {
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .card__type--offline {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .card__icon--offline {
+  background: rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-reseller-locator .card__icon--offline svg {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-reseller-locator .card__state {
+  color: rgba(22,22,22,0.4) !important;
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .card__row span {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .card__row svg {
+  color: rgba(22,22,22,0.25) !important;
+}
+:root.light #pcyes-reseller-locator .btn-route {
+  background: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-reseller-locator .btn-route:hover {
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .empty {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-reseller-locator .empty p {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .empty small {
+  color: rgba(22,22,22,0.25) !important;
+}
+
+:root.light #pcyes-reseller-locator .cta-box {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-reseller-locator .cta-box__glow {
+  background: radial-gradient(ellipse at top center, rgba(220,20,20,0.04) 0%, transparent 70%) !important;
+}
+:root.light #pcyes-reseller-locator .cta-box__top-line {
+  background: linear-gradient(90deg, transparent, rgba(220,20,20,0.2), transparent) !important;
+}
+:root.light #pcyes-reseller-locator .cta-box h3 {
+  color: #161616 !important;
+}
+:root.light #pcyes-reseller-locator .cta-box p {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-reseller-locator .cta-box svg {
+  color: #dc1414 !important;
+}
+:root.light #pcyes-reseller-locator .btn-cta {
+  background: #dc1414 !important;
+  box-shadow: 0 0 0 1px rgba(220,20,20,0.15), 0 1px 3px rgba(220,20,20,0.15) !important;
+}
+:root.light #pcyes-reseller-locator .btn-cta::before {
+  border-color: rgba(255,255,255,0.1) !important;
+}
+:root.light #pcyes-reseller-locator .btn-cta::after {
+  opacity: 0 !important;
+}
+:root.light #pcyes-reseller-locator .btn-cta:hover {
+  background: #c41212 !important;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — FALE CONOSCO
+   ═══════════════════════════════════════════ */
+
+:root.light #pcyes-fale-conosco {
+  background: #fafafa !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero {
+  background: #fafafa !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero::before {
+  background: radial-gradient(ellipse 40% 50% at 75% 50%, rgba(220,20,20,0.04) 0%, transparent 60%) !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero-badge {
+  background: rgba(220,20,20,0.9) !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero-copy h1 {
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-bar {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero-desc {
+  color: rgba(22,22,22,0.5) !important;
+}
+
+:root.light #pcyes-fale-conosco .fc-quick-card {
+  background: rgba(255,255,255,0.6) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-card:hover {
+  border-color: rgba(220,20,20,0.3) !important;
+  background: rgba(220,20,20,0.04) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-icon {
+  background: #f5f5f5 !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-icon svg {
+  stroke: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-card:hover .fc-quick-icon {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-card:hover .fc-quick-icon svg {
+  stroke: #ffffff !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-title {
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-desc {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-card:hover .fc-quick-desc {
+  color: rgba(22,22,22,0.5) !important;
+}
+:root.light #pcyes-fale-conosco .fc-quick-footer {
+  color: rgba(220,20,20,0.7) !important;
+}
+
+:root.light #pcyes-fale-conosco .fc-hero-divider span {
+  background: linear-gradient(90deg, transparent, rgba(220,20,20,0.15) 50%, transparent) !important;
+}
+:root.light #pcyes-fale-conosco .fc-hero-divider span::before {
+  background: radial-gradient(ellipse at center, rgba(220,20,20,0.06) 0%, rgba(220,20,20,0.02) 40%, transparent 70%) !important;
+}
+
+:root.light #pcyes-fale-conosco .fc-main {
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-fale-conosco .fc-kicker {
+  background: #dc1414 !important;
+  box-shadow: 0 0 12px rgba(220,20,20,0.15) !important;
+}
+:root.light #pcyes-fale-conosco .fc-left h2 {
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-subtitle {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-divider {
+  background: linear-gradient(90deg, rgba(0,0,0,0.06) 60%, transparent) !important;
+}
+:root.light #pcyes-fale-conosco .fc-social-btn {
+  border-color: rgba(0,0,0,0.08) !important;
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-fale-conosco .fc-social-btn:hover {
+  background: #dc1414 !important;
+  border-color: #dc1414 !important;
+  color: #ffffff !important;
+}
+:root.light #pcyes-fale-conosco .fc-social-btn svg {
+  stroke: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-icon {
+  border-color: rgba(0,0,0,0.06) !important;
+  background: transparent !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-icon svg {
+  stroke: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-item:hover .fc-info-icon {
+  border-color: rgba(220,20,20,0.3) !important;
+  background: rgba(220,20,20,0.04) !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-item:hover .fc-info-icon svg {
+  stroke: #dc1414 !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-label {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-info-value {
+  color: #161616 !important;
+}
+
+:root.light #pcyes-fale-conosco .fc-form-panel {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+:root.light #pcyes-fale-conosco .fc-form-panel::before {
+  background: linear-gradient(180deg, rgba(220,20,20,0.1), transparent 60%) !important;
+}
+:root.light #pcyes-fale-conosco .fc-form-heading {
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-form-subheading {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-field input,
+:root.light #pcyes-fale-conosco .fc-field select,
+:root.light #pcyes-fale-conosco .fc-field textarea {
+  background: #f5f5f5 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-field input::placeholder,
+:root.light #pcyes-fale-conosco .fc-field textarea::placeholder {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-fale-conosco .fc-field input:focus-visible,
+:root.light #pcyes-fale-conosco .fc-field textarea:focus-visible {
+  border-color: rgba(220,20,20,0.3) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(220,20,20,0.06) !important;
+}
+:root.light #pcyes-fale-conosco .fc-label {
+  color: rgba(22,22,22,0.6) !important;
+}
+:root.light #pcyes-fale-conosco .fc-helper {
+  color: rgba(22,22,22,0.35) !important;
+}
+:root.light #pcyes-fale-conosco .fc-submit-hint {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-fale-conosco .fc-submit {
+  background: #dc1414 !important;
+  box-shadow: 0 1px 3px rgba(220,20,20,0.15) !important;
+}
+:root.light #pcyes-fale-conosco .fc-submit:hover {
+  box-shadow: 0 2px 8px rgba(220,20,20,0.2) !important;
+}
+:root.light #pcyes-fale-conosco .fc-success-icon {
+  background: rgba(220,20,20,0.06) !important;
+}
+
+:root.light #pcyes-fale-conosco .fc-faq-desc {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-item {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-item.fc-open {
+  border-color: rgba(220,20,20,0.2) !important;
+  box-shadow: 0 2px 8px rgba(220,20,20,0.04) !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-question {
+  color: rgba(22,22,22,0.6) !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-question {
+  color: #161616 !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-icon-wrap {
+  background: #f5f5f5 !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-icon-wrap svg {
+  stroke: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-icon-wrap {
+  background: #dc1414 !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-icon-wrap svg {
+  stroke: #ffffff !important;
+}
+:root.light #pcyes-fale-conosco .fc-faq-body p {
+  color: rgba(22,22,22,0.45) !important;
+}
+
+/* ═══════════════════════════════════════════
+   LIGHT MODE — MARINGÁ FC
+   ═══════════════════════════════════════════ */
+
+:root.light #pcyes-maringa-collab {
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-hero-overlay {
+  background-color: rgba(250,250,250,0.2) !important;
+}
+:root.light #pcyes-maringa-collab .mc-hero-overlay-2 {
+  background: linear-gradient(to top, #fafafa 0%, rgba(250,250,250,0.15) 50%, rgba(250,250,250,0.2) 100%) !important;
+}
+:root.light #pcyes-maringa-collab .mc-hero-overlay-3 {
+  background: linear-gradient(to right, rgba(250,250,250,0.4) 0%, transparent 50%) !important;
+}
+:root.light #pcyes-maringa-collab .mc-hero-eyebrow {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-maringa-collab .mc-hero-desc {
+  color: rgba(22,22,22,0.6) !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-story {
+  background-color: #f5f5f5 !important;
+}
+:root.light #pcyes-maringa-collab .mc-story-gradient-left {
+  background: linear-gradient(to right, transparent 0%, rgba(245,245,245,0.3) 40%, rgba(245,245,245,0.8) 75%, #f5f5f5 100%) !important;
+}
+:root.light #pcyes-maringa-collab .mc-story-gradient-right {
+  background: linear-gradient(to left, transparent 0%, rgba(245,245,245,0.3) 40%, rgba(245,245,245,0.8) 75%, #f5f5f5 100%) !important;
+}
+:root.light #pcyes-maringa-collab .mc-story-text {
+  color: rgba(22,22,22,0.7) !important;
+}
+:root.light #pcyes-maringa-collab .mc-story-text span[style*="font-weight"] {
+  color: #161616 !important;
+}
+:root.light #pcyes-maringa-collab .mc-story-italic {
+  color: rgba(22,22,22,0.35) !important;
+}
+:root.light #pcyes-maringa-collab .mc-separator {
+  background-color: rgba(22,22,22,0.1) !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-marquee-section {
+  border-top-color: rgba(0,0,0,0.06) !important;
+  border-bottom-color: rgba(0,0,0,0.06) !important;
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-marquee-fade-l {
+  background: linear-gradient(to right, #fafafa, transparent) !important;
+}
+:root.light #pcyes-maringa-collab .mc-marquee-fade-r {
+  background: linear-gradient(to left, #fafafa, transparent) !important;
+}
+:root.light #pcyes-maringa-collab .mc-marquee-text {
+  color: rgba(22,22,22,0.15) !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-limited {
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-limited-desc {
+  color: rgba(22,22,22,0.6) !important;
+}
+:root.light #pcyes-maringa-collab .mc-counter-label {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-maringa-collab .mc-counter-line {
+  background-color: rgba(22,22,22,0.1) !important;
+}
+:root.light #pcyes-maringa-collab .mc-limited-glow {
+  opacity: 0.03 !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-specs {
+  background-color: #f5f5f5 !important;
+}
+:root.light #pcyes-maringa-collab .mc-spec-item {
+  background-color: #ffffff !important;
+}
+:root.light #pcyes-maringa-collab .mc-spec-item:hover {
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-spec-item h4 {
+  color: #161616 !important;
+}
+:root.light #pcyes-maringa-collab .mc-spec-item p {
+  color: rgba(22,22,22,0.4) !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-urgency {
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-urgency-text {
+  color: rgba(22,22,22,0.8) !important;
+}
+:root.light #pcyes-maringa-collab .mc-separator-small {
+  background-color: rgba(22,22,22,0.1) !important;
+}
+:root.light #pcyes-maringa-collab .mc-urgency-glow {
+  opacity: 0.02 !important;
+}
+
+:root.light #pcyes-maringa-collab .mc-product {
+  background-color: #fafafa !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-card {
+  background-color: #ffffff !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-card:hover {
+  border-color: rgba(0,168,89,0.2) !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-eyebrow {
+  color: rgba(22,22,22,0.3) !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-info p {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-maringa-collab .mc-btn-outline {
+  background-color: rgba(0,0,0,0.03) !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-maringa-collab .mc-btn-outline:hover {
+  background-color: rgba(0,0,0,0.06) !important;
+  color: #161616 !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-header a {
+  color: rgba(22,22,22,0.4) !important;
+}
+:root.light #pcyes-maringa-collab .mc-product-header a:hover {
+  color: #161616 !important;
+}
+:root.light #pcyes-maringa-collab .mc-specs-banner-text p {
+  color: rgba(22,22,22,0.4) !important;
+}

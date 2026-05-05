@@ -28,7 +28,7 @@ import { HelpModal } from '../_components/help-modal';
 import { ActivityFeed, buildFallbackActivity } from '../_components/activity-feed';
 import { Bars, Donut, TrendStat } from '../_components/charts';
 import { StatusPill } from '../_components/ui';
-import { useWorkspace, relativeTime } from '../_lib/storage';
+import { useWorkspace } from '../_components/workspace-provider';
 import type { Company, Project } from '../_lib/types';
 
 const NAV = [
@@ -65,7 +65,7 @@ export default function CompanyDashboard({
   const [defaultAddProject, setDefaultAddProject] = useState<string | undefined>();
   const [helpOpen, setHelpOpen] = useState(false);
 
-  const projects = company.projects || [];
+  const projects = useMemo(() => company.projects || [], [company.projects]);
   const drawerProject = useMemo(
     () => projects.find((p) => p.slug === drawerProjectSlug),
     [projects, drawerProjectSlug]
