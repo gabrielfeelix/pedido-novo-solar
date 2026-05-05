@@ -65,6 +65,7 @@ rmSync(join(publicRoot, '_prototypes'), { recursive: true, force: true });
 rmSync(join(publicRoot, 'pedido-novo-solar'), { recursive: true, force: true });
 rmSync(join(publicRoot, 'v2'), { recursive: true, force: true });
 rmSync(join(publicRoot, 'brand-assets'), { recursive: true, force: true });
+rmSync(join(publicRoot, 'index.html'), { force: true });
 for (const company of workspace.companies) {
   rmSync(join(publicRoot, company.slug), { recursive: true, force: true });
 }
@@ -101,7 +102,9 @@ for (const { prototype } of getAllPrototypes()) {
   cpSync(distDir, destinationDir, { recursive: true });
 }
 
-writeSite();
+if (process.env.GENERATE_LEGACY_STATIC === '1') {
+  writeSite();
+}
 rmSync(tempRoot, { recursive: true, force: true });
 
 function copyBrandAssets() {
