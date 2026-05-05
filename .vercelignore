@@ -1,0 +1,16 @@
+node_modules
+.next
+.prototype-build
+public/_prototypes
+public/pedido-novo-solar
+public/v2
+
+V2/node_modules
+V2/dist
+ODEX/**/node_modules
+ODEX/**/dist
+
+.git
+**/.git
+**/.vercel
+*.log

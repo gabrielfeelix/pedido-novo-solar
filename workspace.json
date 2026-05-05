@@ -1,0 +1,124 @@
+{
+  "name": "UX Oderco",
+  "description": "Repositorio de projetos, handoffs e prototipos de UX do grupo.",
+  "companies": [
+    {
+      "slug": "pcyes",
+      "name": "PCYES",
+      "brandColor": "#FF0004",
+      "logo": "/brand-assets/pcyes-symbol.png",
+      "description": "Experiencias digitais para produtos gamer, varejo e e-commerce.",
+      "projects": [
+        {
+          "slug": "pcyes-v2",
+          "name": "PCYES V2",
+          "status": "ativo",
+          "figmaUrl": "https://www.figma.com/design/7Q31URYiXeVDJDTBMcgpAA/V2--Gabriel-Barbosa-Team---Copy-",
+          "handoffUrl": "/p/pcyes-v2",
+          "selectedPrototypeId": "pcyes-v2",
+          "prototypes": [
+            {
+              "id": "pcyes-v2",
+              "name": "V2 - Home Gamer",
+              "version": "v2",
+              "slug": "pcyes-v2",
+              "url": "/p/pcyes-v2",
+              "figmaUrl": "https://www.figma.com/design/7Q31URYiXeVDJDTBMcgpAA/V2--Gabriel-Barbosa-Team---Copy-",
+              "source": "V2",
+              "notes": "Versao atual com a homepage gamer e novo carrinho.",
+              "createdAt": "2026-04-30",
+              "isCurrent": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "odex",
+      "name": "ODEX",
+      "brandColor": "#0D1D52",
+      "logo": "/brand-assets/odex.svg",
+      "description": "Fluxos comerciais, vendas, pedidos e operacao.",
+      "projects": []
+    },
+    {
+      "slug": "tonante",
+      "name": "Tonante",
+      "brandColor": "#111111",
+      "logo": "/brand-assets/tonante-symbol.png",
+      "description": "Experiencias para instrumentos, catalogos e jornadas de marca.",
+      "projects": []
+    },
+    {
+      "slug": "quati",
+      "name": "Quati",
+      "brandColor": "#6BA319",
+      "logo": "/brand-assets/quati.svg",
+      "description": "Projetos de produto, comunicacao e interfaces de venda.",
+      "projects": []
+    },
+    {
+      "slug": "skul",
+      "name": "Skul",
+      "brandColor": "#2F0A46",
+      "logo": "/brand-assets/skul.svg",
+      "description": "Biblioteca de estudos, telas e handoffs da marca.",
+      "projects": []
+    },
+    {
+      "slug": "vinik",
+      "name": "Vinik",
+      "brandColor": "#004C3B",
+      "logo": "/brand-assets/vinik.svg",
+      "description": "Prototipos e fluxos para acessorios, distribuicao e canais.",
+      "projects": []
+    },
+    {
+      "slug": "oderco",
+      "name": "Oderco",
+      "brandColor": "#2458E6",
+      "logo": "/brand-assets/oderco-symbol.svg",
+      "description": "Projetos transversais do grupo Oderco.",
+      "projects": [
+        {
+          "slug": "pedido-solar",
+          "name": "Pedido Solar",
+          "status": "ativo",
+          "figmaUrl": "https://www.figma.com/design/gDtvcBaQZmJPQqlDiejdxe/Forma%C3%A7%C3%A3o-de-Pre%C3%A7o---Vers%C3%A3o-Oficial--Copy-",
+          "handoffUrl": "/p/pedido-solar-v2",
+          "selectedPrototypeId": "pedido-solar-v2",
+          "prototypes": [
+            {
+              "id": "pedido-solar-v2",
+              "name": "Pedido Venda Solar",
+              "version": "v2",
+              "slug": "pedido-solar-v2",
+              "url": "/p/pedido-solar-v2",
+              "figmaUrl": "https://www.figma.com/design/gDtvcBaQZmJPQqlDiejdxe/Forma%C3%A7%C3%A3o-de-Pre%C3%A7o---Vers%C3%A3o-Oficial--Copy-",
+              "source": "ODEX/pedido-venda-solar-crm/v2",
+              "notes": "Versao recomendada para demonstrar o novo fluxo de pedido solar.",
+              "createdAt": "2026-04-24",
+              "isCurrent": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "crm",
+      "name": "CRM",
+      "brandColor": "#475569",
+      "logo": "",
+      "description": "Area para prototipos e melhorias de CRM.",
+      "projects": []
+    },
+    {
+      "slug": "azux",
+      "name": "Azux",
+      "brandColor": "#0256A3",
+      "logo": "/brand-assets/azux.svg",
+      "description": "Projetos de UX, produto e interfaces internas.",
+      "projects": []
+    }
+  ]
+}
