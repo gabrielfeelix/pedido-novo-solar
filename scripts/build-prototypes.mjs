@@ -89,7 +89,7 @@ for (const { prototype } of getAllPrototypes()) {
   }
 
   console.log(`\nBuilding ${prototype.name} at ${basePath}`);
-  run('npm', ['install'], sourceDir);
+  run('npm', ['install', '--include=dev'], sourceDir);
   run('npm', ['run', 'build'], sourceDir, {
     PROTOTYPE_BASE_PATH: basePath,
     PROTOTYPE_OUT_DIR: distDir,
