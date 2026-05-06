@@ -1,5 +1,6 @@
 'use client';
 
+// workspace-seed-v2
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import seedJson from '@/workspace.json';
 import type {
