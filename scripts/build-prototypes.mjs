@@ -74,15 +74,15 @@ mkdirSync(publicRoot, { recursive: true });
 mkdirSync(tempRoot, { recursive: true });
 copyBrandAssets();
 
-for (const { prototype } of getAllPrototypes()) {
+for (const { company, project, prototype } of getAllPrototypes()) {
   if (!prototype.source) {
     continue;
   }
 
   const sourceDir = join(repoRoot, prototype.source);
-  const distDir = join(tempRoot, prototype.slug);
-  const destinationDir = join(publicRoot, 'p', prototype.slug);
-  const basePath = `/p/${prototype.slug}/`;
+  const distDir = join(tempRoot, company.slug, project.slug, prototype.version);
+  const destinationDir = join(publicRoot, company.slug, project.slug, prototype.version);
+  const basePath = `/${company.slug}/${project.slug}/${prototype.version}/`;
 
   if (!existsSync(join(sourceDir, 'package.json'))) {
     throw new Error(`Missing package.json for prototype "${prototype.slug}" at ${sourceDir}`);
