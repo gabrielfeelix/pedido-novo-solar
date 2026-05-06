@@ -54,6 +54,8 @@ export default function CompanyDashboard({
     setCurrentPrototype,
     addComment,
     removePrototype,
+    tickets,
+    createTicket,
   } = useWorkspace();
   const company = workspace.companies.find((c) => c.slug === slug);
   if (!company) notFound();
@@ -222,7 +224,12 @@ export default function CompanyDashboard({
         }}
       />
 
-      <HelpModal open={helpOpen} onOpenChange={setHelpOpen} />
+      <HelpModal
+        open={helpOpen}
+        onOpenChange={setHelpOpen}
+        tickets={tickets}
+        onCreateTicket={createTicket}
+      />
     </div>
   );
 }
@@ -240,6 +247,7 @@ function Sidebar({
   onTab: (t: Tab) => void;
   onOpenHelp: () => void;
 }) {
+  const logoNeedsColor = company.logo.includes('white');
   return (
     <aside className="w-[260px] shrink-0 sticky top-0 h-screen p-4 hidden lg:flex">
       <div className="glass rounded-3xl flex-1 flex flex-col p-5">
@@ -260,8 +268,11 @@ function Sidebar({
 
         <div className="rounded-2xl bg-white/60 border border-white p-3 flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center overflow-hidden"
-            style={{ color: company.brandColor }}
+            className="w-10 h-10 rounded-xl border border-slate-100 flex items-center justify-center overflow-hidden"
+            style={{
+              color: company.brandColor,
+              background: logoNeedsColor ? company.brandColor : '#fff',
+            }}
           >
             {company.logo ? (
               <Image
@@ -269,7 +280,7 @@ function Sidebar({
                 alt={company.name}
                 width={26}
                 height={26}
-                className="object-contain max-h-7 w-auto h-auto"
+                className="object-contain max-h-7 max-w-8 w-auto h-auto"
               />
             ) : (
               <Building2 size={18} />
@@ -341,14 +352,18 @@ function Sidebar({
 /* ---------------- Crumb ---------------- */
 
 function DashboardCrumb({ company }: { company: Company }) {
+  const logoNeedsColor = company.logo.includes('white');
   return (
     <div className="flex items-center gap-3 min-w-0">
       <BackToCompanies />
       <span className="hidden md:block text-ink-200">/</span>
       <div className="hidden md:flex items-center gap-2 min-w-0">
         <div
-          className="w-7 h-7 rounded-lg bg-white border border-slate-100 flex items-center justify-center shrink-0"
-          style={{ color: company.brandColor }}
+          className="w-7 h-7 rounded-lg border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden"
+          style={{
+            color: company.brandColor,
+            background: logoNeedsColor ? company.brandColor : '#fff',
+          }}
         >
           {company.logo ? (
             <Image
@@ -356,7 +371,7 @@ function DashboardCrumb({ company }: { company: Company }) {
               alt={company.name}
               width={18}
               height={18}
-              className="object-contain max-h-5 w-auto h-auto"
+              className="object-contain max-h-5 max-w-5 w-auto h-auto"
             />
           ) : (
             <Building2 size={14} />
@@ -372,6 +387,7 @@ function DashboardCrumb({ company }: { company: Company }) {
 
 function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => void }) {
   const projectCount = company.projects?.length || 0;
+  const logoNeedsColor = company.logo.includes('white');
   return (
     <section className="relative rounded-3xl overflow-hidden glass-strong">
       <div
@@ -383,8 +399,11 @@ function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => 
       />
       <div className="relative p-8 md:p-10 flex items-center gap-8 flex-col md:flex-row text-center md:text-left">
         <div
-          className="w-24 h-24 rounded-3xl bg-white border border-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.25)] flex items-center justify-center p-4 shrink-0"
-          style={{ color: company.brandColor }}
+          className="w-24 h-24 rounded-3xl border border-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.25)] flex items-center justify-center p-4 shrink-0"
+          style={{
+            color: company.brandColor,
+            background: logoNeedsColor ? company.brandColor : '#fff',
+          }}
         >
           {company.logo ? (
             <Image
@@ -392,7 +411,7 @@ function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => 
               alt={company.name}
               width={70}
               height={70}
-              className="object-contain max-h-16 w-auto h-auto"
+              className="object-contain max-h-16 max-w-20 w-auto h-auto"
             />
           ) : (
             <Building2 size={36} />

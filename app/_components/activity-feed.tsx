@@ -21,6 +21,7 @@ const ICONS: Record<Activity['kind'], React.ComponentType<{ size?: number; class
   'comment.added': MessageSquare,
   'handoff.updated': Workflow,
   'company.viewed': Building2,
+  'ticket.created': MessageSquare,
 };
 
 const TINTS: Record<Activity['kind'], string> = {
@@ -31,6 +32,7 @@ const TINTS: Record<Activity['kind'], string> = {
   'comment.added': 'bg-amber-50 text-amber-600',
   'handoff.updated': 'bg-cyan-50 text-cyan-600',
   'company.viewed': 'bg-slate-100 text-slate-600',
+  'ticket.created': 'bg-indigo-50 text-indigo-600',
 };
 
 export function ActivityFeed({

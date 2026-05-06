@@ -11,6 +11,8 @@ import type {
   HandoffStatus,
   PatchedPrototype,
   Prototype,
+  Ticket,
+  TicketTopic,
   Workspace,
 } from './types';
 
@@ -25,6 +27,7 @@ type Patch = {
   comments: Record<string, Comment[]>;
   activity: Activity[];
   handoffs: Record<string, Handoff>;
+  tickets: Ticket[];
 };
 
 const emptyPatch: Patch = {
@@ -35,6 +38,7 @@ const emptyPatch: Patch = {
   comments: {},
   activity: [],
   handoffs: {},
+  tickets: [],
 };
 
 function loadPatch(): Patch {
@@ -342,10 +346,47 @@ export function useWorkspaceStore() {
     [update, logActivity]
   );
 
+  const createTicket = useCallback(
+    (topic: TicketTopic, description: string) => {
+      const labels: Record<TicketTopic, string> = {
+        sugestao: 'Sugestão de UX',
+        'nova-tela': 'Nova tela',
+        'nova-feature': 'Nova feature',
+        redesign: 'Redesign de tela',
+        'design-review': 'Design review',
+      };
+      const ticket: Ticket = {
+        id: `ux-${Date.now().toString(36)}`,
+        topic,
+        title: labels[topic],
+        description,
+        status: 'aberto',
+        createdAt: new Date().toISOString(),
+      };
+      const activityItem: Activity = {
+        id: `activity-${ticket.id}`,
+        kind: 'ticket.created',
+        at: ticket.createdAt,
+        companySlug: 'crm',
+        message: `Chamado "${ticket.title}" aberto para UX.`,
+      };
+
+      update((prev) => ({
+        ...prev,
+        tickets: [ticket, ...prev.tickets].slice(0, 80),
+        activity: [activityItem, ...prev.activity].slice(0, 60),
+      }));
+
+      return ticket.id;
+    },
+    [update]
+  );
+
   return {
     workspace,
     activity: patch.activity,
     handoffs: patch.handoffs,
+    tickets: patch.tickets,
     hydrated,
     addPrototype,
     editPrototype,
@@ -353,6 +394,7 @@ export function useWorkspaceStore() {
     removePrototype,
     addComment,
     upsertHandoff,
+    createTicket,
     logActivity,
   };
 }

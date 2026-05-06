@@ -37,7 +37,7 @@
       "slug": "odex",
       "name": "ODEX",
       "brandColor": "#0D1D52",
-      "logo": "/brand-assets/odex.svg",
+      "logo": "/brand-assets/odex-symbol.png",
       "description": "Fluxos comerciais, vendas, pedidos e operacao.",
       "projects": []
     },
@@ -53,7 +53,7 @@
       "slug": "quati",
       "name": "Quati",
       "brandColor": "#6BA319",
-      "logo": "/brand-assets/quati.svg",
+      "logo": "/brand-assets/quati-symbol.png",
       "description": "Projetos de produto, comunicacao e interfaces de venda.",
       "projects": []
     },
@@ -61,7 +61,7 @@
       "slug": "skul",
       "name": "Skul",
       "brandColor": "#2F0A46",
-      "logo": "/brand-assets/skul.svg",
+      "logo": "/brand-assets/skul-white.png",
       "description": "Biblioteca de estudos, telas e handoffs da marca.",
       "projects": []
     },
@@ -69,7 +69,7 @@
       "slug": "vinik",
       "name": "Vinik",
       "brandColor": "#004C3B",
-      "logo": "/brand-assets/vinik.svg",
+      "logo": "/brand-assets/vinik-white.png",
       "description": "Prototipos e fluxos para acessorios, distribuicao e canais.",
       "projects": []
     },

@@ -20,12 +20,12 @@ const logoSourceRoot = join(repoRoot, 'brand-assets');
 const logoFiles = [
   'azux.svg',
   'oderco-symbol.svg',
-  'odex.svg',
+  'odex-symbol.png',
   'pcyes-symbol.png',
-  'quati.svg',
-  'skul.svg',
+  'quati-symbol.png',
+  'skul-white.png',
   'tonante-symbol.png',
-  'vinik.svg',
+  'vinik-white.png',
 ];
 
 function run(command, args, cwd, env = {}) {

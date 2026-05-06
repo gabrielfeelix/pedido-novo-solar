@@ -2,12 +2,12 @@
 
 import {
   ArrowUpRight,
-  Building2,
   FolderGit2,
   Layers,
   Search,
   X,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Workspace } from '../_lib/types';
@@ -19,6 +19,7 @@ type Hit =
       name: string;
       description: string;
       brandColor: string;
+      logo: string;
     }
   | {
       kind: 'project';
@@ -91,6 +92,7 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
         name: c.name,
         description: c.description,
         brandColor: c.brandColor,
+        logo: c.logo,
       });
       for (const p of c.projects || []) {
         out.push({
@@ -183,7 +185,7 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
 
       {showDropdown && (
         <div className="absolute left-0 right-0 mt-2 z-50 anim-popover-in">
-          <div className="glass-strong rounded-2xl overflow-hidden">
+          <div className="rounded-2xl overflow-hidden bg-white border border-ink-100 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.32)]">
             <div className="max-h-[60vh] overflow-y-auto scrollbar-hide">
               {hits.length === 0 ? (
                 <div className="py-8 text-center px-4">
@@ -204,13 +206,23 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
                             onClick={() => setOpen(false)}
                           >
                             <span
-                              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-ink-100 overflow-hidden"
                               style={{
-                                background: `${h.brandColor}14`,
+                                background: h.logo.includes('white') ? h.brandColor : '#fff',
                                 color: h.brandColor,
                               }}
                             >
-                              <Building2 size={14} />
+                              {h.logo ? (
+                                <Image
+                                  src={h.logo}
+                                  alt=""
+                                  width={24}
+                                  height={24}
+                                  className="max-h-5 max-w-6 object-contain"
+                                />
+                              ) : (
+                                h.name.slice(0, 2).toUpperCase()
+                              )}
                             </span>
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-semibold truncate">
@@ -287,7 +299,7 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
                 </div>
               )}
             </div>
-            <div className="px-3 py-2 border-t border-white/60 flex items-center justify-between text-[10px] text-ink-400">
+            <div className="px-3 py-2 border-t border-ink-100 bg-white flex items-center justify-between text-[10px] text-ink-400">
               <span className="inline-flex items-center gap-1.5">
                 <span className="kbd">↵</span> abrir
               </span>
@@ -325,7 +337,7 @@ function Row({
   children: React.ReactNode;
 }) {
   const cls =
-    'flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/70 transition';
+    'flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-ink-50 transition';
   if (external) {
     return (
       <a

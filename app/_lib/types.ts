@@ -52,7 +52,8 @@ export type ActivityKind =
   | 'version.added'
   | 'comment.added'
   | 'handoff.updated'
-  | 'company.viewed';
+  | 'company.viewed'
+  | 'ticket.created';
 
 export type Activity = {
   id: string;
@@ -83,4 +84,22 @@ export type Handoff = {
 export type PatchedPrototype = Prototype & {
   companySlug: string;
   projectSlug: string;
+};
+
+export type TicketTopic =
+  | 'sugestao'
+  | 'nova-tela'
+  | 'nova-feature'
+  | 'redesign'
+  | 'design-review';
+
+export type TicketStatus = 'aberto' | 'em-analise' | 'resolvido';
+
+export type Ticket = {
+  id: string;
+  topic: TicketTopic;
+  title: string;
+  description: string;
+  status: TicketStatus;
+  createdAt: string;
 };

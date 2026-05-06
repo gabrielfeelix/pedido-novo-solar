@@ -31,18 +31,18 @@ export function Modal({
         >
           <div className="glass-strong rounded-3xl p-6 md:p-7 relative">
             <Dialog.Close
-              className="absolute right-4 top-4 icon-btn !w-8 !h-8"
+              className="absolute right-4 top-3 icon-btn !w-8 !h-8"
               aria-label="Fechar"
             >
               <X size={14} />
             </Dialog.Close>
             {title && (
-              <Dialog.Title className="text-lg font-semibold tracking-tight pr-8">
+              <Dialog.Title className="text-lg font-semibold tracking-tight pr-12">
                 {title}
               </Dialog.Title>
             )}
             {description && (
-              <Dialog.Description className="text-sm text-ink-500 mt-1 leading-relaxed">
+              <Dialog.Description className="text-sm text-ink-500 mt-1 leading-relaxed pr-10">
                 {description}
               </Dialog.Description>
             )}
@@ -133,7 +133,7 @@ export function Popover({
             ...(align === 'right' ? { right: 0 } : { left: 0 }),
           }}
         >
-          <div className="glass-strong rounded-2xl overflow-hidden">
+          <div className="rounded-2xl overflow-hidden bg-white border border-ink-100 shadow-[0_24px_60px_-28px_rgba(15,23,42,0.32)]">
             {children(() => setOpen(false))}
           </div>
         </div>

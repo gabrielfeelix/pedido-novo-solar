@@ -1,13 +1,42 @@
 'use client';
 
 import { Bell, Check, Inbox } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { Popover } from './ui';
 import { relativeTime } from '../_lib/storage';
 import type { Activity } from '../_lib/types';
 
+const READ_KEY = 'ux-hub:notifications.read';
+
 export function NotificationBell({ activity }: { activity: Activity[] }) {
   const items = activity.slice(0, 8);
-  const unread = items.length;
+  const [readIds, setReadIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(READ_KEY);
+      if (raw) setReadIds(new Set(JSON.parse(raw) as string[]));
+    } catch {
+      setReadIds(new Set());
+    }
+  }, []);
+
+  const unread = useMemo(
+    () => items.filter((item) => !readIds.has(item.id)).length,
+    [items, readIds]
+  );
+
+  function markVisibleAsRead() {
+    const next = new Set(readIds);
+    for (const item of items) next.add(item.id);
+    setReadIds(next);
+    try {
+      window.localStorage.setItem(READ_KEY, JSON.stringify(Array.from(next)));
+    } catch {
+      /* noop */
+    }
+  }
+
   return (
     <Popover
       align="right"
@@ -20,7 +49,9 @@ export function NotificationBell({ activity }: { activity: Activity[] }) {
         >
           <Bell size={15} />
           {unread > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white" />
+            <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-rose-500 ring-2 ring-white text-[9px] leading-4 text-white font-semibold">
+              {unread}
+            </span>
           )}
         </button>
       )}
@@ -34,7 +65,10 @@ export function NotificationBell({ activity }: { activity: Activity[] }) {
             </div>
             {items.length > 0 && (
               <button
-                onClick={close}
+                onClick={() => {
+                  markVisibleAsRead();
+                  close();
+                }}
                 className="text-[11px] font-medium text-ink-400 hover:text-[#0B1020] inline-flex items-center gap-1"
               >
                 <Check size={12} />
@@ -57,8 +91,11 @@ export function NotificationBell({ activity }: { activity: Activity[] }) {
               items.map((a) => (
                 <div
                   key={a.id}
-                  className="px-4 py-3 border-b border-white/40 last:border-0 hover:bg-white/40 transition"
+                  className="px-4 py-3 border-b border-white/40 last:border-0 hover:bg-white/40 transition relative"
                 >
+                  {!readIds.has(a.id) && (
+                    <span className="absolute left-2 top-4 w-1.5 h-1.5 rounded-full bg-rose-500" />
+                  )}
                   <p className="text-sm text-[#0B1020] leading-snug">{a.message}</p>
                   <p className="text-[11px] text-ink-400 mt-0.5">
                     {relativeTime(a.at)} · {a.companySlug}

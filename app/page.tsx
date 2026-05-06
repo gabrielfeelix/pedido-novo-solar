@@ -143,6 +143,7 @@ function CompanyCard({ company }: { company: Company }) {
   const prototypeCount =
     company.projects?.reduce((s, p) => s + (p.prototypes?.length || 0), 0) || 0;
   const hasProjects = projectCount > 0;
+  const logoNeedsColor = company.logo.includes('white');
 
   return (
     <Link
@@ -157,8 +158,11 @@ function CompanyCard({ company }: { company: Company }) {
 
       <div className="flex items-start justify-between mb-8 relative">
         <div
-          className="w-14 h-14 rounded-2xl bg-white border border-white flex items-center justify-center shadow-[0_8px_20px_-10px_rgba(15,23,42,0.18)] overflow-hidden relative"
-          style={{ color: company.brandColor }}
+          className="w-14 h-14 rounded-2xl border border-white flex items-center justify-center shadow-[0_8px_20px_-10px_rgba(15,23,42,0.18)] overflow-hidden relative"
+          style={{
+            color: company.brandColor,
+            background: logoNeedsColor ? company.brandColor : '#fff',
+          }}
         >
           {company.logo ? (
             <Image
@@ -166,7 +170,7 @@ function CompanyCard({ company }: { company: Company }) {
               alt={company.name}
               width={36}
               height={36}
-              className="object-contain max-h-9 w-auto h-auto"
+              className="object-contain max-h-9 max-w-10 w-auto h-auto"
             />
           ) : (
             <Building2 size={22} />

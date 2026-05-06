@@ -6,6 +6,7 @@ import { useState, type ReactNode } from 'react';
 import { NotificationBell } from './notifications';
 import { SearchDropdown } from './search-dropdown';
 import { HelpModal } from './help-modal';
+import { useWorkspace } from './workspace-provider';
 import type { Activity, Workspace } from '../_lib/types';
 
 export function TopBar({
@@ -19,6 +20,7 @@ export function TopBar({
   variant?: 'home' | 'app';
 }) {
   const [helpOpen, setHelpOpen] = useState(false);
+  const { tickets, createTicket } = useWorkspace();
 
   return (
     <div className="sticky-header">
@@ -46,7 +48,7 @@ export function TopBar({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setHelpOpen(true)}
-              className="btn-ghost !py-2 !px-3 hidden sm:inline-flex"
+              className="btn-ghost !py-2 !px-4 hidden sm:inline-flex whitespace-nowrap"
             >
               <span className="text-xs font-medium">Abrir chamado</span>
             </button>
@@ -61,7 +63,12 @@ export function TopBar({
         </div>
       </div>
 
-      <HelpModal open={helpOpen} onOpenChange={setHelpOpen} />
+      <HelpModal
+        open={helpOpen}
+        onOpenChange={setHelpOpen}
+        tickets={tickets}
+        onCreateTicket={createTicket}
+      />
     </div>
   );
 }
