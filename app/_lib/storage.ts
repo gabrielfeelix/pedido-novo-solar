@@ -24,8 +24,9 @@ async function loadSeed(): Promise<Workspace> {
   if (cachedSeed) return cachedSeed;
   const res = await fetch('/workspace.json');
   if (!res.ok) throw new Error('Failed to load workspace.json');
-  cachedSeed = await res.json();
-  return cachedSeed;
+  const data = await res.json() as Workspace;
+  cachedSeed = data;
+  return data;
 }
 
 type Patch = {
