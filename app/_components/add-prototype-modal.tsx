@@ -24,6 +24,7 @@ export function AddPrototypeModal({
   defaultProjectSlug,
   projects,
   editing,
+  companySlug,
   companyName,
   brandColor,
   onSubmit,
@@ -33,6 +34,7 @@ export function AddPrototypeModal({
   defaultProjectSlug?: string;
   projects: { slug: string; name: string }[];
   editing?: { prototype: Prototype; projectSlug: string } | null;
+  companySlug: string;
   companyName?: string;
   brandColor?: string;
   onSubmit: (data: PrototypeFormData) => Promise<void> | void;
@@ -86,7 +88,7 @@ export function AddPrototypeModal({
 
     let finalUrl = url.trim();
 
-    // Scaffold real folder /public/p/{slug} when adding (dev only)
+    // Scaffold real source and public folders when adding (dev only).
     if (!isEdit && scaffold && !finalUrl) {
       const slug = `${projectSlug}-${version}`
         .toLowerCase()
@@ -99,6 +101,9 @@ export function AddPrototypeModal({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             slug,
+            companySlug,
+            projectSlug,
+            version,
             companyName,
             prototypeName: name.trim(),
             brandColor,
@@ -108,7 +113,7 @@ export function AddPrototypeModal({
         const j = await r.json();
         if (j?.ok) {
           finalUrl = j.path;
-          setFeedback(j.reused ? 'Pasta já existia — reutilizando.' : `Pasta criada em /public${j.path}`);
+          setFeedback(j.reused ? 'Pasta já existia — reutilizando.' : `Pasta criada em empresas/${companySlug}/projetos/${projectSlug}/versoes/${version}`);
         } else {
           setFeedback(j?.error || 'Não foi possível criar a pasta.');
         }
@@ -140,7 +145,7 @@ export function AddPrototypeModal({
       description={
         isEdit
           ? 'Atualize nome, links e notas. Mudanças ficam salvas localmente.'
-          : 'Crie um protótipo novo. Você pode deixar o sistema scaffoldar a pasta dentro de /public/p/, ou colar manualmente o link.'
+          : 'Crie um protótipo novo. Você pode deixar o sistema scaffoldar a pasta na estrutura empresa/projeto/versão, ou colar manualmente o link.'
       }
       size="lg"
     >
@@ -189,7 +194,7 @@ export function AddPrototypeModal({
           hint={
             !isEdit && scaffold
               ? 'opcional — gerado automaticamente'
-              : 'URL pública (Vercel, S3, /p/...)'
+              : 'URL pública (Vercel, S3, /empresa/projeto/versao...)'
           }
         >
           <div className="relative">
@@ -203,7 +208,7 @@ export function AddPrototypeModal({
               className="input-glass !pl-9"
               placeholder={
                 !isEdit && scaffold
-                  ? 'deixe em branco pra gerar /p/...'
+                  ? 'deixe em branco pra gerar /empresa/projeto/versao'
                   : 'https://...'
               }
             />
@@ -258,7 +263,7 @@ export function AddPrototypeModal({
                 onChange={(e) => setScaffold(e.target.checked)}
                 className="accent-[#0B1020]"
               />
-              Criar pasta automaticamente em <code className="font-mono text-[11px] bg-slate-100 px-1.5 py-0.5 rounded">/public/p/&lt;slug&gt;</code>
+              Criar pasta automaticamente em <code className="font-mono text-[11px] bg-slate-100 px-1.5 py-0.5 rounded">empresas/.../versoes/&lt;versao&gt;</code>
             </label>
           )}
           <label className="flex items-center gap-2 text-xs text-ink-700 cursor-pointer">

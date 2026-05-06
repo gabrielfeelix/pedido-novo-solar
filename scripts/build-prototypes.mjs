@@ -60,6 +60,18 @@ function getAllPrototypes() {
   );
 }
 
+function getPrototypeUrl(company, project, prototype) {
+  return prototype.url || `/${company.slug}/${project.slug}/${prototype.version}`;
+}
+
+function shouldCopyStatic(source) {
+  return !source.includes(':Zone.Identifier')
+    && !source.includes('/node_modules/')
+    && !source.includes('/dist/')
+    && !source.includes('/.vercel/')
+    && !source.includes('/.git/');
+}
+
 rmSync(tempRoot, { recursive: true, force: true });
 rmSync(join(publicRoot, 'p'), { recursive: true, force: true });
 rmSync(join(publicRoot, '_prototypes'), { recursive: true, force: true });
@@ -86,7 +98,16 @@ for (const { company, project, prototype } of getAllPrototypes()) {
   const basePath = `/${company.slug}/${project.slug}/${prototype.version}/`;
 
   if (!existsSync(join(sourceDir, 'package.json'))) {
-    throw new Error(`Missing package.json for prototype "${prototype.slug}" at ${sourceDir}`);
+    if (!existsSync(join(sourceDir, 'index.html'))) {
+      throw new Error(`Missing package.json or index.html for prototype "${prototype.slug}" at ${sourceDir}`);
+    }
+
+    console.log(`\nCopying static prototype ${prototype.name} at ${basePath}`);
+    cpSync(sourceDir, destinationDir, {
+      recursive: true,
+      filter: shouldCopyStatic,
+    });
+    continue;
   }
 
   console.log(`\nBuilding ${prototype.name} at ${basePath}`);
@@ -266,7 +287,7 @@ function renderProjectDetail(company, project) {
           <div class="link-stack">
             ${renderAction(project.figmaUrl, 'Abrir Figma')}
             ${renderAction(project.handoffUrl, 'Abrir handoff')}
-            ${selectedPrototype ? renderAction(`/p/${selectedPrototype.slug}`, 'Abrir escolhido') : ''}
+            ${selectedPrototype ? renderAction(getPrototypeUrl(company, project, selectedPrototype), 'Abrir escolhido') : ''}
           </div>
         </aside>
       </section>
@@ -357,7 +378,7 @@ function renderProjectCard(company, project) {
     </div>
     <div class="card-actions">
       <a href="/${company.slug}/projetos/${project.slug}">Detalhes</a>
-      ${selectedPrototype ? `<a href="/p/${selectedPrototype.slug}">Abrir protótipo</a>` : ''}
+      ${selectedPrototype ? `<a href="${escapeAttribute(getPrototypeUrl(company, project, selectedPrototype))}">Abrir protótipo</a>` : ''}
     </div>
   </article>`;
 }
@@ -374,7 +395,7 @@ function renderPrototypeCard(project, prototype) {
     </div>
     <div class="prototype-actions">
       ${selected ? '<span class="selected-pill">Escolhido</span>' : ''}
-      <a href="/p/${prototype.slug}">Abrir</a>
+      <a href="${escapeAttribute(prototype.url || '#')}">Abrir</a>
     </div>
   </article>`;
 }

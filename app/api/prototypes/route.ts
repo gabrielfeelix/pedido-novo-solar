@@ -10,6 +10,9 @@ function isSafeSlug(s: string) {
 
 type PrototypeRequestBody = {
   slug?: unknown;
+  companySlug?: unknown;
+  projectSlug?: unknown;
+  version?: unknown;
   companyName?: unknown;
   prototypeName?: unknown;
   brandColor?: unknown;
@@ -100,41 +103,56 @@ export async function POST(req: Request) {
   }
 
   const slug = typeof body.slug === 'string' ? body.slug : '';
+  const companySlug = typeof body.companySlug === 'string' ? body.companySlug : '';
+  const projectSlug = typeof body.projectSlug === 'string' ? body.projectSlug : '';
+  const version = typeof body.version === 'string' ? body.version : 'v1';
   const companyName = typeof body.companyName === 'string' ? body.companyName : '';
   const prototypeName =
     typeof body.prototypeName === 'string' ? body.prototypeName : slug;
   const brandColor =
     typeof body.brandColor === 'string' ? body.brandColor : '#0B1020';
   const notes = typeof body.notes === 'string' ? body.notes : '';
-  if (!slug || !isSafeSlug(slug)) {
+  if (!slug || !isSafeSlug(slug) || !isSafeSlug(companySlug) || !isSafeSlug(projectSlug) || !isSafeSlug(version)) {
     return NextResponse.json(
       { ok: false, error: 'slug inválido (use a-z, 0-9, hífen)' },
       { status: 400 }
     );
   }
 
-  const baseDir = join(process.cwd(), 'public', 'p', slug);
-  if (existsSync(baseDir)) {
+  const sourceDir = join(
+    process.cwd(),
+    'empresas',
+    companySlug,
+    'projetos',
+    projectSlug,
+    'versoes',
+    version
+  );
+  const publicDir = join(process.cwd(), 'public', companySlug, projectSlug, version);
+  const publicPath = `/${companySlug}/${projectSlug}/${version}`;
+
+  if (existsSync(sourceDir) || existsSync(publicDir)) {
     return NextResponse.json({
       ok: true,
-      path: `/p/${slug}`,
+      path: publicPath,
       reused: true,
     });
   }
 
   try {
-    mkdirSync(baseDir, { recursive: true });
-    writeFileSync(
-      join(baseDir, 'index.html'),
-      placeholderHtml({
-        companyName: String(companyName || ''),
-        prototypeName: String(prototypeName || slug),
-        brandColor: String(brandColor),
-        notes: String(notes),
-      }),
-      'utf-8'
-    );
-    return NextResponse.json({ ok: true, path: `/p/${slug}`, reused: false });
+    const html = placeholderHtml({
+      companyName: String(companyName || ''),
+      prototypeName: String(prototypeName || slug),
+      brandColor: String(brandColor),
+      notes: String(notes),
+    });
+
+    mkdirSync(sourceDir, { recursive: true });
+    mkdirSync(publicDir, { recursive: true });
+    writeFileSync(join(sourceDir, 'index.html'), html, 'utf-8');
+    writeFileSync(join(publicDir, 'index.html'), html, 'utf-8');
+
+    return NextResponse.json({ ok: true, path: publicPath, source: sourceDir, reused: false });
   } catch (err: unknown) {
     return NextResponse.json(
       { ok: false, error: err instanceof Error ? err.message : 'Falha ao criar' },

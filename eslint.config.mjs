@@ -25,8 +25,7 @@ const eslintConfig = defineConfig([
     'build/**',
     'next-env.d.ts',
     'public/**',
-    'V2/**',
-    'ODEX/**',
+    'empresas/**',
   ]),
 ]);
 

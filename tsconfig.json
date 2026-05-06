@@ -29,5 +29,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "V2", "ODEX", "public/_prototypes"]
+  "exclude": ["node_modules", "empresas", "public/_prototypes"]
 }

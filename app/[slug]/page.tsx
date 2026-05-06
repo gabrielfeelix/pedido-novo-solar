@@ -207,11 +207,14 @@ export default function CompanyDashboard({
         onOpenChange={setAddOpen}
         defaultProjectSlug={defaultAddProject}
         projects={projects.map((p) => ({ slug: p.slug, name: p.name }))}
+        companySlug={company.slug}
+        companyName={company.name}
+        brandColor={company.brandColor}
         onSubmit={(data) => {
           const newId = addPrototype(company.slug, data.projectSlug, {
             name: data.name,
             version: data.version,
-            slug: data.url ? data.url.replace(/^\/p\//, '') : `${data.projectSlug}-${data.version}`,
+            slug: `${data.projectSlug}-${data.version}`,
             url: data.url || undefined,
             figmaUrl: data.figmaUrl || undefined,
             preview: data.preview || undefined,

@@ -24,7 +24,7 @@
               "slug": "pcyes-v2",
               "url": "/pcyes/pcyes-v2/v2",
               "figmaUrl": "https://www.figma.com/design/7Q31URYiXeVDJDTBMcgpAA/V2--Gabriel-Barbosa-Team---Copy-",
-              "source": "V2",
+              "source": "empresas/pcyes/projetos/pcyes-v2/versoes/v2",
               "notes": "Versao atual com a homepage gamer e novo carrinho.",
               "createdAt": "2026-04-30",
               "isCurrent": true
@@ -39,7 +39,38 @@
       "brandColor": "#0D1D52",
       "logo": "/brand-assets/odex-symbol.png",
       "description": "Fluxos comerciais, vendas, pedidos e operacao.",
-      "projects": []
+      "projects": [
+        {
+          "slug": "website",
+          "name": "Website ODEX",
+          "status": "ativo",
+          "handoffUrl": "/odex/website/v2",
+          "selectedPrototypeId": "odex-website-v2",
+          "prototypes": [
+            {
+              "id": "odex-website-v1",
+              "name": "Website ODEX",
+              "version": "v1",
+              "slug": "odex-website-v1",
+              "url": "/odex/website/v1",
+              "source": "empresas/odex/projetos/website/versoes/v1",
+              "notes": "Primeira versao estatica importada do website.",
+              "createdAt": "2026-05-06"
+            },
+            {
+              "id": "odex-website-v2",
+              "name": "Website ODEX",
+              "version": "v2",
+              "slug": "odex-website-v2",
+              "url": "/odex/website/v2",
+              "source": "empresas/odex/projetos/website/versoes/v2",
+              "notes": "Versao atual do website ODEX com loja e pagina de produto.",
+              "createdAt": "2026-05-06",
+              "isCurrent": true
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "tonante",
@@ -102,7 +133,7 @@
               "version": "v1",
               "slug": "crm-pedido-solar-v1",
               "url": "/crm/novo-pedido-solar/v1",
-              "source": "ODEX/pedido-venda-solar-crm/v1/CRM-telas",
+              "source": "empresas/crm/projetos/novo-pedido-solar/versoes/v1/CRM-telas",
               "notes": "Primeira versao do fluxo de pedido solar.",
               "createdAt": "2026-04-24"
             },
@@ -113,7 +144,7 @@
               "slug": "crm-pedido-solar-v2",
               "url": "/crm/novo-pedido-solar/v2",
               "figmaUrl": "https://www.figma.com/design/gDtvcBaQZmJPQqlDiejdxe/Forma%C3%A7%C3%A3o-de-Pre%C3%A7o---Vers%C3%A3o-Oficial--Copy-",
-              "source": "ODEX/pedido-venda-solar-crm/v2",
+              "source": "empresas/crm/projetos/novo-pedido-solar/versoes/v2",
               "notes": "Versao recomendada para demonstrar o novo fluxo de pedido solar.",
               "createdAt": "2026-04-24",
               "isCurrent": true
