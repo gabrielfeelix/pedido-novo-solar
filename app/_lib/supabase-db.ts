@@ -1,4 +1,4 @@
-import { supabase } from '@/app/lib/supabase';
+import { supabase } from '../lib/supabase';
 import type { Activity } from './types';
 
 export async function addActivity(activity: Omit<Activity, 'id' | 'at'> & { at?: string }) {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import type { ProjectStatus } from '@/_lib/types';
+import type { ProjectStatus } from '@/app/_lib/types';
 
 export function EditProjectModal({
   open,

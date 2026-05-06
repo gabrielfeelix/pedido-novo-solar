@@ -94,12 +94,13 @@ export default function CompanyDashboard({
   }
 
   async function shareWorkspace() {
+    if (!company) return;
     const url = window.location.href;
     try {
       await navigator.clipboard.writeText(url);
       setShareMsg('✓ Link copiado!');
 
-      const { saveWorkspaceShare } = await import('@/_lib/supabase-db');
+      const { saveWorkspaceShare } = await import('@/app/_lib/supabase-db');
       saveWorkspaceShare(company.slug, url).catch(console.error);
 
       setTimeout(() => setShareMsg(null), 3000);
