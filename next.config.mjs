@@ -10,6 +10,13 @@ const workspaceHash = createHash('sha1')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   generateBuildId: () => workspaceHash,
+  async redirects() {
+    return [
+      { source: '/p/pedido-solar-v2', destination: '/crm/novo-pedido-solar/v2', permanent: true },
+      { source: '/p/pedido-solar-v1', destination: '/crm/novo-pedido-solar/v1', permanent: true },
+      { source: '/p/pcyes-v2', destination: '/pcyes/pcyes-v2/v2', permanent: true },
+    ];
+  },
   async rewrites() {
     return [
       { source: '/:company/:project/:version', destination: '/:company/:project/:version/index.html' },
