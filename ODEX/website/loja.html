@@ -356,10 +356,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 16px;
       margin-bottom: 20px;
     }
     .catalog-header p { margin: 0; font-size: 14px; color: var(--muted); }
     .catalog-header strong { color: var(--ink); }
+    .catalog-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .sort-dropdown {
       padding: 8px 12px;
       border: 1px solid var(--line);
@@ -370,6 +376,29 @@
       outline: none;
     }
     .sort-dropdown:focus { border-color: var(--blue); }
+    .view-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: white;
+    }
+    .view-btn {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+    }
+    .view-btn.active {
+      background: var(--blue);
+      color: white;
+    }
 
     /* Product Grid */
     .grid {
@@ -384,7 +413,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 504px;
+      min-height: 460px;
       transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
     }
     .product-card:hover {
@@ -394,17 +423,18 @@
     }
     .product-image {
       position: relative;
-      height: 248px;
+      height: 190px;
       background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
       border-bottom: 1px solid var(--line);
       overflow: hidden;
     }
     .product-image img {
       position: absolute;
-      inset: 18px 18px 14px;
-      width: calc(100% - 36px);
-      height: calc(100% - 32px);
+      inset: 14px;
+      width: calc(100% - 28px);
+      height: calc(100% - 28px);
       object-fit: contain;
+      object-position: center;
       display: block;
     }
     .badge {
@@ -485,6 +515,32 @@
     .action-pill .add-btn svg { width: 18px; height: 18px; }
     .action-pill .add-btn:hover:not(:disabled) { background: var(--blue-hover); }
     .action-pill .add-btn:active:not(:disabled) { background: #003bb0; }
+
+    .grid.list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .grid.list-view .product-card {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+    }
+    .grid.list-view .product-card:hover { transform: translateY(-2px); }
+    .grid.list-view .product-image {
+      height: 100%;
+      min-height: 210px;
+      border-bottom: 0;
+      border-right: 1px solid var(--line);
+    }
+    .grid.list-view .product-info {
+      min-height: 210px;
+      padding: 24px;
+    }
+    .grid.list-view .product-title {
+      max-width: 560px;
+      -webkit-line-clamp: 2;
+    }
 
     /* Empty State */
     .empty-state {
@@ -633,6 +689,8 @@
       .nav { display: none; }
       .integrator-link { display: none; }
       .grid { grid-template-columns: 1fr; }
+      .grid.list-view .product-card { grid-template-columns: 1fr; }
+      .grid.list-view .product-image { height: 190px; border-right: 0; border-bottom: 1px solid var(--line); }
       .toolbar { flex-direction: column; align-items: stretch; }
       .search-wrapper { max-width: 100%; }
       .cart-trigger { justify-content: center; }
@@ -694,7 +752,9 @@
 
       <div class="category-bar">
         <button class="category-btn active" data-category="Painel">Painel</button>
+        <button class="category-btn" data-category="Módulos">Módulos</button>
         <button class="category-btn" data-category="Inversor">Inversor</button>
+        <button class="category-btn" data-category="Baterias">Baterias</button>
         <button class="category-btn" data-category="String Box">String Box</button>
         <button class="category-btn" data-category="Estruturas">Estruturas</button>
         <button class="category-btn" data-category="Acessórios">Acessórios</button>
@@ -747,11 +807,21 @@
       <section>
         <div class="catalog-header">
           <p>Exibindo <strong id="visibleCount">0</strong> de <span id="totalCount">0</span> produtos</p>
-          <select class="sort-dropdown" id="sortSelect">
-            <option value="featured">Destaques</option>
-            <option value="price-asc">Menor preço</option>
-            <option value="price-desc">Maior preço</option>
-          </select>
+          <div class="catalog-controls">
+            <select class="sort-dropdown" id="sortSelect">
+              <option value="featured">Destaques</option>
+              <option value="price-asc">Menor preço</option>
+              <option value="price-desc">Maior preço</option>
+            </select>
+            <div class="view-toggle" aria-label="Visualização">
+              <button class="view-btn active" type="button" data-view="grid" aria-label="Visualização em grade">
+                <i data-lucide="grid-3x3" size="17"></i>
+              </button>
+              <button class="view-btn" type="button" data-view="list" aria-label="Visualização horizontal">
+                <i data-lucide="list" size="18"></i>
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="grid" id="productGrid">
@@ -801,12 +871,12 @@
   <script>
     // --- Data ---
     const products = [
-      { sku: "337702", name: "Painel Solar Fotovoltaico Huasun 700W HJT 132 Células Bifacial", brand: "Huasun", tech: ["Bifacial", "HJT"], power: 700, efficiency: "22,53%", price: 645, available: true, image: "assets/store/painel-card-modelo.png" },
-      { sku: "345436", name: "Painel Solar Fotovoltaico Astronergy Bifacial 580W N-Type", brand: "Astronergy", tech: ["Bifacial", "N-Type"], power: 580, efficiency: "22,5%", price: 529, available: true, image: "assets/store/painel-card-modelo.png" },
-      { sku: "343662", name: "Painel Solar Fotovoltaico Jinko 625W Tiger Neo Bifacial N-Type", brand: "Jinko", tech: ["Bifacial", "N-Type"], power: 625, efficiency: "23,14%", price: 589, available: false, image: "assets/store/painel-card-modelo.png" },
-      { sku: "300585", name: "Painel Solar Fotovoltaico Odex 610W N-Type 132 Células Bifacial", brand: "Odex", tech: ["Bifacial", "N-Type"], power: 610, efficiency: "22,7%", price: 548, available: false, image: "assets/store/painel-card-modelo.png" },
-      { sku: "320473", name: "Painel Solar Fotovoltaico Odex 585W Monofacial N-Type 144 Cél", brand: "Odex", tech: ["Monofacial", "N-Type"], power: 585, efficiency: "22,65%", price: 512, available: false, image: "assets/store/painel-card-modelo.png" },
-      { sku: "299589", name: "Painel Solar Fotovoltaico Jinko 610W Tiger Neo Bifacial N-Type", brand: "Jinko", tech: ["Bifacial", "N-Type"], power: 610, efficiency: "22,58%", price: 552, available: false, image: "assets/store/painel-card-modelo.png" }
+      { sku: "337702", name: "Painel Solar Fotovoltaico Huasun 700W HJT 132 Células Bifacial", brand: "Huasun", tech: ["Bifacial", "HJT"], power: 700, efficiency: "22,53%", price: 645, available: true, image: "assets/store/panel-huasun-700w.png" },
+      { sku: "345436", name: "Painel Solar Fotovoltaico Astronergy Bifacial 580W N-Type", brand: "Astronergy", tech: ["Bifacial", "N-Type"], power: 580, efficiency: "22,5%", price: 529, available: true, image: "assets/store/panel-astronergy-580w.png" },
+      { sku: "343662", name: "Painel Solar Fotovoltaico Jinko 625W Tiger Neo Bifacial N-Type", brand: "Jinko", tech: ["Bifacial", "N-Type"], power: 625, efficiency: "23,14%", price: 589, available: false, image: "assets/store/panel-jinko-625w.png" },
+      { sku: "300585", name: "Painel Solar Fotovoltaico Odex 610W N-Type 132 Células Bifacial", brand: "Odex", tech: ["Bifacial", "N-Type"], power: 610, efficiency: "22,7%", price: 548, available: false, image: "assets/store/panel-odex-610w.png" },
+      { sku: "320473", name: "Painel Solar Fotovoltaico Odex 585W Monofacial N-Type 144 Cél", brand: "Odex", tech: ["Monofacial", "N-Type"], power: 585, efficiency: "22,65%", price: 512, available: false, image: "assets/store/panel-odex-585w.png" },
+      { sku: "299589", name: "Painel Solar Fotovoltaico Jinko 610W Tiger Neo Bifacial N-Type", brand: "Jinko", tech: ["Bifacial", "N-Type"], power: 610, efficiency: "22,58%", price: 552, available: false, image: "assets/store/panel-jinko-610w.png" }
     ];
 
     // --- State ---
@@ -818,6 +888,7 @@
       tech: new Set(),
       sort: "featured",
       category: "Painel",
+      view: "grid",
       cart: {}, // sku: quantity
       tempQty: {} // sku: local unsaved quantity
     };
@@ -909,6 +980,16 @@
     document.getElementById("sortSelect").addEventListener("change", (e) => {
       state.sort = e.target.value;
       renderCatalog();
+    });
+
+    document.querySelectorAll(".view-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.view = btn.dataset.view;
+        document.querySelectorAll(".view-btn").forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+        grid.classList.toggle("list-view", state.view === "list");
+        lucide.createIcons();
+      });
     });
 
     document.getElementById("clearFiltersBtn").addEventListener("click", () => {
@@ -1009,6 +1090,7 @@
       visibleCount.textContent = filtered.length;
       totalCount.textContent = products.length;
       emptyState.style.display = filtered.length === 0 ? "block" : "none";
+      grid.classList.toggle("list-view", state.view === "list");
       lucide.createIcons();
     }
 
