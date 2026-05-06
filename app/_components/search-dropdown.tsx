@@ -10,6 +10,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { logoFrameStyle, logoImageStyle } from '../_lib/brand';
 import type { Workspace } from '../_lib/types';
 
 type Hit =
@@ -207,10 +208,7 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
                           >
                             <span
                               className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border border-ink-100 overflow-hidden"
-                              style={{
-                                background: h.logo.includes('white') ? h.brandColor : '#fff',
-                                color: h.brandColor,
-                              }}
+                              style={logoFrameStyle(h)}
                             >
                               {h.logo ? (
                                 <Image
@@ -219,6 +217,7 @@ export function SearchDropdown({ workspace }: { workspace: Workspace }) {
                                   width={24}
                                   height={24}
                                   className="max-h-5 max-w-6 object-contain"
+                                  style={logoImageStyle(h)}
                                 />
                               ) : (
                                 h.name.slice(0, 2).toUpperCase()

@@ -19,6 +19,7 @@ const logoSourceRoot = join(repoRoot, 'brand-assets');
 
 const logoFiles = [
   'azux.svg',
+  'azux-symbol.png',
   'oderco-symbol.svg',
   'odex-symbol.png',
   'pcyes-symbol.png',

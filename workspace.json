@@ -76,7 +76,7 @@
     {
       "slug": "oderco",
       "name": "Oderco",
-      "brandColor": "#2458E6",
+      "brandColor": "#1D4ED8",
       "logo": "/brand-assets/oderco-symbol.svg",
       "description": "Projetos transversais do grupo Oderco.",
       "projects": []
@@ -125,8 +125,8 @@
     {
       "slug": "azux",
       "name": "Azux",
-      "brandColor": "#0256A3",
-      "logo": "/brand-assets/azux.svg",
+      "brandColor": "#1D4ED8",
+      "logo": "/brand-assets/azux-symbol.png",
       "description": "Projetos de UX, produto e interfaces internas.",
       "projects": []
     }

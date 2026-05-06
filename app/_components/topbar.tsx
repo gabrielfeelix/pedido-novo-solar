@@ -1,11 +1,12 @@
 'use client';
 
-import { ArrowLeft, Layers } from 'lucide-react';
+import { ArrowLeft, ClipboardList, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { useState, type ReactNode } from 'react';
 import { NotificationBell } from './notifications';
 import { SearchDropdown } from './search-dropdown';
 import { HelpModal } from './help-modal';
+import { TicketsModal } from './tickets-modal';
 import { useWorkspace } from './workspace-provider';
 import type { Activity, Workspace } from '../_lib/types';
 
@@ -20,6 +21,7 @@ export function TopBar({
   variant?: 'home' | 'app';
 }) {
   const [helpOpen, setHelpOpen] = useState(false);
+  const [ticketsOpen, setTicketsOpen] = useState(false);
   const { tickets, createTicket } = useWorkspace();
 
   return (
@@ -47,6 +49,18 @@ export function TopBar({
 
           <div className="flex items-center gap-2">
             <button
+              onClick={() => setTicketsOpen(true)}
+              className="btn-ghost !py-2 !px-4 hidden sm:inline-flex whitespace-nowrap"
+            >
+              <ClipboardList size={13} />
+              <span className="text-xs font-medium">Chamados</span>
+              {tickets.length > 0 && (
+                <span className="rounded-full bg-[#0B1020] px-1.5 py-0.5 text-[10px] leading-none text-white">
+                  {tickets.length}
+                </span>
+              )}
+            </button>
+            <button
               onClick={() => setHelpOpen(true)}
               className="btn-ghost !py-2 !px-4 hidden sm:inline-flex whitespace-nowrap"
             >
@@ -66,8 +80,12 @@ export function TopBar({
       <HelpModal
         open={helpOpen}
         onOpenChange={setHelpOpen}
-        tickets={tickets}
         onCreateTicket={createTicket}
+      />
+      <TicketsModal
+        open={ticketsOpen}
+        onOpenChange={setTicketsOpen}
+        tickets={tickets}
       />
     </div>
   );

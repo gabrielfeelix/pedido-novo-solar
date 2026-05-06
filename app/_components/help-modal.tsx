@@ -1,9 +1,8 @@
 'use client';
 
-import { ClipboardList, Lightbulb, Send, Sparkles } from 'lucide-react';
+import { Lightbulb, Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
-import { relativeTime } from '../_lib/storage';
-import type { Ticket, TicketTopic } from '../_lib/types';
+import type { TicketTopic } from '../_lib/types';
 import { Modal } from './ui';
 
 const TOPICS = [
@@ -17,12 +16,10 @@ const TOPICS = [
 export function HelpModal({
   open,
   onOpenChange,
-  tickets = [],
   onCreateTicket,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  tickets?: Ticket[];
   onCreateTicket?: (topic: TicketTopic, description: string) => void;
 }) {
   const [topic, setTopic] = useState<(typeof TOPICS)[number]['id']>('sugestao');
@@ -46,7 +43,7 @@ export function HelpModal({
       onOpenChange={onOpenChange}
       title="Abrir chamado de UX"
       description="Pedidos que dependem do time de design — ideias, novas telas, redesign, reviews."
-      size="lg"
+      size="md"
     >
       {sent ? (
         <div className="py-6 text-center">
@@ -59,8 +56,7 @@ export function HelpModal({
           </p>
         </div>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-[1fr_260px]">
-          <form onSubmit={submit} className="space-y-4 min-w-0">
+        <form onSubmit={submit} className="space-y-4 min-w-0">
             <div>
               <label className="text-[11px] font-semibold uppercase tracking-[0.15em] text-ink-400 mb-2 block">
                 Tipo
@@ -121,41 +117,7 @@ export function HelpModal({
                 Enviar para UX
               </button>
             </div>
-          </form>
-
-          <aside className="rounded-2xl bg-white border border-ink-100 p-3 min-h-[220px]">
-            <div className="flex items-center gap-2 px-1 pb-3 border-b border-ink-100">
-              <ClipboardList size={14} className="text-ink-400" />
-              <div>
-                <p className="text-xs font-semibold">Listagem de chamados</p>
-                <p className="text-[10px] text-ink-400">{tickets.length} aberto{tickets.length === 1 ? '' : 's'}</p>
-              </div>
-            </div>
-            <div className="mt-2 max-h-72 overflow-y-auto scrollbar-hide space-y-2">
-              {tickets.length === 0 ? (
-                <div className="py-8 text-center">
-                  <p className="text-xs font-medium text-ink-500">Nenhum chamado ainda</p>
-                  <p className="text-[10px] text-ink-400 mt-1">Os próximos pedidos aparecem aqui.</p>
-                </div>
-              ) : (
-                tickets.map((ticket) => (
-                  <article key={ticket.id} className="rounded-xl border border-ink-100 bg-ink-50/60 p-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-xs font-semibold text-[#0B1020]">{ticket.title}</p>
-                      <span className="rounded-full bg-white border border-ink-100 px-2 py-0.5 text-[9px] uppercase tracking-wide text-ink-400">
-                        {ticket.status}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-[10px] leading-snug text-ink-500 line-clamp-2">
-                      {ticket.description}
-                    </p>
-                    <p className="mt-2 text-[10px] text-ink-400">{relativeTime(ticket.createdAt)}</p>
-                  </article>
-                ))
-              )}
-            </div>
-          </aside>
-        </div>
+        </form>
       )}
     </Modal>
   );
