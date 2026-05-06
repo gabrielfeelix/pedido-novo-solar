@@ -125,8 +125,9 @@ export default function CompanyDashboard({
                 <CompanyHero
                   company={company}
                   onCreate={() => openAdd(projects[0]?.slug)}
+                  onShare={shareWorkspace}
                 />
-                <OverviewCharts company={company} />
+                <OverviewCharts company={company} projects={projects} />
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <div className="lg:col-span-2">
                     <ProjectsSection
@@ -390,7 +391,7 @@ function DashboardCrumb({ company }: { company: Company }) {
 
 /* ---------------- Hero ---------------- */
 
-function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => void }) {
+function CompanyHero({ company, onCreate, onShare }: { company: Company; onCreate: () => void; onShare: () => void }) {
   const projectCount = company.projects?.length || 0;
   return (
     <section className="relative rounded-3xl overflow-hidden glass-strong">
@@ -438,8 +439,8 @@ function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => 
             <Plus size={14} />
             Novo protótipo
           </button>
-          <button onClick={shareWorkspace} className="btn-ghost justify-center relative">
-            {shareMsg || 'Compartilhar workspace'}
+          <button onClick={onShare} className="btn-ghost justify-center relative">
+            Compartilhar workspace
           </button>
         </div>
       </div>
@@ -449,7 +450,7 @@ function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => 
 
 /* ---------------- Charts ---------------- */
 
-function OverviewCharts({ company }: { company: Company }) {
+function OverviewCharts({ company, projects }: { company: Company; projects: Project[] }) {
   const projectCount = company.projects?.length || 0;
   const prototypeCount =
     company.projects?.reduce((s, p) => s + (p.prototypes?.length || 0), 0) || 0;
