@@ -2,6 +2,7 @@
 
 // workspace-seed-v3
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { addActivity as addActivityDB } from './supabase-db';
 import type {
   Activity,
   Comment,
@@ -173,17 +174,18 @@ export function useWorkspaceStore() {
 
   const logActivity = useCallback(
     (a: Omit<Activity, 'id' | 'at'> & Partial<Pick<Activity, 'at' | 'id'>>) => {
+      const activity = {
+        id: a.id ?? crypto.randomUUID(),
+        at: a.at ?? new Date().toISOString(),
+        ...a,
+      };
+
       update((prev) => ({
         ...prev,
-        activity: [
-          {
-            id: a.id ?? crypto.randomUUID(),
-            at: a.at ?? new Date().toISOString(),
-            ...a,
-          },
-          ...prev.activity,
-        ].slice(0, 60),
+        activity: [activity, ...prev.activity].slice(0, 60),
       }));
+
+      addActivityDB(a).catch(console.error);
     },
     [update]
   );

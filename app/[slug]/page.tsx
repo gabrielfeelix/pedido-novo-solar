@@ -93,12 +93,21 @@ export default function CompanyDashboard({
     setAddOpen(true);
   }
 
-  function shareWorkspace() {
+  async function shareWorkspace() {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
+    try {
+      await navigator.clipboard.writeText(url);
       setShareMsg('✓ Link copiado!');
+
+      const { saveWorkspaceShare } = await import('@/_lib/supabase-db');
+      saveWorkspaceShare(company.slug, url).catch(console.error);
+
       setTimeout(() => setShareMsg(null), 3000);
-    });
+    } catch (err) {
+      console.error('Erro ao compartilhar:', err);
+      setShareMsg('✗ Erro ao copiar');
+      setTimeout(() => setShareMsg(null), 3000);
+    }
   }
 
   return (
