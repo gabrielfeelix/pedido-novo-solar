@@ -1,6 +1,6 @@
 'use client';
 
-// workspace-seed-v2
+// workspace-seed-v3
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import seedJson from '@/workspace.json';
 import type {
@@ -16,7 +16,8 @@ import type {
   Workspace,
 } from './types';
 
-const STORAGE_KEY = 'ux-hub:state.v2';
+const STORAGE_KEY = 'ux-hub:state.v3';
+const LEGACY_STORAGE_KEYS = ['ux-hub:state.v2'];
 
 type Patch = {
   prototypes: Record<string, PatchedPrototype>;
@@ -44,6 +45,10 @@ const emptyPatch: Patch = {
 function loadPatch(): Patch {
   if (typeof window === 'undefined') return emptyPatch;
   try {
+    for (const key of LEGACY_STORAGE_KEYS) {
+      window.localStorage.removeItem(key);
+    }
+
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return emptyPatch;
     const parsed = JSON.parse(raw) as Partial<Patch>;
