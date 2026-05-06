@@ -66,6 +66,7 @@ export default function CompanyDashboard({
   const [addOpen, setAddOpen] = useState(false);
   const [defaultAddProject, setDefaultAddProject] = useState<string | undefined>();
   const [helpOpen, setHelpOpen] = useState(false);
+  const [shareMsg, setShareMsg] = useState<string | null>(null);
 
   const projects = useMemo(() => company.projects || [], [company.projects]);
   const drawerProject = useMemo(
@@ -90,6 +91,14 @@ export default function CompanyDashboard({
   function openAdd(projectSlug?: string) {
     setDefaultAddProject(projectSlug);
     setAddOpen(true);
+  }
+
+  function shareWorkspace() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      setShareMsg('✓ Link copiado!');
+      setTimeout(() => setShareMsg(null), 3000);
+    });
   }
 
   return (
@@ -429,8 +438,8 @@ function CompanyHero({ company, onCreate }: { company: Company; onCreate: () => 
             <Plus size={14} />
             Novo protótipo
           </button>
-          <button className="btn-ghost justify-center">
-            Compartilhar workspace
+          <button onClick={shareWorkspace} className="btn-ghost justify-center relative">
+            {shareMsg || 'Compartilhar workspace'}
           </button>
         </div>
       </div>
@@ -458,10 +467,18 @@ function OverviewCharts({ company }: { company: Company }) {
     value: Math.max(2, Math.round(3 + Math.sin(seed + i) * 3 + i * 1.5)),
   }));
 
+  const statusCounts = {
+    ativo: projects.filter(p => p.status === 'ativo').length,
+    'em-revisao': projects.filter(p => p.status === 'em-revisao').length,
+    pausado: projects.filter(p => p.status === 'pausado').length,
+    concluido: projects.filter(p => p.status === 'concluido').length,
+  };
+
   const status = [
-    { label: 'Ativos', value: Math.max(1, projectCount), color: '#10B981' },
-    { label: 'Em revisão', value: 1, color: '#6366F1' },
-    { label: 'Pausados', value: 0, color: '#94A3B8' },
+    { label: 'Ativos', value: statusCounts.ativo, color: '#10B981' },
+    { label: 'Em revisão', value: statusCounts['em-revisao'], color: '#6366F1' },
+    { label: 'Pausados', value: statusCounts.pausado, color: '#94A3B8' },
+    { label: 'Concluídos', value: statusCounts.concluido, color: '#059669' },
   ];
 
   return (
@@ -544,8 +561,11 @@ function ProjectsSection({
             <Plus size={12} />
             Novo protótipo
           </button>
-          {!hideViewAll && (
-            <button className="btn-ghost !py-2 !px-3 !text-xs">
+          {!hideViewAll && totalProtos > 2 && (
+            <button
+              onClick={() => window.open(`/${company.slug}?tab=prototypes`, '_self')}
+              className="btn-ghost !py-2 !px-3 !text-xs"
+            >
               Ver todos
               <ChevronRight size={12} />
             </button>

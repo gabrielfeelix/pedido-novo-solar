@@ -19,6 +19,8 @@ const nextConfig = {
   },
   async rewrites() {
     return [
+      { source: '/:company/:project/:version/:file(.*\\.html)', destination: '/:company/:project/:version/:file' },
+      { source: '/:company/:project/:version/:file(.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.css|.*\\.js)', destination: '/:company/:project/:version/:file' },
       { source: '/:company/:project/:version', destination: '/:company/:project/:version/index.html' },
       { source: '/:company/:project/:version/:path*', destination: '/:company/:project/:version/index.html' },
     ];

@@ -20,10 +20,12 @@ export type Prototype = {
   comments?: Comment[];
 };
 
+export type ProjectStatus = 'ativo' | 'em-revisao' | 'pausado' | 'concluido';
+
 export type Project = {
   slug: string;
   name: string;
-  status: string;
+  status: ProjectStatus;
   figmaUrl?: string;
   handoffUrl?: string;
   selectedPrototypeId?: string;
