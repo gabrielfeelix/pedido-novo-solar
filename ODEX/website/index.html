@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odex - Distribuidor Solar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, body { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    /* brands marquee */
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track { display: flex; animation: marquee 28s linear infinite; width: max-content; }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+
+    /* counter animation */
+    .counter { display: inline-block; }
+  </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+
+  <!-- ═══════════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════════ -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]">
+    <div class="max-w-[1280px] mx-auto px-5 flex items-center h-[76px]">
+
+      <!-- Logo -->
+      <div class="w-[170px] shrink-0">
+        <img src="assets/logo-odex.png" alt="Odex"
+             class="h-[46px] w-auto object-contain"
+             onerror="this.onerror=null;this.style.cssText='display:flex;align-items:center;font-size:22px;font-weight:800;color:#005aff'">
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 flex justify-center">
+        <ul class="flex items-center">
+          <li><a href="#hero"      class="px-5 h-[30px] flex items-center text-[14px] font-bold   text-[#151d29] hover:text-[#005aff] transition-colors">Home</a></li>
+          <li><a href="loja.html"  class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Loja</a></li>
+          <li><a href="#vantagens" class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Quem Somos</a></li>
+          <li><a href="#platform"  class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Financiamento</a></li>
+          <li><a href="#produtos"  class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Produtos</a></li>
+          <li><a href="#"          class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Blog</a></li>
+          <li><a href="#marcas"    class="px-5 h-[30px] flex items-center text-[14px] font-normal text-[#151d29] hover:text-[#005aff] transition-colors">Marcas</a></li>
+        </ul>
+      </nav>
+
+      <!-- CTA -->
+      <div class="w-[170px] flex justify-end shrink-0">
+        <a href="login.html" class="bg-[#005aff] text-white text-[14px] font-normal px-6 py-[6.5px] rounded-2xl hover:bg-blue-700 transition-colors whitespace-nowrap">
+          Área do Integrador
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-[500px] pt-[76px] overflow-hidden bg-white">
+    <!-- Background -->
+    <div class="absolute inset-0 pointer-events-none">
+      <img src="assets/bg-hero.png" alt="" class="absolute inset-0 w-full h-full object-cover">
+    </div>
+    <!-- Person + Solar panels (right 47%) -->
+    <div class="absolute right-0 top-[76px] bottom-0 w-[47%] pointer-events-none overflow-hidden">
+      <img src="assets/bg-hero-person.png" alt=""
+           class="absolute top-[10%] right-0 w-full h-[90%] object-contain object-right-top">
+    </div>
+
+    <div class="relative max-w-[1280px] mx-auto px-5">
+      <div class="max-w-[530px] pt-[75px] pb-[90px]">
+        <p class="text-[#4a4d54] text-[16px] uppercase tracking-wider mb-4 leading-normal">
+          Odex Distribuidor Solar
+        </p>
+        <h1 class="text-[#151d29] text-[64px] font-bold leading-tight mb-6">
+          Verdadeiros<br>
+          parceiros de seu<br>
+          negócio
+        </h1>
+        <p class="text-[#4a4d54] text-[16px] leading-relaxed mb-4 max-w-[450px]">
+          A Odex Distribuidora faz parte do grupo Oderço, empresa<br>
+          com mais de 35 anos de experiência, que agora também<br>
+          está atuando no mercado de energia solar, sempre<br>
+          comprometida com o fornecimento dos melhores<br>
+          equipamentos para seus projetos fotovoltaicos.
+        </p>
+        <p class="text-[#4a4d54] text-[16px] leading-relaxed max-w-[450px]">
+          Aqui, além de integrador, você também é nosso parceiro<br>
+          de negócios!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       VANTAGENS
+  ════════════════════════════════════════════════ -->
+  <section id="vantagens" class="bg-[#fafafa] pt-[60px] pb-0">
+    <div class="max-w-[1280px] mx-auto px-5 flex items-center justify-between gap-8">
+
+      <!-- Left: phone/app illustration -->
+      <div class="w-[458px] h-[384px] shrink-0 flex items-end justify-start">
+        <img src="assets/orcamentos.png" alt="Plataforma Odex"
+             class="h-[384px] w-auto object-contain object-bottom"
+             onerror="this.style.display='none'">
+        <!-- SVG placeholder if no image -->
+        <div class="hidden w-[350px] h-[320px] bg-gradient-to-br from-[#e8f0fe] to-[#f0f6ff] rounded-2xl flex items-center justify-center">
+          <svg width="140" height="180" viewBox="0 0 140 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="10" width="100" height="160" rx="12" fill="white" stroke="#005aff" stroke-width="2"/>
+            <rect x="30" y="30" width="80" height="12" rx="4" fill="#e8f0fe"/>
+            <rect x="30" y="50" width="80" height="12" rx="4" fill="#e8f0fe"/>
+            <rect x="30" y="70" width="60" height="12" rx="4" fill="#e8f0fe"/>
+            <rect x="30" y="100" width="80" height="50" rx="8" fill="#005aff" opacity="0.1"/>
+            <circle cx="90" cy="125" r="18" fill="#005aff"/>
+            <path d="M83 125 L88 130 L97 120" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right: text -->
+      <div class="flex-1 max-w-[600px] py-[35px] pb-[56px]">
+        <h2 class="text-[#005aff] text-[32px] font-bold leading-tight mb-6">
+          Com as nossas vantagens, o seu<br>
+          negócio vai ainda mais longe!
+        </h2>
+        <p class="text-[#4a4d54] text-[16px] leading-relaxed mb-6">
+          Focados em ser a solução completa para o seu negócio, oferecemos um
+          atendimento humanizado e de excelência, que vai muito além da entrega de
+          produtos de qualidade.&nbsp; Na Odex, você conta com estoque amplo, envio
+          rápido, assistência e suporte com especialistas, e ainda uma plataforma para
+          otimizar e organizar suas vendas. Confira os benefícios de trabalhar conosco
+        </p>
+        <a href="#" class="inline-flex items-center justify-center bg-[#005aff] text-white text-[20px] font-normal px-12 py-3 rounded-2xl hover:bg-blue-700 transition-colors min-w-[280px]">
+          Quero ser parceiro!
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FEATURES (3 colunas)
+  ════════════════════════════════════════════════ -->
+  <section class="bg-white py-16">
+    <div class="max-w-[1280px] mx-auto px-5 grid grid-cols-3 gap-8">
+
+      <!-- Card 1 -->
+      <div class="flex flex-col items-center text-center gap-4 px-6">
+        <div class="w-[64px] h-[64px] flex items-center justify-center">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="28" cy="28" r="28" fill="#e8f0fe"/>
+            <path d="M18 34c0-4 3-7 7-7h6c4 0 7 3 7 7" stroke="#005aff" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="28" cy="22" r="5" stroke="#005aff" stroke-width="2"/>
+            <path d="M36 26l3 2-3 2" stroke="#005aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 26l-3 2 3 2" stroke="#005aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="text-[#151d29] text-[18px] font-semibold leading-snug">
+          Conheça e compartilhamos<br>com você
+        </h3>
+        <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+          Nossa equipe de especialistas compartilha conhecimento técnico para que você possa oferecer as melhores soluções fotovoltaicas aos seus clientes.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="flex flex-col items-center text-center gap-4 px-6">
+        <div class="w-[64px] h-[64px] flex items-center justify-center">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="28" cy="28" r="28" fill="#e8f0fe"/>
+            <rect x="17" y="18" width="22" height="16" rx="3" stroke="#005aff" stroke-width="2"/>
+            <path d="M22 26h12M22 30h7" stroke="#005aff" stroke-width="2" stroke-linecap="round"/>
+            <path d="M26 34v4l4-4" stroke="#005aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="text-[#151d29] text-[18px] font-semibold leading-snug">
+          Atendimento rápido e<br>humanizado
+        </h3>
+        <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+          Acreditamos que o relacionamento vai além da venda. Nossa equipe está sempre pronta para atender com agilidade e cuidado cada um dos nossos parceiros integradores.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="flex flex-col items-center text-center gap-4 px-6">
+        <div class="w-[64px] h-[64px] flex items-center justify-center">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="28" cy="28" r="28" fill="#e8f0fe"/>
+            <rect x="17" y="22" width="22" height="14" rx="2" stroke="#005aff" stroke-width="2"/>
+            <path d="M17 26h22" stroke="#005aff" stroke-width="2"/>
+            <path d="M21 22v-3a7 7 0 0 1 14 0v3" stroke="#005aff" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="23" cy="33" r="1.5" fill="#005aff"/>
+            <circle cx="33" cy="33" r="1.5" fill="#005aff"/>
+          </svg>
+        </div>
+        <h3 class="text-[#151d29] text-[18px] font-semibold leading-snug">
+          Entrega ampla e pronta<br>entrega
+        </h3>
+        <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+          Com estoque amplo e logística eficiente, garantimos que os produtos chegam até você no menor prazo possível, para que seus projetos não parem.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       PLATAFORMA
+  ════════════════════════════════════════════════ -->
+  <section id="platform" class="bg-[#f2f8ff] py-20">
+    <div class="max-w-[1280px] mx-auto px-5">
+      <div class="flex items-start gap-10">
+
+        <!-- Left: text + features list -->
+        <div class="w-[440px] shrink-0 pt-8">
+          <h2 class="text-[#151d29] text-[32px] font-bold leading-tight mb-6">
+            Plataforma completa, inteligente e prática para integradores
+          </h2>
+          <p class="text-[#4a4d54] text-[16px] leading-relaxed mb-8">
+            Nossa plataforma foi desenvolvida pensando em cada detalhe do dia a dia do integrador solar. Centralize seus pedidos, acompanhe entregas e crie orçamentos em segundos.
+          </p>
+
+          <ul class="flex flex-col gap-3 mb-8">
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#005aff] shrink-0"></span>
+              <span class="text-[#151d29] text-[15px] font-medium">Financiamento Personalizado</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#005aff] shrink-0"></span>
+              <span class="text-[#151d29] text-[15px] font-medium">Geração de Orçamentos</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#005aff] shrink-0"></span>
+              <span class="text-[#151d29] text-[15px] font-medium">Acompanhamento de Pedidos</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#005aff] shrink-0"></span>
+              <span class="text-[#151d29] text-[15px] font-medium">Catálogo Atualizado em Tempo Real</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#005aff] shrink-0"></span>
+              <span class="text-[#151d29] text-[15px] font-medium">Gestão de Clientes e Projetos</span>
+            </li>
+          </ul>
+
+          <a href="#" class="inline-flex items-center justify-center border-2 border-[#005aff] text-[#005aff] text-[16px] font-semibold px-8 py-3 rounded-2xl hover:bg-[#005aff] hover:text-white transition-colors">
+            Conheça a plataforma
+          </a>
+        </div>
+
+        <!-- Right: platform mockup -->
+        <div class="flex-1 flex items-center justify-center">
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-[720px] border border-[rgba(0,90,255,0.1)]">
+            <!-- Window chrome -->
+            <div class="bg-[#f8f9fa] px-4 py-3 flex items-center gap-2 border-b border-gray-100">
+              <span class="w-3 h-3 rounded-full bg-red-400"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+              <span class="w-3 h-3 rounded-full bg-green-400"></span>
+              <div class="ml-4 flex-1 bg-white rounded px-3 py-1 text-[11px] text-gray-400 max-w-[240px]">
+                app.odex.com.br
+              </div>
+            </div>
+            <!-- Mock dashboard -->
+            <div class="flex h-[360px]">
+              <!-- Sidebar -->
+              <div class="w-[180px] bg-[#151d29] shrink-0 px-4 py-6 flex flex-col gap-3">
+                <img src="assets/logo-odex.png" alt="Odex" class="h-6 w-auto object-contain brightness-0 invert mb-3"
+                     onerror="this.style.display='none'">
+                <div class="text-white text-[11px] font-medium px-2 py-1.5 bg-[#005aff] rounded">Dashboard</div>
+                <div class="text-gray-400 text-[11px] px-2 py-1.5 hover:text-white cursor-pointer">Orçamentos</div>
+                <div class="text-gray-400 text-[11px] px-2 py-1.5 hover:text-white cursor-pointer">Financiamento</div>
+                <div class="text-gray-400 text-[11px] px-2 py-1.5 hover:text-white cursor-pointer">Pedidos</div>
+                <div class="text-gray-400 text-[11px] px-2 py-1.5 hover:text-white cursor-pointer">Catálogo</div>
+                <div class="text-gray-400 text-[11px] px-2 py-1.5 hover:text-white cursor-pointer">Clientes</div>
+              </div>
+              <!-- Content -->
+              <div class="flex-1 px-5 py-5 overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-[#151d29] text-[13px] font-semibold">Orçamentos Recentes</span>
+                  <button class="bg-[#005aff] text-white text-[10px] px-3 py-1.5 rounded-lg">+ Novo orçamento</button>
+                </div>
+                <!-- Table -->
+                <div class="text-[10px]">
+                  <div class="grid grid-cols-4 text-[#4a4d54] font-medium border-b border-gray-100 pb-2 mb-2">
+                    <span>Cliente</span><span>Produto</span><span>Valor</span><span>Status</span>
+                  </div>
+                  <div class="grid grid-cols-4 py-2 border-b border-gray-50 text-[#151d29]">
+                    <span>João Silva</span><span>Kit 5kW</span><span>R$ 12.400</span>
+                    <span class="text-green-600 font-medium">Aprovado</span>
+                  </div>
+                  <div class="grid grid-cols-4 py-2 border-b border-gray-50 text-[#151d29]">
+                    <span>M. Santos</span><span>Kit 8kW</span><span>R$ 18.900</span>
+                    <span class="text-yellow-600 font-medium">Em análise</span>
+                  </div>
+                  <div class="grid grid-cols-4 py-2 border-b border-gray-50 text-[#151d29]">
+                    <span>A. Costa</span><span>Kit 10kW</span><span>R$ 23.500</span>
+                    <span class="text-[#005aff] font-medium">Enviado</span>
+                  </div>
+                  <div class="grid grid-cols-4 py-2 text-[#151d29]">
+                    <span>P. Lima</span><span>Kit 3kW</span><span>R$ 8.700</span>
+                    <span class="text-green-600 font-medium">Aprovado</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       PRODUTOS
+  ════════════════════════════════════════════════ -->
+  <section id="produtos" class="bg-[#f2f8ff] py-16">
+    <div class="max-w-[1280px] mx-auto px-5">
+
+      <div class="flex items-start gap-12">
+        <!-- Product illustration -->
+        <div class="w-[520px] h-[470px] shrink-0 flex items-center justify-center">
+          <img src="assets/banner-mix-produtos.png" alt="Mix de Produtos Odex"
+               class="w-full h-full object-contain"
+               onerror="this.style.display='none'">
+        </div>
+
+        <!-- Text + carousel -->
+        <div class="flex-1 py-[75px]">
+          <h2 class="text-[#151d29] text-[32px] font-bold leading-tight mb-6">
+            Com quais equipamentos de geração solar a<br>
+            Odex trabalha?
+          </h2>
+          <p class="text-[#4a4d54] text-[16px] leading-relaxed mb-8">
+            Trabalhamos como distribuidor de equipamentos de energia solar, fornecemos todos os
+            equipamentos necessários para um sistema de geração de energia solar, desde os
+            responsáveis pela captação e conversão, até aqueles que garantem segurança, estabilidade e
+            bom funcionamento do gerador. Veja a lista completa:
+          </p>
+
+          <!-- Product cards carousel -->
+          <div class="relative">
+            <div id="products-track" class="overflow-hidden">
+              <div class="flex gap-8 transition-transform duration-500" id="products-slider">
+
+                <!-- Card 1 -->
+                <div class="bg-white border border-[rgba(0,90,255,0.1)] rounded-xl shadow-[0_0_5px_rgba(0,90,255,0.05)] p-6 w-[340px] shrink-0 min-h-[384px] flex flex-col">
+                  <div class="flex-1">
+                    <div class="w-full h-[180px] bg-[#f2f8ff] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      <svg width="100" height="120" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="5" y="5" width="90" height="110" rx="4" fill="#dde8ff" stroke="#005aff" stroke-width="1.5"/>
+                        <line x1="5" y1="41.67" x2="95" y2="41.67" stroke="#005aff" stroke-width="1" opacity="0.4"/>
+                        <line x1="5" y1="78.33" x2="95" y2="78.33" stroke="#005aff" stroke-width="1" opacity="0.4"/>
+                        <line x1="35" y1="5" x2="35" y2="115" stroke="#005aff" stroke-width="1" opacity="0.4"/>
+                        <line x1="65" y1="5" x2="65" y2="115" stroke="#005aff" stroke-width="1" opacity="0.4"/>
+                        <circle cx="50" cy="60" r="12" fill="#005aff" opacity="0.15"/>
+                        <circle cx="50" cy="60" r="5" fill="#005aff"/>
+                      </svg>
+                    </div>
+                    <h3 class="text-[#151d29] text-[18px] font-bold mb-2">Painel Fotovoltaico</h3>
+                    <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+                      Placas de alta eficiência para captação e conversão de energia solar em energia elétrica para o seu sistema fotovoltaico.
+                    </p>
+                  </div>
+                  <a href="#" class="mt-4 text-[#005aff] text-[14px] font-semibold hover:underline">
+                    Ver produtos →
+                  </a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white border border-[rgba(0,90,255,0.1)] rounded-xl shadow-[0_0_5px_rgba(0,90,255,0.05)] p-6 w-[340px] shrink-0 min-h-[384px] flex flex-col">
+                  <div class="flex-1">
+                    <div class="w-full h-[180px] bg-[#f2f8ff] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      <svg width="100" height="120" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="10" width="60" height="90" rx="8" fill="#dde8ff" stroke="#005aff" stroke-width="1.5"/>
+                        <rect x="30" y="25" width="40" height="20" rx="3" fill="white" stroke="#005aff" stroke-width="1" opacity="0.8"/>
+                        <rect x="30" y="55" width="40" height="5" rx="2" fill="#005aff" opacity="0.3"/>
+                        <rect x="30" y="65" width="40" height="5" rx="2" fill="#005aff" opacity="0.3"/>
+                        <rect x="30" y="75" width="25" height="5" rx="2" fill="#005aff" opacity="0.3"/>
+                        <circle cx="50" cy="35" r="5" fill="#005aff"/>
+                        <path d="M40 108 L60 108" stroke="#005aff" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M50 100 L50 108" stroke="#005aff" stroke-width="2"/>
+                      </svg>
+                    </div>
+                    <h3 class="text-[#151d29] text-[18px] font-bold mb-2">Inversores Fotovoltaicos</h3>
+                    <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+                      Inversores de alta performance para converter a energia gerada pelos painéis em energia elétrica utilizável na sua residência ou empresa.
+                    </p>
+                  </div>
+                  <a href="#" class="mt-4 text-[#005aff] text-[14px] font-semibold hover:underline">
+                    Ver produtos →
+                  </a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white border border-[rgba(0,90,255,0.1)] rounded-xl shadow-[0_0_5px_rgba(0,90,255,0.05)] p-6 w-[340px] shrink-0 min-h-[384px] flex flex-col">
+                  <div class="flex-1">
+                    <div class="w-full h-[180px] bg-[#f2f8ff] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      <svg width="100" height="120" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" y="20" width="70" height="80" rx="6" fill="#dde8ff" stroke="#005aff" stroke-width="1.5"/>
+                        <path d="M30 50 L50 35 L70 50 L70 100 L30 100 Z" fill="white" stroke="#005aff" stroke-width="1.2"/>
+                        <rect x="40" y="70" width="20" height="30" rx="3" fill="#dde8ff" stroke="#005aff" stroke-width="1"/>
+                        <circle cx="72" cy="30" r="10" fill="#f0f6ff" stroke="#005aff" stroke-width="1.5"/>
+                        <path d="M68 30 L71 33 L77 27" stroke="#005aff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                    <h3 class="text-[#151d29] text-[18px] font-bold mb-2">Estruturas de Fixação</h3>
+                    <p class="text-[#4a4d54] text-[14px] leading-relaxed">
+                      Estruturas resistentes e certificadas para fixação dos painéis em telhados cerâmicos, metálicos e solo, garantindo segurança e durabilidade.
+                    </p>
+                  </div>
+                  <a href="#" class="mt-4 text-[#005aff] text-[14px] font-semibold hover:underline">
+                    Ver produtos →
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="flex gap-2 mt-6 justify-end">
+              <button onclick="slideProd(0)" id="dot-0" class="w-[10px] h-[10px] rounded-full bg-[#005aff] transition-colors"></button>
+              <button onclick="slideProd(1)" id="dot-1" class="w-[10px] h-[10px] rounded-full bg-[#d6d6d6] transition-colors"></button>
+              <button onclick="slideProd(2)" id="dot-2" class="w-[10px] h-[10px] rounded-full bg-[#d6d6d6] transition-colors"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       ONDE INSTALAMOS / MAPA
+  ════════════════════════════════════════════════ -->
+  <section class="bg-white py-20">
+    <div class="max-w-[1280px] mx-auto px-5 flex items-center gap-16">
+
+      <!-- Left: Brazil map -->
+      <div class="w-[460px] h-[400px] shrink-0 flex items-center justify-center">
+        <img src="assets/mapa.png" alt="Mapa Brasil"
+             class="w-full h-full object-contain"
+             onerror="this.style.display='none'">
+        <!-- SVG fallback -->
+        <svg class="hidden" width="420" height="380" viewBox="0 0 420 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M120 40 L200 20 L280 35 L320 80 L340 140 L360 200 L340 280 L300 330 L240 360 L180 350 L130 310 L90 260 L70 200 L80 140 L100 80 Z" fill="#005aff" opacity="0.15" stroke="#005aff" stroke-width="2"/>
+          <circle cx="200" cy="180" r="8" fill="#005aff"/>
+          <circle cx="160" cy="220" r="6" fill="#005aff" opacity="0.7"/>
+          <circle cx="240" cy="150" r="6" fill="#005aff" opacity="0.7"/>
+          <circle cx="280" cy="200" r="5" fill="#005aff" opacity="0.5"/>
+          <circle cx="140" cy="160" r="5" fill="#005aff" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <!-- Right: stats -->
+      <div class="flex-1">
+        <p class="text-[#4a4d54] text-[13px] font-semibold uppercase tracking-widest mb-2">Odex pelo Brasil</p>
+        <h2 class="text-[#151d29] text-[36px] font-bold mb-2">ONDE INSTALAMOS</h2>
+        <p class="text-[#4a4d54] text-[15px] mb-1">De Norte a Sul do Brasil</p>
+        <p class="text-[#4a4d54] text-[15px] mb-10">
+          Nosso alcance nacional reflete nosso compromisso em levar energia solar de qualidade a cada canto do país.
+        </p>
+
+        <div class="flex items-start gap-10">
+          <!-- +1000 -->
+          <div>
+            <div class="flex items-start gap-0.5">
+              <span class="text-[#005aff] text-[32px] font-bold">+</span>
+              <span class="text-[#151d29] text-[36px] font-bold counter" data-target="1000">1000</span>
+            </div>
+            <p class="text-[#4a4d54] text-[14px] uppercase tracking-wide mt-1">Clientes</p>
+          </div>
+          <!-- Separator -->
+          <div class="w-px h-[50px] bg-gray-200 self-center"></div>
+          <!-- +1300 -->
+          <div>
+            <div class="flex items-start gap-0.5">
+              <span class="text-[#005aff] text-[32px] font-bold">+</span>
+              <span class="text-[#151d29] text-[36px] font-bold counter" data-target="1300">1300</span>
+            </div>
+            <p class="text-[#4a4d54] text-[14px] uppercase tracking-wide mt-1">Projetos</p>
+          </div>
+          <!-- Separator -->
+          <div class="w-px h-[50px] bg-gray-200 self-center"></div>
+          <!-- Megawatts -->
+          <div>
+            <div class="flex items-start gap-0.5">
+              <span class="text-[#151d29] text-[36px] font-bold counter" data-target="7" data-decimal="4">7</span>
+              <span class="text-[#151d29] text-[36px] font-bold">,2415</span>
+            </div>
+            <p class="text-[#4a4d54] text-[14px] uppercase tracking-wide mt-1">Megawatts</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       NEWSLETTER
+  ════════════════════════════════════════════════ -->
+  <section class="bg-[#fafafa] py-14">
+    <div class="max-w-[700px] mx-auto px-5 text-center">
+      <h2 class="text-[#151d29] text-[26px] font-bold leading-snug mb-2">
+        Assine nossa newsletter e receba novidades e<br>
+        oportunidades do mercado de energia solar
+      </h2>
+      <p class="text-[#4a4d54] text-[15px] mb-6">
+        Fique por dentro das tendências, promoções e novidades do setor fotovoltaico.
+      </p>
+      <form class="flex gap-3 max-w-[500px] mx-auto" onsubmit="return false">
+        <input type="email" placeholder="Seu e-mail"
+               class="flex-1 px-5 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:border-[#005aff] bg-white">
+        <button type="submit"
+                class="bg-[#005aff] text-white px-7 py-3 rounded-xl text-[15px] font-medium hover:bg-blue-700 transition-colors whitespace-nowrap">
+          Assinar
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       MARCAS
+  ════════════════════════════════════════════════ -->
+  <section id="marcas" class="bg-white py-14 pb-10">
+    <div class="max-w-[1280px] mx-auto px-5">
+      <h2 class="text-[#005aff] text-[32px] font-bold text-center mb-3">
+        Com quais marcas a Odex trabalha?
+      </h2>
+      <p class="text-[#4a4d54] text-[16px] text-center max-w-[900px] mx-auto mb-10 leading-relaxed">
+        Como uma distribuidora de energia solar comprometida com a qualidade e variedade, trabalhamos não apenas com uma gama de opções em equipamentos, mas
+        focamos também em trazer para nossos integradores parceiros as <strong class="font-bold text-[#151d29]">melhores marcas do mercado solar</strong>. Confira:
+      </p>
+
+      <!-- Carousel -->
+      <div class="relative">
+        <!-- Previous -->
+        <button id="brands-prev"
+                class="absolute left-0 top-0 bottom-0 w-8 bg-white z-10 flex items-center justify-center text-[#869791] text-5xl leading-none hover:text-[#005aff] transition-colors"
+                onclick="slideBrands(-1)">‹</button>
+
+        <div class="overflow-hidden mx-8">
+          <div id="brands-slider" class="flex gap-8 transition-transform duration-400 items-center" style="transform:translateX(0)">
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/jinkosolar.png" alt="JinkoSolar" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/sofar.png" alt="SOFAR" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/odex-brand.png" alt="Odex" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/clamper.png" alt="Clamper" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/growatt.png" alt="Growatt" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/pratyc.png" alt="Pratyc" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/saj.png" alt="SAJ" class="max-h-full max-w-full object-contain">
+            </div>
+            <div class="w-[133px] h-[133px] shrink-0 flex items-center justify-center p-3">
+              <img src="assets/staubli.png" alt="Stäubli" class="max-h-full max-w-full object-contain">
+            </div>
+          </div>
+        </div>
+
+        <!-- Next -->
+        <button id="brands-next"
+                class="absolute right-0 top-0 bottom-0 w-8 bg-white z-10 flex items-center justify-center text-[#869791] text-5xl leading-none hover:text-[#005aff] transition-colors"
+                onclick="slideBrands(1)">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       VAMOS JUNTOS
+  ════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden" style="background: #151d29; min-height: 360px;">
+    <!-- Banner image (person with solar) -->
+    <div class="absolute inset-0 pointer-events-none">
+      <img src="assets/banner-vamos-juntos.png" alt=""
+           class="absolute inset-0 w-full h-full object-cover object-center opacity-60">
+    </div>
+
+    <div class="relative max-w-[1280px] mx-auto px-5 py-20 flex items-center justify-center">
+      <div class="text-center max-w-[600px]">
+        <h2 class="text-white text-[48px] font-bold leading-tight mb-4">
+          Vamos juntos?
+        </h2>
+        <p class="text-gray-300 text-[18px] leading-relaxed mb-8">
+          Faça parte da família Odex e leve energia solar de qualidade<br>
+          aos seus clientes com o suporte de quem entende do mercado.
+        </p>
+        <a href="#" class="inline-flex items-center justify-center bg-[#005aff] text-white text-[18px] font-medium px-10 py-3.5 rounded-2xl hover:bg-blue-600 transition-colors">
+          Clica aqui
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════ -->
+  <footer class="bg-[#fafafa] pt-10 pb-6 border-t border-gray-100">
+    <div class="max-w-[1240px] mx-auto px-5">
+
+      <div class="flex items-start gap-0 h-[177px]">
+
+        <!-- Col 1: Logo + address -->
+        <div class="w-[516px] shrink-0 flex flex-col gap-0">
+          <div class="mb-1">
+            <img src="assets/logo-footer.png" alt="Odex"
+                 class="h-[48px] w-auto object-contain"
+                 onerror="this.onerror=null;this.style.cssText='font-size:20px;font-weight:800;color:#005aff'">
+          </div>
+          <p class="text-[#333] text-[14px] leading-[20px]">Av. Paranavaí, 1906, Parque Industrial</p>
+          <p class="text-[#333] text-[14px] leading-[20px]">Bandeirantes | Maringá - Paraná</p>
+          <a href="mailto:contato@oderco.com.br" class="text-[#151d29] text-[14px] leading-[20px] hover:text-[#005aff]">contato@oderco.com.br</a>
+          <p class="text-[#333] text-[14px] leading-[20px]">Uma marca do grupo</p>
+          <div class="mt-1">
+            <img src="assets/logo-oderco.png" alt="Oderço"
+                 class="h-[26px] w-auto object-contain"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <!-- Col 2: Empresa + Contato -->
+        <div class="flex-1 flex items-start">
+          <!-- Empresa -->
+          <div class="w-[239px] flex flex-col gap-1">
+            <h4 class="text-[#151d29] text-[24px] font-semibold leading-[29px] mb-1">Empresa</h4>
+            <a href="#" class="text-[#151d29] text-[14px] leading-[20px] hover:text-[#005aff] py-[3px]">Quem Somos</a>
+            <a href="#" class="text-[#151d29] text-[14px] leading-[20px] hover:text-[#005aff] py-[3px]">Política de privacidade</a>
+            <!-- ABSOLAR badge -->
+            <div class="mt-5">
+              <img src="assets/banner-mix-produtos.png" alt=""
+                   class="hidden w-[77px] h-[77px] object-contain">
+              <div class="w-[77px] h-[77px] border-2 border-dashed border-orange-300 rounded flex items-center justify-center">
+                <div class="text-center">
+                  <div class="text-orange-500 text-[8px] font-bold leading-tight">ABSOLAR</div>
+                  <div class="text-orange-400 text-[7px]">ASSOCIADA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contato -->
+          <div class="w-[239px] flex flex-col gap-1">
+            <h4 class="text-[#151d29] text-[24px] font-semibold leading-[29px] mb-1">Contato</h4>
+            <p class="text-[#151d29] text-[14px] leading-[20px] py-[3px]">CEP: 87070-130</p>
+            <p class="text-[#151d29] text-[14px] leading-[20px] py-[3px]">Fone: 44 2101 1400</p>
+            <!-- Social icons -->
+            <div class="flex items-center gap-3.5 mt-12">
+              <!-- Instagram -->
+              <a href="#" class="text-[#4a4d54] hover:text-[#005aff] transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <circle cx="12" cy="12" r="4"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </a>
+              <!-- Facebook -->
+              <a href="#" class="text-[#4a4d54] hover:text-[#005aff] transition-colors">
+                <svg width="10" height="18" viewBox="0 0 10 18" fill="currentColor">
+                  <path d="M6.5 4H9V0H6.5C4.5 0 3 1.5 3 3.5V5H1v4h2v9h4V9h3l.5-4H7V3.5c0-.3.2-.5.5-.5z"/>
+                </svg>
+              </a>
+              <!-- YouTube -->
+              <a href="#" class="text-[#4a4d54] hover:text-[#005aff] transition-colors">
+                <svg width="22" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                  <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+                </svg>
+              </a>
+              <!-- LinkedIn -->
+              <a href="#" class="text-[#4a4d54] hover:text-[#005aff] transition-colors">
+                <svg width="22" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                  <rect x="2" y="9" width="4" height="12"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </a>
+              <!-- WhatsApp -->
+              <a href="#" class="text-[#4a4d54] hover:text-[#005aff] transition-colors">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- App badges -->
+          <div class="w-[239px] flex flex-col gap-2">
+            <img src="assets/app-android.png" alt="Google Play"
+                 class="h-[40px] w-[135px] object-contain"
+                 onerror="this.style.display='none'">
+            <img src="assets/app-apple.png" alt="App Store"
+                 class="h-[40px] w-[135px] object-contain"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom border -->
+      <div class="border-t border-gray-200 mt-6 pt-4">
+        <p class="text-[#4a4d54] text-[12px] text-center">
+          © 2024 Odex Distribuidora Solar. Todos os direitos reservados. Uma empresa do Grupo Oderço.
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════════════ -->
+  <script>
+    // ── Products carousel ──────────────────────────
+    let prodIndex = 0;
+    const CARD_WIDTH = 340 + 32; // card + gap
+
+    function slideProd(idx) {
+      prodIndex = idx;
+      const slider = document.getElementById('products-slider');
+      slider.style.transform = `translateX(-${idx * CARD_WIDTH}px)`;
+      document.querySelectorAll('[id^="dot-"]').forEach((d, i) => {
+        d.style.background = i === idx ? '#005aff' : '#d6d6d6';
+      });
+    }
+
+    // ── Brands carousel ────────────────────────────
+    let brandOffset = 0;
+    const BRAND_ITEM = 133 + 32; // item + gap
+
+    function slideBrands(dir) {
+      const slider = document.getElementById('brands-slider');
+      const total  = slider.children.length;
+      const maxOffset = Math.max(0, (total - 8) * BRAND_ITEM);
+      brandOffset = Math.min(maxOffset, Math.max(0, brandOffset + dir * BRAND_ITEM));
+      slider.style.transform = `translateX(-${brandOffset}px)`;
+    }
+
+    // ── Header shadow on scroll ────────────────────
+    window.addEventListener('scroll', () => {
+      const h = document.getElementById('header');
+      if (window.scrollY > 10) {
+        h.classList.add('shadow-md');
+        h.classList.remove('shadow-[0_1px_0_0_rgba(0,0,0,0.06)]');
+      } else {
+        h.classList.remove('shadow-md');
+        h.classList.add('shadow-[0_1px_0_0_rgba(0,0,0,0.06)]');
+      }
+    });
+
+    // ── Counter animation ──────────────────────────
+    function animateCounters() {
+      document.querySelectorAll('.counter[data-target]').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        const duration = 1500;
+        const step = target / (duration / 16);
+        let current = 0;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          el.textContent = Math.floor(current).toLocaleString('pt-BR');
+          if (current >= target) clearInterval(timer);
+        }, 16);
+      });
+    }
+
+    const statsSection = document.querySelector('[data-target]');
+    if (statsSection) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animateCounters();
+          observer.disconnect();
+        }
+      }, { threshold: 0.3 });
+      observer.observe(statsSection.closest('section'));
+    }
+  </script>
+
+</body>
+</html>
