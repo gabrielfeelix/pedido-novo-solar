@@ -2,7 +2,6 @@
 
 // workspace-seed-v3
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import seedJson from '@/workspace.json';
 import type {
   Activity,
   Comment,
@@ -18,6 +17,16 @@ import type {
 
 const STORAGE_KEY = 'ux-hub:state.v3';
 const LEGACY_STORAGE_KEYS = ['ux-hub:state.v2'];
+
+let cachedSeed: Workspace | null = null;
+
+async function loadSeed(): Promise<Workspace> {
+  if (cachedSeed) return cachedSeed;
+  const res = await fetch('/workspace.json');
+  if (!res.ok) throw new Error('Failed to load workspace.json');
+  cachedSeed = await res.json();
+  return cachedSeed;
+}
 
 type Patch = {
   prototypes: Record<string, PatchedPrototype>;
@@ -123,14 +132,14 @@ function mergeWorkspace(seed: Workspace, patch: Patch): Workspace {
   };
 }
 
-const seed = seedJson as unknown as Workspace;
-
 export function useWorkspaceStore() {
+  const [seed, setSeed] = useState<Workspace | null>(null);
   const [patch, setPatch] = useState<Patch>(emptyPatch);
   const [hydrated, setHydrated] = useState(false);
   const writeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    loadSeed().then(setSeed).catch(console.error);
     setPatch(loadPatch());
     setHydrated(true);
   }, []);
@@ -156,7 +165,10 @@ export function useWorkspaceStore() {
     []
   );
 
-  const workspace = useMemo(() => mergeWorkspace(seed, patch), [patch]);
+  const workspace = useMemo(() => {
+    if (!seed) return { name: '', description: '', companies: [] } as Workspace;
+    return mergeWorkspace(seed, patch);
+  }, [seed, patch]);
 
   const logActivity = useCallback(
     (a: Omit<Activity, 'id' | 'at'> & Partial<Pick<Activity, 'at' | 'id'>>) => {
