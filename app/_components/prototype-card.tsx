@@ -9,6 +9,14 @@ import Image from 'next/image';
 import { FigmaIcon } from './figma-icon';
 import type { Project } from '../_lib/types';
 
+function getPreviewUrl(preview?: string, url?: string): string | undefined {
+  if (preview) return preview;
+  if (!url) return undefined;
+
+  const fullUrl = url.startsWith('http') ? url : `${typeof window !== 'undefined' ? window.location.origin : 'https://ux-oderco.vercel.app'}${url}`;
+  return `https://image.thum.io/get/width/800/height/600/${encodeURIComponent(fullUrl)}`;
+}
+
 export function PrototypeCard({
   project,
   brandColor,
@@ -29,6 +37,7 @@ export function PrototypeCard({
   if (!current) return null;
 
   const otherVersions = protos.filter((p) => p.id !== current.id);
+  const previewUrl = getPreviewUrl(current.preview, current.url);
 
   return (
     <article className="glass-card rounded-3xl overflow-hidden flex flex-col group">
@@ -41,9 +50,9 @@ export function PrototypeCard({
           background: `linear-gradient(135deg, ${brandColor}1a, ${brandColor}05)`,
         }}
       >
-        {current.preview ? (
+        {previewUrl ? (
           <Image
-            src={current.preview}
+            src={previewUrl}
             alt={current.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
