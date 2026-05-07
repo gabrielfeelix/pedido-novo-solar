@@ -12,7 +12,8 @@ import { execFileSync } from 'node:child_process';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, '..');
-const workspace = JSON.parse(readFileSync(join(repoRoot, 'workspace.json'), 'utf8'));
+const workspacePath = join(repoRoot, 'workspace.json');
+const workspace = JSON.parse(readFileSync(workspacePath, 'utf8'));
 const publicRoot = join(repoRoot, 'public');
 const tempRoot = join(repoRoot, '.prototype-build');
 const logoSourceRoot = join(repoRoot, 'brand-assets');
@@ -85,6 +86,7 @@ for (const company of workspace.companies) {
 
 mkdirSync(publicRoot, { recursive: true });
 mkdirSync(tempRoot, { recursive: true });
+cpSync(workspacePath, join(publicRoot, 'workspace.json'));
 copyBrandAssets();
 
 for (const { company, project, prototype } of getAllPrototypes()) {

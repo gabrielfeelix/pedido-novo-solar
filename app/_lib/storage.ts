@@ -2,6 +2,7 @@
 
 // workspace-seed-v3
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import seedJson from '@/workspace.json';
 import { addActivity as addActivityDB } from './supabase-db';
 import type {
   Activity,
@@ -23,9 +24,15 @@ let cachedSeed: Workspace | null = null;
 
 async function loadSeed(): Promise<Workspace> {
   if (cachedSeed) return cachedSeed;
-  const res = await fetch('/workspace.json');
-  if (!res.ok) throw new Error('Failed to load workspace.json');
-  const data = await res.json() as Workspace;
+  let data: Workspace;
+  try {
+    const res = await fetch('/workspace.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to load workspace.json');
+    data = await res.json() as Workspace;
+  } catch (err) {
+    console.warn('Falling back to bundled workspace seed:', err);
+    data = seedJson as Workspace;
+  }
   cachedSeed = data;
   return data;
 }

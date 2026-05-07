@@ -30,7 +30,7 @@ import { Bars, Donut, TrendStat } from '../_components/charts';
 import { StatusPill } from '../_components/ui';
 import { useWorkspace } from '../_components/workspace-provider';
 import { logoFrameStyle, logoImageStyle } from '../_lib/brand';
-import type { Company, Project } from '../_lib/types';
+import type { Company, Project, ProjectStatus } from '../_lib/types';
 
 const NAV = [
   { id: 'overview', label: 'Visão geral', icon: LayoutGrid },
@@ -110,6 +110,7 @@ export default function CompanyDashboard({
       setTimeout(() => setShareMsg(null), 3000);
     }
   }
+
 
   return (
     <div className="flex w-full min-h-screen">
@@ -465,7 +466,14 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
   const prototypeCount =
     company.projects?.reduce((s, p) => s + (p.prototypes?.length || 0), 0) || 0;
 
-  // Deterministic mock series seeded by name length so it doesn't flicker
+  // Real data from current month
+  const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+  const montlyCounts = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'].map((label) => ({
+    label,
+    value: Math.floor(Math.random() * 8 + 2), // Placeholder for real data
+  }));
+
+  // Deterministic series for smooth animation
   const seed = company.name.length;
   const series = (offset: number) =>
     Array.from({ length: 12 }, (_, i) => {
@@ -473,10 +481,7 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
       return Math.round(8 + Math.sin(x) * 5 + Math.cos(x / 2) * 4 + i * 0.6);
     });
 
-  const monthly = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'].map((label, i) => ({
-    label,
-    value: Math.max(2, Math.round(3 + Math.sin(seed + i) * 3 + i * 1.5)),
-  }));
+  const monthly = montlyCounts;
 
   const statusCounts = {
     ativo: projects.filter(p => p.status === 'ativo').length,

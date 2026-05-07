@@ -101,3 +101,34 @@ export async function saveWorkspaceShare(companySlug: string, url: string) {
   if (error) console.error('Error saving share:', error);
   return data?.[0];
 }
+
+export async function trackAccess(companySlug: string, month: string) {
+  const { data, error } = await supabase
+    .from('project_stats')
+    .upsert(
+      {
+        company_slug: companySlug,
+        project_slug: null,
+        month,
+        access_count: 1,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'company_slug,project_slug,month' }
+    )
+    .select();
+
+  if (error) console.error('Error tracking access:', error);
+}
+
+export async function getTotalAccesses(companySlug: string, month: string) {
+  const { data, error } = await supabase
+    .from('project_stats')
+    .select('access_count')
+    .eq('company_slug', companySlug)
+    .eq('month', month)
+    .is('project_slug', null)
+    .single();
+
+  if (error && error.code !== 'PGRST116') console.error('Error fetching accesses:', error);
+  return data?.access_count || 0;
+}
