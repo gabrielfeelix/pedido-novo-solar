@@ -475,7 +475,6 @@ function CompanyHero({ company, onCreate, onShare }: { company: Company; onCreat
 function OverviewCharts({ company, projects }: { company: Company; projects: Project[] }) {
   const [accessData, setAccessData] = useState<{ label: string; value: number }[]>([]);
   const [totalAccesses, setTotalAccesses] = useState(0);
-  const [loaded, setLoaded] = useState(false);
 
   const projectCount = company.projects?.length || 0;
   const prototypeCount =
@@ -492,7 +491,7 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
       for (const month of months) {
         const stats = await getProjectStats(company.slug, month);
         const totalAccess = stats.reduce((sum, s) => sum + (s.access_count || 0), 0);
-        data.push({ label: month, value: Math.max(totalAccess, 1) });
+        data.push({ label: month, value: totalAccess });
 
         if (month === currentMonth) {
           currentMonthTotal = totalAccess;
@@ -500,27 +499,13 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
       }
 
       setAccessData(data);
-      setTotalAccesses(currentMonthTotal || Math.floor(Math.random() * 200 + 50));
-      setLoaded(true);
+      setTotalAccesses(currentMonthTotal);
     };
 
     loadData().catch(console.error);
   }, [company.slug]);
 
-  // Real series from access data
-  const seed = company.name.length;
-  const series = (offset: number) =>
-    Array.from({ length: 12 }, (_, i) => {
-      const x = (i + seed + offset) * 0.7;
-      return Math.round(8 + Math.sin(x) * 5 + Math.cos(x / 2) * 4 + i * 0.6);
-    });
-
-  const monthly = loaded && accessData.length > 0
-    ? accessData
-    : ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'].map((label, i) => ({
-        label,
-        value: Math.max(2, Math.round(3 + Math.sin(seed + i) * 3 + i * 1.5)),
-      }));
+  const monthly = accessData;
 
   const statusCounts = {
     ativo: projects.filter(p => p.status === 'ativo').length,
@@ -541,15 +526,11 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
       <TrendStat
         label="Acessos no mês"
         value={totalAccesses}
-        delta={totalAccesses > 100 ? "+15%" : "+8%"}
-        series={series(0)}
         color={company.brandColor}
       />
       <TrendStat
         label="Protótipos publicados"
         value={prototypeCount}
-        delta="+2"
-        series={series(2)}
         color="#6366F1"
       />
       <div className="glass-card rounded-3xl p-5 flex flex-col gap-3">
@@ -567,7 +548,7 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
           </p>
           <span className="text-[10px] text-ink-400">últimos 6 meses</span>
         </div>
-        <Bars data={monthly} color={company.brandColor} height={120} />
+        <Bars data={monthly.length > 0 ? monthly : []} color={company.brandColor} height={120} />
       </div>
     </section>
   );

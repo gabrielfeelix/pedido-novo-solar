@@ -179,7 +179,7 @@ export function TrendStat({
   label: string;
   value: string | number;
   delta?: string;
-  series: number[];
+  series?: number[];
   color?: string;
 }) {
   return (
@@ -196,7 +196,7 @@ export function TrendStat({
         )}
       </div>
       <p className="text-3xl font-semibold tracking-tight text-[#0B1020]">{value}</p>
-      <Sparkline data={series} color={color} height={56} />
+      {series && <Sparkline data={series} color={color} height={56} />}
     </div>
   );
 }
