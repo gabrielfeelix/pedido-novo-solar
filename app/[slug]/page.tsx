@@ -636,9 +636,9 @@ function ProjectsSection({
         <EmptyProjects company={company} onAdd={onAdd} />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {projects.flatMap((project) => {
-            if (!project.prototypes || project.prototypes.length === 0) return [];
-            return [
+          {projects
+            .filter((p) => p.prototypes && p.prototypes.length > 0)
+            .map((project) => (
               <PrototypeCard
                 key={project.slug}
                 project={project}
@@ -647,9 +647,8 @@ function ProjectsSection({
                 onSelectVersion={(id) => {
                   onSelectVersion(project.slug, id);
                 }}
-              />,
-            ];
-          })}
+              />
+            ))}
         </div>
       )}
     </section>

@@ -188,17 +188,20 @@ export function PrototypeCard({
 
 function PreviewPlaceholder({ brandColor }: { brandColor: string }) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br" style={{background: `linear-gradient(135deg, ${brandColor}20, ${brandColor}05)`}}>
       <div
-        className="absolute -top-10 -right-10 w-48 h-48 rounded-full blur-3xl opacity-50"
+        className="absolute -top-10 -right-10 w-48 h-48 rounded-full blur-3xl opacity-40"
         style={{ background: brandColor }}
       />
       <div
-        className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full blur-3xl opacity-30"
+        className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full blur-3xl opacity-20"
         style={{ background: brandColor }}
       />
-      <div className="relative w-14 h-14 rounded-2xl bg-white/80 border border-white flex items-center justify-center shadow-sm">
-        <Layers size={22} style={{ color: brandColor }} />
+      <div className="relative text-center">
+        <div className="w-16 h-16 rounded-2xl bg-white/90 border border-white flex items-center justify-center shadow-sm mx-auto mb-3">
+          <Layers size={24} style={{ color: brandColor }} />
+        </div>
+        <p className="text-xs font-medium text-ink-400">Sem preview</p>
       </div>
     </div>
   );
