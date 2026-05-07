@@ -20,7 +20,12 @@ export type Prototype = {
   comments?: Comment[];
 };
 
-export type ProjectStatus = 'ativo' | 'em-revisao' | 'pausado' | 'concluido';
+export type ProjectStatus =
+  | 'pesquisa'
+  | 'prototipacao'
+  | 'validacao'
+  | 'entregue'
+  | 'producao';
 
 export type Project = {
   slug: string;

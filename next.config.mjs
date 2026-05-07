@@ -10,6 +10,11 @@ const workspaceHash = createHash('sha1')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   generateBuildId: () => workspaceHash,
+  images: {
+    remotePatterns: [
+      { hostname: 'image.thum.io' },
+    ],
+  },
   async redirects() {
     return [
       { source: '/p/pedido-solar-v2', destination: '/crm/novo-pedido-solar/v2', permanent: true },
