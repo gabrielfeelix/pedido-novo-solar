@@ -2,13 +2,9 @@
 
 import {
   ArrowUpRight,
-  ChevronDown,
   ExternalLink,
   Layers,
-  Settings,
-  Star,
 } from 'lucide-react';
-import { useState } from 'react';
 import Image from 'next/image';
 import { FigmaIcon } from './figma-icon';
 import type { Project } from '../_lib/types';
@@ -18,13 +14,11 @@ export function PrototypeCard({
   brandColor,
   onOpenDetails,
   onSelectVersion,
-  onEditProject,
 }: {
   project: Project;
   brandColor: string;
   onOpenDetails: (prototypeId: string) => void;
   onSelectVersion: (prototypeId: string) => void;
-  onEditProject?: () => void;
 }) {
   const protos = project.prototypes || [];
   const current =
@@ -32,19 +26,17 @@ export function PrototypeCard({
     protos.find((p) => p.id === project.selectedPrototypeId) ||
     protos[0];
 
-  const [versionMenuOpen, setVersionMenuOpen] = useState(false);
-
   if (!current) return null;
 
   const otherVersions = protos.filter((p) => p.id !== current.id);
 
   return (
     <article className="glass-card rounded-3xl overflow-hidden flex flex-col group">
-      {/* Preview area */}
+      {/* Large Preview Area - Main Focus */}
       <button
         type="button"
         onClick={() => onOpenDetails(current.id)}
-        className="relative h-40 w-full overflow-hidden block"
+        className="relative h-64 w-full overflow-hidden block flex-shrink-0"
         style={{
           background: `linear-gradient(135deg, ${brandColor}1a, ${brandColor}05)`,
         }}
@@ -54,141 +46,104 @@ export function PrototypeCard({
             src={current.preview}
             alt={current.name}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         ) : (
           <PreviewPlaceholder brandColor={brandColor} />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
-        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-          <span className="glass-pill rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#0B1020] inline-flex items-center gap-1.5">
-            <Star size={10} className="fill-amber-400 stroke-amber-500" />
-            atual
-          </span>
-          <span className="glass-pill rounded-full px-2 py-0.5 text-[10px] font-mono text-ink-700">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
+        {/* Top-left Info Tags */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <span className="glass-pill rounded-lg px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#0B1020] inline-flex items-center gap-1.5 w-fit">
+            <span className="w-2 h-2 rounded-full" style={{ background: brandColor }} />
             {current.version}
           </span>
+          {otherVersions.length > 0 && (
+            <span className="glass-pill rounded-lg px-2.5 py-1.5 text-[10px] font-medium text-ink-600 inline-flex items-center gap-1 w-fit">
+              <Layers size={12} />
+              +{otherVersions.length}
+            </span>
+          )}
         </div>
+
+        {/* Quick Action - Figma Link */}
+        {current.figmaUrl && (
+          <a
+            href={current.figmaUrl}
+            target="_blank"
+            rel="noreferrer"
+            title="Abrir no Figma"
+            className="absolute top-3 right-3 w-9 h-9 rounded-lg bg-white/90 hover:bg-white transition flex items-center justify-center shadow-sm"
+          >
+            <FigmaIcon size={16} />
+          </a>
+        )}
       </button>
 
-      {/* Body */}
-      <div className="p-5 flex flex-col flex-1">
-        <header className="flex items-start gap-3 justify-between mb-3">
-          <div className="min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-ink-400 mb-1">
-              {project.name}
-            </p>
-            <h3 className="text-lg font-semibold tracking-tight truncate">
-              {current.name}
-            </h3>
-          </div>
-          <div className="flex items-center gap-1.5 shrink-0">
-            {onEditProject && (
-              <button
-                type="button"
-                onClick={onEditProject}
-                title="Editar projeto"
-                className="icon-btn !w-9 !h-9"
-              >
-                <Settings size={14} />
-              </button>
-            )}
-            {current.figmaUrl && (
-              <a
-                href={current.figmaUrl}
-                target="_blank"
-                rel="noreferrer"
-                title="Abrir no Figma"
-                className="icon-btn !w-9 !h-9"
-              >
-                <FigmaIcon size={14} />
-              </a>
-            )}
-          </div>
-        </header>
+      {/* Minimal Info Section */}
+      <div className="p-4 flex flex-col flex-1 gap-3">
+        <div>
+          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-ink-400 mb-1">
+            {project.name}
+          </p>
+          <h3 className="text-base font-semibold tracking-tight line-clamp-2">
+            {current.name}
+          </h3>
+        </div>
 
         {current.notes && (
-          <p className="text-xs text-ink-500 leading-relaxed line-clamp-2 mb-4">
+          <p className="text-xs text-ink-500 leading-relaxed line-clamp-2">
             {current.notes}
           </p>
         )}
 
-        {/* Versions row (if more than one) */}
+        {/* Version Navigator - Minimal */}
         {otherVersions.length > 0 && (
-          <div className="relative mb-4">
-            <button
-              type="button"
-              onClick={() => setVersionMenuOpen((v) => !v)}
-              className="w-full flex items-center justify-between text-xs glass-pill rounded-xl px-3 py-2.5 hover:bg-white/90 transition"
-            >
-              <span className="inline-flex items-center gap-2 text-ink-500">
-                <Layers size={13} />
-                <span className="font-medium text-[#0B1020]">{protos.length} versões</span>
-                <span className="text-ink-400">· toque para trocar</span>
-              </span>
-              <ChevronDown
-                size={13}
-                className={`text-ink-400 transition ${versionMenuOpen ? 'rotate-180' : ''}`}
-              />
-            </button>
-            {versionMenuOpen && (
-              <div className="absolute z-20 top-[calc(100%+6px)] left-0 right-0 glass-strong rounded-xl overflow-hidden anim-popover-in">
-                {protos.map((p) => {
-                  const active = p.id === current.id;
-                  return (
-                    <button
-                      key={p.id}
-                      onClick={() => {
-                        onSelectVersion(p.id);
-                        setVersionMenuOpen(false);
-                      }}
-                      className={`w-full px-3 py-2.5 flex items-center gap-3 text-left transition border-b border-white/40 last:border-0 ${
-                        active ? 'bg-white/80' : 'hover:bg-white/60'
-                      }`}
-                    >
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          active ? 'bg-emerald-500' : 'bg-ink-200'
-                        }`}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{p.name}</p>
-                        <p className="text-[11px] text-ink-400">
-                          {p.version} ·{' '}
-                          <span className="font-mono">{p.slug}</span>
-                        </p>
-                      </div>
-                      {active && (
-                        <span className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wider">
-                          atual
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+          <div className="flex gap-1.5 flex-wrap">
+            {protos.slice(0, 3).map((p) => (
+              <button
+                key={p.id}
+                onClick={() => onSelectVersion(p.id)}
+                className={`text-[10px] font-medium px-2 py-1 rounded-lg transition ${
+                  p.id === current.id
+                    ? 'bg-white/80 text-[#0B1020]'
+                    : 'bg-white/40 text-ink-600 hover:bg-white/60'
+                }`}
+                title={p.name}
+              >
+                {p.version}
+              </button>
+            ))}
+            {protos.length > 3 && (
+              <button
+                onClick={() => onOpenDetails(current.id)}
+                className="text-[10px] font-medium px-2 py-1 rounded-lg bg-white/40 text-ink-600 hover:bg-white/60 transition"
+              >
+                +{protos.length - 3}
+              </button>
             )}
           </div>
         )}
 
         {/* Actions */}
-        <footer className="mt-auto flex flex-wrap items-center gap-2">
+        <div className="mt-auto flex gap-2 pt-2">
           {current.url ? (
             <a
               href={current.url}
               target="_blank"
               rel="noreferrer"
-              className="btn-primary flex-1 justify-center min-w-[140px]"
+              className="btn-primary flex-1 justify-center !py-2 !text-xs"
             >
-              Acessar protótipo
-              <ArrowUpRight size={13} />
+              Acessar
+              <ArrowUpRight size={12} />
             </a>
           ) : (
             <button
               type="button"
               disabled
-              className="btn-primary flex-1 justify-center min-w-[140px]"
+              className="btn-primary flex-1 justify-center !py-2 !text-xs opacity-50"
             >
               Sem link
             </button>
@@ -196,12 +151,12 @@ export function PrototypeCard({
           <button
             type="button"
             onClick={() => onOpenDetails(current.id)}
-            className="btn-ghost"
+            className="btn-ghost !py-2 !px-3"
+            title="Ver detalhes"
           >
-            Detalhes
             <ExternalLink size={12} />
           </button>
-        </footer>
+        </div>
       </div>
     </article>
   );

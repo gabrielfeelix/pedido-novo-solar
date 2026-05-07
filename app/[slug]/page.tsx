@@ -174,7 +174,6 @@ export default function CompanyDashboard({
                         setCurrentPrototype(company.slug, projectSlug, id)
                       }
                       onAdd={() => openAdd()}
-                      onEditProject={setEditingProject}
                     />
                   </div>
                   <div>
@@ -198,7 +197,6 @@ export default function CompanyDashboard({
                   setCurrentPrototype(company.slug, projectSlug, id)
                 }
                 onAdd={() => openAdd()}
-                onEditProject={setEditingProject}
                 hideViewAll
               />
             )}
@@ -589,7 +587,6 @@ function ProjectsSection({
   onOpen,
   onSelectVersion,
   onAdd,
-  onEditProject,
   hideViewAll,
 }: {
   title: string;
@@ -599,7 +596,6 @@ function ProjectsSection({
   onOpen: (projectSlug: string, prototypeId: string) => void;
   onSelectVersion: (projectSlug: string, prototypeId: string) => void;
   onAdd: () => void;
-  onEditProject: (project: Project) => void;
   hideViewAll?: boolean;
 }) {
   const totalProtos = projects.reduce(
@@ -651,7 +647,6 @@ function ProjectsSection({
                 onSelectVersion={(id) => {
                   onSelectVersion(project.slug, id);
                 }}
-                onEditProject={() => onEditProject(project)}
               />,
             ];
           })}
