@@ -2,8 +2,10 @@ import {
   cpSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -109,6 +111,7 @@ for (const { company, project, prototype } of getAllPrototypes()) {
       recursive: true,
       filter: shouldCopyStatic,
     });
+    normalizeStaticHtmlBase(destinationDir, basePath);
     continue;
   }
 
@@ -142,6 +145,29 @@ function copyBrandAssets() {
     } else {
       throw new Error(`Missing brand asset "${file}" at ${source}`);
     }
+  }
+}
+
+function normalizeStaticHtmlBase(dir, basePath) {
+  for (const entry of readdirSync(dir)) {
+    const file = join(dir, entry);
+    const stat = statSync(file);
+
+    if (stat.isDirectory()) {
+      normalizeStaticHtmlBase(file, basePath);
+      continue;
+    }
+
+    if (!entry.endsWith('.html')) continue;
+
+    const html = readFileSync(file, 'utf8');
+    if (/<base\s/i.test(html)) continue;
+
+    const normalized = html.replace(
+      /<head([^>]*)>/i,
+      `<head$1>\n  <base href="${basePath}">`
+    );
+    writeFileSync(file, normalized);
   }
 }
 
