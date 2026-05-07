@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import { PROJECT_STATUS_META } from '@/app/_lib/storage';
 import type { ProjectStatus } from '@/app/_lib/types';
 
 export function EditProjectModal({
@@ -16,12 +17,12 @@ export function EditProjectModal({
   onSubmit: (data: { name: string; status: ProjectStatus }) => Promise<void>;
 }) {
   const [name, setName] = useState(project?.name || '');
-  const [status, setStatus] = useState<ProjectStatus>(project?.status || 'ativo');
+  const [status, setStatus] = useState<ProjectStatus>(project?.status || 'pesquisa');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setName(project?.name || '');
-    setStatus(project?.status || 'ativo');
+    setStatus(project?.status || 'pesquisa');
   }, [project]);
 
   if (!open || !project) return null;
@@ -41,7 +42,7 @@ export function EditProjectModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 glass-strong">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold">Editar Projeto</h2>
+          <h2 className="text-xl font-semibold">Editar projeto</h2>
           <button
             onClick={() => onOpenChange(false)}
             className="text-ink-400 hover:text-ink-700"
@@ -63,16 +64,17 @@ export function EditProjectModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Status</label>
+            <label className="block text-sm font-medium mb-2">Fase do projeto</label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as ProjectStatus)}
               className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="ativo">Ativo</option>
-              <option value="em-revisao">Em revisão</option>
-              <option value="pausado">Pausado</option>
-              <option value="concluido">Concluído</option>
+              {Object.entries(PROJECT_STATUS_META).map(([value, meta]) => (
+                <option key={value} value={value}>
+                  {meta.label}
+                </option>
+              ))}
             </select>
           </div>
 

@@ -63,8 +63,8 @@ export function PrototypeDrawer({
   if (!proto || !project) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerHeader title="Protótipo" onClose={() => onOpenChange(false)} />
-        <div className="p-6 text-sm text-ink-500">Selecione um protótipo.</div>
+        <DrawerHeader title="Versão" onClose={() => onOpenChange(false)} />
+        <div className="p-6 text-sm text-ink-500">Selecione uma versão.</div>
       </Drawer>
     );
   }
@@ -231,7 +231,7 @@ function DrawerHeader({
       <div className="flex items-center gap-2 min-w-0">
         <span className="dot bg-emerald-500" />
         <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-ink-500">
-          Protótipo
+          Versão
         </h2>
         <span className="text-ink-300">/</span>
         <p className="text-sm font-semibold truncate">{title}</p>
@@ -285,7 +285,7 @@ function PreviewTab({
           </div>
           <iframe
             src={url}
-            title="Preview do protótipo"
+            title="Preview da versão"
             className="w-full h-[420px] bg-white"
             sandbox="allow-scripts allow-same-origin"
           />
@@ -475,7 +475,7 @@ function HandoffTab({
         </div>
         <p className="text-xs text-ink-500 leading-relaxed">
           Texto pronto pra colar no agente de dev. Inclui empresa, projeto,
-          versão atual, link do Figma e link do protótipo. Conforme você
+          versão atual, link do Figma e link da versão. Conforme você
           comenta e adiciona versões, o conteúdo é atualizado automaticamente.
         </p>
       </div>
@@ -518,7 +518,7 @@ function buildHandoff(proto: Prototype, project: Project, companySlug: string) {
     `Projeto: ${project.name}`,
     `Versão atual: ${proto.name} (${proto.version})`,
     `Source: ${proto.source}`,
-    proto.url ? `Protótipo: ${proto.url}` : '',
+    proto.url ? `Versão: ${proto.url}` : '',
     proto.figmaUrl ? `Figma: ${proto.figmaUrl}` : '',
     ``,
     `## Notas`,

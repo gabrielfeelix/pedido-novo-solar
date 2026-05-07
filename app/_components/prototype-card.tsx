@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { FigmaIcon } from './figma-icon';
+import { PROJECT_STATUS_META } from '../_lib/storage';
 import type { Project } from '../_lib/types';
 
 function getPreviewUrl(preview?: string, url?: string): string | undefined {
@@ -22,11 +23,13 @@ export function PrototypeCard({
   brandColor,
   onOpenDetails,
   onSelectVersion,
+  onEditProject,
 }: {
   project: Project;
   brandColor: string;
   onOpenDetails: (prototypeId: string) => void;
   onSelectVersion: (prototypeId: string) => void;
+  onEditProject?: () => void;
 }) {
   const protos = project.prototypes || [];
   const current =
@@ -38,6 +41,7 @@ export function PrototypeCard({
 
   const otherVersions = protos.filter((p) => p.id !== current.id);
   const previewUrl = getPreviewUrl(current.preview, current.url);
+  const phase = PROJECT_STATUS_META[project.status];
 
   return (
     <article className="glass-card rounded-3xl overflow-hidden flex flex-col group">
@@ -95,11 +99,22 @@ export function PrototypeCard({
       <div className="p-4 flex flex-col flex-1 gap-3">
         <div>
           <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-ink-400 mb-1">
-            {project.name}
+            Projeto
           </p>
           <h3 className="text-base font-semibold tracking-tight line-clamp-2">
-            {current.name}
+            {project.name}
           </h3>
+          <div
+            className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]"
+            style={{
+              color: phase.color,
+              background: `${phase.color}14`,
+              border: `1px solid ${phase.color}26`,
+            }}
+          >
+            <span className="h-1 w-1 rounded-full" style={{ background: phase.color }} />
+            {phase.label}
+          </div>
         </div>
 
         {current.notes && (
@@ -159,9 +174,9 @@ export function PrototypeCard({
           )}
           <button
             type="button"
-            onClick={() => onOpenDetails(current.id)}
+            onClick={onEditProject ?? (() => onOpenDetails(current.id))}
             className="btn-ghost !py-2 !px-3"
-            title="Ver detalhes"
+            title={onEditProject ? 'Editar fase do projeto' : 'Ver detalhes'}
           >
             <ExternalLink size={12} />
           </button>

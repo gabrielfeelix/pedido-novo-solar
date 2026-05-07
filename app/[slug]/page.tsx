@@ -35,7 +35,7 @@ import type { Company, Project, ProjectStatus } from '../_lib/types';
 
 const NAV = [
   { id: 'overview', label: 'Visão geral', icon: LayoutGrid },
-  { id: 'prototypes', label: 'Protótipos', icon: FolderGit2 },
+  { id: 'prototypes', label: 'Versões', icon: FolderGit2 },
   { id: 'handoffs', label: 'Handoffs', icon: Layers },
   { id: 'team', label: 'Time', icon: Users },
   { id: 'settings', label: 'Configurações', icon: Settings },

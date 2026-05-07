@@ -27,6 +27,19 @@ import type {
 const STORAGE_KEY = 'ux-hub:state.v3';
 const LEGACY_STORAGE_KEYS = ['ux-hub:state.v2'];
 
+export const PROJECT_STATUS_META: Record<
+  ProjectStatus,
+  { label: string; shortLabel: string; color: string }
+> = {
+  pesquisa: { label: 'Pesquisa', shortLabel: 'Pesquisa', color: '#0EA5E9' },
+  prototipacao: { label: 'Prototipação', shortLabel: 'Protótipo', color: '#6366F1' },
+  validacao: { label: 'Validação', shortLabel: 'Validação', color: '#F59E0B' },
+  entregue: { label: 'Entregue', shortLabel: 'Entregue', color: '#10B981' },
+  producao: { label: 'Em produção', shortLabel: 'Produção', color: '#059669' },
+};
+
+const COMMENT_PREFIX = 'Comentário registrado: ';
+
 let cachedSeed: Workspace | null = null;
 
 async function loadSeed(): Promise<Workspace> {
@@ -151,6 +164,33 @@ function mergeWorkspace(seed: Workspace, patch: Patch): Workspace {
   };
 }
 
+function commentsFromActivities(activity: Activity[]): Record<string, Comment[]> {
+  const comments: Record<string, Comment[]> = {};
+
+  for (const item of activity) {
+    if (item.kind !== 'comment.added' || !item.prototypeId) continue;
+    const text = item.message.startsWith(COMMENT_PREFIX)
+      ? item.message.slice(COMMENT_PREFIX.length)
+      : item.message;
+
+    comments[item.prototypeId] = [
+      ...(comments[item.prototypeId] || []),
+      {
+        id: item.id,
+        author: 'Você',
+        text,
+        at: item.at,
+      },
+    ];
+  }
+
+  for (const key of Object.keys(comments)) {
+    comments[key].sort((a, b) => +new Date(a.at) - +new Date(b.at));
+  }
+
+  return comments;
+}
+
 export function useWorkspaceStore() {
   const [seed, setSeed] = useState<Workspace>(seedJson as Workspace);
   const [patch, setPatch] = useState<Patch>(emptyPatch);
@@ -181,7 +221,14 @@ export function useWorkspaceStore() {
 
     getActivities()
       .then((activity) => {
-        update((prev) => ({ ...prev, activity }));
+        update((prev) => ({
+          ...prev,
+          activity,
+          comments: {
+            ...prev.comments,
+            ...commentsFromActivities(activity),
+          },
+        }));
       })
       .catch(console.error);
   }, []);
@@ -252,7 +299,7 @@ export function useWorkspaceStore() {
         companySlug,
         projectSlug,
         prototypeId: id,
-        message: `Você criou o protótipo "${proto.name}" (${proto.version})`,
+        message: `Versão "${proto.name}" (${proto.version}) adicionada ao projeto.`,
       });
       return id;
     },
@@ -284,7 +331,7 @@ export function useWorkspaceStore() {
         companySlug,
         projectSlug,
         prototypeId,
-        message: `Protótipo atualizado.`,
+        message: `Versão atualizada.`,
       });
     },
     [update, logActivity]
@@ -327,7 +374,7 @@ export function useWorkspaceStore() {
         kind: 'prototype.updated',
         companySlug,
         projectSlug,
-        message: `Projeto "${data.name}" atualizado.`,
+        message: `Projeto "${data.name}" movido para ${PROJECT_STATUS_META[data.status].label}.`,
       });
     },
     [update, logActivity]
@@ -383,7 +430,7 @@ export function useWorkspaceStore() {
         companySlug,
         projectSlug,
         prototypeId,
-        message: `Comentário adicionado.`,
+        message: `${COMMENT_PREFIX}${text}`,
       });
       return c;
     },
