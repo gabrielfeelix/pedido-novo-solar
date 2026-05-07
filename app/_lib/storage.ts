@@ -3,7 +3,12 @@
 // workspace-seed-v3
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import seedJson from '@/workspace.json';
-import { addActivity as addActivityDB } from './supabase-db';
+import {
+  addActivity as addActivityDB,
+  getActivities,
+  getProjectEdits,
+  updateProjectEdit,
+} from './supabase-db';
 import type {
   Activity,
   Comment,
@@ -11,6 +16,8 @@ import type {
   Handoff,
   HandoffStatus,
   PatchedPrototype,
+  Project,
+  ProjectStatus,
   Prototype,
   Ticket,
   TicketTopic,
@@ -39,6 +46,7 @@ async function loadSeed(): Promise<Workspace> {
 
 type Patch = {
   prototypes: Record<string, PatchedPrototype>;
+  projectEdits: Record<string, Partial<Pick<Project, 'name' | 'status'>>>;
   /** Patches applied on top of seed prototypes, keyed by id */
   edits: Record<string, Partial<Prototype>>;
   removedPrototypeIds: string[];
@@ -51,6 +59,7 @@ type Patch = {
 
 const emptyPatch: Patch = {
   prototypes: {},
+  projectEdits: {},
   edits: {},
   removedPrototypeIds: [],
   selectedByProject: {},
@@ -133,6 +142,7 @@ function mergeWorkspace(seed: Workspace, patch: Patch): Workspace {
 
         return {
           ...p,
+          ...(patch.projectEdits[projectKey] || {}),
           selectedPrototypeId: overrideId ?? p.selectedPrototypeId,
           prototypes: protosWithCurrent,
         };
@@ -142,7 +152,7 @@ function mergeWorkspace(seed: Workspace, patch: Patch): Workspace {
 }
 
 export function useWorkspaceStore() {
-  const [seed, setSeed] = useState<Workspace | null>(null);
+  const [seed, setSeed] = useState<Workspace>(seedJson as Workspace);
   const [patch, setPatch] = useState<Patch>(emptyPatch);
   const [hydrated, setHydrated] = useState(false);
   const writeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -151,6 +161,29 @@ export function useWorkspaceStore() {
     loadSeed().then(setSeed).catch(console.error);
     setPatch(loadPatch());
     setHydrated(true);
+
+    getProjectEdits()
+      .then((edits) => {
+        if (!edits.length) return;
+        update((prev) => {
+          const projectEdits = { ...prev.projectEdits };
+          for (const edit of edits) {
+            const key = `${edit.companySlug}:${edit.projectSlug}`;
+            projectEdits[key] = {
+              ...(edit.name ? { name: edit.name } : {}),
+              ...(edit.status ? { status: edit.status } : {}),
+            };
+          }
+          return { ...prev, projectEdits };
+        });
+      })
+      .catch(console.error);
+
+    getActivities()
+      .then((activity) => {
+        update((prev) => ({ ...prev, activity }));
+      })
+      .catch(console.error);
   }, []);
 
   // Debounced writes to avoid blocking on every keystroke/click
@@ -175,7 +208,6 @@ export function useWorkspaceStore() {
   );
 
   const workspace = useMemo(() => {
-    if (!seed) return { name: '', description: '', companies: [] } as Workspace;
     return mergeWorkspace(seed, patch);
   }, [seed, patch]);
 
@@ -271,6 +303,31 @@ export function useWorkspaceStore() {
         projectSlug,
         prototypeId,
         message: `Versão atual definida.`,
+      });
+    },
+    [update, logActivity]
+  );
+
+  const updateProject = useCallback(
+    (
+      companySlug: string,
+      projectSlug: string,
+      data: { name: string; status: ProjectStatus }
+    ) => {
+      const key = `${companySlug}:${projectSlug}`;
+      update((prev) => ({
+        ...prev,
+        projectEdits: {
+          ...prev.projectEdits,
+          [key]: { name: data.name, status: data.status },
+        },
+      }));
+      updateProjectEdit(companySlug, projectSlug, data).catch(console.error);
+      logActivity({
+        kind: 'prototype.updated',
+        companySlug,
+        projectSlug,
+        message: `Projeto "${data.name}" atualizado.`,
       });
     },
     [update, logActivity]
@@ -404,6 +461,8 @@ export function useWorkspaceStore() {
         activity: [activityItem, ...prev.activity].slice(0, 60),
       }));
 
+      addActivityDB(activityItem).catch(console.error);
+
       return ticket.id;
     },
     [update]
@@ -417,6 +476,7 @@ export function useWorkspaceStore() {
     hydrated,
     addPrototype,
     editPrototype,
+    updateProject,
     setCurrentPrototype,
     removePrototype,
     addComment,

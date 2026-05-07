@@ -25,7 +25,8 @@ import { PrototypeCard } from '../_components/prototype-card';
 import { PrototypeDrawer } from '../_components/prototype-drawer';
 import { AddPrototypeModal } from '../_components/add-prototype-modal';
 import { HelpModal } from '../_components/help-modal';
-import { ActivityFeed, buildFallbackActivity } from '../_components/activity-feed';
+import { EditProjectModal } from '../_components/edit-project-modal';
+import { ActivityFeed } from '../_components/activity-feed';
 import { Bars, Donut, TrendStat } from '../_components/charts';
 import { StatusPill } from '../_components/ui';
 import { useWorkspace } from '../_components/workspace-provider';
@@ -42,6 +43,20 @@ const NAV = [
 
 type Tab = (typeof NAV)[number]['id'];
 
+const MONTH_LABELS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+function monthLabel(date = new Date()) {
+  return MONTH_LABELS[date.getMonth()];
+}
+
+function lastMonthLabels(count: number) {
+  return Array.from({ length: count }, (_, index) => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - (count - 1 - index));
+    return monthLabel(date);
+  });
+}
+
 export default function CompanyDashboard({
   params,
 }: {
@@ -53,6 +68,7 @@ export default function CompanyDashboard({
     activity,
     addPrototype,
     setCurrentPrototype,
+    updateProject,
     addComment,
     removePrototype,
     createTicket,
@@ -65,6 +81,7 @@ export default function CompanyDashboard({
   const [drawerProjectSlug, setDrawerProjectSlug] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
   const [defaultAddProject, setDefaultAddProject] = useState<string | undefined>();
+  const [editingProject, setEditingProject] = useState<Project | undefined>();
   const [helpOpen, setHelpOpen] = useState(false);
   const [shareMsg, setShareMsg] = useState<string | null>(null);
 
@@ -72,7 +89,7 @@ export default function CompanyDashboard({
   useEffect(() => {
     const trackPageAccess = async () => {
       const { trackAccess } = await import('@/app/_lib/supabase-db');
-      const month = new Date().toLocaleString('default', { month: 'short' });
+      const month = monthLabel();
       await trackAccess(company.slug, month).catch(console.error);
     };
 
@@ -89,11 +106,6 @@ export default function CompanyDashboard({
     () => activity.filter((a) => a.companySlug === company.slug),
     [activity, company.slug]
   );
-  const fallback = useMemo(
-    () => buildFallbackActivity(workspace).filter((a) => a.companySlug === company.slug),
-    [workspace, company.slug]
-  );
-
   function openDrawer(projectSlug: string, protoId: string) {
     setDrawerProjectSlug(projectSlug);
     setDrawerProtoId(protoId);
@@ -162,13 +174,13 @@ export default function CompanyDashboard({
                         setCurrentPrototype(company.slug, projectSlug, id)
                       }
                       onAdd={() => openAdd()}
+                      onEditProject={setEditingProject}
                     />
                   </div>
                   <div>
                     <ActivityFeed
                       activity={companyActivity}
                       workspace={workspace}
-                      fallback={fallback}
                     />
                   </div>
                 </div>
@@ -186,6 +198,7 @@ export default function CompanyDashboard({
                   setCurrentPrototype(company.slug, projectSlug, id)
                 }
                 onAdd={() => openAdd()}
+                onEditProject={setEditingProject}
                 hideViewAll
               />
             )}
@@ -263,6 +276,18 @@ export default function CompanyDashboard({
         open={helpOpen}
         onOpenChange={setHelpOpen}
         onCreateTicket={createTicket}
+      />
+
+      <EditProjectModal
+        open={!!editingProject}
+        onOpenChange={(open) => {
+          if (!open) setEditingProject(undefined);
+        }}
+        project={editingProject}
+        onSubmit={async (data) => {
+          if (!editingProject) return;
+          updateProject(company.slug, editingProject.slug, data);
+        }}
       />
     </div>
   );
@@ -483,9 +508,9 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
   useEffect(() => {
     const loadData = async () => {
       const { getProjectStats } = await import('@/app/_lib/supabase-db');
-      const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-      const data = [];
-      const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+      const months = lastMonthLabels(6);
+      const data: { label: string; value: number }[] = [];
+      const currentMonth = monthLabel();
       let currentMonthTotal = 0;
 
       for (const month of months) {
@@ -564,6 +589,7 @@ function ProjectsSection({
   onOpen,
   onSelectVersion,
   onAdd,
+  onEditProject,
   hideViewAll,
 }: {
   title: string;
@@ -573,6 +599,7 @@ function ProjectsSection({
   onOpen: (projectSlug: string, prototypeId: string) => void;
   onSelectVersion: (projectSlug: string, prototypeId: string) => void;
   onAdd: () => void;
+  onEditProject: (project: Project) => void;
   hideViewAll?: boolean;
 }) {
   const totalProtos = projects.reduce(
@@ -624,6 +651,7 @@ function ProjectsSection({
                 onSelectVersion={(id) => {
                   onSelectVersion(project.slug, id);
                 }}
+                onEditProject={() => onEditProject(project)}
               />,
             ];
           })}

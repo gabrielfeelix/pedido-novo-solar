@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import type { ProjectStatus } from '@/app/_lib/types';
 
@@ -18,6 +18,11 @@ export function EditProjectModal({
   const [name, setName] = useState(project?.name || '');
   const [status, setStatus] = useState<ProjectStatus>(project?.status || 'ativo');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setName(project?.name || '');
+    setStatus(project?.status || 'ativo');
+  }, [project]);
 
   if (!open || !project) return null;
 

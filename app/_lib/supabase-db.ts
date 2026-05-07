@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import type { Activity } from './types';
+import type { Activity, ProjectStatus } from './types';
 
 export async function addActivity(activity: Omit<Activity, 'id' | 'at'> & { at?: string }) {
   const { data, error } = await supabase
@@ -65,6 +65,27 @@ export async function updateProjectEdit(
   return data?.[0];
 }
 
+export async function getProjectEdits(companySlug?: string) {
+  let query = supabase.from('project_edits').select('*');
+
+  if (companySlug) {
+    query = query.eq('company_slug', companySlug);
+  }
+
+  const { data, error } = await query;
+  if (error) console.error('Error fetching project edits:', error);
+
+  return (
+    data?.map((row) => ({
+      companySlug: row.company_slug as string,
+      projectSlug: row.project_slug as string,
+      name: row.name as string | undefined,
+      status: row.status as ProjectStatus | undefined,
+      updatedAt: row.updated_at as string | undefined,
+    })) || []
+  );
+}
+
 export async function getProjectEdit(companySlug: string, projectSlug: string) {
   const { data, error } = await supabase
     .from('project_edits')
@@ -103,13 +124,17 @@ export async function saveWorkspaceShare(companySlug: string, url: string) {
 }
 
 export async function trackAccess(companySlug: string, month: string) {
-  const { data: existing } = await supabase
+  const { data: existing, error: fetchError } = await supabase
     .from('project_stats')
     .select('access_count')
     .eq('company_slug', companySlug)
-    .eq('project_slug', null)
+    .is('project_slug', null)
     .eq('month', month)
     .single();
+
+  if (fetchError && fetchError.code !== 'PGRST116') {
+    console.error('Error fetching access count:', fetchError);
+  }
 
   const nextCount = (existing?.access_count || 0) + 1;
 

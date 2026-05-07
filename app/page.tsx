@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight, Building2, Search, Sparkles } from 'lucide-react';
 import { TopBar } from './_components/topbar';
-import { ActivityFeed, buildFallbackActivity } from './_components/activity-feed';
+import { ActivityFeed } from './_components/activity-feed';
 import { totalProjects, totalPrototypes } from './_lib/storage';
 import { useWorkspace } from './_components/workspace-provider';
 import { logoFrameStyle, logoImageStyle } from './_lib/brand';
@@ -34,8 +34,6 @@ export default function HomePage() {
         c.description.toLowerCase().includes(q)
     );
   }, [companies, query]);
-
-  const fallback = useMemo(() => buildFallbackActivity(workspace), [workspace]);
 
   return (
     <div className="min-h-screen w-full">
@@ -124,7 +122,6 @@ export default function HomePage() {
           <ActivityFeed
             activity={activity}
             workspace={workspace}
-            fallback={fallback}
           />
         </div>
       </section>

@@ -5,6 +5,7 @@ import {
   ChevronDown,
   ExternalLink,
   Layers,
+  Settings,
   Star,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -17,11 +18,13 @@ export function PrototypeCard({
   brandColor,
   onOpenDetails,
   onSelectVersion,
+  onEditProject,
 }: {
   project: Project;
   brandColor: string;
   onOpenDetails: (prototypeId: string) => void;
   onSelectVersion: (prototypeId: string) => void;
+  onEditProject?: () => void;
 }) {
   const protos = project.prototypes || [];
   const current =
@@ -81,6 +84,16 @@ export function PrototypeCard({
             </h3>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
+            {onEditProject && (
+              <button
+                type="button"
+                onClick={onEditProject}
+                title="Editar projeto"
+                className="icon-btn !w-9 !h-9"
+              >
+                <Settings size={14} />
+              </button>
+            )}
             {current.figmaUrl && (
               <a
                 href={current.figmaUrl}
