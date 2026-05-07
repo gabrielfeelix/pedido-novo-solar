@@ -531,17 +531,17 @@ function OverviewCharts({ company, projects }: { company: Company; projects: Pro
   const monthly = accessData;
 
   const statusCounts = {
-    ativo: projects.filter(p => p.status === 'ativo').length,
-    'em-revisao': projects.filter(p => p.status === 'em-revisao').length,
-    pausado: projects.filter(p => p.status === 'pausado').length,
-    concluido: projects.filter(p => p.status === 'concluido').length,
+    pesquisa: projects.filter(p => p.status === 'pesquisa').length,
+    prototipacao: projects.filter(p => p.status === 'prototipacao').length,
+    validacao: projects.filter(p => p.status === 'validacao').length,
+    entregue: projects.filter(p => p.status === 'entregue' || p.status === 'producao').length,
   };
 
   const status = [
-    { label: 'Ativos', value: statusCounts.ativo, color: '#10B981' },
-    { label: 'Em revisão', value: statusCounts['em-revisao'], color: '#6366F1' },
-    { label: 'Pausados', value: statusCounts.pausado, color: '#94A3B8' },
-    { label: 'Concluídos', value: statusCounts.concluido, color: '#059669' },
+    { label: 'Pesquisa', value: statusCounts.pesquisa, color: '#0EA5E9' },
+    { label: 'Prototipação', value: statusCounts.prototipacao, color: '#6366F1' },
+    { label: 'Validação', value: statusCounts.validacao, color: '#F59E0B' },
+    { label: 'Entregue/Produção', value: statusCounts.entregue, color: '#10B981' },
   ];
 
   return (
