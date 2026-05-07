@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f4f4f4; }
+    .sidebar-bg { background-color: #0d1d52; }
+    .text-primary { color: #0d1d52; }
+    .sidebar-item:hover, .sidebar-item.active { background-color: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-[250px] sidebar-bg text-white flex flex-col flex-shrink-0 rounded-tr-[10px] rounded-br-[10px] fixed h-full z-10">
+    <div class="flex-1 overflow-y-auto py-8">
+      <nav class="flex flex-col space-y-2 px-4 mt-8">
+        
+        <a href="index.html" class="flex items-center px-3 py-2 rounded-md sidebar-item active group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-home w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Dashboard</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-solar-panel w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Monte Seu Kit</span>
+        </a>
+        <a href="loja-v2.html" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-tags w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Loja</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-dollar-sign w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Orçamentos</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-calculator w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Calculadora</span>
+        </a>
+
+        <div class="h-px bg-[#4c78dd] my-2 w-4/5 mx-auto"></div>
+
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-list w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Pedidos</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-user w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Clientes</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-file-alt w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Relatórios</span>
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+          <i class="fas fa-trophy w-6 text-center text-sm opacity-90"></i>
+          <span class="ml-3">Prêmio Venda Direta</span>
+        </a>
+
+      </nav>
+
+      <div class="mt-16 px-4">
+        <nav class="flex flex-col space-y-2">
+          <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+            <i class="fas fa-cog w-6 text-center text-sm opacity-90"></i>
+            <span class="ml-3">Configurações</span>
+          </a>
+          <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+            <i class="fas fa-user-circle w-6 text-center text-sm opacity-90"></i>
+            <span class="ml-3">Perfil</span>
+          </a>
+
+          <div class="h-px bg-[#4c78dd] my-2 w-4/5 mx-auto"></div>
+
+          <a href="#" class="flex items-center px-3 py-2 rounded-md sidebar-item group cursor-pointer transition-colors text-[16px] font-light">
+            <i class="fas fa-angle-double-left w-6 text-center text-sm opacity-90"></i>
+            <span class="ml-3">Desafixar</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ml-[250px] flex-1 min-h-screen px-12 py-10 flex flex-col justify-start items-center">
+    
+    <div class="w-full max-w-[1250px]">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-bold text-black">Dashboard</h1>
+        <!-- Use standard Odex Logo from their CDN export -->
+        <img src="https://www.figma.com/api/mcp/asset/e69923f8-a087-436d-8540-911edf41fb7d" alt="Odex Logo" class="h-[43px] object-contain">
+      </header>
+
+      <!-- Banner -->
+      <section class="mb-12 relative w-full h-[171px] rounded-lg overflow-hidden bg-[#0a1b5c]">
+        <!-- Full banner image from figma export -->
+        <img src="https://www.figma.com/api/mcp/asset/4e97b0dc-eb01-4f61-a91e-89779a89d267" alt="Banner" class="w-full h-full object-cover absolute inset-0">
+        <!-- Pagination Dots -->
+        <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+          <div class="w-3 h-3 rounded-full bg-white opacity-50"></div>
+          <div class="w-3 h-3 rounded-full bg-white"></div>
+          <div class="w-3 h-3 rounded-full bg-white opacity-50"></div>
+        </div>
+      </section>
+
+      <!-- Date Selectors -->
+      <div class="flex items-center space-x-4 mb-8">
+        <span class="text-gray-500 font-normal">Período</span>
+        <div class="relative w-36">
+          <select class="appearance-none border border-[#0d1d52] rounded-[11px] px-3 py-1.5 w-full bg-transparent text-[#333] font-normal focus:outline-none cursor-pointer h-[34px]">
+            <option>2026</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <div class="relative w-28">
+          <select class="appearance-none border border-[#0d1d52] rounded-[11px] px-3 py-1.5 w-full bg-transparent text-[#333] font-normal focus:outline-none cursor-pointer h-[34px]">
+            <option>5</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Stats Row (4 cards) -->
+      <div class="grid grid-cols-4 gap-6 mb-6">
+        
+        <!-- Card 1 -->
+        <div class="bg-white rounded-lg p-6 shadow-sm flex flex-col h-[180px] border border-gray-100">
+          <h4 class="text-primary font-semibold text-xl mb-auto">Total De Vendas</h4>
+          <div class="flex items-baseline mt-4">
+            <span class="text-primary font-semibold text-lg mr-1">R$</span>
+            <span class="text-primary font-semibold text-4xl">0,00</span>
+          </div>
+          <div class="flex items-center mt-2 text-sm">
+            <span class="text-[#e94647] font-medium mr-1">0% <i class="fas fa-arrow-down text-xs ml-0.5"></i></span>
+            <span class="text-[#5a616f]"> que o mês anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white rounded-lg p-6 shadow-sm flex flex-col h-[180px] border border-gray-100">
+          <h4 class="text-primary font-semibold text-xl mb-auto">Quantidade de Pedidos</h4>
+          <div class="flex items-baseline mt-4">
+            <span class="text-primary font-semibold text-4xl">0</span>
+          </div>
+          <div class="flex items-center mt-2 text-sm">
+            <span class="text-[#e94647] font-medium mr-1">0% <i class="fas fa-arrow-down text-xs ml-0.5"></i></span>
+            <span class="text-[#5a616f]"> que o mês anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-lg p-6 shadow-sm flex flex-col h-[180px] border border-gray-100">
+          <h4 class="text-primary font-semibold text-xl mb-auto">Pedidos Pendentes</h4>
+          <div class="flex items-baseline mt-4">
+            <span class="text-primary font-semibold text-4xl">0</span>
+          </div>
+          <div class="flex items-center mt-2 text-sm">
+            <span class="text-[#f39200] font-medium mr-1">0%</span>
+            <span class="text-[#5a616f]"> dos pedidos estão pendentes</span>
+          </div>
+        </div>
+
+        <!-- Card 4 (Chart placeholder) -->
+        <div class="bg-white rounded-lg p-6 shadow-sm flex flex-col h-[180px] border border-gray-100">
+          <h4 class="text-primary font-semibold text-xl mb-4">Status dos Pedidos</h4>
+          <div class="flex-1 flex justify-center items-center">
+            <!-- Replace with the chart image from figma -->
+            <img src="https://www.figma.com/api/mcp/asset/210f2673-7bf5-4cf8-89de-1ddc393a85ac" alt="Chart" class="max-h-full object-contain">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid grid-cols-4 gap-6">
+        
+        <!-- Orçamentos -->
+        <div class="col-span-3 bg-white rounded-lg p-6 shadow-sm flex flex-col min-h-[400px] border border-gray-100">
+          <div class="flex justify-between items-center mb-6">
+            <h4 class="text-primary font-semibold text-xl">Orçamentos</h4>
+            <span class="text-gray-500 text-sm">0 orçamentos</span>
+          </div>
+          
+          <!-- Filters -->
+          <div class="flex items-center space-x-4 mb-8">
+            <div class="flex items-center">
+              <i class="fas fa-filter text-gray-400 mr-2 text-lg"></i>
+              <input type="text" placeholder="Código, nome..." class="border border-gray-300 rounded-md px-3 py-2 w-48 focus:outline-none focus:border-primary placeholder-gray-400">
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <span class="text-primary font-normal">Data do Orçamento</span>
+              <div class="flex items-center border border-gray-300 rounded-md bg-white">
+                <input type="text" class="w-24 px-3 py-2 outline-none rounded-l-md" placeholder="">
+                <div class="px-3 py-2 border-l border-gray-300 text-primary cursor-pointer hover:bg-gray-50">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+              </div>
+              <div class="flex items-center border border-gray-300 rounded-md bg-white">
+                <input type="text" class="w-24 px-3 py-2 outline-none rounded-l-md" placeholder="">
+                <div class="px-3 py-2 border-l border-gray-300 text-primary cursor-pointer hover:bg-gray-50">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center space-x-3 ml-2">
+               <button class="text-primary hover:text-blue-600 focus:outline-none"><i class="fas fa-search text-lg"></i></button>
+               <button class="text-red-500 hover:text-red-600 focus:outline-none"><i class="fas fa-trash-alt text-lg opacity-80"></i></button>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="flex-1 flex flex-col items-center justify-center py-20">
+            <p class="text-primary text-base">Você ainda não fez nenhum orçamento.</p>
+          </div>
+
+          <!-- Pagination Mock -->
+          <div class="flex justify-end mt-4">
+             <button class="w-8 h-8 flex items-center justify-center border-b-2 border-primary text-primary font-semibold">1</button>
+          </div>
+        </div>
+
+        <!-- Potência Vendida -->
+        <div class="col-span-1 bg-white rounded-lg p-6 shadow-sm flex flex-col justify-start border border-gray-100">
+          <h4 class="text-primary font-semibold text-xl mb-4">Potência Vendida</h4>
+          <div class="flex items-end">
+            <span class="text-primary font-semibold text-4xl mr-1">0</span>
+            <span class="text-primary font-normal text-xl pb-1">kWp</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

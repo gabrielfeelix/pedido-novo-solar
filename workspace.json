@@ -69,6 +69,26 @@
               "isCurrent": true
             }
           ]
+        },
+        {
+          "slug": "plataforma",
+          "name": "Plataforma ODEX",
+          "status": "validacao",
+          "handoffUrl": "/odex/plataforma/v1",
+          "selectedPrototypeId": "odex-plataforma-v1",
+          "prototypes": [
+            {
+              "id": "odex-plataforma-v1",
+              "name": "Plataforma ODEX",
+              "version": "v1",
+              "slug": "odex-plataforma-v1",
+              "url": "/odex/plataforma/v1",
+              "source": "empresas/odex/projetos/plataforma/v1",
+              "notes": "Plataforma ODEX com loja v2 integrada e pagina de produto.",
+              "createdAt": "2026-05-07",
+              "isCurrent": true
+            }
+          ]
         }
       ]
     },

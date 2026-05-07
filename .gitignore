@@ -11,7 +11,6 @@ node_modules
 original-*.png
 /public
 .nested-git-backups
-empresas/odex/projetos/plataforma
 empresas/crm/projetos/novo-pedido-solar/CRM-telas
 empresas/pcyes/projetos/pcyes-v2/versoes/v2/.claude
 empresas/pcyes/projetos/pcyes-v2/versoes/v2/.qwen
