@@ -103,19 +103,28 @@ export async function saveWorkspaceShare(companySlug: string, url: string) {
 }
 
 export async function trackAccess(companySlug: string, month: string) {
-  const { data, error } = await supabase
+  const { data: existing } = await supabase
+    .from('project_stats')
+    .select('access_count')
+    .eq('company_slug', companySlug)
+    .eq('project_slug', null)
+    .eq('month', month)
+    .single();
+
+  const nextCount = (existing?.access_count || 0) + 1;
+
+  const { error } = await supabase
     .from('project_stats')
     .upsert(
       {
         company_slug: companySlug,
         project_slug: null,
         month,
-        access_count: 1,
+        access_count: nextCount,
         updated_at: new Date().toISOString(),
       },
       { onConflict: 'company_slug,project_slug,month' }
-    )
-    .select();
+    );
 
   if (error) console.error('Error tracking access:', error);
 }
