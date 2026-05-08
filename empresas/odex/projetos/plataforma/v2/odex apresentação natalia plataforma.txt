@@ -1,0 +1,226 @@
+# odex apresentação natalia plataforma
+
+  Meeting started: 08/05/2026, 15:54:19
+  Duration: 38 minutes
+  Participants: Speaker, Speaker 1, Speaker 2
+
+  [View original transcript](https://app.tactiq.io/api/2/u/m/r/ZQEfFULdRt7dEcIZ4kwU?o=txt)
+
+    
+
+  
+
+  
+
+  ## Transcript
+
+  00:00 Speaker 1: Tinha aqui do ladinho, na verdade. Vamos lá. Bastante coisa. Vou até preparar aqui, deixar aqui do ladinho. O que eu pensei a gente fazer? Tudo que eu vou apresentar aqui é uma tentativa de fazer um sistema parecer um pouco mais amigável para quem está assistindo, tá?
+00:16 Speaker 2: Para começar com a parte lateral,
+00:18 Speaker 1: para deixar um pouquinho menorzinho, mudar um pouco os ícones. Aqui em cima eu pensei em deixar agora um header que a gente chama, que é esse cabeçalho. Atualmente a gente tem esse aqui. Só que não tem muita função, isso aqui vai representar o nome da página, mas a gente consegue colocá-la aqui também menorzinha, né? E a logo não precisa... necessariamente aqui, ela pode estar aqui em cima na sidebar mesmo, tá vendo? Aqui em cima, pensei na gente deixar o espaço pra poder colocar um carrinho de compras enquanto a pessoa faz outras coisas, por exemplo, eu tô aqui na página inicial ou em outra tela, eu consigo entrar, entrar numa loja, por exemplo, colocar um carrinho e ficar aqui em cima, até o momento. Aí falando em carrinho, pensei no carrinho de sidebar pra ter mais espaço, aí vai ter todo o orçamento aqui do ladinho, pra você poder ver. Talvez a gente pode pensar em colocar no carrinho já alguns impostos, algumas coisas pra ficar um pouco mais assertivo.
+01:02 Speaker 1: Aqui pensei em colocar notificações, aí que precisa de sua ajuda. Que notificações seriam interessantes? Porque às vezes um pedido foi aprovado, um orçamento foi aprovado, algum pedido, algum cliente foi cadastrado, alguém mandou uma mensagem, alguma coisa aconteceu. É interessante a gente saber o que é legal de ter nas notificações para a gente poder inserir
+01:18 Speaker 2: aqui nesse campo.
+01:21 Speaker 1: Deixa eu ver a verdade. Pensei em colocar aqui as informações referentes ao perfil. Então, por exemplo, aqui vai ter meu perfil, configurações, central de ajuda. novidades, que são novas funções, que eu pensei. No meu perfil, a gente consegue deixar aqui algumas coisas. Tem lá total de pedidos, orçamento, alguns dados gerais, aqui, premedida direta, um editar bem simples, aqui só um modalzinho mesmo, e a estética pro período. Só que acho muito pouco de cor ainda, vou mudar aqui algumas coisas, mas é meio que isso. E configurações, pensei, deixa eu pegar os usuários assim, colocar a foto dos usuários, alguma coisa assim, a gente pode editar eles, aqui um novo usuário, a gente pode criar um novo usuário no modal, aí a gente pode criar mais novas teias. por exemplo, quanto à segurança da conta, algumas integrações que a gente vai ter futuramente.
+02:04 Speaker 1: Pensei em fazer. A central de ajuda não é muito utilizada, mas acho bom o tempo de desencargo. Algumas dúvidas que possam surgir, fica mais fácil. Então a gente faz uma centralzinha de ajuda, aqui a gente vai ter os artigos, as categorias, as perguntas frequentes também, algum contato, enfim, Instagram, etc. Até novidades. Por quê? Para dar a impressão de que o sistema está sendo atualizado. A pessoa já está usando o nosso serviço. Se o sistema é sempre o mesmo, essa tela estática, dá a sensação de que é um sistema antigo e parado, né? Isso aqui é interessante pra... Ah, chegou uma novidade nova, então vai aparecendo aqui, vai sempre aparecendo, digamos, eu acabei de fazer o login depois de aparecer a novidade. Essa aba já abre automaticamente, assim, ah, uma novidade,
+02:45 Speaker 2: sabe, uma coisa. E ele notifica de alguma forma ali que tem... Isso, exatamente. A ideia é,
+02:51 Speaker 1: essa tela, quando eu abro o sistema, ele já vai abrir que isso aqui é aberto, quando tiver uma novidade. Mas se fechar, vai ter aqui também a notificação, uma novidade e tal. Nossa, perfeito.
+02:59 Speaker 2: Porque por não ter campo pra fazer isso, a gente só usa esse campinho aqui, ó, pra colocar novidades ali. Só tem esse campo aí. Mas ele não quer nada... Sim,
+03:17 Speaker 1: dá pra falar. Nem precisa de banner daí. A gente pode colocar um bannerzinho aqui, pode ser uma imagem, né? E aqui as informações gerais. Aí tem espaço pra colocar mais coisa. Isso aqui é bom por quê? A gente consegue ver o feedback do pessoal, sabe? Que pode colocar algum emoji pra não gostar de alguma coisa. Ou esse é o feedback, tipo, ah, não gosto dessa empresa, sabe? Não gosto de alguma coisa. Eles enviou pra gente. Feedbackzinho.
+03:36 Speaker 1: Enfim, essa é a área de novidades que eu tava pensando, né? Da homepage. Pensei a gente colocar um pouquinho, uma corzinha assim, sabe? Tipo, a gente... A gente já tem essa cor azul. Pensei em clarear ela um pouquinho, dar um aspecto mais de modernidade. Aqui a gente tem, por exemplo, boa tarde, você está tantos por cento acima do mês anterior, já dá uma estatística. Aqui com acesso rápido, tipo no orçamento,
+03:56 Speaker 1: a gente já vai para trás do orçamento. Aqui a gente consegue simular um projeto, vai ter a simulação. Aqui são algumas ações rápidas também, monta o seu kit, pedidos, orçamentos, clientes, rapidinho, sabe? Sem necessariamente precisar acessar aqui na aba, que é onde já bato o olho de primeiro. Aqui alguns dados gerais, de gráfico.
+04:13 Speaker 1: e a gente colocar um histórico de vendas. Aqui vai ter por período de 12 meses, 6 meses, 3 meses. Aí vê certinho os valores. Aqui do lado é um campo de... é tipo uma loja, né? A gente tá elaborando ainda. Essa imagem aqui, ela nem tá na proporção certa. O certo é pegar certinho aqui pra não ficar tortando aqui, né? Mas basicamente a gente teria um produto principal. Tipo a tua primeira venda e aqui os próximos do ranking. Então, qual são os produtos mais vendidos? São esses cinco aqui. Aí a pessoa pode clicar e a gente vai ter produto, por exemplo.
+04:43 Speaker 1: Mesma coisa aqui do lado, a gente consegue ver alguns produtos selecionados no dia, sabe? Então, alguma promoção, alguma
+04:48 Speaker 2: coisa que está acontecendo, a gente consegue acessar também.
+04:51 Speaker 1: Orçamento, recentes. Então, aqui vai ter o orçamento e já pode pegar uma preview dele por aqui, ó. Então, eu estou nessa tela, eu faço um pouquinho aqui mesmo, já consegui ver o orçamento. Por aqui. Mesma coisa sobre cá, já tem acesso também ao orçamento, tá? Isso
+05:05 Speaker 2: sobre a Unipend. Tá. E onde que ele fica? Ele vê o histórico de vendas dele, mas onde que ele vê... os pedidos. Aqui nessa tela.
+05:18 Speaker 1: Ah tá, mas aqui é pra você interessante ter os
+05:20 Speaker 2: pedidos? Eu acho que ali no histórico de Minas ele não poderia já ter algum campo pra... Ah, beleza, tô olhando o histórico de Minas. É porque ali embaixo ele tem orçamentos, né?
+05:32 Speaker 1: Ah, acho que você comentou sobre essa vizinha. É uma tabzinha do lado, né? Tem
+05:36 Speaker 2: pedidos. E esse da loja aqui, Gabriel, eu não sei se a gente poderia repensar ele. Vou te falar porquê. A gente não tem um mix de produto grande. Por exemplo, há pouco tempo a gente estava trabalhando com uma marca só de painel. E aí pode ficar repetitivo ali. Por exemplo, se for falar só de painel, ficaria um painel. Daí já mostra uma sensação de escassez. Aí depois a gente voltou com 700 e agora está chegando aos 620. Então a gente está com três marcas de painel. Aí seria legal a gente maquiá-la. Mas assim, por exemplo, o inversor, a gente tem tudo de estoque em algumas potências. Então eu não sei se...
+06:39 Speaker 2: nosso produto específico, isso funcionaria. A ideia aqui é colocar,
+06:44 Speaker 1: não necessariamente painel, aqui teria acessórios, seria o que é mais vendido, assim, sabe? Então, por exemplo, aqui no primeiro lugar, poderia ser que o que mais está sendo vendido agora é uma bateria, sabe? Então aqui é uma bateria, aqui é um acessório, mas realmente, você quer que ponto faz sentido. Ou a gente pode colocar algum produto do dia mesmo, ao invés de colocar aqui os mais vendidos, algo mais selecionado. Então, um dia a gente está precisando vender mais um painel, a gente coloca um outro. aqui em cima, no outro dia, porque isso aqui, gera pelo menos, a pessoa vai entrar, já vai ver que tem algo aqui, sabe? Às vezes pode até tirar isso aqui, então subir um pouquinho e deixar algo em destaque. Dá pra vender produtos que não estão saindo muito, acho que é essa a ideia, sabe? Poder colocar de primeira. Até porque se ele bate o olho aqui um dia, aí outro produto tá no dia seguinte, tá com o valor mais acessível, ele vai bater o olho e vai ver, sabe? Tem uma promoção, tem uma promoção comercial, etc, sabe? Mas dá pra gente tirar, então.
+07:33 Speaker 2: Tira essa aqui de mais vendida. É, o de ranqueado, né?
+07:36 Speaker 1: E o produto do dia. Legal. Pode ser. E não necessariamente vai ser painel, né? A gente vai poder escolher qual vai ser o produto, qual vai ser o desconto, tudo mais. Nem sei se essa visão é a ideal que a gente tá testando, né? Pode ser que a visão ideal seja de grade mesmo, sabe? Aqueles cardzinhos. Pode ser também.
+07:52 Speaker 2: Beleza.
+07:54 Speaker 1: Aí a gente fez também o Mundial Kit, aparentemente, porque a gente falou que tem muita regra de negócio, muita regra do sistema mesmo. Então é mais difícil de mexer. Então a gente vai deixar, por enquanto, a Mundial Kit, como da taxa, só colocar na bolsa das forzinhas, mas aí a gente vai mudar a outra parte da loja.
+08:07 Speaker 2: Nossa, mas já ficou bem bonito. Ah, que bom. Na
+08:10 Speaker 1: loja, você tem que fazer assim. A gente coloca aqui alguma coisa, pode ser uma imagem de kit, sabe? Algumas coisas aqui do lado. Já dá uma ação rápida pra montar o seu kit. Se ele não quiser ficar aqui na loja, ele já pode ir direto pra montar o seu kit. Aqui ele consegue buscar, então,
+08:23 Speaker 2: painel, solar, porra, é. Aqui.
+08:28 Speaker 1: Aí ele já busca aqui o específico. Ele consegue botar no carrinho. Aqui do lado, vai somando. A gente consegue filtrar aqui
+08:37 Speaker 2: do lado.
+08:39 Speaker 1: E tem por rede também de valor. Então, não bateu, aí some, tá? Beleza. A gente consegue ver o carrinho e finalizar o orçamento. Aqui, eu tentei mudar a tela. Atualmente tá muito reto, sabe? Não tem nenhum fomeamento,
+08:52 Speaker 2: tá muito papel.
+09:03 Speaker 1: Tá vendo, é muito complexo. Você vai acionar o carrinho, tá escondido aqui, aí
+09:06 Speaker 2: eu não sei. Onde que tá o carrinho, né, dentro do grado? É, tá conseguindo. O que você tá lá embaixo? E
+09:11 Speaker 1: aqui, quando a gente aciona o carrinho, ele obviamente abre a parte do lado, sabe, pra você ver que você acionou mesmo, ao invés de ficar escondido.
+09:17 Speaker 2: Tá, então, novo orçamento. Essa tela aqui,
+09:21 Speaker 1: e sim, um V, dessa forma. Mostrando o produto aqui do lado, primeiramente, sabe, de ficar só um monstro fiscal. Aqui a gente tem essas opções, só que só com uma carinha um pouquinho diferente. Eu deixei buscar cliente aqui já,
+09:34 Speaker 2: mas
+09:36 Speaker 1: acho que aqui não tem essa ordem. A gente vai
+09:39 Speaker 2: salvar o orçamento, acho que a gente não vai buscar o cliente, né? É orçamento? Você tem a opção de buscar ou não? Esse título aqui não é o
+09:51 Speaker 1: cliente, não é só o teste. Não
+09:54 Speaker 2: dá pra buscar.
+09:56 Speaker 1: Ou será que é o meu perfil, que não dá pra caminhar direto?
+09:59 Speaker 2: Não dá pra buscar o cliente. Deixa eu ver onde que você entrou. Você está no cadastro de cliente. Eu fui no carrinho e finalizar o orçamento.
+10:11 Speaker 1: Eu sei que dá para buscar cliente quando a gente vai aqui.
+10:15 Speaker 2: Orçamentos. Aí a gente entra no orçamento já pronto. Isso. Aí é esse daí, beleza. Isso, aqui a gente consegue buscar um cliente daí, né?
+10:24 Speaker 1: Isso, aqui. Exato. Mas se tem aqui, acho que faz sentido a gente botar aqui também. Sim, exato. Então já fica aqui, já associo o cliente desde
+10:32 Speaker 2: já, sabe? Só que é legal ter a opção de não seguir também, porque às vezes o cliente quer fazer sem... Perfeito. Só para... Aí... Colocar com revenda, né?
+10:43 Speaker 1: Essas opções aqui, acho que... E aqui é pessoa jurídica, não informar. Não tem pessoa física, né? Pra
+10:51 Speaker 2: revenda só jurídica, mas venda direta tem pessoa física. Tem pessoa física, só revenda que não tem.
+10:57 Speaker 1: Então, essas coisas eu não dá pra saber, porque às vezes eu não ponho, sabe? Então, eu tô tirando assim, ah, deve ser isso. Mesma coisa de não informar. Não tem, eu tô supondo que é igual a tela, mas pode ser pra um útil, alguma coisa. Aí
+11:10 Speaker 2: o tipo do orçamento, tipo teste,
+11:12 Speaker 1: local de entrega, a senhora fala pra... as informações gerais, que a gente teria mesmo aqui, informações adicionais, que isso aqui não tem aqui, ó, muitos adicionais, se pensa, ah, vai que você quer colocar alguma observação, sabe, o cliente falou alguma coisa e tal,
+11:26 Speaker 2: aí a gente já consegue colocar aqui. Legal.
+11:29 Speaker 1: Validade, orçamento, também.
+11:30 Speaker 2: Também importante. Aí a gente coloca na mão, se quiser,
+11:34 Speaker 1: e observação. Aí, beleza. Aí vem o orçamento, mas você vai criar a tela aqui agora?
+11:40 Speaker 2: Vamos lá.
+11:41 Speaker 1: Isso é sobre o orçamento, né, sobre criar um orçamento. Na loja, tá? Isso, na loja. Aí agora no orçamento, depois que ele é criado, pensei a fazer uma tela. Acho que se eu vou trabalhar um pouquinho melhor só, até esse botão dando boalhado aqui, na verdade. Mas pensei em colocar alguns dados gerais, a pessoa que vai entrar aqui, tipo, olha, quantos que eu tenho já de orçamento, quanto foi aprovado, quantos estão pendentes, até a quantidade aqui em cima e tal. Pelo que eu entendi, o sistema, ele obriga a fazer isso aqui. Ele é de abrir e fechar, mas beleza, tá aqui.
+12:16 Speaker 2: Ali a gente tem que pensar também no orçamento que foi perdido, né? Porque ali você tem a quantidade de aprovado, pendente e abandonado ou finalizado. Porque hoje realmente os orçamentos ficam... Abandonado, né? Desse orçamento, a gente cria um pedido, mas eu não sei se esse orçamento, se ele virou um pedido, né? No caso, a gente sabe
+12:49 Speaker 1: que ele foi perdido quando passa a validade. Aí vira um orçamento inspirado, basicamente.
+12:52 Speaker 2: Isso, pode ser também. É porque no CRM o Giovanni vai colocar também o orçamento virar o pedido. Então eu não sei como que ele vai fazer esse link dentro do sistema. A gente poderia utilizar também. Porque aí esse orçamento ele fica como aprovado. Porque ali a gente tem aprovado, mas não tem nenhum critério de aprovação.
+13:19 Speaker 1: Mas no caso seria aprovado, seria como se transformou em pedido, né? Isso. Então teria que ser, quando bater no CRM, voltar a informação pra cá e
+13:28 Speaker 2: informar pra ele. Isso. Perfeito. Tá, beleza. Dá pra ficar com o João Vânio. E é o que tá pendente, é o que tá válido ainda. Em aberto, né? Isso. E aí o que tá expirado, né? Isso. Nem precisa colocar sem cliente daí. A gente
+13:40 Speaker 1: coloca só expirado. Perfeito. Dá espaço ainda. É aqui alguns filtros e tal. Beleza? Mas vamos mudar com essa visão. Tá. Aí a listagem. Vou colocar os dados que já tem, na verdade, não tem muita coisa não. Aí clicando nas informações de sempre. Coloquei o WhatsApp, pode enviar direto agora pra pessoa, né, pro WhatsApp, pro e-mail, pode imprimir e tal. Uma visão bem parecida com aquela do checkout, na verdade, de função jurídica, física, não informar, lembra que a gente tava vendo? Então aqui, é endereço de entrega. É um ou outro, né, não dá pra ser os dois.
+14:14 Speaker 2: A calcular,
+14:16 Speaker 1: eu terei que responder pra poder aparecer aqui o negócio. E aqui do lado do produto, aparecendo em tempo real, né. Um carrinho assim, basicamente. Aí eu vou dar o Totó.
+14:30 Speaker 2: Tem como a gente colocar ali na área rural, assim que ele clicar, o cliente ter a obrigação de colocar a informação de quantos quilômetros de área rural?
+14:47 Speaker 1: A
+14:48 Speaker 2: gente pede para os vendedores colocarem os integradores. mas a gente não tem essa informação. E hoje a gente teve um problema na entrega. É a área rural, só que é uma área rural muito longa. 130 quilômetros de área rural. Então, nesse momento que o cliente informa a área rural, ele tem que falar quantos quilômetros de área rural é da cidade que ele está cadastrando
+15:15 Speaker 1: até o... É, faz sentido, né? Senão o frete vai ser o mesmo
+15:19 Speaker 2: e é 300. É, porque assim, tanto pode ser 5 quilômetros, da cidade, como pode ser, como esse caso, 130 quilômetros da
+15:27 Speaker 1: cidade de Chão. Nossa, quantos alqueires tem isso aí?
+15:30 Speaker 2: Beleza. Mudou toda a roupa caminhando, enfim. Então nesse momento é interessante. Assim que ele informar a área rural, beleza. Qual a distância da cidade até...
+15:40 Speaker 1: Fechou. Beleza. Ok. Aí salva quando tiver alguma alteração aqui do lado, manda pro WhatsApp e aparece aqui qual que é o orçamento, né? O telefone do cliente, que já é verdade, se eu não me engano. Ah, não, né? vai ter o WhatsApp que não informou. Mas quando buscar o cliente, é pra aparecer aqui já,
+15:55 Speaker 2: né? Já com o WhatsApp
+15:58 Speaker 1: da preenchida. Aí a mensagem que vai sair, ó, se quiser me editar alguma coisa, envia pra pessoa, né? Para imprimir, aqui do lado. Isso aqui sobre o orçamento. Alguma consideração aqui então, do orçamento?
+16:10 Speaker 2: Não, acho que ficou bem legal. Beleza.
+16:13 Speaker 1: Calculadora. Não sei se vamos utilizar, talvez até não. Mas pensei em dar uma mãozinha aqui. Colocar aqui alguns motivos de poder
+16:19 Speaker 2: calcular. Aí a gente coloca aqui, ó.
+16:23 Speaker 1: Vamos simular a economia. Aí faz uma animaçãozinha, alguma coisinha. E aqui aparece alguns
+16:27 Speaker 2: dados.
+16:29 Speaker 1: alguns produtos que são recomendados para esse caso aqui. Aí não sei como a gente pode pensar nisso, alguns produtos, algum kit, a gente pode pensar como que faria isso aqui, até a visão disso. Ou, se a pessoa quiser, ela pode montar um kit. Aí ela pode vir pra cá e ela vai lá pro kit daí e montar. Perfeito.
+16:43 Speaker 2: Essa calculadora solar, ela seria mais para um cliente final. A gente pode usar ela como uma forma de captar a lead. O problema é que a gente não tem vazão para esse lead, né? Hoje sistemicamente. Porque daí eu tenho que pegar esse cliente, que é do Mato Grosso, passar para um integrador atendê-lo, e esse integrador compre aqui com a gente. Porque não é nosso público aula. Quem compra é o integrador, né? É o
+17:14 Speaker 1: integrador, exato. Então a gente não consegue vender para o cliente? Não.
+17:18 Speaker 2: A gente é só para empresas, né? Não, faz sentido. A gente não tem nenhum... A gente tem pretensão tudo de ter alguns serviços para o B2C, mas... Por agora não. E uma dúvida,
+17:30 Speaker 1: essa tela é para o B2C? É para o cliente? Como tem acesso?
+17:33 Speaker 2: Então, é... Não
+17:36 Speaker 1: sei. Isso aqui é para ver se faz sentido para a pessoa. Ela vai falar e aí começa a... Ou até para o
+17:41 Speaker 2: cliente. E
+17:59 Speaker: aí O integrador tem o seu próprio sistema de fazer dimensionamento.
+18:07 Speaker 2: Inclusive, para a gente, é um risco de dimensionar o gerador para o cliente ou para o integrador. Porque ali a gente está falando que esse sistema vai gerar aquela...
+18:23 Speaker 1: Aquela tonobinha não é necessariamente isso. Depende
+18:25 Speaker 2: de onde, alterada, depende de tudo. A gente está falando que o gerador de 4.2 vai gerar 500... E isso depende da radiação, região dele, enfim. Então a gente pode colocar até... Ali é falo, né, potência estimada, payback estimado, mas...
+18:46 Speaker 1: É, colocar isso em jogo é um risco, né?
+18:48 Speaker 2: É. Aí se der algum problema... Assim, como um vídeo informativo. Tanto para o integrador apresentar para o cliente, para esse integrador que não tem acesso, não tem sistema próprio, etc. Mas daqui a gente pode compartilhar, então, né?
+19:01 Speaker 1: Nossa! Por exemplo, gerou isso aqui agora, o que eu faço com isso? Provavelmente ele vai fazer isso aqui, né? Vai mandar pro cliente. Então, a gente bota um compartilhar alguma coisa, já gera um PDF bonitinho com as informações, ele só encaminha pro WhatsApp, até um botãozinho de WhatsApp,
+19:12 Speaker 2: qual que é o número, sabe? Tá,
+19:15 Speaker 1: beleza.
+19:16 Speaker 2: E aí lá nesse documento de gerar, aí a gente pode até ver com o jurídico se tem alguma mensagemzinha que a gente colocar ali embaixo, assim, né, que não nos responsabilizamos pelo dimensionamento de equipamento e tal, aí eu vejo com o jurídico.
+19:30 Speaker 1: Beleza, beleza. Então, o produto aqui, na verdade, é só se a pessoa começasse a falar, ah, eu quero algum produto, aí vem isso aqui e tal, então não sei. Só se também, logo no PDF de recomendação, já vinha algum produto junto, não sei. Ainda mais a gente pode pensar como que vai fazer esse PDF bonitinho assim, mas beleza.
+19:50 Speaker 1: Saindo da população, a gente tem os pedidos, que vai ser uma tela bem parecida aqui com os orçamentos, na verdade. Também vai ter dados gerais, que é conjeito de pedidos. Aí sim, contos finalizados, que vai ser a mesma coisa que a gente tinha visto, né? Em andamento, faturados. Aí contos que foram parcelados, também aparece aqui do ladinho. Dá pra pensar em alguma coisa, contos que estão bloqueados. Lá no CRM, se eu não me engano, tem aquele negócio de bloqueamento, né? A pessoa fez o kit, mas não necessariamente foi aprovado ainda, se eu não me engano, né? Tá bloqueado. Aí precisa de alguma aprovação? A gente pode pensar em alguma coisa assim.
+20:18 Speaker 1: É, o status deles,
+20:19 Speaker 2: né? Tá guardando pagamento.
+20:22 Speaker 1: Ah, legal! Bom colocar isso, na verdade. Seria esse andamento aqui, mas dá pra colocar aguardando o pagamento.
+20:29 Speaker 2: Fechou.
+20:30 Speaker 1: Aí aqui, mesmo os dados que a gente já tem, só que uma coisa que eu fiquei confuso é porque atualmente aqui em pedidos... A gente tá aqui em potência, sabe? O resumo do pedido. Eu não entendi muito bem. Aí eu coloquei aqui do ladinho, no finalzinho, sabe? Aí eu coloquei aqui, se quiser ver então, como eles colocaram o modal, então tem o modalzinho aqui, resumo, sabe? Porque às vezes, eu imagino, a pessoa tá querendo ver uma listagem. Algumas pessoas, não quer ficar clicando, vendo e voltando. Aí ela pode vir aqui, ver um resuminho aqui, pode ver o pedido se ela quiser, mas se não ela só fecha aqui do ladinho, ou pode voltar pra cá. Ela vem aqui, fecha, fechar, pode vir aqui também, ela vai usando o sistema de fato, sabe? A ideia... deixar o sistema acessível, sabe? O mais rápido possível pra você poder utilizar. Perfeito. Aqui os produtos que ela vai comprar. O pedido,
+21:18 Speaker 2: a logística, o pagamento. Ele consegue baixar a nota aí? Seria interessante. No modalzinho já, né?
+21:24 Speaker 1: Hum, legal. Eu só tinha colocado na página, mas a gente pode adicionar sim. Beleza.
+21:29 Speaker 2: E aí sim. Ah, aqui já dá, ó. Ali onde tá
+21:31 Speaker 1: essa... É isso que é isso aqui? Isso aqui é pra baixar? É.
+21:37 Speaker 2: Tá vendo? Deixa
+21:39 Speaker 1: eu ver, na verdade, o que aconteceu. É porque como o mouse não fica com aquela, deixa
+21:45 Speaker 2: eu ver,
+21:46 Speaker 1: com essa mãozinha, não parece.
+21:49 Speaker 2: Nossa,
+21:50 Speaker 1: eu juro, peraí.
+21:52 Speaker 2: Onde? Aqui.
+21:54 Speaker 1: Ah, tá, nossa, não tinha visto.
+21:57 Speaker 2: Ah, verdade. Clica de novo. Acho que agora vai.
+22:02 Speaker 1: É aqui ou aqui que eu acho?
+22:03 Speaker 2: É o PDF. O outro é...
+22:06 Speaker 1: Acho que é o da direita.
+22:08 Speaker 2: Acho que esse é o Excel, não é? Ou seja, isso aqui poderia ser
+22:11 Speaker 1: botão aqui do lado também. Isso. Aqui do ladinho.
+22:13 Speaker 2: Com uma informação mais... Perfeito.
+22:17 Speaker 1: Nossa, olha isso aqui, gente. Isso
+22:18 Speaker 2: aqui
+22:21 Speaker 1: é um botão, acredito. Esse reconezinho aqui.
+22:39 Speaker 2: Aí,
+22:40 Speaker 1: a tela de detalhes. Tô tentando deixar sempre nas páginas uma hierarquia, como assim, tipo, você vai perceber aqui no dashboard, por exemplo, tem uma hierarquia, o que é a parte importante, o inicial, e aí depois a gente desce. Mesma coisa aqui em pedidos, a gente clica aqui, tem a parte que é um resumo de pedidos, as ações, e aí a gente desce, né? Aqui quem que vendeu, né? Vendido por, na verdade, aqui o cliente. A logística, tá em transporte, tipo de frete, transportadora, pagamento, endereço de entrega. Aqui o produto, ou a listagem de produtos aqui embaixo. E aqui o prêmio de venda direta. Então vai ter certinho. Valor líquido, IPI, PIS, COFINS, tudo certinho. Botão de imprimir. E a gente pode até mudar aqui, ó. O tipo de nota fiscal que a gente quer imprimir. Quero eletrônico, manual, eu quero baixar Danf ou XML. Que a gente tinha visto agora há pouco, né? É, enviar primeiro, imprimir. Um pedido, eu não coloquei pra enviar pra WhatsApp. Mas eu posso colocar aqui. A gente vai colocar o orçamento aqui.
+23:32 Speaker 2: Fechou. É... Não pode falar em pedidos, por favor. Aqui? A listagem ou... Não, a listagem. Ah tá. Ali... Aí ele vai listar todos os períodos do cliente, desde sempre, né? Isso, isso, exatamente. Aí, se ele quiser filtrar por um período também, acho que seria legal colocar um filtro... Ah, tem aí
+23:55 Speaker 1: embaixo. Isso, ainda que ele vai estar bugado isso aqui, na verdade, mas... Tá, tudo no mesmo, tá, beleza. É, bem igual isso aqui, na verdade, né? Que aparentemente a gente acha que já tem data de pedido aqui por período e tal. Beleza. Deixa eu ver agora pra cá. Aí. É... Beleza.
+24:09 Speaker 2: Deixa eu ver se... Aqui.
+24:13 Speaker 1: Tá, acho que é isso de detalhes do pedido. Aí agora clientes. Em clientes, eu só botei a nomenclatura porque não vai ter a foto do cliente, né? A gente não vai adicionar. Então só a nomenclatura aqui, uma corzinha. E-mail, telefone, uma compra. O que é bom a gente ver é o seguinte, ó. Em clientes, você vê que tem várias colunas. E talvez isso seja bom, não sei qual que é a realidade do integrador, mas... Como isso aqui gera muita coluna, se a gente quiser adicionar mais coisas futuramente, vai adicionar mais uma coluna e ele já vai bugar. O que eu pensei? Aqui a gente consegue juntar várias coisas, sabe? Qual que é o nome, qual que é o ID, qual que é o código,
+24:49 Speaker 1: no caso, a empresa. Então, tenta colocar mais informação junto nos blocos. Mesma coisa aqui, vai colocar mais algumas informações. E aí a gente pode colocar várias colunas num lugar só, sabe? No mesmo ID. Aí a gente pode puxar aqui o código se quiser, enfim. Isso aqui é a listagem de clientes, eu não coloquei aqui
+25:06 Speaker 2: nomes. Esse nome de empresa, ele não precisa, é porque você tá bloqueando mil usuários, né? Que daí eu vejo outros clientes. Mas o integrador vai ter só o da empresa dele, tá? Ah, tá, perfeito.
+25:18 Speaker 1: Essa tela, pro integrador, vai ser só cliente, tipo, pessoa
+25:22 Speaker 2: física. Pessoa física. Então não vai ser
+25:24 Speaker 1: uma empresa, né? O nome dela vai estar aqui só e aqui não vai ter nada. Exato. Perfeito, entendi, beleza.
+25:29 Speaker 2: E aqui também, a gente não tem essa informação. hoje porque a gente não tem integração entre a plataforma e... A gente só recebe informações da plataforma no Web, né? E com CRM a gente vai ter essa integração. Seria interessante a gente conseguir verificar os documentos. Quando alguém está em cadastro, faz upload de documento. O comprovante de residência e tal. A gente não tem acesso, ninguém tem acesso. Só o TI. Tá, entendi.
+26:01 Speaker 1: Tá, então vou poder adicionar aqui. Mas quem vai ter acesso daí?
+26:06 Speaker 2: O cliente, o integrador, no caso.
+26:08 Speaker 1: Ele vai poder ver os documentos do cliente, né? Os documentos que ele colocou
+26:11 Speaker 2: lá, né? E a gente também. Todo mundo que quiser. Então, o... Acho
+26:16 Speaker 1: que deve fazer sim, e só um ponto, não sei se é por isso que eles me colocaram, que na outra vez que eu trabalhei, eles não deixavam nunca o usuário ver os documentos, pra, tipo, às vezes algum vendedor pega um RG e ele faz alguma coisa com esse RG, sabe, do cliente.
+26:29 Speaker 2: Mas aí, o que eles fazem? Faz o cadastro, aí você precisa fazer o lançamento, ele tem que mandar o RG daí.
+26:35 Speaker 1: Ah, então já tem, já acontece a documentação. Sim,
+26:38 Speaker 2: a gente só não consegue pegar daí.
+26:40 Speaker 1: Ah, perfeito. Então é só mandar. Beleza, beleza. Esse aqui já estava gravado aqui, eu vou... Deixa eu... Se
+26:47 Speaker 2: já
+26:50 Speaker 1: acontece, então beleza. Aqui os dados heróis, né? Tipo, CPF, e-mail. Agora o integrador não vai precisar, porque eu vi que é o cliente final mesmo, né? Valor em pedidos. Esse valor
+26:58 Speaker 2: em orçamentos e valor em pedidos, também isso sai muito sentido, porque esse cliente vai ser cadastrado uma vez, porque ele vai
+27:05 Speaker 1: ter... É um pedido só. Ah, mas ele não vai fazer... Ah, realmente, não faz sentido, né? Ele ter várias bacas solares. Exato.
+27:10 Speaker 2: É que assim, no dash dele lá, ele olhar a quantidade de pedidos do integrador faz sentido, mas por cliente final, não. Esse cliente vai comprar uma vez só. Hum, tá.
+27:25 Speaker 1: Acontece de o cliente comprar, tipo, acessórios, placas e demais, e aí depois tem que comprar outro acessório,
+27:32 Speaker 2: comprar mais coisas? Ele pode ter uma...
+27:35 Speaker 1: Ah, então não faz sentido. Perfeito. Beleza. Orçamentos e pedidos, aqui do lado, que a gente tinha falado lá no comecinho, sabe, de poder definir. Aqui vai ter os produtos, no caso, que ele comprou. Se quiser editar, ah, não tá tudo. Tá, depois eu vejo. Mas vai abrir um modalzinho com o botão de edição. Deixa eu dar um 5 aqui só pra gente... É, beleza.
+27:53 Speaker 2: Tá, esse botão de edição a gente tem que ver também. Porque tem alguma... Por exemplo, o e-mail a gente teve que fazer um bloqueio. Porque todo integrador, ao invés de colocar o e-mail do cliente final, colocava o e-mail dele. Porque é mais fácil, né? Só que quando a gente fatura a nota, fatura pro Gabriel, tem todos os dados dele e o e -mail dele. E aí o cliente não recebia, né? Não recebe nota, nenhuma informação. Então a gente fez esse bloco, então não pode ser editado, né? Tá. Mas assim... Então
+28:24 Speaker 1: só nome e telefone no máximo. Nome e telefone. Perfeito. Beleza. Ok, ok, ok, ok. Endereço cadastrado, aí dá pra adicionar
+28:34 Speaker 2: mais um.
+28:42 Speaker 1: Perfeito, e dá pra poder mudar de endereço, né, se quiser, ou adicionar um novo, né.
+28:46 Speaker 2: Legal. Tá, fechou.
+28:50 Speaker 1: Relatórios, vocês usam? Eu não coloquei porque não tem nada aqui ainda em relatórios. Eu não sei até que ponto é importante. Não, porque não funciona. Ah tá, mas talvez seja interessante a gente colocar uma opção de relatórios. Sim.
+29:01 Speaker 2: Com essas informações aí, né? Quantidade de pedidos fechados, os pedidos que ele vai conseguir fazer. Como é que ele vai ter
+29:08 Speaker 1: aqui um déficit, né? É, então, é isso que eu tô tentando fazer. Deixar tudo mais fácil. Ver aqui, ver aqui os dados. Em cada coisa, ter aqui os dados. Então, mas se quiser pro período, ou baixar algumas coisas, pode ser que por isso faça sentido, né? Mas por isso que eu não coloquei aqui como prioridade. Por isso que eu não fiz ainda. Mas dá pra gente poder colocar.
+29:27 Speaker 2: Por isso que
+29:29 Speaker 1: é legal, depois que a gente experimentar essas alterações e tal, a gente abrir uma área de ticket pro cliente, por exemplo, fazer algumas sugestões, ou a gente até conversar com alguns tecladores juntos, sabe? Porque vai que ele quer alguma informação que pra maioria é importante, mas a gente não consegue enxergar, sabe? Não sei. Mas beleza. Ah, é verdade. Outra coisa que a gente criou. Não sei se faz sentido, criei meio que por mim, não sei. Mas pensei na possibilidade de mudar o login. O login atualmente, deixa eu pegar aqui.
+29:56 Speaker 1: É muito simples, né? Aí precisa de colocar alguma coisinha diferente, a cor azul que a gente tá vendo e tal, o e-mail e senha, o cadastro, né? Então se quiser cadastrar, deixa eu botar o login, login e senha, clica aqui, tem uns passos, né? Um de dois. Aí eu coloco o e-mail, coloco a rede social, acho que já tá valendo.
+30:21 Speaker 2: Telefone. Beleza.
+30:23 Speaker 1: Aqui. Lei é aceito. Aí a segunda etapa. Aí o nome da responsável. Coloquei a mesma coisa que já existe, só mais um pouco de layout.
+30:35 Speaker 2: Dá essa sensação de atualização. Exatamente. Essa é a
+30:38 Speaker 1: ideia mesmo. Parece que a gente tá se movendo, sabe? De fato. Deixa eu ver se tem mais alguma coisa.
+30:47 Speaker 2: Patulador, instrumento, loja. Prêmio de venda.
+30:50 Speaker 1: É, tem um negócio de prêmio de venda e outra coisa. Ó, deixa eu te mostrar.
+30:55 Speaker 2: É que ele não vai aparecer aí por causa do meu usuário. Ah, é
+31:00 Speaker 1: que eu não tinha entendido, na verdade, como que a gente faria, mas eu faço daí, a gente conversa. Tá carregando. Enquanto isso, aqui dentro do produto, dá pra gente melhorar, né, essa loja, essa descrição do produto e tal, só precisa abrir mais aqui. Mas tem que ver o que é importante a gente colocar aqui. Eu coloquei aqui que tem em estoque, se a gente quiser comprar, a marca, né, ou título, avaliações. A avaliação, aí que tem uma coisa.
+31:24 Speaker 1: Eu sei que não faz muito sentido, né? Porque a avaliação que a gente teve que fazer é o cliente, né? Acabou de comprar, então ele tem que avaliar, sabe? Só que ainda assim, é interessante, às vezes, pro integrador, é muito sensacional, né? Ele poder ver quais placas os clientes falam melhor, sabe? A gente tem que ver como é que a gente vai integrar a avaliação com o cliente. Às vezes com um formularizinho, alguma coisinha que a gente envia um link, o cliente dá um feedback e vem pra cá, sabe? Com os comentários. Dá pra gente pensar. Mas...
+32:12 Speaker 1: Ah tá, tá falando aqui, peraí. WhatsApp aqui? ainda aquele que eu tinha feito, mas lá tinha então alguma coisa assim.
+32:27 Speaker 2: E daí você clicava, tinha o botãozinho do Tristinho?
+32:33 Speaker 1: Ah, aqui, aqui, do negocinho, peraí, é leituridades. Ah, legal, pode ser. Ah, legal. Sim, faz sentido, faz sentido. Beleza, ok. Aqui eu botei o valor, a vista, IPI, IST, prêmio, ou em tantas vezes, se tiver um cartão, provavelmente não sei se vai que isso é uma função que a pretensa ou não, mas...
+32:56 Speaker 2: Na loja, não faz um prêmio de chefe pra você ter um prêmio.
+33:06 Speaker 1: É que prêmio é... cada um escolhe, né?
+33:08 Speaker 2: É porque o prêmio é pra vender direto. Na loja, não necessariamente ele vai conseguir vender... ele só consegue vender pra em nada direto. Porque é o cliente na sua física.
+33:21 Speaker 1: O prêmio é aquela comissão que dá pra comprar, né? A gente não coloca o prêmio... Então não faz sentido tocar o creme do produto. Beleza, matou, fechou. Combinado. Aqui aumenta o produto. Tem muita coisa, na verdade, que não dá pra mexer, por exemplo, eu não gosto muito dessa porcinha, desse tipo, assim, o botão quadrado. Só que como a gente já tem o design system montado, do sistema, a gente tem de make it. Então, talvez com o tempo, eu até tinha feito uma outra versão, mas com o tempo a gente consegue colocar redondo o botão, algumas coisas mudadas.
+33:49 Speaker 1: Tô tentando colocar isso aqui agora, que é um pouquinho... Vamos ver se vocês vão deixar. Mas, por exemplo, o padrão é esse ícone aqui. aqui ó, só que é muito grande, até eu tento deixar mais pequenininho, mas vamos ver se dá, né. O SKU filial, aqui eu coloquei alguns cenas, mas dá para a gente tirar, não necessariamente porque é importante. Aqui as fotos, a gente desenhou essa coisa, coloquei a mesma foto esticada só, mas aí seria umas fotos ainda mais. Sobre o produto, uma descrição, aqui as especificações.
+34:19 Speaker 1: dados elétricos, STC, as especificações técnicas, físicas e tal, as informações, as avaliações, que aí sim, seria o que a gente tava vendo, mas teria que fazer sentido, né, avaliar produto e tal. E os manuais, eu não sei se é uma coisa que existe. Sim. É uma realidade. É uma realidade.
+34:35 Speaker 2: Ah, legal. Ah, perfeito.
+34:38 Speaker 1: Como aqui não tem, eu tô chutando, sabe? Mas eu não sei se... Tá, perfeito. Ótimo. Tá, então o datasheet já do... Pera até pra ele já pro cliente, né? Beleza. É isso, aí a gente consegue continuar o fluxo, ou a gente volta pra loja, já com o carrinho que a gente acabou de adicionar, a gente pode entrar em outro produto, adicionar também, e assim a gente segue o fluxo dentro de uma loja, sabe?
+35:02 Speaker 2: Então, vamos ver aqui. Então, como que funciona? Seria interessante porque, além dos pedidos que ele tem, para receber... O que já recebeu com a conta. O que ele já recebeu, recebeu em cimento e a possibilidade dele já para ter os todos. Uma dúvida. E os integradores, eles só ganham em cima com a venda direta? Tipo, por exemplo, você não ganha a venda direta. Não ganha nada no cheiro. Não.
+35:40 Speaker 2: Mas eles podem, por exemplo, alunos que se gravam, faturam um produto, só produto do cliente, e eles fazem uma nota no serviço. O prêmio
+35:54 Speaker 1: de venda direta, ele tem algum imposto? A gente pega
+35:58 Speaker 2: alguma porcentagem assim ou não?
+36:00 Speaker 1: Ah, então pra eles fazer uma nota no serviço. Tá, entendi. Beleza.
+36:10 Speaker 2: Então uma coisa é assim. Não faz sentido pagar
+36:12 Speaker 1: R$100,00 uma roupa do que R$100,00 mais R$20,00. Exato.
+36:15 Speaker 2: E eles daí começam a questionar os trabalhos, né? Sim. Porque, ah, eu vou pagar R$20,00 no gerador, beleza? Instalado. Ah, daí liberar até R$10,00 no gerador e R$10,00. Cara, que loucura isso, né?
+36:31 Speaker 1: Não quero isso não. Exato. Perfeito. Agora entendi. Tá, beleza. É isso que é importante na real satélite, então. os dados que eles vão ter, né, de acesso.
+36:41 Speaker 2: Nós vamos
+36:43 Speaker 1: lá, é comissão deles, na verdade. Agora, entendi, eu vou fazer essa tela aqui então. Será que a gente consegue, alguém tem essa tela com alguma coisa para a gente? Sabe para eu ver mais
+36:54 Speaker 2: ou menos o que é que tem?
+37:16 Speaker 2: Perfeito,
+37:16 Speaker 1: tá ótimo. Deixa eu ver se tem mais alguma coisa. Aqui, tá. Acho que não tem mais coisas não, mas eu vou fazer a tela de relatório de primeira venda direta, que acho que vai faltar pra poder fechar mais ou menos o sistema.
+37:29 Speaker 2: De menos, né? Fechou. Ai, que bom.
+37:37 Speaker 1: Beleza, aí se tiver mais personalidades pra você, é importante, tudo isso que a gente conversou, a gente tem um todo humano nesse fluxo, naquele outro, eu já consegui ir incluindo no design, sabe? Até porque eu vou tomar reunião, hoje, vou tomar reunião na segunda vez com o cliente também, pra poder mostrar o design. Então se tiver alguma coisa interessante, uma funcionalidade, eu já boto para a apresentação. Mas isso que a gente já conversou, só de estar gravado aqui, já vai matar também os maiores problemas.
+38:03 Speaker 2: Por favor, então. Mas muito obrigado, viu?
+  
