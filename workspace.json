@@ -74,8 +74,8 @@
           "slug": "plataforma",
           "name": "Plataforma ODEX",
           "status": "validacao",
-          "handoffUrl": "/odex/plataforma/v1",
-          "selectedPrototypeId": "odex-plataforma-v1",
+          "handoffUrl": "/odex/plataforma/v2",
+          "selectedPrototypeId": "odex-plataforma-v2",
           "prototypes": [
             {
               "id": "odex-plataforma-v1",
@@ -84,8 +84,18 @@
               "slug": "odex-plataforma-v1",
               "url": "/odex/plataforma/v1",
               "source": "empresas/odex/projetos/plataforma/v1",
-              "notes": "Plataforma ODEX com loja v2 integrada e pagina de produto.",
-              "createdAt": "2026-05-07",
+              "notes": "Primeira versao da Plataforma ODEX com loja e pagina de produto.",
+              "createdAt": "2026-05-07"
+            },
+            {
+              "id": "odex-plataforma-v2",
+              "name": "Plataforma ODEX",
+              "version": "v2",
+              "slug": "odex-plataforma-v2",
+              "url": "/odex/plataforma/v2",
+              "source": "empresas/odex/projetos/plataforma/v2",
+              "notes": "Versao atual da plataforma com Central de Ajuda, Premio Venda Direta, calculadora compartilhavel, chat com a De (IA), Super Admin com CRUD de artigos e website publico integrado.",
+              "createdAt": "2026-05-11",
               "isCurrent": true
             }
           ]

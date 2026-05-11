@@ -10074,8 +10074,8 @@
         if (!window._calcLast) { alert('Faça a simulação primeiro.'); return; }
         alert('Gerando PDF da simulação…\n\n(em produção este botão aciona a geração do PDF com o disclaimer jurídico no rodapé)');
       };
-      // Share público da calculadora (apontando pro website)
-      const _CALC_PUBLIC_BASE = 'https://ux-oderco-freela1.vercel.app/odex/website/v2/calculadora.html';
+      // Share público da calculadora (apontando pro website embarcado dentro do próprio prototipo)
+      const _CALC_PUBLIC_BASE = 'https://ux-oderco-freela1.vercel.app/odex/plataforma/v2/website/calculadora.html';
       window.openCalcShare = function() {
         // Gera token mock referenciando o integrador atual
         const tok = 'INT-' + Math.random().toString(36).slice(2,8).toUpperCase();
