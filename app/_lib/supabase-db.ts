@@ -123,17 +123,22 @@ export async function saveWorkspaceShare(companySlug: string, url: string) {
   return data?.[0];
 }
 
+// Sentinela usada quando o registro de acesso é "company-level" (não vinculado a
+// um projeto específico). A coluna project_stats.project_slug é NOT NULL no
+// banco, então usamos string vazia para representar esse caso.
+const COMPANY_LEVEL_SLUG = '';
+
 export async function trackAccess(companySlug: string, month: string) {
   const { data: existing, error: fetchError } = await supabase
     .from('project_stats')
     .select('access_count')
     .eq('company_slug', companySlug)
-    .is('project_slug', null)
+    .eq('project_slug', COMPANY_LEVEL_SLUG)
     .eq('month', month)
     .single();
 
   if (fetchError && fetchError.code !== 'PGRST116') {
-    console.error('Error fetching access count:', fetchError);
+    console.error('Error fetching access count:', JSON.stringify(fetchError, null, 2));
   }
 
   const nextCount = (existing?.access_count || 0) + 1;
@@ -143,7 +148,7 @@ export async function trackAccess(companySlug: string, month: string) {
     .upsert(
       {
         company_slug: companySlug,
-        project_slug: null,
+        project_slug: COMPANY_LEVEL_SLUG,
         month,
         access_count: nextCount,
         updated_at: new Date().toISOString(),
@@ -151,7 +156,7 @@ export async function trackAccess(companySlug: string, month: string) {
       { onConflict: 'company_slug,project_slug,month' }
     );
 
-  if (error) console.error('Error tracking access:', error);
+  if (error) console.error('Error tracking access:', JSON.stringify(error, null, 2));
 }
 
 export async function getTotalAccesses(companySlug: string, month: string) {
@@ -160,9 +165,9 @@ export async function getTotalAccesses(companySlug: string, month: string) {
     .select('access_count')
     .eq('company_slug', companySlug)
     .eq('month', month)
-    .is('project_slug', null)
+    .eq('project_slug', COMPANY_LEVEL_SLUG)
     .single();
 
-  if (error && error.code !== 'PGRST116') console.error('Error fetching accesses:', error);
+  if (error && error.code !== 'PGRST116') console.error('Error fetching accesses:', JSON.stringify(error, null, 2));
   return data?.access_count || 0;
 }
