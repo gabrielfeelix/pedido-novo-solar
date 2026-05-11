@@ -1938,6 +1938,13 @@
         max-width:75%; max-height:360px;
         object-fit:contain;
       }
+      .home-showcase-media.is-ambient { padding:0; min-height:420px; }
+      .home-showcase-media.is-ambient img {
+        position:absolute; inset:0;
+        width:100%; height:100%;
+        max-width:none; max-height:none;
+        object-fit:cover;
+      }
       .home-showcase-info {
         padding:36px 40px;
         display:flex; flex-direction:column; justify-content:center;
@@ -5843,7 +5850,7 @@
         { sku: "292438", ean: "29243800", category: "Inversores", name: "Inversor Solar 15kW Trifásico 380V 15KTLX-G3P 2 MPPT Sofar AFCI",                 brand: "Sofar",       tech: ["Trifásico", "2 MPPT"],        power: 15000, eff: "98,4%", price: 4060.75, available: true, rating: 4.6, reviews: 9,  img: "https://oderco.com.br/media/catalog/product/2/9/292438-17459034566372442.jpeg",  model: "15KTLX-G3P" },
 
         // ===== ARMAZENAMENTO (residencial + BESS C&I, imagens reais Oderco) =====
-        { sku: "352531", ean: "35253100", category: "Armazenamento", name: "BESS C&I Chint Power 125kW / 261kWh CPS-ES com EMS",       brand: "Chint Power", tech: ["C&I", "EMS", "Lítio LFP"], power: 261000, powerLabel: "261 kWh", eff: "96%", price: 394002.50, oldPrice: 415000, promo: true, available: true, rating: 4.9, reviews: 3, img: "https://oderco.com.br/media/catalog/product/3/5/352531_1-17716604178056415.jpeg", model: "CPS-ES 125/261", descShort: "Sistema de armazenamento solar para comércio e indústria com 125 kW de potência e 261 kWh de capacidade. Vem com BMS integrado e EMS (Energy Management System) Chint para controle inteligente. Pronto para projetos de média a grande escala com retorno acelerado." },
+        { sku: "352531", ean: "35253100", category: "Armazenamento", name: "BESS C&I Chint Power 125kW / 261kWh CPS-ES com EMS",       brand: "Chint Power", tech: ["C&I", "EMS", "Lítio LFP"], power: 261000, powerLabel: "261 kWh", eff: "96%", price: 394002.50, oldPrice: 415000, promo: true, available: true, rating: 4.9, reviews: 3, img: "https://oderco.com.br/media/catalog/product/3/5/352531_1-17716604178056415.jpeg", imgAmbient: "bess-retangular.png", model: "CPS-ES 125/261", descShort: "Sistema de armazenamento solar para comércio e indústria com 125 kW de potência e 261 kWh de capacidade. Vem com BMS integrado e EMS (Energy Management System) Chint para controle inteligente. Pronto para projetos de média a grande escala com retorno acelerado." },
 
         // ===== STRING BOX (imagens reais Oderco) =====
         { sku: "311668", ean: "31166800", category: "String Box", name: "String Box Clamper Solar SB 1000V 32A 4E/4S P24",                        brand: "Clamper", tech: ["1000V", "4E/4S", "P24"],   power: 0, eff: "—", price: 1515.68, available: true,  rating: 4.7, reviews: 22, img: "https://oderco.com.br/media/catalog/product/3/1/311668-17458944783606561.jpeg",  model: "SB 1000V 32A 4E/4S" },
@@ -6376,9 +6383,9 @@
           <!-- Showcase: novidade em destaque (hero comercial) -->
           ${heroProd ? `
             <section class="home-showcase">
-              <div class="home-showcase-media">
+              <div class="home-showcase-media${heroProd.imgAmbient ? ' is-ambient' : ''}">
                 <span class="home-showcase-tag"><i data-lucide="sparkles" style="width:13px;height:13px;"></i> Novidade</span>
-                <img src="${heroProd.img}" alt="${heroProd.name}" onerror="this.src='${ASSET}logo-odex.png';this.style.objectFit='contain';this.style.padding='40px';">
+                <img src="${heroProd.imgAmbient || heroProd.img}" alt="${heroProd.name}" onerror="this.src='${ASSET}logo-odex.png';this.style.objectFit='contain';this.style.padding='40px';">
               </div>
               <div class="home-showcase-info">
                 <span class="home-showcase-cat">${heroProd.category} · ${heroProd.brand}</span>
