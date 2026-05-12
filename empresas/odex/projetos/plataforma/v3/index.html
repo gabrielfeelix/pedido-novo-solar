@@ -5640,6 +5640,194 @@
       .mk-resumo-side { position:static; }
     }
 
+    /* ===========================================================
+       Monte Seu Kit · Form inicial (v3 · alinhado com o CRM)
+       =========================================================== */
+    .mk-form-v3-grid {
+      display:grid; grid-template-columns:minmax(0, 1fr) 380px; gap:24px; align-items:flex-start;
+    }
+    @media(max-width:1100px) { .mk-form-v3-grid { grid-template-columns:1fr; } }
+
+    .mk-form-v3 { display:flex; flex-direction:column; gap:18px; padding-bottom:6px; }
+    .mk-v3-field { display:flex; flex-direction:column; gap:8px; }
+    .mk-v3-label {
+      font:700 11.5px/1 var(--font); color:var(--ink);
+      letter-spacing:.06em; text-transform:uppercase;
+      display:flex; align-items:center; gap:6px;
+    }
+    .mk-v3-label .req { color:var(--blue); font-weight:700; }
+    .mk-v3-opt {
+      font:400 11px/1 var(--font); color:var(--placeholder);
+      letter-spacing:0; text-transform:none;
+    }
+    .mk-v3-hint { margin:2px 0 0; font:400 11.5px/1.4 var(--font); color:var(--muted); }
+
+    .mk-v3-input,
+    .mk-v3-select {
+      width:100%; height:44px; padding:0 14px;
+      border:1px solid var(--line); border-radius:10px;
+      background:#fff; font:400 14px/1 var(--font); color:var(--ink);
+      transition:.15s; font-family:var(--font);
+      appearance:none;
+    }
+    .mk-v3-input:focus,
+    .mk-v3-select:focus {
+      outline:none; border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(0,90,255,.12);
+    }
+    .mk-v3-input::placeholder { color:var(--placeholder); }
+    .mk-v3-select {
+      padding:0 38px 0 14px;
+      background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E6E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 14px center/14px 14px var(--white);
+      cursor:pointer;
+    }
+    .mk-v3-input-wrap { position:relative; display:flex; }
+    .mk-v3-input-icon {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      width:16px !important; height:16px !important;
+      color:var(--muted); pointer-events:none;
+    }
+    .mk-v3-input-wrap > svg,
+    .mk-v3-input-wrap > i.mk-v3-input-icon {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      width:16px !important; height:16px !important;
+      color:var(--muted); pointer-events:none;
+    }
+    .mk-v3-input-with-icon { padding-left:40px; }
+    .mk-v3-input-prefix {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      font:700 13px/1 var(--font); color:var(--muted); pointer-events:none;
+    }
+    .mk-v3-input-with-prefix { padding-left:36px; }
+
+    /* Toggle %/R$ visual */
+    .mk-v3-premio { display:flex; gap:8px; align-items:stretch; }
+    .mk-v3-toggle {
+      display:flex; height:44px; padding:3px; gap:2px;
+      border:1px solid var(--line); border-radius:10px; background:#fff;
+      flex-shrink:0;
+    }
+    .mk-v3-toggle-btn {
+      min-width:42px; padding:0 12px; border:0; background:transparent;
+      border-radius:7px; font:700 13px/1 var(--font); color:var(--muted);
+      cursor:pointer; transition:.12s; font-family:var(--font);
+    }
+    .mk-v3-toggle-btn:hover { color:var(--ink); }
+    .mk-v3-toggle-btn.is-active { background:var(--navy); color:#fff; }
+
+    /* Grid 2-col */
+    .mk-v3-grid-2 { display:grid; grid-template-columns:1fr 120px; gap:14px; }
+    @media(max-width:640px) { .mk-v3-grid-2 { grid-template-columns:1fr; } }
+
+    /* Link "Cadastrar novo cliente" */
+    .mk-v3-link {
+      display:inline-flex; align-items:center; gap:5px;
+      color:var(--blue); font:600 12.5px/1 var(--font);
+      cursor:pointer; margin-top:2px; align-self:flex-start;
+    }
+    .mk-v3-link:hover { color:#0046cc; text-decoration:underline; }
+
+    /* Autocomplete inline cliente */
+    .mk-v3-cliente-wrap { position:relative; }
+    .mk-v3-cliente-suggest {
+      display:none;
+      position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:20;
+      background:#fff; border:1px solid var(--line); border-radius:10px;
+      box-shadow:var(--shadow-lg); padding:6px;
+      max-height:280px; overflow-y:auto;
+    }
+    .mk-v3-cliente-suggest.is-open { display:block; }
+    .mk-v3-cliente-opt {
+      display:flex; align-items:center; gap:10px;
+      padding:8px 10px; border-radius:8px; cursor:pointer;
+      transition:background .12s;
+    }
+    .mk-v3-cliente-opt:hover { background:#f5f7fb; }
+    .mk-v3-cliente-av {
+      width:32px; height:32px; border-radius:50%;
+      background:var(--blue); color:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font:700 11px/1 var(--font); flex-shrink:0;
+    }
+    .mk-v3-cliente-info { flex:1; min-width:0; }
+    .mk-v3-cliente-info strong {
+      display:block; font:600 13px/1.3 var(--font); color:var(--ink);
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .mk-v3-cliente-info small {
+      display:block; font:400 11px/1.3 var(--font); color:var(--muted);
+      margin-top:2px;
+    }
+    .mk-v3-cliente-empty {
+      padding:14px; text-align:center;
+      font:400 12.5px/1.4 var(--font); color:var(--muted);
+    }
+    .mk-v3-cliente-empty a {
+      color:var(--blue); font-weight:600; cursor:pointer; text-decoration:underline;
+    }
+
+    /* Coluna lateral · vídeo + dicas */
+    .mk-form-v3-side { display:flex; flex-direction:column; gap:14px; position:sticky; top:80px; }
+    @media(max-width:1100px) { .mk-form-v3-side { position:static; } }
+    .mk-help-video-card {
+      background:#fff; border:1px solid var(--line); border-radius:14px;
+      overflow:hidden; box-shadow:var(--shadow-sm);
+    }
+    .mk-help-video-thumb {
+      position:relative; display:block; aspect-ratio:16/9; overflow:hidden;
+      background:#000;
+    }
+    .mk-help-video-thumb img {
+      width:100%; height:100%; object-fit:cover; opacity:.85;
+      transition:opacity .2s, transform .3s;
+    }
+    .mk-help-video-thumb:hover img { opacity:1; transform:scale(1.04); }
+    .mk-help-video-play {
+      position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+      width:54px; height:54px; border-radius:50%;
+      background:#FF0000; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 20px rgba(0,0,0,.4);
+      transition:transform .2s;
+    }
+    .mk-help-video-thumb:hover .mk-help-video-play { transform:translate(-50%, -50%) scale(1.08); }
+    .mk-help-video-play > svg, .mk-help-video-play > i { color:#fff !important; }
+    .mk-help-video-time {
+      position:absolute; bottom:10px; right:10px;
+      background:rgba(0,0,0,.75); color:#fff;
+      padding:3px 8px; border-radius:4px;
+      font:700 11px/1 var(--font);
+    }
+    .mk-help-video-body { padding:14px 16px 16px; }
+    .mk-help-video-eyebrow {
+      display:inline-flex; align-items:center; gap:5px;
+      font:700 11px/1 var(--font); color:var(--muted);
+      letter-spacing:.06em; text-transform:uppercase;
+    }
+    .mk-help-video-body h3 {
+      margin:8px 0 4px; font:700 14px/1.35 var(--font); color:var(--ink);
+    }
+    .mk-help-video-body p {
+      margin:0; font:400 12.5px/1.5 var(--font); color:var(--muted);
+    }
+    .mk-help-tips {
+      background:#fff; border:1px solid var(--line); border-radius:14px;
+      padding:16px 18px; box-shadow:var(--shadow-sm);
+    }
+    .mk-help-tips h4 {
+      margin:0 0 12px;
+      font:700 11px/1 var(--font); color:var(--muted);
+      letter-spacing:.08em; text-transform:uppercase;
+    }
+    .mk-help-tips ul {
+      list-style:none; padding:0; margin:0;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .mk-help-tips li {
+      display:flex; gap:9px; align-items:flex-start;
+      font:400 12.5px/1.5 var(--font); color:#3b537d;
+    }
+    .mk-help-tips li strong { color:var(--ink); }
+
     @media(max-width:1100px) {
       .mk-grid, .mk-resumo-grid, .mk-form-grid { grid-template-columns:1fr; gap:24px; }
       .mk-right-col { position:static; }
@@ -13392,69 +13580,161 @@ Fone: (44) 2101-1400`;
               ${taxAlert}
             </div>
 
-            <div class="mk-form-card">
-              <div class="mk-form-grid">
-                <div>
-                  <div class="mk-field">
-                    <label class="mk-label">Título do orçamento <span class="opt">(opcional)</span></label>
-                    <input type="text" class="mk-input" id="mkTitulo" value="${mkEsc(mkState.titulo)}">
+            <div class="mk-form-v3-grid">
+              <!-- COLUNA PRINCIPAL: form -->
+              <div class="mk-content-card">
+                <div class="mk-content-card-head">
+                  <h2>2. Dados iniciais</h2>
+                  <p>Configure os parâmetros base que pautam o restante da montagem.</p>
+                </div>
+
+                <div class="mk-form-v3">
+                  <div class="mk-v3-field">
+                    <label class="mk-v3-label">Título do orçamento <span class="mk-v3-opt">(opcional)</span></label>
+                    <input type="text" class="mk-v3-input" id="mkTitulo" placeholder="Ex: Gerador Solar · Cliente João" value="${mkEsc(mkState.titulo)}">
                   </div>
-                  <div class="mk-field">
-                    <label class="mk-label">Selecionar cliente <span class="opt">(opcional)</span></label>
-                    <input type="text" class="mk-input" id="mkCliente" placeholder="Código, Nome, CPF..." value="${mkEsc(mkState.cliente)}">
-                    <a class="mk-cad-link" onclick="window.openNovoCliente && window.openNovoCliente()">Cadastrar Cliente <i data-lucide="arrow-up-right" style="width:12px;height:12px;"></i></a>
-                  </div>
-                  <div class="mk-field">
-                    <label class="mk-label">Prêmio venda direta (${mkState.premio.mode}) <span class="req">*</span></label>
-                    <div class="mk-premio-row">
-                      <div class="mk-radio-row">
-                        <label class="mk-radio"><input type="radio" name="mk-premio-mode" value="%"  ${mkState.premio.mode==="%"?"checked":""}> %</label>
-                        <label class="mk-radio"><input type="radio" name="mk-premio-mode" value="R$" ${mkState.premio.mode==="R$"?"checked":""}> R$</label>
+
+                  <div class="mk-v3-field">
+                    <label class="mk-v3-label">Cliente <span class="mk-v3-opt">(opcional)</span></label>
+                    <div class="mk-v3-cliente-wrap" id="mkClienteWrap">
+                      <div class="mk-v3-input-wrap">
+                        <i data-lucide="user-search" class="mk-v3-input-icon"></i>
+                        <input type="text" class="mk-v3-input mk-v3-input-with-icon" id="mkCliente"
+                               placeholder="Buscar por código, nome, CPF…"
+                               autocomplete="off"
+                               value="${mkEsc(mkState.cliente)}"
+                               oninput="mkClienteSearchInline(this.value)"
+                               onfocus="mkClienteSearchInline(this.value)"
+                               onblur="setTimeout(()=>mkClienteCloseInline(),180)">
                       </div>
-                      <div class="mk-premio-input">
-                        <span class="unit">${mkState.premio.mode}</span>
-                        <input type="text" class="mk-input" id="mkPremioVal" value="${mkState.premio.value || 0}">
+                      <div class="mk-v3-cliente-suggest" id="mkClienteSuggest"></div>
+                    </div>
+                    <a class="mk-v3-link" onclick="window.openNovoCliente && window.openNovoCliente()">
+                      <i data-lucide="plus" style="width:12px;height:12px;"></i> Cadastrar novo cliente
+                    </a>
+                  </div>
+
+                  <div class="mk-v3-field">
+                    <label class="mk-v3-label">Prêmio venda direta <span class="req">*</span></label>
+                    <div class="mk-v3-premio">
+                      <div class="mk-v3-toggle">
+                        <button type="button" class="mk-v3-toggle-btn ${mkState.premio.mode==='%'?'is-active':''}" onclick="mkSetPremioMode('%')">%</button>
+                        <button type="button" class="mk-v3-toggle-btn ${mkState.premio.mode==='R$'?'is-active':''}" onclick="mkSetPremioMode('R$')">R$</button>
+                      </div>
+                      <div class="mk-v3-input-wrap" style="flex:1;">
+                        <span class="mk-v3-input-prefix">${mkState.premio.mode}</span>
+                        <input type="number" min="0" step="0.01" class="mk-v3-input mk-v3-input-with-prefix" id="mkPremioVal" placeholder="0" value="${mkState.premio.value || ''}">
                       </div>
                     </div>
+                    <p class="mk-v3-hint">Valor de referência inicial — pode ser refinado no orçamento se a venda for direta.</p>
                   </div>
-                  <div class="mk-field-row">
-                    <div class="mk-field" style="margin-bottom:0;">
-                      <label class="mk-label">Selecione o tipo de ligação do Kit <span class="req">*</span></label>
-                      <select class="mk-input mk-select" id="mkLigacao">
+
+                  <div class="mk-v3-grid-2">
+                    <div class="mk-v3-field">
+                      <label class="mk-v3-label">Tipo de ligação <span class="req">*</span></label>
+                      <select class="mk-v3-select" id="mkLigacao">
                         <option value="">Selecione...</option>
                         ${MK_LIGACOES.map((l) => `<option ${mkState.ligacao===l?"selected":""}>${l}</option>`).join("")}
                       </select>
                     </div>
-                    <div class="mk-field" style="margin-bottom:0;">
-                      <label class="mk-label">Estado <span class="req">*</span></label>
-                      <select class="mk-input mk-select" id="mkEstado">
-                        <option value="">Selecione...</option>
+                    <div class="mk-v3-field">
+                      <label class="mk-v3-label">Estado de destino <span class="req">*</span></label>
+                      <select class="mk-v3-select" id="mkEstado">
+                        <option value="">UF</option>
                         ${MK_ESTADOS.map((e) => `<option ${mkState.estado===e?"selected":""}>${e}</option>`).join("")}
                       </select>
                     </div>
                   </div>
-                  <div class="mk-actions">
-                    <button class="mk-btn mk-btn-secondary" onclick="history.back()">Voltar</button>
-                    <button class="mk-btn mk-btn-primary" onclick="mkAdvanceFromForm()">Continuar</button>
+                </div>
+
+                <div class="mk-content-foot">
+                  <button class="mk-btn mk-btn-secondary" onclick="history.back()"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Voltar</button>
+                  <button class="mk-btn mk-btn-primary" onclick="mkAdvanceFromForm()">Avançar <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>
+                </div>
+              </div>
+
+              <!-- COLUNA LATERAL: vídeo + dicas -->
+              <aside class="mk-form-v3-side">
+                <div class="mk-help-video-card">
+                  <a class="mk-help-video-thumb" href="https://www.youtube.com/" target="_blank" rel="noopener">
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=70&auto=format&fit=crop" alt="Vídeo Odex Explica">
+                    <span class="mk-help-video-play"><i data-lucide="play" style="width:18px;height:18px;fill:#fff;"></i></span>
+                    <span class="mk-help-video-time">2:30</span>
+                  </a>
+                  <div class="mk-help-video-body">
+                    <span class="mk-help-video-eyebrow"><i data-lucide="youtube" style="width:12px;height:12px;color:#FF0000;"></i> Odex Explica</span>
+                    <h3>Como montar um kit em 6 etapas</h3>
+                    <p>Tour rápido pelos passos · painéis, inversor, estrutura e acessórios compatíveis.</p>
                   </div>
                 </div>
 
-                <div>
-                  <h3 class="mk-form-help-title">Dúvidas em como montar seu kit?</h3>
-                  <p class="mk-form-help-sub">Acompanhe nossa série Odex Explica para aprender sobre o funcionamento da nossa plataforma!</p>
-                  <a class="mk-help-video" href="https://www.youtube.com/" target="_blank" rel="noopener">
-                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=70&auto=format&fit=crop" alt="Vídeo Odex Explica">
-                    <div class="mk-help-play">
-                      <span class="mk-help-play-btn"><i data-lucide="play" style="width:24px;height:24px;fill:#fff;color:#fff;"></i></span>
-                    </div>
-                    <span class="mk-help-yt-pill">Assista no <span class="pill-yt"><i data-lucide="youtube" style="width:11px;height:11px;"></i> YouTube</span></span>
-                  </a>
+                <div class="mk-help-tips">
+                  <h4>Dicas rápidas</h4>
+                  <ul>
+                    <li><i data-lucide="check-circle-2" style="color:#0aa253;width:14px;height:14px;flex-shrink:0;"></i><span>O <strong>tipo de ligação</strong> filtra inversores compatíveis nos próximos passos.</span></li>
+                    <li><i data-lucide="check-circle-2" style="color:#0aa253;width:14px;height:14px;flex-shrink:0;"></i><span>O <strong>estado de destino</strong> ajusta tributação e tipos de estrutura disponíveis.</span></li>
+                    <li><i data-lucide="check-circle-2" style="color:#0aa253;width:14px;height:14px;flex-shrink:0;"></i><span>Prêmio venda direta entra como referência — pode ser ajustado depois.</span></li>
+                  </ul>
                 </div>
-              </div>
+              </aside>
             </div>
           </div>
         `;
       }
+
+      window.mkSetPremioMode = function(mode) {
+        mkState.premio.mode = mode;
+        const v = parseFloat(($("mkPremioVal")?.value || "0").toString().replace(",", ".")) || 0;
+        mkState.premio.value = v;
+        const titulo = ($("mkTitulo")?.value || "").trim();
+        const cliente = ($("mkCliente")?.value || "").trim();
+        if (titulo) mkState.titulo = titulo;
+        if (cliente) mkState.cliente = cliente;
+        renderMonteKit('form');
+      };
+
+      // Autocomplete inline pra busca de cliente no Monte Seu Kit
+      window.mkClienteSearchInline = function(q) {
+        const wrap = $('mkClienteSuggest');
+        if (!wrap) return;
+        const term = (q || '').trim().toLowerCase();
+        if (!term) { wrap.innerHTML = ''; wrap.classList.remove('is-open'); return; }
+        const matches = clientsData.filter(c =>
+          c.nome.toLowerCase().includes(term) ||
+          (c.cpf || '').toLowerCase().includes(term) ||
+          String(c.id).includes(term) ||
+          c.email.toLowerCase().includes(term)
+        ).slice(0, 5);
+        if (!matches.length) {
+          wrap.innerHTML = `<div class="mk-v3-cliente-empty">Nenhum cliente encontrado · <a onclick="window.openNovoCliente && window.openNovoCliente()">Cadastrar novo</a></div>`;
+        } else {
+          wrap.innerHTML = matches.map(c => {
+            const ini = (c.nome || '').split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+            return `
+              <div class="mk-v3-cliente-opt" onclick="mkClienteSelect(${c.id})">
+                <span class="mk-v3-cliente-av">${ini}</span>
+                <div class="mk-v3-cliente-info">
+                  <strong>${c.nome}</strong>
+                  <small>#${c.id} · CPF ${c.cpf || '—'}</small>
+                </div>
+                <i data-lucide="arrow-up-right" style="width:13px;height:13px;color:var(--muted);"></i>
+              </div>`;
+          }).join('');
+        }
+        wrap.classList.add('is-open');
+        if (window.lucide) lucide.createIcons();
+      };
+      window.mkClienteSelect = function(id) {
+        const c = clientsData.find(x => x.id === id);
+        if (!c) return;
+        mkState.cliente = c.nome;
+        const inp = $('mkCliente'); if (inp) inp.value = c.nome;
+        mkClienteCloseInline();
+      };
+      window.mkClienteCloseInline = function() {
+        const w = $('mkClienteSuggest');
+        if (w) { w.innerHTML = ''; w.classList.remove('is-open'); }
+      };
 
       window.mkSetKitType = function(typeId) {
         if (!MK_KIT_TYPES.find(t => t.id === typeId)) return;
