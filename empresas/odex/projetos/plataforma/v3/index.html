@@ -735,11 +735,14 @@
       /* === HERO COMPACTO (DS) === */
       /* Hero carousel container */
       .hero-carousel {
-        position:relative; margin-bottom:22px;
-        border-radius: var(--r-card);
+        position:relative; margin:0 -28px 22px;
+        border-radius: 0;
         overflow:hidden;
-        aspect-ratio: 16/5;
-        min-height:260px; max-height:380px;
+        aspect-ratio: 21/6;
+        min-height:300px; max-height:440px;
+      }
+      @media (max-width: 768px) {
+        .hero-carousel { margin:0 -16px 18px; min-height:220px; aspect-ratio:5/3; }
       }
       .hero-track {
         position:relative;
@@ -4715,6 +4718,12 @@
     }
     .de-product-add:hover { background:var(--navy); transform:translateY(-1px); }
     .de-product-add.is-added { background:var(--green); pointer-events:none; }
+    .de-product-add > i,
+    .de-product-add > svg { width:14px !important; height:14px !important; }
+    .de-cart-footer > i,
+    .de-cart-footer > svg { width:15px !important; height:15px !important; flex-shrink:0; }
+    .de-cart-footer-btn > i,
+    .de-cart-footer-btn > svg { width:13px !important; height:13px !important; }
     .de-quick-row {
       display:flex; flex-wrap:wrap; gap:6px; margin-top:9px;
     }
@@ -6589,7 +6598,7 @@
     </aside>
 
     <script>
-      const ASSET = "../../website/versoes/v2/assets/";
+      const ASSET = "website/assets/";
       const R = ASSET + "imagens%20retangulares/ChatGPT%20Image%206%20de%20mai.%20de%202026%2C%2013_41_";
       const Q = ASSET + "imagens-quadradas/ChatGPT%20Image%206%20de%20mai.%20de%202026%2C%2013_38_";
       const products = [
