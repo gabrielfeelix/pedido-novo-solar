@@ -2,10 +2,17 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Servir v3 (Python http.server)",
+      "label": "🌐 Abrir Live Server no Chrome (porta 5500)",
+      "type": "shell",
+      "command": "cmd.exe /c start http://localhost:5500/index.html",
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "🐍 Servir v3 com Python (porta 5501)",
       "type": "shell",
       "command": "python3",
-      "args": ["-m", "http.server", "5500"],
+      "args": ["-m", "http.server", "5501"],
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -26,11 +33,19 @@
       }
     },
     {
-      "label": "Abrir v3 no Chrome",
+      "label": "🌐 Abrir servidor Python no Chrome (porta 5501)",
       "type": "shell",
-      "command": "explorer.exe http://localhost:5500/index.html || wslview http://localhost:5500/index.html || xdg-open http://localhost:5500/index.html",
-      "dependsOn": "Servir v3 (Python http.server)",
+      "command": "cmd.exe /c start http://localhost:5501/index.html",
+      "dependsOn": "🐍 Servir v3 com Python (porta 5501)",
+      "problemMatcher": [],
       "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "💀 Matar Live Server na porta 5500",
+      "type": "shell",
+      "command": "fuser -k 5500/tcp || lsof -ti:5500 | xargs -r kill -9",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
     }
   ]
 }
