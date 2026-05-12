@@ -49,6 +49,11 @@
         --red:            #E94647;
         --red-soft:       #F29091;
 
+        /* === SEMÂNTICOS · INFO (banners/alerts azuis) === */
+        --info-bg:        #EFF4FF;  /* DS primitive/blue/50  · equiv. ao antigo #eef4ff */
+        --info-border:    #DDE9FF;  /* DS primitive/blue/100 · equiv. ao antigo #dbe5ff */
+        --info-text:      #3B537D;  /* = --slate-2 · texto sobre info-bg */
+
         /* === SOMBRAS === */
         --shadow-sm:      0 1px 2px 0 rgba(0,0,0,.05);
         --shadow:         0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
@@ -4701,7 +4706,9 @@
     .de-chat-head p { font:400 11.5px/1 var(--font); color:rgba(255,255,255,.75); margin:0; display:flex; align-items:center; gap:5px; }
     .de-chat-status-dot { width:7px; height:7px; border-radius:50%; background:#53c667; box-shadow:0 0 6px rgba(83,198,103,.7); display:inline-block; }
     .de-chat-body { flex:1; overflow-y:auto; padding:18px 20px; display:flex; flex-direction:column; gap:14px; background:linear-gradient(180deg, #fafbff 0%, white 60%); }
-    .de-msg { display:flex; gap:10px; align-items:flex-end; max-width:90%; }
+    .de-msg { display:flex; gap:10px; align-items:flex-end; max-width:90%; min-width:0; }
+    .de-msg-bot { min-width:0; }
+    .de-msg-bot .de-msg-bubble { max-width:100%; min-width:0; }
     .de-msg-bot { align-self:flex-start; }
     .de-msg-user { align-self:flex-end; flex-direction:row-reverse; }
     .de-msg-bubble { padding:11px 14px; border-radius:14px; font:400 13.5px/1.5 var(--font); color:var(--ink); }
@@ -4733,11 +4740,15 @@
     }
 
     /* === Dé · Cards de produto inline + atalhos rápidos + footer cart (v3) === */
-    .de-product-cards { display:flex; flex-direction:column; gap:9px; margin-top:10px; }
+    .de-product-cards {
+      display:flex; flex-direction:column; gap:9px; margin-top:10px;
+      max-width:100%;
+    }
     .de-product-card {
-      display:flex; align-items:center; gap:11px;
-      padding:9px 11px; background:#fff; border:1px solid var(--line);
+      display:flex; align-items:center; gap:10px;
+      padding:8px 10px; background:#fff; border:1px solid var(--line);
       border-radius:10px; transition:border-color .15s, box-shadow .15s;
+      max-width:100%; min-width:0; box-sizing:border-box;
     }
     .de-product-card:hover { border-color:var(--blue); box-shadow:0 4px 10px rgba(0,90,255,.06); }
     .de-product-thumb {
@@ -4757,15 +4768,18 @@
     }
     .de-product-price { font:700 12px/1.3 var(--font); color:var(--ink); }
     .de-product-add {
-      flex-shrink:0; background:var(--blue); color:#fff; border:0;
-      width:34px; height:34px; border-radius:8px;
-      display:flex; align-items:center; justify-content:center; cursor:pointer;
-      transition:.15s;
+      flex:0 0 32px;
+      width:32px; min-width:32px; max-width:32px;
+      height:32px; min-height:32px; max-height:32px;
+      background:var(--blue); color:#fff; border:0;
+      border-radius:var(--r-form);
+      display:inline-flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:.15s; padding:0; box-sizing:border-box;
     }
-    .de-product-add:hover { background:var(--navy); transform:translateY(-1px); }
+    .de-product-add:hover { background:var(--navy); }
     .de-product-add.is-added { background:var(--green); pointer-events:none; }
     .de-product-add > i,
-    .de-product-add > svg { width:14px !important; height:14px !important; }
+    .de-product-add > svg { width:14px !important; height:14px !important; flex:0 0 auto; }
     .de-cart-footer > i,
     .de-cart-footer > svg { width:15px !important; height:15px !important; flex-shrink:0; }
     .de-cart-footer-btn > i,
@@ -5117,7 +5131,7 @@
     .mk-row-img { width:110px; height:104px; background:var(--soft); border-radius:var(--r-form); display:grid; place-items:center; overflow:hidden; }
     .mk-row-img img { max-width:100%; max-height:100%; object-fit:contain; }
     .mk-row-info { min-width:0; }
-    .mk-row-name { font:600 14px/1.4 var(--font); color:var(--blue); margin:0 0 6px; }
+    .mk-row-name { font:700 14px/1.4 var(--font); color:var(--ink); margin:0 0 6px; }
     .mk-row-meta { font:400 12px/1.4 var(--font); color:var(--muted); }
     .mk-row-meta b { color:var(--ink); font-weight:600; }
     .mk-row-meta .sep { color:var(--line); margin:0 6px; }
@@ -5265,8 +5279,8 @@
     .mk-kit-card-body strong { font:700 14px/1.3 var(--font); color:var(--navy); }
     .mk-kit-card-body small { font:400 12px/1.3 var(--font); color:var(--muted); }
     .mk-kit-card-tax {
-      background:#fef3c7; color:#92400e; font:700 10px/1 var(--font);
-      padding:3px 7px; border-radius:99px; border:1px solid #fde68a;
+      background:var(--yellow-softer); color:var(--yellow); font:700 10px/1 var(--font);
+      padding:3px 7px; border-radius:99px; border:1px solid var(--yellow-soft);
     }
     .mk-kit-card-radio {
       width:18px; height:18px; border-radius:50%;
@@ -5283,8 +5297,8 @@
 
     .mk-tax-alert {
       margin-top:14px; display:flex; align-items:center; gap:10px;
-      padding:10px 14px; background:#eef4ff; border:1px solid #dbe5ff;
-      border-radius:8px; font:400 13px/1.4 var(--font); color:#3b537d;
+      padding:10px 14px; background:var(--info-bg); border:1px solid var(--info-border);
+      border-radius:8px; font:400 13px/1.4 var(--font); color:var(--info-text);
     }
 
     .mk-type-pill {
@@ -5308,9 +5322,9 @@
 
     .mk-picker-banner {
       display:flex; align-items:center; gap:10px;
-      padding:10px 14px; background:#eef4ff; border:1px solid #dbe5ff;
+      padding:10px 14px; background:var(--info-bg); border:1px solid var(--info-border);
       border-radius:8px; margin-bottom:14px;
-      font:400 13px/1.4 var(--font); color:#3b537d;
+      font:400 13px/1.4 var(--font); color:var(--info-text);
     }
     .mk-picker-banner p { margin:0; }
 
@@ -5472,7 +5486,7 @@
     @media(max-width:1280px) { .mk-products-grid { grid-template-columns:repeat(2, 1fr); } }
     @media(max-width:680px)  { .mk-products-grid { grid-template-columns:1fr; } }
     .mk-prod-card {
-      border:2px solid var(--line); border-radius:14px; background:#fff;
+      border:2px solid var(--line); border-radius:var(--r-card); background:#fff;
       overflow:hidden; display:flex; flex-direction:column;
       transition:border-color .15s, box-shadow .15s, transform .12s;
       cursor:pointer; position:relative;
@@ -5546,7 +5560,7 @@
     .mk-prod-row {
       display:flex; align-items:center; gap:16px;
       padding:14px 16px; background:#fff;
-      border:2px solid var(--line); border-radius:14px;
+      border:2px solid var(--line); border-radius:var(--r-card);
       cursor:pointer; transition:border-color .15s, box-shadow .15s;
     }
     .mk-prod-row:hover { border-color:var(--slate-soft-2); box-shadow:var(--shadow-sm); }
@@ -5783,7 +5797,7 @@
     }
     .mk-v3-toggle-btn {
       min-width:40px; padding:0 12px; border:0; background:transparent;
-      border-radius:2px; font:600 13px/1 var(--font); color:var(--muted);
+      border-radius:var(--r-pill); font:600 13px/1 var(--font); color:var(--muted);
       cursor:pointer; transition:.12s; font-family:var(--font);
     }
     .mk-v3-toggle-btn:hover { color:var(--ink); }
@@ -7689,11 +7703,8 @@
                 <a href="#orcamentos" class="home-section-link">Ver todos <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></a>
               </div>
               <div class="home-recent-list">
-                ${recentOrcamentos.map(o => {
-                  const initials = (o.nome || '').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase() || '—';
-                  return `
+                ${recentOrcamentos.map(o => `
                   <div class="home-recent-row" onclick="location.hash='orcamento-ver-${o.id}'">
-                    <div class="home-recent-avatar">${initials}</div>
                     <div class="home-recent-info">
                       <p class="home-recent-name" title="${o.nome}">${o.nome}</p>
                       <p class="home-recent-meta">
@@ -7708,8 +7719,7 @@
                       <span class="orc-status-pill ${o.status === 'Aprovado' ? 'orc-s-aprovado' : o.status === 'Pendente' ? 'orc-s-pendente' : o.status === 'Cancelado' ? 'orc-s-cancelado' : 'orc-s-expirado'}">${o.status}</span>
                       <strong class="home-recent-total">${fmt(o.total)}</strong>
                     </div>
-                  </div>`;
-                }).join('')}
+                  </div>`).join('')}
               </div>
             </div>
 
@@ -7725,11 +7735,8 @@
                 <a href="#pedidos" class="home-section-link">Ver todos <i data-lucide="arrow-right" style="width:13px;height:13px;"></i></a>
               </div>
               <div class="home-recent-list">
-                ${recentPedidos.map(p => {
-                  const initials = (p.nome || '').split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase() || '—';
-                  return `
+                ${recentPedidos.map(p => `
                   <div class="home-recent-row" onclick="location.hash='pedido-ver-${p.id}'">
-                    <div class="home-recent-avatar home-recent-avatar-green">${initials}</div>
                     <div class="home-recent-info">
                       <p class="home-recent-name" title="${p.nome}">${p.nome}</p>
                       <p class="home-recent-meta">
@@ -7744,8 +7751,7 @@
                       ${_pedStatus(p.status)}
                       <strong class="home-recent-total">${fmt(p.total)}</strong>
                     </div>
-                  </div>`;
-                }).join('')}
+                  </div>`).join('')}
               </div>
             </div>
           </div>
