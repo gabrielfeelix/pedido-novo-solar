@@ -5427,8 +5427,8 @@
       color:var(--muted); pointer-events:none;
     }
     .mk-toolbar-search input {
-      width:100%; height:44px; padding:0 14px 0 40px;
-      border:1px solid var(--line); border-radius:10px;
+      width:100%; height:42px; padding:0 14px 0 40px;
+      border:1px solid var(--line); border-radius:var(--r-form);
       background:#fff; font:400 14px/1 var(--font); color:var(--ink);
       transition:.15s;
     }
@@ -5436,27 +5436,33 @@
       outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,90,255,.12);
     }
     .mk-toolbar-sort, .mk-toolbar-iconbtn, .mk-toolbar-viewbtn {
-      height:44px; border:1px solid var(--line); border-radius:10px;
+      height:42px; border:1px solid var(--line); border-radius:var(--r-form);
       background:#fff; font:600 13px/1 var(--font); color:var(--ink);
       cursor:pointer; transition:.15s;
     }
     .mk-toolbar-sort { padding:0 32px 0 14px; appearance:none; min-width:160px;
       background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E6E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 12px center/14px 14px var(--white);
     }
-    .mk-toolbar-iconbtn { width:44px; display:flex; align-items:center; justify-content:center; color:var(--muted); }
+    .mk-toolbar-iconbtn { width:42px; display:flex; align-items:center; justify-content:center; color:var(--muted); }
     .mk-toolbar-iconbtn:hover { color:var(--ink); }
     .mk-toolbar-iconbtn > i,
     .mk-toolbar-iconbtn > svg { width:16px !important; height:16px !important; }
+    /* View toggle (Grid/Lista) — mesmo padrao do .view-toggle do DS (radius 4px) */
     .mk-toolbar-view {
-      display:flex; height:44px; padding:3px; gap:2px;
-      border:1px solid var(--line); border-radius:10px; background:#fff;
+      display:inline-flex; align-items:center; gap:2px; padding:3px;
+      border:1px solid var(--line); border-radius:var(--r-form); background:#fff;
+      height:42px;
     }
     .mk-toolbar-viewbtn {
-      width:38px; height:auto; border:0;
-      border-radius:8px; display:flex; align-items:center; justify-content:center;
-      color:var(--muted); background:transparent;
+      width:34px; height:34px; border:0;
+      border-radius:2px; display:flex; align-items:center; justify-content:center;
+      color:var(--muted); background:transparent; cursor:pointer;
+      transition:.15s;
     }
+    .mk-toolbar-viewbtn:hover { background:var(--soft); color:var(--ink); }
     .mk-toolbar-viewbtn.is-active { background:var(--navy); color:#fff; }
+    .mk-toolbar-viewbtn > i,
+    .mk-toolbar-viewbtn > svg { width:15px !important; height:15px !important; }
 
     /* Cards de produto em grid (novo layout · vertical, imagem grande) */
     .mk-products-grid {
@@ -5589,8 +5595,17 @@
       border-radius:16px; box-shadow:var(--shadow-sm); overflow:hidden;
     }
     .mk-resumo-side-head {
-      background:var(--navy); color:#fff; padding:18px 20px;
+      background:linear-gradient(135deg, var(--navy) 0%, var(--blue-button) 60%, var(--blue) 100%);
+      color:#fff; padding:20px 22px;
+      position:relative; overflow:hidden;
     }
+    .mk-resumo-side-head::after {
+      content:""; position:absolute; top:-60px; right:-40px;
+      width:180px; height:180px; border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.10), transparent 65%);
+      pointer-events:none;
+    }
+    .mk-resumo-side-head > * { position:relative; z-index:1; }
     .mk-resumo-side-head .eyebrow {
       font:700 10px/1 var(--font); color:rgba(255,255,255,.55);
       letter-spacing:.14em; text-transform:uppercase;
@@ -5675,16 +5690,18 @@
     .mk-resumo-side-foot-total .val {
       font:700 22px/1 var(--font); color:var(--navy);
     }
+    /* CTA "Concluir montagem" — usa .ds-btn .ds-btn-primary do DS, com width 100% */
     .mk-resumo-side-cta {
-      width:100%; margin-top:12px; padding:14px 16px;
-      background:var(--blue); color:#fff; border:0; border-radius:10px;
-      font:700 13.5px/1 var(--font); cursor:pointer;
-      transition:background .15s, box-shadow .15s;
-      display:flex; align-items:center; justify-content:center; gap:6px;
-      box-shadow:0 4px 10px rgba(0,90,255,.15);
+      width:100%; margin-top:12px;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      height:42px; padding:0 18px;
+      background:var(--blue); color:#fff; border:1px solid transparent;
+      border-radius:var(--r-form);
+      font:400 14px/1 var(--font); cursor:pointer;
+      transition:.15s; font-family:var(--font);
     }
-    .mk-resumo-side-cta:hover:not([disabled]) { background:#0046cc; box-shadow:0 6px 14px rgba(0,90,255,.25); }
-    .mk-resumo-side-cta[disabled] { background:#d6dbe4; color:#8a93a4; cursor:not-allowed; box-shadow:none; }
+    .mk-resumo-side-cta:hover:not([disabled]) { background:#0046cc; }
+    .mk-resumo-side-cta[disabled] { opacity:.55; cursor:not-allowed; }
     .mk-resumo-side-cta > svg,
     .mk-resumo-side-cta > i { width:14px !important; height:14px !important; }
     .mk-resumo-side-item-rm > svg,
@@ -5719,8 +5736,8 @@
 
     .mk-v3-input,
     .mk-v3-select {
-      width:100%; height:44px; padding:0 14px;
-      border:1px solid var(--line); border-radius:10px;
+      width:100%; height:42px; padding:0 14px;
+      border:1px solid var(--line); border-radius:var(--r-form);
       background:#fff; font:400 14px/1 var(--font); color:var(--ink);
       transition:.15s; font-family:var(--font);
       appearance:none;
@@ -5754,17 +5771,19 @@
       font:700 13px/1 var(--font); color:var(--muted); pointer-events:none;
     }
     .mk-v3-input-with-prefix { padding-left:36px; }
+    .mk-v3-input-wrap > .mk-v3-input-prefix[style*="right"] + input,
+    .mk-v3-input-wrap > input.mk-v3-input-with-suffix { padding-right:48px; }
 
-    /* Toggle %/R$ visual */
+    /* Toggle %/R$ visual — radius DS (4px) */
     .mk-v3-premio { display:flex; gap:8px; align-items:stretch; }
     .mk-v3-toggle {
-      display:flex; height:44px; padding:3px; gap:2px;
-      border:1px solid var(--line); border-radius:10px; background:#fff;
+      display:flex; height:42px; padding:3px; gap:2px;
+      border:1px solid var(--line); border-radius:var(--r-form); background:#fff;
       flex-shrink:0;
     }
     .mk-v3-toggle-btn {
-      min-width:42px; padding:0 12px; border:0; background:transparent;
-      border-radius:7px; font:700 13px/1 var(--font); color:var(--muted);
+      min-width:40px; padding:0 12px; border:0; background:transparent;
+      border-radius:2px; font:600 13px/1 var(--font); color:var(--muted);
       cursor:pointer; transition:.12s; font-family:var(--font);
     }
     .mk-v3-toggle-btn:hover { color:var(--ink); }
@@ -5778,10 +5797,10 @@
     .mk-v3-field .odex-select { width:100%; }
     .mk-v3-field .odex-select-trigger {
       width:100%;
-      height:44px;
+      height:42px;
       padding:0 38px 0 14px;
       border:1px solid var(--line);
-      border-radius:10px;
+      border-radius:var(--r-form);
       background:#fff;
       font:400 14px/1 var(--font);
       color:var(--ink);
@@ -13566,9 +13585,14 @@ Fone: (44) 2101-1400`;
 
       const mkState = {
         kitType: "fotovoltaico",
-        viewMode: "grid",
+        viewMode: "list",
         titulo: "",
         cliente: "",
+        // Campos dinâmicos por tipo de projeto
+        modoSistema: "",         // Híbrido: Backup grid-tied / Off-grid
+        aplicacao: "",           // BESS: Peak shaving / Backup / Arbitragem / UPS
+        capacidadeAlvo: "",      // BESS: kWh alvo
+        modoCarregamento: "",    // Eletroposto: AC Mono / AC Tri / DC Fast
         premio: { mode:"%", value: 0 },
         ligacao: "",
         estado: "",
@@ -13723,21 +13747,15 @@ Fone: (44) 2101-1400`;
                     <p class="mk-v3-hint">Valor de referência inicial — pode ser refinado no orçamento se a venda for direta.</p>
                   </div>
 
-                  <div class="mk-v3-grid-2">
-                    <div class="mk-v3-field">
-                      <label class="mk-v3-label">Tipo de ligação <span class="req">*</span></label>
-                      <select class="ds-replace mk-v3-ds-select" id="mkLigacao">
-                        <option value="">Selecione...</option>
-                        ${MK_LIGACOES.map((l) => `<option ${mkState.ligacao===l?"selected":""}>${l}</option>`).join("")}
-                      </select>
-                    </div>
-                    <div class="mk-v3-field">
-                      <label class="mk-v3-label">Estado de destino <span class="req">*</span></label>
-                      <select class="ds-replace mk-v3-ds-select" id="mkEstado">
-                        <option value="">Selecione...</option>
-                        ${MK_ESTADOS.map((e) => `<option ${mkState.estado===e?"selected":""}>${e}</option>`).join("")}
-                      </select>
-                    </div>
+                  ${mkSpecificFieldsHTML()}
+
+                  <div class="mk-v3-field">
+                    <label class="mk-v3-label">Estado de destino <span class="req">*</span></label>
+                    <select class="ds-replace mk-v3-ds-select" id="mkEstado">
+                      <option value="">Selecione o estado...</option>
+                      ${MK_ESTADOS.map((e) => `<option ${mkState.estado===e?"selected":""}>${e}</option>`).join("")}
+                    </select>
+                    <p class="mk-v3-hint">${mkState.kitType==='fotovoltaico'||mkState.kitType==='hibrido' ? 'Define ICMS solar e regra de kit completo (tributação federal)' : 'Define frete e tributação geral'}</p>
                   </div>
                 </div>
 
@@ -13774,6 +13792,82 @@ Fone: (44) 2101-1400`;
             </div>
           </div>
         `;
+      }
+
+      // Campos específicos por tipo de projeto (v3 · técnica do engenheiro)
+      function mkSpecificFieldsHTML() {
+        const t = mkState.kitType;
+        if (t === 'fotovoltaico') {
+          return `
+            <div class="mk-v3-field">
+              <label class="mk-v3-label">Tipo de ligação <span class="req">*</span></label>
+              <select class="ds-replace mk-v3-ds-select" id="mkLigacao">
+                <option value="">Selecione...</option>
+                ${MK_LIGACOES.map((l) => `<option ${mkState.ligacao===l?"selected":""}>${l}</option>`).join("")}
+              </select>
+              <p class="mk-v3-hint">Filtra inversores compatíveis nos próximos passos.</p>
+            </div>`;
+        }
+        if (t === 'hibrido') {
+          const modosLigacao = [...MK_LIGACOES, "BIFÁSICO 220V (split-phase)"];
+          const modosSistema = ["Backup grid-tied (com rede)", "Sistema isolado (off-grid)"];
+          return `
+            <div class="mk-v3-grid-2">
+              <div class="mk-v3-field">
+                <label class="mk-v3-label">Tipo de ligação <span class="req">*</span></label>
+                <select class="ds-replace mk-v3-ds-select" id="mkLigacao">
+                  <option value="">Selecione...</option>
+                  ${modosLigacao.map((l) => `<option ${mkState.ligacao===l?"selected":""}>${l}</option>`).join("")}
+                </select>
+              </div>
+              <div class="mk-v3-field">
+                <label class="mk-v3-label">Modo do sistema <span class="req">*</span></label>
+                <select class="ds-replace mk-v3-ds-select" id="mkModoSistema">
+                  <option value="">Selecione...</option>
+                  ${modosSistema.map((m) => `<option ${mkState.modoSistema===m?"selected":""}>${m}</option>`).join("")}
+                </select>
+              </div>
+            </div>
+            <p class="mk-v3-hint" style="margin-top:-8px;">Modo isolado dispensa homologação com a concessionária e exige bateria dimensionada para o consumo total.</p>`;
+        }
+        if (t === 'bess') {
+          const aplicacoes = ["Peak shaving (corte de pico)", "Backup de fábrica", "Arbitragem energética", "UPS industrial"];
+          return `
+            <div class="mk-v3-grid-2">
+              <div class="mk-v3-field">
+                <label class="mk-v3-label">Aplicação <span class="req">*</span></label>
+                <select class="ds-replace mk-v3-ds-select" id="mkAplicacao">
+                  <option value="">Selecione...</option>
+                  ${aplicacoes.map((a) => `<option ${mkState.aplicacao===a?"selected":""}>${a}</option>`).join("")}
+                </select>
+              </div>
+              <div class="mk-v3-field">
+                <label class="mk-v3-label">Capacidade alvo <span class="mk-v3-opt">(kWh)</span></label>
+                <div class="mk-v3-input-wrap">
+                  <input type="number" min="0" step="10" class="mk-v3-input mk-v3-input-with-prefix" id="mkCapacidadeAlvo" placeholder="261" value="${mkState.capacidadeAlvo || ''}">
+                  <span class="mk-v3-input-prefix" style="left:auto;right:14px;">kWh</span>
+                </div>
+              </div>
+            </div>
+            <p class="mk-v3-hint" style="margin-top:-8px;">Sistemas C&I são sempre trifásicos. A aplicação define o perfil de descarga (taxa C) recomendado pelo BMS.</p>`;
+        }
+        if (t === 'eletroposto') {
+          const modos = [
+            "AC Modo 2 · Monofásico 7,4 kW (residencial)",
+            "AC Modo 3 · Trifásico 11–22 kW (comercial)",
+            "DC Modo 4 · Rápido 50 kW+ (posto/comercial)",
+          ];
+          return `
+            <div class="mk-v3-field">
+              <label class="mk-v3-label">Modo de carregamento <span class="req">*</span></label>
+              <select class="ds-replace mk-v3-ds-select" id="mkModoCarregamento">
+                <option value="">Selecione...</option>
+                ${modos.map((m) => `<option ${mkState.modoCarregamento===m?"selected":""}>${m}</option>`).join("")}
+              </select>
+              <p class="mk-v3-hint">DC Fast Charge usa retificador trifásico interno — a saída é DC. Modos AC seguem a padronização NBR IEC 61851.</p>
+            </div>`;
+        }
+        return '';
       }
 
       window.mkSetPremioMode = function(mode) {
@@ -13839,13 +13933,59 @@ Fone: (44) 2101-1400`;
       // Reinicia o builder · limpa todos os itens selecionados, filtros e dados do form
       window.mkResetBuilder = function() {
         const hasProgress = mkAllSelectedItems().length > 0 || mkState.titulo || mkState.cliente || mkState.ligacao || mkState.estado || (mkState.premio.value > 0);
-        if (hasProgress && !confirm('Reiniciar a montagem do kit?\n\nIsso vai limpar componentes selecionados, filtros e dados do formulário inicial. O tipo de projeto será preservado.')) return;
+        if (!hasProgress) { _mkDoReset(); return; }
+        // Abre modal do DS pra confirmar (em vez de confirm() nativo)
+        const existing = $('mkResetModal'); if (existing) existing.remove();
+        const exMask = $('mkResetMask'); if (exMask) exMask.remove();
+        const mask = document.createElement('div');
+        mask.id = 'mkResetMask';
+        mask.className = 'modal-overlay open';
+        mask.onclick = mkCloseResetModal;
+        document.body.appendChild(mask);
+        const modal = document.createElement('div');
+        modal.id = 'mkResetModal';
+        modal.className = 'modal open';
+        modal.style.width = '480px';
+        modal.innerHTML = `
+          <div class="modal-head">
+            <h3>Reiniciar montagem do kit?</h3>
+            <button class="modal-close" onclick="mkCloseResetModal()"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+          </div>
+          <div class="modal-body">
+            <p style="margin:0 0 14px;font:400 14px/1.5 var(--font);color:var(--ink);">
+              Isso vai limpar <strong>componentes selecionados</strong>, filtros e dados do formulário inicial.
+            </p>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fefce8;border:1px solid #fde68a;border-radius:var(--r-form);">
+              <i data-lucide="info" style="width:16px;height:16px;color:#8a5400;flex-shrink:0;"></i>
+              <span style="font:400 13px/1.4 var(--font);color:#8a5400;">O <strong>tipo de projeto</strong> será preservado.</span>
+            </div>
+          </div>
+          <div class="modal-foot">
+            <button class="ds-btn ds-btn-ghost" onclick="mkCloseResetModal()">Continuar editando</button>
+            <button class="ds-btn ds-btn-primary-navy" onclick="mkCloseResetModal();_mkDoReset()">
+              <i data-lucide="timer-reset" style="width:14px;height:14px;"></i> Reiniciar fluxo
+            </button>
+          </div>`;
+        document.body.appendChild(modal);
+        document.body.classList.add('no-scroll');
+        if (window.lucide) lucide.createIcons();
+      };
+      window.mkCloseResetModal = function() {
+        $('mkResetMask')?.remove();
+        $('mkResetModal')?.remove();
+        document.body.classList.remove('no-scroll');
+      };
+      window._mkDoReset = function() {
         const keptType = mkState.kitType;
         mkState.titulo = '';
         mkState.cliente = '';
         mkState.premio = { mode:'%', value:0 };
         mkState.ligacao = '';
         mkState.estado = '';
+        mkState.modoSistema = '';
+        mkState.aplicacao = '';
+        mkState.modoCarregamento = '';
+        mkState.capacidadeAlvo = '';
         mkState.search = { paineis:"", inversores:"", stringbox:"", estrutura:"", acessorios:"", bateria:"", bess:"", eletroposto:"" };
         mkState.sort = { paineis:{key:'',asc:true}, inversores:{key:'',asc:true}, stringbox:{key:'',asc:true}, estrutura:{key:'',asc:true}, acessorios:{key:'',asc:true}, bateria:{key:'',asc:true}, bess:{key:'',asc:true}, eletroposto:{key:'',asc:true} };
         mkState.items = { paineis:{}, inversores:{}, stringbox:{}, estrutura:{}, acessorios:{}, bateria:{}, bess:{}, eletroposto:{} };
@@ -13862,12 +14002,26 @@ Fone: (44) 2101-1400`;
         mkState.cliente = ($("mkCliente")?.value || "").trim();
         mkState.ligacao = $("mkLigacao")?.value || "";
         mkState.estado  = $("mkEstado")?.value || "";
+        mkState.modoSistema      = $("mkModoSistema")?.value || mkState.modoSistema;
+        mkState.aplicacao        = $("mkAplicacao")?.value || mkState.aplicacao;
+        mkState.capacidadeAlvo   = $("mkCapacidadeAlvo")?.value || mkState.capacidadeAlvo;
+        mkState.modoCarregamento = $("mkModoCarregamento")?.value || mkState.modoCarregamento;
         const v = parseFloat(($("mkPremioVal")?.value || "0").toString().replace(",", ".")) || 0;
         mkState.premio.value = v;
-        if (!mkState.ligacao || !mkState.estado) {
-          alert("Selecione o tipo de ligação e o estado para continuar.");
-          return;
+
+        // Validação por tipo
+        const t = mkState.kitType;
+        const missing = [];
+        if (!mkState.estado) missing.push("Estado de destino");
+        if (t === 'fotovoltaico' && !mkState.ligacao) missing.push("Tipo de ligação");
+        if (t === 'hibrido') {
+          if (!mkState.ligacao) missing.push("Tipo de ligação");
+          if (!mkState.modoSistema) missing.push("Modo do sistema");
         }
+        if (t === 'bess' && !mkState.aplicacao) missing.push("Aplicação");
+        if (t === 'eletroposto' && !mkState.modoCarregamento) missing.push("Modo de carregamento");
+        if (missing.length) { alert("Preencha os campos obrigatórios:\n• " + missing.join("\n• ")); return; }
+
         const first = mkSteps()[0];
         if (first) location.hash = first.hash;
       };
