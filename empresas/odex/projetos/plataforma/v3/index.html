@@ -5162,7 +5162,8 @@
     .mk-resumo-total-final { display:flex; justify-content:space-between; align-items:center; padding:18px 0 4px; border-top:1px solid var(--line); margin-top:10px; }
     .mk-resumo-total-final .lbl { font:400 14px/1 var(--font); color:var(--ink); }
     .mk-resumo-total-final .val-input { width:160px; height:36px; border:1px solid var(--line); border-radius:var(--r-form); padding:0 12px; text-align:right; font:700 14px/1 var(--font); color:var(--navy); display:inline-flex; align-items:center; justify-content:flex-end; background:#fff; }
-    .mk-resumo-side { background:var(--white); border:1px solid var(--line); border-radius:var(--r-card); box-shadow:var(--shadow-card); padding:24px 26px; }
+    /* Legacy resumo-side classes (uso interno antigo · não confundir com .mk-resumo-side novo do v3) */
+    .mk-resumo-side-legacy { background:var(--white); border:1px solid var(--line); border-radius:var(--r-card); box-shadow:var(--shadow-card); padding:24px 26px; }
     .mk-resumo-side-title { font:400 14px/1 var(--font); color:var(--navy); margin:0 0 8px; }
     .mk-resumo-side-title .req { color:var(--yellow); margin-left:4px; }
     .mk-resumo-side-img { width:100%; aspect-ratio:1.6; background:var(--soft); border-radius:var(--r-form); margin:14px 0; display:flex; gap:18px; align-items:center; justify-content:center; padding:18px; }
@@ -5269,7 +5270,7 @@
        =========================================================== */
 
     /* Container geral redesenhado */
-    .mk-page { max-width:1640px; margin:0 auto; padding:24px 32px 80px; }
+    .mk-page { max-width:1640px; margin:0 auto; padding:8px 32px 80px; }
     .mk-builder { display:grid; grid-template-columns:minmax(0, 1fr) 380px; gap:24px; align-items:flex-start; }
 
     /* Stepper card (substitui o stepper antigo) */
@@ -5355,9 +5356,11 @@
     .mk-toolbar-search {
       position:relative; flex:1; min-width:200px;
     }
-    .mk-toolbar-search i {
+    .mk-toolbar-search > i,
+    .mk-toolbar-search > svg {
       position:absolute; left:14px; top:50%; transform:translateY(-50%);
-      width:16px; height:16px; color:var(--muted); pointer-events:none;
+      width:16px !important; height:16px !important;
+      color:var(--muted); pointer-events:none;
     }
     .mk-toolbar-search input {
       width:100%; height:44px; padding:0 14px 0 40px;
@@ -5378,6 +5381,8 @@
     }
     .mk-toolbar-iconbtn { width:44px; display:flex; align-items:center; justify-content:center; color:var(--muted); }
     .mk-toolbar-iconbtn:hover { color:var(--ink); }
+    .mk-toolbar-iconbtn > i,
+    .mk-toolbar-iconbtn > svg { width:16px !important; height:16px !important; }
     .mk-toolbar-view {
       display:flex; height:44px; padding:3px; gap:2px;
       border:1px solid var(--line); border-radius:10px; background:#fff;
@@ -5464,6 +5469,46 @@
       background:#f5f7fb; color:var(--placeholder);
       display:flex; align-items:center; justify-content:center;
       flex-shrink:0;
+    }
+
+    /* Visualização em LISTA (horizontal) — alternativa ao grid */
+    .mk-products-list { display:flex; flex-direction:column; gap:10px; }
+    .mk-prod-row {
+      display:flex; align-items:center; gap:16px;
+      padding:14px 16px; background:#fff;
+      border:2px solid var(--line); border-radius:14px;
+      cursor:pointer; transition:border-color .15s, box-shadow .15s;
+    }
+    .mk-prod-row:hover { border-color:var(--slate-soft-2); box-shadow:var(--shadow-sm); }
+    .mk-prod-row.is-selected {
+      border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,90,255,.10);
+    }
+    .mk-prod-row-img {
+      width:84px; height:112px; flex-shrink:0;
+      background:#f5f7fb; border-radius:10px; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .mk-prod-row-img img { max-width:100%; max-height:100%; object-fit:contain; mix-blend-mode:multiply; }
+    .mk-prod-row-img.no-blend img { mix-blend-mode:normal; padding:8px; }
+    .mk-prod-row-info { flex:1; min-width:0; }
+    .mk-prod-row-info h4 {
+      margin:6px 0 4px; font:700 14px/1.35 var(--font); color:var(--ink);
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .mk-prod-row-info .mk-prod-row-meta {
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center;
+      font:400 12px/1.3 var(--font); color:var(--muted);
+    }
+    .mk-prod-row-info .mk-prod-row-meta .range { color:var(--blue); font-weight:600; }
+    .mk-prod-row-right {
+      display:flex; align-items:center; gap:18px; flex-shrink:0;
+    }
+    .mk-prod-row-price { text-align:right; }
+    .mk-prod-row-price .mk-prod-price-lbl { font-size:10px; }
+    .mk-prod-row-price .mk-prod-price { font-size:16px; }
+    @media(max-width:680px) {
+      .mk-prod-row { flex-wrap:wrap; }
+      .mk-prod-row-right { width:100%; justify-content:space-between; }
     }
 
     /* Footer de ações dentro do content card */
@@ -5567,14 +5612,19 @@
       font:700 22px/1 var(--font); color:var(--navy);
     }
     .mk-resumo-side-cta {
-      width:100%; margin-top:12px; padding:13px 16px;
-      background:var(--navy); color:#fff; border:0; border-radius:10px;
-      font:700 13px/1 var(--font); cursor:pointer;
-      transition:background .15s;
+      width:100%; margin-top:12px; padding:14px 16px;
+      background:var(--blue); color:#fff; border:0; border-radius:10px;
+      font:700 13.5px/1 var(--font); cursor:pointer;
+      transition:background .15s, box-shadow .15s;
       display:flex; align-items:center; justify-content:center; gap:6px;
+      box-shadow:0 4px 10px rgba(0,90,255,.15);
     }
-    .mk-resumo-side-cta:hover { background:#162460; }
-    .mk-resumo-side-cta[disabled] { background:var(--slate-soft); cursor:not-allowed; }
+    .mk-resumo-side-cta:hover:not([disabled]) { background:#0046cc; box-shadow:0 6px 14px rgba(0,90,255,.25); }
+    .mk-resumo-side-cta[disabled] { background:#d6dbe4; color:#8a93a4; cursor:not-allowed; box-shadow:none; }
+    .mk-resumo-side-cta > svg,
+    .mk-resumo-side-cta > i { width:14px !important; height:14px !important; }
+    .mk-resumo-side-item-rm > svg,
+    .mk-resumo-side-item-rm > i { width:13px !important; height:13px !important; }
 
     @media(max-width:1100px) {
       .mk-builder { grid-template-columns:1fr; }
@@ -13230,6 +13280,7 @@ Fone: (44) 2101-1400`;
 
       const mkState = {
         kitType: "fotovoltaico",
+        viewMode: "grid",
         titulo: "",
         cliente: "",
         premio: { mode:"%", value: 0 },
@@ -13444,7 +13495,7 @@ Fone: (44) 2101-1400`;
         return `
           <div class="mk-page">
             ${typeMeta ? `
-              <div class="mk-type-pill" style="margin-bottom:14px;">
+              <div class="mk-type-pill" style="margin-bottom:6px;">
                 <span class="mk-type-pill-icon" style="background:${typeMeta.accent};color:${typeMeta.color};"><i data-lucide="${typeMeta.icon}"></i></span>
                 <span class="mk-type-pill-text"><strong>${typeMeta.label}</strong> · ${typeMeta.sub}</span>
                 <button class="mk-type-pill-change" onclick="location.hash='monte-kit'"><i data-lucide="arrow-left" style="width:11px;height:11px;"></i> Trocar tipo</button>
@@ -13484,6 +13535,7 @@ Fone: (44) 2101-1400`;
             </div>` : '',
         };
         const meta = titleMap[stepId] || { title:"Selecione um item", sub:"" };
+        const container = (mkState.viewMode || 'grid') === 'list' ? 'mk-products-list' : 'mk-products-grid';
         return `
                 <div class="mk-content-card">
                   <div class="mk-content-card-head">
@@ -13493,7 +13545,7 @@ Fone: (44) 2101-1400`;
                   ${intros[stepId] || ''}
                   ${mkToolbarHTML(stepId)}
                   ${list.length ? `
-                    <div class="mk-products-grid">
+                    <div class="${container}">
                       ${list.map((p) => mkCardHTML(stepId, p)).join("")}
                     </div>` : `
                     <div class="mk-empty">Nenhum item disponível para este filtro.</div>`}
@@ -13512,6 +13564,7 @@ Fone: (44) 2101-1400`;
       function mkToolbarHTML(stepId) {
         const sortKey = mkState.sort[stepId]?.key || "";
         const asc = mkState.sort[stepId]?.asc !== false;
+        const view = mkState.viewMode || 'grid';
         return `
           <div class="mk-toolbar">
             <div class="mk-toolbar-search">
@@ -13525,14 +13578,23 @@ Fone: (44) 2101-1400`;
               <option value="power"  ${sortKey==='power' ?'selected':''}>Potência</option>
             </select>
             <button class="mk-toolbar-iconbtn" onclick="mkOnSortDir('${stepId}')" title="${asc?'Crescente':'Decrescente'}">
-              <i data-lucide="arrow-up" style="width:15px;height:15px;transform:${asc?'none':'rotate(180deg)'};transition:.15s;"></i>
+              <i data-lucide="arrow-up" style="transform:${asc?'none':'rotate(180deg)'};transition:.15s;"></i>
             </button>
             <button class="mk-toolbar-iconbtn" onclick="mkOnClearFilters('${stepId}')" title="Limpar filtros">
-              <i data-lucide="x" style="width:15px;height:15px;"></i>
+              <i data-lucide="x"></i>
             </button>
+            <div class="mk-toolbar-view">
+              <button class="mk-toolbar-viewbtn ${view==='grid'?'is-active':''}" onclick="mkSetViewMode('grid')" title="Grade"><i data-lucide="layout-grid"></i></button>
+              <button class="mk-toolbar-viewbtn ${view==='list'?'is-active':''}" onclick="mkSetViewMode('list')" title="Lista"><i data-lucide="layout-list"></i></button>
+            </div>
           </div>
         `;
       }
+      window.mkSetViewMode = function(m) {
+        mkState.viewMode = m;
+        const cur = (location.hash || '').replace(/^#monte-kit-?/, '') || 'form';
+        renderMonteKit(cur);
+      };
 
       // Novo card de produto (vertical, com imagem grande e qty no rodapé)
       function mkCardHTML(stepId, p) {
@@ -13543,15 +13605,45 @@ Fone: (44) 2101-1400`;
           : stepId === 'bess' && p.kwh ? `${p.kwh} kWh`
           : stepId === 'eletroposto' && p.kw ? `${p.kw} kW` : '';
         const range = stepId === 'inversores' && (p.potMin || p.potMax) ? `${p.potMin}kW – ${p.potMax}kW` : '';
+        const noBlend = stepId === 'bess' || stepId === 'eletroposto' || stepId === 'bateria';
         const qtyControl = isSelected ? `
           <div class="mk-prod-qty">
             <button onclick="event.stopPropagation();mkChangeQty('${stepId}','${p.sku}',-1)">−</button>
             <input type="text" value="${qty}" onclick="event.stopPropagation()" oninput="mkSetQty('${stepId}','${p.sku}',this.value)">
             <button onclick="event.stopPropagation();mkChangeQty('${stepId}','${p.sku}',1)">+</button>
           </div>` : `<div class="mk-prod-add-empty"><i data-lucide="plus" style="width:14px;height:14px;"></i></div>`;
+
+        // View mode: list (horizontal)
+        if ((mkState.viewMode || 'grid') === 'list') {
+          return `
+            <div class="mk-prod-row ${isSelected?'is-selected':''}" onclick="mkToggleSelect('${stepId}','${p.sku}')">
+              <div class="mk-prod-row-img${noBlend?' no-blend':''}">${mkProductIconHTML(stepId, p)}</div>
+              <div class="mk-prod-row-info">
+                <div class="mk-prod-badges">
+                  <span class="mk-prod-badge is-brand">${p.brand || '—'}</span>
+                  ${powerLabel ? `<span class="mk-prod-badge is-power">${powerLabel}</span>` : ''}
+                </div>
+                <h4 title="${mkEsc(p.name)}">${p.name}</h4>
+                <div class="mk-prod-row-meta">
+                  <span>SKU ${p.sku}</span>
+                  ${range ? `<span class="range">${range}</span>` : ''}
+                </div>
+              </div>
+              <div class="mk-prod-row-right">
+                <div class="mk-prod-row-price">
+                  <span class="mk-prod-price-lbl">Preço unit.</span>
+                  <div class="mk-prod-price">${mkFmt(p.price)}</div>
+                </div>
+                ${qtyControl}
+              </div>
+            </div>
+          `;
+        }
+
+        // View mode: grid (vertical, default)
         return `
           <div class="mk-prod-card ${isSelected?'is-selected':''}" onclick="mkToggleSelect('${stepId}','${p.sku}')">
-            <div class="mk-prod-img${stepId==='bess'||stepId==='eletroposto'||stepId==='bateria'?' no-blend':''}">
+            <div class="mk-prod-img${noBlend?' no-blend':''}">
               ${mkProductIconHTML(stepId, p)}
             </div>
             <div class="mk-prod-body">
