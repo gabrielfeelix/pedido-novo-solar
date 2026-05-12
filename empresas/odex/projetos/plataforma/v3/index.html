@@ -5293,11 +5293,20 @@
       margin-bottom:12px; padding:0 4px;
     }
     .mk-stepper-card-head .step-of {
-      font:700 11px/1 var(--font); color:var(--muted); letter-spacing:.04em;
+      font:700 11px/1 var(--font); color:var(--muted); letter-spacing:.06em; text-transform:uppercase;
     }
-    .mk-stepper-card-head .step-label {
-      font:400 11px/1 var(--font); color:var(--placeholder);
+    .mk-reset-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      height:30px; padding:0 12px;
+      background:#fff; color:var(--muted);
+      border:1px solid var(--line); border-radius:8px;
+      font:600 12px/1 var(--font); cursor:pointer;
+      transition:.15s; font-family:var(--font);
     }
+    .mk-reset-btn:hover { color:var(--ink); border-color:var(--slate-soft-2); background:#fafbfc; }
+    .mk-reset-btn:active { transform:translateY(1px); }
+    .mk-reset-btn > i,
+    .mk-reset-btn > svg { width:13px !important; height:13px !important; }
     .mk-stepper-grid {
       display:grid; gap:8px;
       grid-template-columns:repeat(var(--mk-step-count, 7), 1fr);
@@ -13742,6 +13751,27 @@ Fone: (44) 2101-1400`;
         renderMonteKit('form');
       };
 
+      // Reinicia o builder · limpa todos os itens selecionados, filtros e dados do form
+      window.mkResetBuilder = function() {
+        const hasProgress = mkAllSelectedItems().length > 0 || mkState.titulo || mkState.cliente || mkState.ligacao || mkState.estado || (mkState.premio.value > 0);
+        if (hasProgress && !confirm('Reiniciar a montagem do kit?\n\nIsso vai limpar componentes selecionados, filtros e dados do formulário inicial. O tipo de projeto será preservado.')) return;
+        const keptType = mkState.kitType;
+        mkState.titulo = '';
+        mkState.cliente = '';
+        mkState.premio = { mode:'%', value:0 };
+        mkState.ligacao = '';
+        mkState.estado = '';
+        mkState.search = { paineis:"", inversores:"", stringbox:"", estrutura:"", acessorios:"", bateria:"", bess:"", eletroposto:"" };
+        mkState.sort = { paineis:{key:'',asc:true}, inversores:{key:'',asc:true}, stringbox:{key:'',asc:true}, estrutura:{key:'',asc:true}, acessorios:{key:'',asc:true}, bateria:{key:'',asc:true}, bess:{key:'',asc:true}, eletroposto:{key:'',asc:true} };
+        mkState.items = { paineis:{}, inversores:{}, stringbox:{}, estrutura:{}, acessorios:{}, bateria:{}, bess:{}, eletroposto:{} };
+        mkState.estruturaTipos = new Set(MK_TIPOS_ESTRUTURA);
+        mkState.semEstrutura = false;
+        mkState.estruturaTiposOpen = false;
+        mkState.caboMetragens = {};
+        mkState.kitType = keptType;
+        location.hash = 'monte-kit';
+      };
+
       window.mkAdvanceFromForm = function() {
         mkState.titulo  = ($("mkTitulo")?.value || "").trim();
         mkState.cliente = ($("mkCliente")?.value || "").trim();
@@ -13790,7 +13820,9 @@ Fone: (44) 2101-1400`;
                 <div class="mk-stepper-card">
                   <div class="mk-stepper-card-head">
                     <span class="step-of">Passo ${idx+1} de ${steps.length}</span>
-                    <span class="step-label">${(steps[idx]||{}).label || ''}</span>
+                    <button type="button" class="mk-reset-btn" onclick="mkResetBuilder()" title="Reiniciar montagem">
+                      <i data-lucide="timer-reset"></i> Reiniciar
+                    </button>
                   </div>
                   <div class="mk-stepper-grid" style="--mk-step-count:${steps.length};">
                     ${cells}

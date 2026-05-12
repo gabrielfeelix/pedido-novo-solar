@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Servir v3 (Python http.server)",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "http.server", "5500"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "owner": "http-server",
+        "pattern": [{ "regexp": ".*", "file": 1, "location": 2, "message": 3 }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*Serving HTTP.*",
+          "endsPattern": ".*"
+        }
+      }
+    },
+    {
+      "label": "Abrir v3 no Chrome",
+      "type": "shell",
+      "command": "explorer.exe http://localhost:5500/index.html || wslview http://localhost:5500/index.html || xdg-open http://localhost:5500/index.html",
+      "dependsOn": "Servir v3 (Python http.server)",
+      "presentation": { "reveal": "silent" }
+    }
+  ]
+}
