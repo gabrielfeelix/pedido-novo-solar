@@ -10703,7 +10703,7 @@
               <p class="de-product-price">${p.available ? fmt(p.price) : 'Sob consulta'}</p>
             </div>
             <button class="de-product-add" data-sku="${p.sku}" onclick="deAddProduct('${p.sku}', this)" aria-label="Adicionar ao carrinho" title="Adicionar ao carrinho">
-              <i data-lucide="plus" style="width:14px;height:14px;"></i>
+              <i data-lucide="shopping-cart"></i>
             </button>
           </div>`;
       }
@@ -10901,6 +10901,8 @@
           el.innerHTML = `<span class="de-msg-avatar"><span class="de-eye de-eye-l"></span><span class="de-eye de-eye-r"></span><span class="de-mouth"></span></span><div class="de-msg-bubble">${html}</div>`;
           body.appendChild(el);
           _deScroll();
+          // Garante que os <i data-lucide="..."> inseridos nesta bubble virem SVG
+          if (window.lucide) lucide.createIcons();
         }, 700 + Math.random() * 500);
       }
       window.deAskQuestion = function(text) {
