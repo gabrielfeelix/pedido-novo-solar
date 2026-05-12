@@ -5263,9 +5263,323 @@
       color:var(--muted); font:400 13px/1.4 var(--font);
     }
 
-    /* Foto do painel maior nos cards do Monte Seu Kit (pedido do cliente · v3) */
-    .mk-row { grid-template-columns:34px 160px 1fr auto !important; }
-    .mk-row-img { width:160px !important; height:150px !important; }
+    /* ===========================================================
+       MONTE SEU KIT · novo layout (v3 · adotado do CRM SolarBuilder)
+       Stepper em card · cards verticais em grid · resumo navy lateral
+       =========================================================== */
+
+    /* Container geral redesenhado */
+    .mk-page { max-width:1640px; margin:0 auto; padding:24px 32px 80px; }
+    .mk-builder { display:grid; grid-template-columns:minmax(0, 1fr) 380px; gap:24px; align-items:flex-start; }
+
+    /* Stepper card (substitui o stepper antigo) */
+    .mk-stepper-card {
+      background:var(--white); border:1px solid var(--line);
+      border-radius:16px; padding:18px 22px; box-shadow:var(--shadow-sm);
+      margin-bottom:20px;
+    }
+    .mk-stepper-card-head {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:12px; padding:0 4px;
+    }
+    .mk-stepper-card-head .step-of {
+      font:700 11px/1 var(--font); color:var(--muted); letter-spacing:.04em;
+    }
+    .mk-stepper-card-head .step-label {
+      font:400 11px/1 var(--font); color:var(--placeholder);
+    }
+    .mk-stepper-grid {
+      display:grid; gap:8px;
+      grid-template-columns:repeat(var(--mk-step-count, 7), 1fr);
+    }
+    .mk-step-cell {
+      display:flex; flex-direction:column; align-items:center;
+      padding:6px 6px 4px; border-radius:10px; cursor:pointer;
+      transition:background .15s;
+      background:transparent; border:0;
+      font-family:var(--font);
+    }
+    .mk-step-cell:hover { background:#f5f7fb; }
+    .mk-step-cell-circle-wrap {
+      position:relative; width:100%; display:flex; justify-content:center;
+    }
+    .mk-step-cell-line {
+      position:absolute; top:20px; height:2px; width:calc(50% - 22px);
+      background:var(--line); border-radius:99px; transition:background .2s;
+    }
+    .mk-step-cell-line.is-prev { left:0; }
+    .mk-step-cell-line.is-next { right:0; }
+    .mk-step-cell-line.is-done { background:var(--blue); }
+    .mk-step-cell-circle {
+      width:40px; height:40px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font:700 13px/1 var(--font);
+      background:var(--soft); color:var(--muted);
+      position:relative; z-index:2; transition:.18s;
+    }
+    .mk-step-cell.is-active .mk-step-cell-circle {
+      background:var(--blue); color:#fff;
+      box-shadow:0 0 0 4px rgba(0,90,255,.12);
+    }
+    .mk-step-cell.is-done .mk-step-cell-circle {
+      background:#dbe5ff; color:var(--blue);
+    }
+    .mk-step-cell-label {
+      margin-top:8px; font:700 11.5px/1.25 var(--font);
+      color:var(--muted); text-align:center;
+      min-height:30px;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .mk-step-cell.is-active .mk-step-cell-label { color:var(--navy); }
+    .mk-step-cell.is-done .mk-step-cell-label { color:var(--blue); }
+
+    /* Content card (substitui o "card branco" antigo de cada step) */
+    .mk-content-card {
+      background:var(--white); border:1px solid var(--line);
+      border-radius:16px; padding:28px 32px; box-shadow:var(--shadow-sm);
+    }
+    .mk-content-card-head { margin-bottom:18px; }
+    .mk-content-card-head h2 {
+      font:700 22px/1.2 var(--font); color:var(--ink); margin:0 0 4px;
+      letter-spacing:-.01em;
+    }
+    .mk-content-card-head p {
+      font:400 13.5px/1.5 var(--font); color:var(--muted); margin:0;
+    }
+
+    /* Toolbar de busca + ordenação + view toggle */
+    .mk-toolbar {
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      margin-bottom:22px;
+    }
+    .mk-toolbar-search {
+      position:relative; flex:1; min-width:200px;
+    }
+    .mk-toolbar-search i {
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      width:16px; height:16px; color:var(--muted); pointer-events:none;
+    }
+    .mk-toolbar-search input {
+      width:100%; height:44px; padding:0 14px 0 40px;
+      border:1px solid var(--line); border-radius:10px;
+      background:#fff; font:400 14px/1 var(--font); color:var(--ink);
+      transition:.15s;
+    }
+    .mk-toolbar-search input:focus {
+      outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,90,255,.12);
+    }
+    .mk-toolbar-sort, .mk-toolbar-iconbtn, .mk-toolbar-viewbtn {
+      height:44px; border:1px solid var(--line); border-radius:10px;
+      background:#fff; font:600 13px/1 var(--font); color:var(--ink);
+      cursor:pointer; transition:.15s;
+    }
+    .mk-toolbar-sort { padding:0 32px 0 14px; appearance:none; min-width:160px;
+      background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E6E6E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 12px center/14px 14px var(--white);
+    }
+    .mk-toolbar-iconbtn { width:44px; display:flex; align-items:center; justify-content:center; color:var(--muted); }
+    .mk-toolbar-iconbtn:hover { color:var(--ink); }
+    .mk-toolbar-view {
+      display:flex; height:44px; padding:3px; gap:2px;
+      border:1px solid var(--line); border-radius:10px; background:#fff;
+    }
+    .mk-toolbar-viewbtn {
+      width:38px; height:auto; border:0;
+      border-radius:8px; display:flex; align-items:center; justify-content:center;
+      color:var(--muted); background:transparent;
+    }
+    .mk-toolbar-viewbtn.is-active { background:var(--navy); color:#fff; }
+
+    /* Cards de produto em grid (novo layout · vertical, imagem grande) */
+    .mk-products-grid {
+      display:grid; gap:16px;
+      grid-template-columns:repeat(3, 1fr);
+    }
+    @media(max-width:1280px) { .mk-products-grid { grid-template-columns:repeat(2, 1fr); } }
+    @media(max-width:680px)  { .mk-products-grid { grid-template-columns:1fr; } }
+    .mk-prod-card {
+      border:2px solid var(--line); border-radius:14px; background:#fff;
+      overflow:hidden; display:flex; flex-direction:column;
+      transition:border-color .15s, box-shadow .15s, transform .12s;
+      cursor:pointer; position:relative;
+    }
+    .mk-prod-card:hover { border-color:var(--slate-soft-2); box-shadow:var(--shadow); }
+    .mk-prod-card.is-selected {
+      border-color:var(--blue);
+      box-shadow:0 0 0 4px rgba(0,90,255,.10);
+    }
+    .mk-prod-img {
+      height:180px; background:#f5f7fb;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden; position:relative;
+    }
+    .mk-prod-img img {
+      max-width:100%; max-height:100%; object-fit:contain;
+      mix-blend-mode:multiply;
+    }
+    .mk-prod-img.no-blend img { mix-blend-mode:normal; padding:12px; }
+    .mk-prod-body {
+      padding:16px 16px 14px; display:flex; flex-direction:column; flex:1;
+      gap:8px;
+    }
+    .mk-prod-badges { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+    .mk-prod-badge {
+      display:inline-flex; align-items:center; padding:3px 8px;
+      border-radius:99px; font:700 10px/1 var(--font); letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .mk-prod-badge.is-brand { background:#f5f7fb; color:var(--muted); border:1px solid var(--line); }
+    .mk-prod-badge.is-power { background:#eef4ff; color:var(--blue); border:1px solid #dbe5ff; }
+    .mk-prod-name {
+      font:700 13.5px/1.35 var(--font); color:var(--ink); margin:0;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+      min-height:38px;
+    }
+    .mk-prod-sku { font:400 11.5px/1.3 var(--font); color:var(--muted); margin:0; }
+    .mk-prod-range { font:600 11.5px/1.3 var(--font); color:var(--blue); margin:0; }
+    .mk-prod-foot {
+      margin-top:auto; padding-top:10px;
+      display:flex; align-items:flex-end; justify-content:space-between; gap:10px;
+    }
+    .mk-prod-price-lbl { font:400 10px/1 var(--font); color:var(--placeholder); letter-spacing:.08em; text-transform:uppercase; }
+    .mk-prod-price { font:700 17px/1 var(--font); color:var(--ink); margin-top:3px; }
+    .mk-prod-qty {
+      display:inline-flex; height:36px; border:1px solid var(--line);
+      border-radius:10px; overflow:hidden; align-items:stretch;
+      background:#fff;
+    }
+    .mk-prod-qty button {
+      width:32px; background:#fff; color:var(--ink); font:400 14px/1 var(--font);
+      display:flex; align-items:center; justify-content:center;
+      transition:background .12s;
+    }
+    .mk-prod-qty button:hover { background:#f5f7fb; }
+    .mk-prod-qty button:last-child { color:var(--blue); }
+    .mk-prod-qty input {
+      width:44px; border:0; text-align:center;
+      font:700 14px/1 var(--font); color:var(--ink); background:#fff;
+    }
+    .mk-prod-qty input:focus { outline:none; }
+    .mk-prod-add-empty {
+      width:36px; height:36px; border-radius:50%;
+      background:#f5f7fb; color:var(--placeholder);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+
+    /* Footer de ações dentro do content card */
+    .mk-content-foot {
+      display:flex; justify-content:space-between; align-items:center;
+      padding-top:20px; margin-top:24px;
+      border-top:1px solid var(--line);
+    }
+
+    /* Sidebar de resumo comercial (navy header como no CRM) */
+    .mk-resumo-side {
+      position:sticky; top:80px;
+      background:#fff; border:1px solid var(--line);
+      border-radius:16px; box-shadow:var(--shadow-sm); overflow:hidden;
+    }
+    .mk-resumo-side-head {
+      background:var(--navy); color:#fff; padding:18px 20px;
+    }
+    .mk-resumo-side-head .eyebrow {
+      font:700 10px/1 var(--font); color:rgba(255,255,255,.55);
+      letter-spacing:.14em; text-transform:uppercase;
+    }
+    .mk-resumo-side-head h3 {
+      font:700 16px/1.3 var(--font); color:#fff; margin:6px 0 0;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .mk-resumo-side-stats {
+      display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;
+    }
+    .mk-resumo-side-stat {
+      background:rgba(255,255,255,.06); border-radius:10px; padding:10px 12px;
+    }
+    .mk-resumo-side-stat .lbl {
+      font:600 9px/1 var(--font); color:rgba(255,255,255,.55);
+      letter-spacing:.08em; text-transform:uppercase;
+    }
+    .mk-resumo-side-stat .val {
+      font:700 16px/1 var(--font); color:#fff; margin-top:6px;
+    }
+    .mk-resumo-side-body {
+      max-height:380px; overflow-y:auto; padding:14px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .mk-resumo-side-empty {
+      padding:18px 14px; text-align:center;
+      border:1px dashed var(--line); border-radius:10px;
+      background:#f9fafc;
+      font:400 12px/1.4 var(--font); color:var(--muted);
+    }
+    .mk-resumo-side-item {
+      display:flex; gap:10px; padding:8px;
+      border:1px solid var(--line); border-radius:10px;
+    }
+    .mk-resumo-side-item-thumb {
+      width:44px; height:44px; border-radius:8px; background:#f5f7fb;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+      flex-shrink:0; border:1px solid var(--line);
+    }
+    .mk-resumo-side-item-thumb img { width:100%; height:100%; object-fit:contain; padding:3px; }
+    .mk-resumo-side-item-info { flex:1; min-width:0; }
+    .mk-resumo-side-item-cat {
+      display:inline-flex; align-items:center; gap:4px; padding:2px 7px;
+      border-radius:99px; background:#f5f7fb; color:var(--muted);
+      font:700 9px/1.4 var(--font); letter-spacing:.08em; text-transform:uppercase;
+    }
+    .mk-resumo-side-item-name {
+      margin:4px 0 2px; font:600 11.5px/1.3 var(--font); color:var(--ink);
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .mk-resumo-side-item-meta { margin:0; font:400 10.5px/1.3 var(--font); color:var(--muted); }
+    .mk-resumo-side-item-right {
+      display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0;
+    }
+    .mk-resumo-side-item-total { font:700 12px/1 var(--font); color:var(--ink); }
+    .mk-resumo-side-item-rm {
+      background:none; border:0; color:var(--placeholder); cursor:pointer; padding:2px;
+      border-radius:4px;
+    }
+    .mk-resumo-side-item-rm:hover { color:var(--red); }
+    .mk-resumo-side-foot {
+      padding:16px 18px; background:#fafbfc; border-top:1px solid var(--line);
+    }
+    .mk-resumo-side-foot-row {
+      display:flex; justify-content:space-between; align-items:center;
+      font:400 13px/1.4 var(--font); color:var(--muted); margin-bottom:7px;
+    }
+    .mk-resumo-side-foot-row strong { color:var(--ink); font-weight:700; }
+    .mk-resumo-side-foot-total {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      border-top:1px solid var(--line); padding-top:12px; margin-top:8px;
+    }
+    .mk-resumo-side-foot-total .lbl {
+      font:700 10px/1 var(--font); color:var(--muted);
+      letter-spacing:.1em; text-transform:uppercase;
+    }
+    .mk-resumo-side-foot-total .lbl small {
+      display:block; font-weight:400; font-size:10px;
+      color:var(--placeholder); letter-spacing:0; text-transform:none; margin-top:3px;
+    }
+    .mk-resumo-side-foot-total .val {
+      font:700 22px/1 var(--font); color:var(--navy);
+    }
+    .mk-resumo-side-cta {
+      width:100%; margin-top:12px; padding:13px 16px;
+      background:var(--navy); color:#fff; border:0; border-radius:10px;
+      font:700 13px/1 var(--font); cursor:pointer;
+      transition:background .15s;
+      display:flex; align-items:center; justify-content:center; gap:6px;
+    }
+    .mk-resumo-side-cta:hover { background:#162460; }
+    .mk-resumo-side-cta[disabled] { background:var(--slate-soft); cursor:not-allowed; }
+
+    @media(max-width:1100px) {
+      .mk-builder { grid-template-columns:1fr; }
+      .mk-resumo-side { position:static; }
+    }
 
     @media(max-width:1100px) {
       .mk-grid, .mk-resumo-grid, .mk-form-grid { grid-template-columns:1fr; gap:24px; }
@@ -13111,20 +13425,41 @@ Fone: (44) 2101-1400`;
         const steps = mkSteps();
         const idx = steps.findIndex((s) => s.id === currentId);
         const typeMeta = MK_KIT_TYPES.find(t => t.id === mkState.kitType);
+        const cells = steps.map((s, i) => {
+          const isActive = i === idx;
+          const isPast = i < idx;
+          const cls = isActive ? 'is-active' : isPast ? 'is-done' : '';
+          const prevDone = i > 0 && i <= idx;
+          const nextDone = i < idx;
+          return `
+            <button type="button" class="mk-step-cell ${cls}" onclick="location.hash='${s.hash}'">
+              <span class="mk-step-cell-circle-wrap">
+                ${i > 0 ? `<span class="mk-step-cell-line is-prev ${prevDone?'is-done':''}"></span>` : ''}
+                ${i < steps.length-1 ? `<span class="mk-step-cell-line is-next ${nextDone?'is-done':''}"></span>` : ''}
+                <span class="mk-step-cell-circle">${isPast ? '<i data-lucide="check" style="width:14px;height:14px;"></i>' : (i+1)}</span>
+              </span>
+              <span class="mk-step-cell-label">${s.label}</span>
+            </button>`;
+        }).join('');
         return `
           <div class="mk-page">
             ${typeMeta ? `
-              <div class="mk-type-pill">
+              <div class="mk-type-pill" style="margin-bottom:14px;">
                 <span class="mk-type-pill-icon" style="background:${typeMeta.accent};color:${typeMeta.color};"><i data-lucide="${typeMeta.icon}"></i></span>
                 <span class="mk-type-pill-text"><strong>${typeMeta.label}</strong> · ${typeMeta.sub}</span>
                 <button class="mk-type-pill-change" onclick="location.hash='monte-kit'"><i data-lucide="arrow-left" style="width:11px;height:11px;"></i> Trocar tipo</button>
               </div>` : ''}
-            <div class="mk-stepper">
-              ${steps.map((s, i) => {
-                const cls = i < idx ? "is-done" : i === idx ? "is-active" : "";
-                return `<div class="mk-step ${cls}"><span class="mk-step-label">${s.label}</span><span class="mk-step-dot"></span></div>`;
-              }).join("")}
-            </div>
+            <div class="mk-builder">
+              <main>
+                <div class="mk-stepper-card">
+                  <div class="mk-stepper-card-head">
+                    <span class="step-of">Passo ${idx+1} de ${steps.length}</span>
+                    <span class="step-label">${(steps[idx]||{}).label || ''}</span>
+                  </div>
+                  <div class="mk-stepper-grid" style="--mk-step-count:${steps.length};">
+                    ${cells}
+                  </div>
+                </div>
         `;
       }
 
@@ -13132,35 +13467,118 @@ Fone: (44) 2101-1400`;
         const cat = mkCatalog(stepId);
         const list = mkFilterSort(stepId, cat);
         const titleMap = {
-          paineis: "Escolha o modelo do Painel",
-          inversores: mkState.kitType === 'hibrido' ? "Escolha o inversor híbrido" : "Escolha o modelo do Inversor",
-          stringbox: "Escolha o modelo da String Box",
-          bateria: "Escolha a bateria de lítio",
-          bess:    "Escolha o sistema BESS (industrial)",
-          eletroposto: "Escolha o eletroposto",
+          paineis: { title:"Módulos solares",       sub:"Escolha o painel e informe a quantidade. A potência é calculada automaticamente." },
+          inversores: mkState.kitType === 'hibrido'
+                  ? { title:"Inversor híbrido",    sub:"Compatível com bateria e backup. Filtre pela potência do gerador." }
+                  : { title:"Inversores",          sub:"Filtre por marca, potência ou tipo de ligação." },
+          stringbox: { title:"String Box",         sub:"Proteção da entrada CC. Compatível com a potência do gerador." },
+          bateria:   { title:"Bateria de lítio",   sub:"Capacidade em kWh. Recomendado para sistemas híbridos." },
+          bess:      { title:"Sistema BESS (C&I)", sub:"Battery Energy Storage System industrial — alta capacidade." },
+          eletroposto:{ title:"Eletroposto",        sub:"Carregador para veículos elétricos · escolha potência e modo de carga." },
         };
         const intros = {
           paineis: (mkState.kitType === 'bess' || mkState.kitType === 'eletroposto') ? `
-            <div class="mk-picker-banner">
+            <div class="mk-picker-banner" style="margin-bottom:14px;">
               <i data-lucide="info" style="width:16px;height:16px;color:var(--blue);flex-shrink:0;"></i>
               <p>Etapa opcional. Adicionar painéis ao kit ${mkState.kitType==='bess'?'BESS':'de eletroposto'} pode <strong>zerar o IPI de 15%</strong> da componente industrial.</p>
             </div>` : '',
         };
+        const meta = titleMap[stepId] || { title:"Selecione um item", sub:"" };
         return `
-          <div class="mk-grid">
-            <div class="mk-card">
-              ${mkPickerHeadHTML(stepId, titleMap[stepId] || ("Escolha o item · " + stepId))}
-              ${intros[stepId] || ''}
-              <div class="mk-list">
-                ${list.length ? list.map((p) => mkRowHTML(stepId, p)).join("") : '<div class="mk-empty">Nenhum item disponível para este filtro.</div>'}
-              </div>
+                <div class="mk-content-card">
+                  <div class="mk-content-card-head">
+                    <h2>${meta.title}</h2>
+                    ${meta.sub ? `<p>${meta.sub}</p>` : ''}
+                  </div>
+                  ${intros[stepId] || ''}
+                  ${mkToolbarHTML(stepId)}
+                  ${list.length ? `
+                    <div class="mk-products-grid">
+                      ${list.map((p) => mkCardHTML(stepId, p)).join("")}
+                    </div>` : `
+                    <div class="mk-empty">Nenhum item disponível para este filtro.</div>`}
+                  ${mkFooterActionsHTML(stepId)}
+                </div>
+              </main>
+              <aside>
+                ${mkRightSummaryHTML(stepId)}
+              </aside>
             </div>
-            ${mkRightSummaryHTML(stepId)}
-          </div>
-          ${mkFooterActionsHTML(stepId)}
           </div>
         `;
       }
+
+      // Nova toolbar (busca + ordenação + view toggle) com visual do CRM
+      function mkToolbarHTML(stepId) {
+        const sortKey = mkState.sort[stepId]?.key || "";
+        const asc = mkState.sort[stepId]?.asc !== false;
+        return `
+          <div class="mk-toolbar">
+            <div class="mk-toolbar-search">
+              <i data-lucide="search"></i>
+              <input type="text" id="mkSearch_${stepId}" placeholder="Código, nome..." value="${mkEsc(mkState.search[stepId] || "")}" oninput="mkOnSearch('${stepId}', this.value)">
+            </div>
+            <select class="mk-toolbar-sort" id="mkSort_${stepId}" onchange="mkOnSortKey('${stepId}', this.value)">
+              <option value="">Ordenar por</option>
+              <option value="price"  ${sortKey==='price' ?'selected':''}>Preço</option>
+              <option value="brand"  ${sortKey==='brand' ?'selected':''}>Marca</option>
+              <option value="power"  ${sortKey==='power' ?'selected':''}>Potência</option>
+            </select>
+            <button class="mk-toolbar-iconbtn" onclick="mkOnSortDir('${stepId}')" title="${asc?'Crescente':'Decrescente'}">
+              <i data-lucide="arrow-up" style="width:15px;height:15px;transform:${asc?'none':'rotate(180deg)'};transition:.15s;"></i>
+            </button>
+            <button class="mk-toolbar-iconbtn" onclick="mkOnClearFilters('${stepId}')" title="Limpar filtros">
+              <i data-lucide="x" style="width:15px;height:15px;"></i>
+            </button>
+          </div>
+        `;
+      }
+
+      // Novo card de produto (vertical, com imagem grande e qty no rodapé)
+      function mkCardHTML(stepId, p) {
+        const qty = mkState.items[stepId][p.sku] || 0;
+        const isSelected = qty > 0;
+        const powerLabel = stepId === 'paineis' && p.power ? `${p.power}W`
+          : stepId === 'bateria' && p.kwh ? `${p.kwh} kWh`
+          : stepId === 'bess' && p.kwh ? `${p.kwh} kWh`
+          : stepId === 'eletroposto' && p.kw ? `${p.kw} kW` : '';
+        const range = stepId === 'inversores' && (p.potMin || p.potMax) ? `${p.potMin}kW – ${p.potMax}kW` : '';
+        const qtyControl = isSelected ? `
+          <div class="mk-prod-qty">
+            <button onclick="event.stopPropagation();mkChangeQty('${stepId}','${p.sku}',-1)">−</button>
+            <input type="text" value="${qty}" onclick="event.stopPropagation()" oninput="mkSetQty('${stepId}','${p.sku}',this.value)">
+            <button onclick="event.stopPropagation();mkChangeQty('${stepId}','${p.sku}',1)">+</button>
+          </div>` : `<div class="mk-prod-add-empty"><i data-lucide="plus" style="width:14px;height:14px;"></i></div>`;
+        return `
+          <div class="mk-prod-card ${isSelected?'is-selected':''}" onclick="mkToggleSelect('${stepId}','${p.sku}')">
+            <div class="mk-prod-img${stepId==='bess'||stepId==='eletroposto'||stepId==='bateria'?' no-blend':''}">
+              ${mkProductIconHTML(stepId, p)}
+            </div>
+            <div class="mk-prod-body">
+              <div class="mk-prod-badges">
+                <span class="mk-prod-badge is-brand">${p.brand || '—'}</span>
+                ${powerLabel ? `<span class="mk-prod-badge is-power">${powerLabel}</span>` : ''}
+              </div>
+              <h4 class="mk-prod-name" title="${mkEsc(p.name)}">${p.name}</h4>
+              <p class="mk-prod-sku">SKU ${p.sku}</p>
+              ${range ? `<p class="mk-prod-range">${range}</p>` : ''}
+              <div class="mk-prod-foot">
+                <div>
+                  <span class="mk-prod-price-lbl">Preço unit.</span>
+                  <div class="mk-prod-price">${mkFmt(p.price)}</div>
+                </div>
+                ${qtyControl}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Handlers de toolbar
+      window.mkOnSearch = function(stepId, v) { mkState.search[stepId] = v; renderMonteKit(stepId); setTimeout(()=>{ const i=$('mkSearch_'+stepId); if(i){ i.focus(); i.setSelectionRange(i.value.length, i.value.length);} },0); };
+      window.mkOnSortKey = function(stepId, k) { if (!mkState.sort[stepId]) mkState.sort[stepId]={key:'',asc:true}; mkState.sort[stepId].key = k; renderMonteKit(stepId); };
+      window.mkOnSortDir = function(stepId) { if (!mkState.sort[stepId]) mkState.sort[stepId]={key:'',asc:true}; mkState.sort[stepId].asc = !mkState.sort[stepId].asc; renderMonteKit(stepId); };
+      window.mkOnClearFilters = function(stepId) { mkState.search[stepId]=''; mkState.sort[stepId]={key:'',asc:true}; renderMonteKit(stepId); };
 
       function mkPickerHeadHTML(stepId, title) {
         const sortKey = mkState.sort[stepId]?.key || "";
@@ -13261,37 +13679,63 @@ Fone: (44) 2101-1400`;
       }
 
       function mkRightSummaryHTML(stepId) {
-        const paineis = mkSelectedEntries("paineis");
-        const inversores = mkSelectedEntries("inversores");
         const items = mkAllSelectedItems();
         const total = mkTotalProdutos();
         const totalKwp = mkTotalKwp();
-        if (items.length === 0) {
-          return `<div class="mk-summary"><div class="mk-summary-empty"></div><div class="mk-summary-foot"><span class="lbl">Valor Total</span><span class="val">${mkFmt(0)}</span></div></div>`;
-        }
-        const thumbs = [];
-        if (paineis[0])    thumbs.push({ p:paineis[0],    step:"paineis" });
-        if (inversores[0]) thumbs.push({ p:inversores[0], step:"inversores" });
-        let invHint = "";
-        if (stepId === "inversores" && paineis.length && inversores.length) {
-          const inv = inversores[0];
-          const wpPainel = paineis[0].power || 0;
-          const minNeeded  = wpPainel ? Math.max(1, Math.ceil((inv.potMin * 1000) / wpPainel)) : 1;
-          const maxAllowed = wpPainel ? Math.max(1, Math.floor((inv.potMax * 1000) / wpPainel)) : 1;
-          invHint = `
-            <div class="mk-summary-pot"><b>Quantidade Necessária de Painéis:</b></div>
-            <div class="mk-summary-hint"><b>Mínima: ${minNeeded}</b> | <b>Máxima: ${maxAllowed}</b></div>
-          `;
-        }
-        return `
-          <div class="mk-summary">
-            ${thumbs.length ? `<div class="mk-summary-thumbs">${thumbs.map((t) => `<div class="mk-summary-thumb">${mkProductIconHTML(t.step, t.p)}</div>`).join("")}</div>` : ""}
-            <div class="mk-summary-pot">Potência do Kit: <b>${totalKwp.toFixed(3)} kWp</b></div>
-            ${invHint}
-            <div class="mk-summary-list">
-              ${items.map((it) => `<div class="mk-summary-item"><span class="qty">${it.qty}x</span><span class="name">${it.name}</span></div>`).join("")}
+        const totalItens = items.reduce((s, it) => s + it.qty, 0);
+        const titulo = mkState.titulo || 'Novo gerador';
+        const premioVal = mkState.premio.value || 0;
+        const premioMode = mkState.premio.mode || '%';
+        const premioAmount = premioMode === '%' ? (total * premioVal / 100) : premioVal;
+        const totalFinal = total + premioAmount;
+        const catLabel = (step) => ({ paineis:'Painéis', inversores:'Inversores', stringbox:'String Box', estrutura:'Estrutura', acessorios:'Acessórios', bateria:'Bateria', bess:'BESS', eletroposto:'Eletroposto' })[step] || step;
+        const itemsHTML = items.length ? items.map((it) => `
+          <div class="mk-resumo-side-item">
+            <div class="mk-resumo-side-item-thumb">${mkProductIconHTML(it._step, it)}</div>
+            <div class="mk-resumo-side-item-info">
+              <span class="mk-resumo-side-item-cat">${catLabel(it._step)}</span>
+              <p class="mk-resumo-side-item-name" title="${mkEsc(it.name)}">${it.name}</p>
+              <p class="mk-resumo-side-item-meta">${it.qty} × ${mkFmt(it.price)}</p>
             </div>
-            <div class="mk-summary-foot"><span class="lbl">Valor Total</span><span class="val">${mkFmt(total)}</span></div>
+            <div class="mk-resumo-side-item-right">
+              <span class="mk-resumo-side-item-total">${mkFmt(it.qty * it.price)}</span>
+              <button class="mk-resumo-side-item-rm" title="Remover" onclick="mkChangeQty('${it._step}','${it.sku}',-${it.qty})"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></button>
+            </div>
+          </div>`).join('') : `<div class="mk-resumo-side-empty">Selecione componentes — eles aparecem aqui em tempo real.</div>`;
+        return `
+          <div class="mk-resumo-side">
+            <div class="mk-resumo-side-head">
+              <span class="eyebrow">Resumo comercial</span>
+              <h3>${titulo}</h3>
+              <div class="mk-resumo-side-stats">
+                <div class="mk-resumo-side-stat">
+                  <span class="lbl">Potência</span>
+                  <div class="val">${totalKwp.toFixed(2)} kWp</div>
+                </div>
+                <div class="mk-resumo-side-stat">
+                  <span class="lbl">Itens</span>
+                  <div class="val">${totalItens}</div>
+                </div>
+              </div>
+            </div>
+            <div class="mk-resumo-side-body">
+              ${itemsHTML}
+            </div>
+            <div class="mk-resumo-side-foot">
+              <div class="mk-resumo-side-foot-row">
+                <span>Subtotal</span>
+                <strong>${mkFmt(total)}</strong>
+              </div>
+              <div class="mk-resumo-side-foot-row">
+                <span>Prêmio venda direta</span>
+                <strong style="color:${premioAmount>0?'#0aa253':'var(--placeholder)'};">${premioAmount>0?'+':''}${mkFmt(premioAmount)}</strong>
+              </div>
+              <div class="mk-resumo-side-foot-total">
+                <div class="lbl">Total<small>Pode variar conforme tributação.</small></div>
+                <span class="val">${mkFmt(totalFinal)}</span>
+              </div>
+              <button class="mk-resumo-side-cta" ${items.length?'':'disabled'} onclick="mkFazerOrcamento()"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Concluir montagem</button>
+            </div>
           </div>
         `;
       }
@@ -13304,13 +13748,11 @@ Fone: (44) 2101-1400`;
         const canAdvance = mkCanAdvance(currentId);
         const isLast = currentId === "resumo";
         return `
-          <div class="mk-page" style="padding-top:0;">
-            <div class="mk-actions right">
-              <button class="mk-btn mk-btn-secondary" onclick="location.hash='${prevHash}'">Voltar</button>
-              ${isLast
-                ? `<button class="mk-btn mk-btn-primary" onclick="mkFazerOrcamento()">Fazer Orçamento</button>`
-                : `<button class="mk-btn mk-btn-primary" ${canAdvance?"":"disabled"} onclick="${canAdvance?`location.hash='${nextHash}'`:""}">Continuar</button>`}
-            </div>
+          <div class="mk-content-foot">
+            <button class="mk-btn mk-btn-secondary" onclick="location.hash='${prevHash}'"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Voltar</button>
+            ${isLast
+              ? `<button class="mk-btn mk-btn-primary" onclick="mkFazerOrcamento()"><i data-lucide="shopping-cart" style="width:14px;height:14px;"></i> Inserir no pedido</button>`
+              : `<button class="mk-btn mk-btn-primary" ${canAdvance?"":"disabled"} onclick="${canAdvance?`location.hash='${nextHash}'`:""}">Avançar <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>`}
           </div>
         `;
       }
@@ -13340,57 +13782,43 @@ Fone: (44) 2101-1400`;
         })();
 
         return `
-          <div class="mk-grid">
-            <div class="mk-card">
-              <div class="mk-tipo-row">
-                <div>
-                  <h3 class="mk-card-title">Escolha os modelos de Estrutura <span class="opt" style="font-weight:400;color:var(--muted);">(opcional)</span></h3>
-                  <label class="mk-label" style="margin-top:8px;">Tipos de estrutura:</label>
-                  <div class="mk-multiselect ${open}" id="mkTiposMS">
-                    <div class="mk-multiselect-input" onclick="mkToggleTiposOpen(event)">
-                      ${tiposLabelHTML}
-                      <i data-lucide="chevron-down"></i>
-                    </div>
-                    <div class="mk-multiselect-list" onclick="event.stopPropagation()">
-                      ${MK_TIPOS_ESTRUTURA.map((t) => `
-                        <div class="mk-multiselect-opt ${tiposSel.has(t)?"is-selected":""}" onclick="mkToggleTipo('${t.replace(/'/g,"\\'")}')">
-                          <span class="chk"></span><span>${t}</span>
-                        </div>`).join("")}
-                    </div>
+                <div class="mk-content-card">
+                  <div class="mk-content-card-head">
+                    <h2>Estrutura de fixação</h2>
+                    <p>Escolha o(s) tipo(s) de telhado e selecione os modelos compatíveis. Opcional para BESS e eletroposto.</p>
                   </div>
-                </div>
-                <label class="mk-sem-estrutura">
-                  <input type="checkbox" ${mkState.semEstrutura?"checked":""} onchange="mkToggleSemEstrutura(this.checked)">
-                  Sem estrutura
-                </label>
-              </div>
-              <div class="mk-picker-head">
-                <div class="mk-picker-search">
-                  <label>Buscar</label>
-                  <div class="mk-picker-search-input">
-                    <input type="text" id="mkSearch_estrutura" placeholder="Código, nome..." value="${mkEsc(mkState.search.estrutura || "")}">
-                    <i data-lucide="search" class="mk-search-icon"></i>
+                  <div class="mk-tipo-row">
+                    <div>
+                      <label class="mk-label">Tipos de estrutura:</label>
+                      <div class="mk-multiselect ${open}" id="mkTiposMS">
+                        <div class="mk-multiselect-input" onclick="mkToggleTiposOpen(event)">
+                          ${tiposLabelHTML}
+                          <i data-lucide="chevron-down"></i>
+                        </div>
+                        <div class="mk-multiselect-list" onclick="event.stopPropagation()">
+                          ${MK_TIPOS_ESTRUTURA.map((t) => `
+                            <div class="mk-multiselect-opt ${tiposSel.has(t)?"is-selected":""}" onclick="mkToggleTipo('${t.replace(/'/g,"\\'")}')">
+                              <span class="chk"></span><span>${t}</span>
+                            </div>`).join("")}
+                        </div>
+                      </div>
+                    </div>
+                    <label class="mk-sem-estrutura">
+                      <input type="checkbox" ${mkState.semEstrutura?"checked":""} onchange="mkToggleSemEstrutura(this.checked)">
+                      Sem estrutura
+                    </label>
                   </div>
+                  ${mkToolbarHTML('estrutura')}
+                  <div class="mk-list">
+                    ${visible.map((e) => mkEstruturaRowHTML(e)).join("")}
+                    ${mkState.semEstrutura ? `<p style="padding:24px 4px;color:var(--muted);font:400 14px/1.5 var(--font);">A estrutura será adicionada manualmente · pule para o próximo passo.</p>` : ""}
+                    ${!mkState.semEstrutura && !visible.length ? `<div class="mk-empty">Nenhuma estrutura compatível com os tipos selecionados.</div>` : ''}
+                  </div>
+                  ${mkFooterActionsHTML("estrutura")}
                 </div>
-                <div class="mk-picker-sort">
-                  <label>Ordenar por</label>
-                  <select id="mkSort_estrutura">
-                    <option value=""></option>
-                    <option value="price">Preço</option>
-                    <option value="brand">Marca</option>
-                  </select>
-                  <button class="mk-sort-arrow" onclick="mkToggleSortDir('estrutura')"><i data-lucide="arrow-up" style="width:18px;height:18px;"></i></button>
-                  <button class="mk-sort-clear" onclick="mkClearSort('estrutura')"><i data-lucide="x" style="width:18px;height:18px;"></i></button>
-                </div>
-              </div>
-              <div class="mk-list">
-                ${visible.map((e) => mkEstruturaRowHTML(e)).join("")}
-                ${mkState.semEstrutura ? `<p style="padding:24px 4px;color:var(--muted);font:400 14px/1.5 var(--font);">A estrutura será adicionada manualmente · pule para o próximo passo.</p>` : ""}
-              </div>
+              </main>
+              <aside>${mkRightSummaryHTML("estrutura")}</aside>
             </div>
-            ${mkRightSummaryHTML("estrutura")}
-          </div>
-          ${mkFooterActionsHTML("estrutura")}
           </div>
         `;
       }
@@ -13463,16 +13891,19 @@ Fone: (44) 2101-1400`;
       /* === Acessórios === */
       function mkAcessoriosHTML() {
         return `
-          <div class="mk-grid">
-            <div class="mk-card">
-              <h3 class="mk-card-title">Escolha os Cabos, Conectores e Perfis</h3>
-              <div class="mk-list">
-                ${MK_ACESSORIOS.map((a) => a.kind === "cabo" ? mkCaboRowHTML(a) : mkAcessorioRowHTML(a)).join("")}
-              </div>
+                <div class="mk-content-card">
+                  <div class="mk-content-card-head">
+                    <h2>Acessórios elétricos</h2>
+                    <p>Cabos solares, conectores MC4 e parafusaria. O cabo solar é obrigatório para o cálculo correto de tributação.</p>
+                  </div>
+                  <div class="mk-list">
+                    ${MK_ACESSORIOS.map((a) => a.kind === "cabo" ? mkCaboRowHTML(a) : mkAcessorioRowHTML(a)).join("")}
+                  </div>
+                  ${mkFooterActionsHTML("acessorios")}
+                </div>
+              </main>
+              <aside>${mkRightSummaryHTML("acessorios")}</aside>
             </div>
-            ${mkRightSummaryHTML("acessorios")}
-          </div>
-          ${mkFooterActionsHTML("acessorios")}
           </div>
         `;
       }
@@ -13577,68 +14008,100 @@ Fone: (44) 2101-1400`;
           ? "Sem estrutura"
           : (mkState.estruturaTipos.size === MK_TIPOS_ESTRUTURA.length ? "Todos"
               : Array.from(mkState.estruturaTipos).join(", ") || "—");
-        const paineis = mkSelectedEntries("paineis");
-        const inversores = mkSelectedEntries("inversores");
+        const premioMode = mkState.premio.mode || '%';
+        const premioVal = mkState.premio.value || 0;
+        const premioAmount = premioMode === '%' ? (subtotal * premioVal / 100) : premioVal;
+        const totalFinal = subtotal + premioAmount;
+        const catLabel = (step) => ({ paineis:'Painéis', inversores:'Inversores', stringbox:'String Box', estrutura:'Estrutura', acessorios:'Acessórios', bateria:'Bateria', bess:'BESS', eletroposto:'Eletroposto' })[step] || step;
         return `
-          <div class="mk-resumo-grid">
-            <div>
-              <div class="mk-card">
-                <h3 class="mk-card-title">Itens selecionados</h3>
-                <table class="mk-resumo-table">
-                  <thead><tr><th>Qtde.</th><th>Item</th></tr></thead>
-                  <tbody>
-                    ${items.map((it) => `<tr><td>${it.qty}x</td><td>${it.name}</td></tr>`).join("")}
-                  </tbody>
-                </table>
-              </div>
-              <div class="mk-resumo-totals">
-                <div class="mk-resumo-totline">
-                  <span class="lbl">Subtotal</span>
-                  <span class="ct">${itemsCount} Itens</span>
-                  <span class="val">${mkFmt(subtotal)}</span>
-                </div>
-                <div class="mk-resumo-totline" style="grid-template-columns:1fr auto;align-items:center;margin-top:10px;">
-                  <span class="lbl"><b>Prêmio Venda Direta</b></span>
-                  <div class="mk-resumo-premia">
-                    <div class="mk-radio-row">
-                      <label class="mk-radio"><input type="radio" name="mk-resumo-premia" value="%"  ${mkState.premio.mode==="%"?"checked":""} onchange="mkState.premio.mode='%';renderMonteKit('resumo')"> %</label>
-                      <label class="mk-radio"><input type="radio" name="mk-resumo-premia" value="R$" ${mkState.premio.mode==="R$"?"checked":""} onchange="mkState.premio.mode='R$';renderMonteKit('resumo')"> R$</label>
+                <div class="mk-content-card">
+                  <div class="mk-content-card-head">
+                    <h2>Revisão do kit</h2>
+                    <p>Confira os itens selecionados, ajuste o prêmio venda direta e finalize o orçamento.</p>
+                  </div>
+
+                  <div class="form-row form-group" style="grid-template-columns:1fr 1fr;display:grid;gap:14px;margin-bottom:18px;">
+                    <div>
+                      <label class="form-label">Título do orçamento <span class="req">*</span></label>
+                      <input type="text" class="form-input" id="mkResumoTitulo" value="${mkEsc(mkState.titulo)}" placeholder="Ex: Gerador Solar · Cliente João">
                     </div>
-                    <div class="mk-premio-input">
-                      <span class="unit">${mkState.premio.mode}</span>
-                      <input type="text" id="mkResumoPremioVal" value="${(mkState.premio.value || 0).toFixed(4)}" oninput="mkState.premio.value=parseFloat(this.value.replace(',','.'))||0">
+                    <div>
+                      <label class="form-label">Prêmio venda direta</label>
+                      <div style="display:flex;gap:8px;align-items:center;">
+                        <div style="display:flex;height:44px;padding:3px;gap:2px;border:1px solid var(--line);border-radius:10px;background:#fff;">
+                          <button type="button" onclick="mkState.premio.mode='%';renderMonteKit('resumo')" style="width:38px;border:0;border-radius:8px;font-weight:700;background:${premioMode==='%'?'var(--navy)':'transparent'};color:${premioMode==='%'?'#fff':'var(--muted)'};cursor:pointer;">%</button>
+                          <button type="button" onclick="mkState.premio.mode='R$';renderMonteKit('resumo')" style="width:38px;border:0;border-radius:8px;font-weight:700;background:${premioMode==='R$'?'var(--navy)':'transparent'};color:${premioMode==='R$'?'#fff':'var(--muted)'};cursor:pointer;">R$</button>
+                        </div>
+                        <input type="number" min="0" step="0.01" class="form-input" id="mkResumoPremioVal" value="${premioVal}" oninput="mkState.premio.value=parseFloat(this.value)||0;mkRefreshSideSummary()">
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="mk-resumo-total-final">
-                  <span class="lbl">Valor Total</span>
-                  <span class="val-input">${mkFmt(subtotal)}</span>
-                </div>
-              </div>
-            </div>
 
-            <aside class="mk-resumo-side">
-              <h3 class="mk-resumo-side-title">Título do orçamento <span class="req">*</span></h3>
-              <input type="text" class="mk-input" id="mkResumoTitulo" value="${mkEsc(mkState.titulo)}" placeholder="">
-              <div class="mk-resumo-side-img">
-                ${paineis[0]    ? `<div>${mkProductIconHTML("paineis", paineis[0])}</div>` : ""}
-                ${inversores[0] ? `<div>${mkProductIconHTML("inversores", inversores[0])}</div>` : ""}
-              </div>
-              <div class="mk-resumo-info">
-                <div class="row">Potência do Kit: <b>${totalKwp.toFixed(3)}kWp</b></div>
-                <div class="row">Peso Sobre o Telhado: <b>${peso.toFixed(3)}kg</b></div>
-                <div class="row">Tipo de Estrutura: <b>${tipos}</b></div>
-              </div>
-              <div class="mk-resumo-links">
-                <a>Datasheet</a><a>Termo de Garantia</a>
-              </div>
-              <a class="mk-imprimir" onclick="window.print()"><i data-lucide="printer" style="width:14px;height:14px;"></i> Imprimir</a>
-            </aside>
-          </div>
-          ${mkFooterActionsHTML("resumo")}
+                  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:20px;">
+                    <div style="background:#f5f7fb;border-radius:10px;padding:14px 16px;">
+                      <p style="margin:0;font:600 11px/1 var(--font);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;">Potência</p>
+                      <p style="margin:6px 0 0;font:700 20px/1 var(--font);color:var(--navy);">${totalKwp.toFixed(2)} kWp</p>
+                    </div>
+                    <div style="background:#f5f7fb;border-radius:10px;padding:14px 16px;">
+                      <p style="margin:0;font:600 11px/1 var(--font);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;">Peso no telhado</p>
+                      <p style="margin:6px 0 0;font:700 20px/1 var(--font);color:var(--navy);">${peso.toFixed(1)} kg</p>
+                    </div>
+                    <div style="background:#f5f7fb;border-radius:10px;padding:14px 16px;">
+                      <p style="margin:0;font:600 11px/1 var(--font);color:var(--muted);letter-spacing:.06em;text-transform:uppercase;">Tipo de estrutura</p>
+                      <p style="margin:6px 0 0;font:700 13px/1.3 var(--font);color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${tipos}">${tipos}</p>
+                    </div>
+                  </div>
+
+                  <h3 style="font:700 14px/1 var(--font);color:var(--ink);margin:18px 0 12px;">Componentes do kit</h3>
+                  ${items.length ? `
+                    <div style="border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+                      ${items.map((it) => `
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);">
+                          <div style="width:44px;height:44px;border-radius:8px;background:#f5f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;border:1px solid var(--line);">${mkProductIconHTML(it._step, it)}</div>
+                          <div style="flex:1;min-width:0;">
+                            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                              <span style="display:inline-flex;padding:2px 7px;border-radius:99px;background:#eef4ff;color:var(--blue);font:700 9px/1.3 var(--font);letter-spacing:.06em;text-transform:uppercase;">${catLabel(it._step)}</span>
+                              <span style="font:700 11px/1 var(--font);color:var(--muted);">SKU ${it.sku}</span>
+                            </div>
+                            <p style="margin:4px 0 0;font:600 13px/1.3 var(--font);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${mkEsc(it.name)}">${it.name}</p>
+                            <p style="margin:0;font:400 11.5px/1.3 var(--font);color:var(--muted);">${it.brand} · ${it.qty} × ${mkFmt(it.price)}</p>
+                          </div>
+                          <span style="font:700 14px/1 var(--font);color:var(--ink);">${mkFmt(it.price * it.qty)}</span>
+                        </div>`).join('').replace(/border-bottom:1px solid var\(--line\);"><\/div><\/div>$/, 'border-bottom:0;"></div></div>')}
+                    </div>` : `<div class="mk-empty">Nenhum componente selecionado. Volte aos passos anteriores.</div>`}
+
+                  <div style="display:flex;flex-direction:column;gap:6px;padding-top:18px;margin-top:18px;border-top:1px solid var(--line);">
+                    <div style="display:flex;justify-content:space-between;font:400 13px/1.4 var(--font);color:var(--muted);">
+                      <span>Subtotal · ${itemsCount} ${itemsCount===1?'item':'itens'}</span>
+                      <strong style="color:var(--ink);">${mkFmt(subtotal)}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font:400 13px/1.4 var(--font);color:var(--muted);">
+                      <span>Prêmio venda direta (${premioMode === '%' ? premioVal+'%' : 'R$ '+premioVal})</span>
+                      <strong style="color:${premioAmount>0?'#0aa253':'var(--placeholder)'};">${premioAmount>0?'+':''}${mkFmt(premioAmount)}</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-top:10px;margin-top:6px;border-top:1px solid var(--line);">
+                      <span style="font:700 11px/1 var(--font);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;">Valor Total</span>
+                      <span style="font:700 24px/1 var(--font);color:var(--navy);">${mkFmt(totalFinal)}</span>
+                    </div>
+                  </div>
+
+                  ${mkFooterActionsHTML("resumo")}
+                </div>
+              </main>
+              <aside>${mkRightSummaryHTML("resumo")}</aside>
+            </div>
           </div>
         `;
       }
+
+      window.mkRefreshSideSummary = function() {
+        // Atualiza só o sidebar sem re-render do form principal (preserva foco no input)
+        const aside = document.querySelector('.mk-builder > aside');
+        if (aside) {
+          aside.innerHTML = mkRightSummaryHTML('resumo');
+          lucide.createIcons();
+        }
+      };
 
       window.mkFazerOrcamento = function() {
         mkState.titulo = ($("mkResumoTitulo")?.value || mkState.titulo || "").trim();
