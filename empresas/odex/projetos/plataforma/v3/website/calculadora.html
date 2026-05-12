@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base href="/odex/plataforma/v2/website/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Solar Odex · Quanto você economiza com energia solar</title>
+  <meta name="description" content="Simule grátis em 1 minuto a economia que sua casa ou empresa teria com energia solar. Calculadora oficial Odex.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --blue: #005aff;
+      --blue-hover: #0046c9;
+      --blue-soft: #eef4ff;
+      --blue-2: #0d1d52;
+      --ink: #1d1d1f;
+      --ink-2: #3a3a3c;
+      --muted: #86868b;
+      --line: #e8e8ed;
+      --paper: #ffffff;
+      --soft: #f5f5f7;
+      --warm: #ffb21d;
+      --green: #34c759;
+      --green-soft: #e7f7ed;
+      --red: #ff3b30;
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.04);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.04);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: var(--soft);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; outline: none; border: none; background: transparent; }
+
+    /* ─── Header (idem loja.html) ─── */
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(255,255,255,.85);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+    .header-inner {
+      width: min(1200px, calc(100% - 48px));
+      height: 64px; margin: 0 auto;
+      display: flex; align-items: center; gap: 32px;
+    }
+    .logo { display: inline-flex; align-items: center; width: 130px; flex-shrink: 0; }
+    .logo img { width: 100%; height: auto; display: block; }
+    .nav { flex: 1; display: flex; justify-content: center; align-items: center; gap: 32px; font-size: 13px; color: var(--ink-2); }
+    .nav a { font-weight: 400; letter-spacing: -.01em; transition: color 150ms ease; opacity: .8; }
+    .nav a:hover { opacity: 1; color: var(--ink); }
+    .nav a.active { opacity: 1; font-weight: 500; color: var(--ink); }
+    .integrator-link { display: inline-flex; align-items: center; gap: 7px; padding: 0 16px; height: 34px; border-radius: 99px; color: white; background: var(--blue); font-size: 13px; font-weight: 500; letter-spacing: -.01em; flex-shrink: 0; transition: background 150ms, transform 150ms; }
+    .integrator-link:hover { background: var(--blue-hover); transform: translateY(-1px); }
+
+    /* ─── Page wrapper ─── */
+    .page { width: min(1080px, calc(100% - 48px)); margin: 0 auto; padding: 40px 0 80px; }
+
+    /* ─── Hero ─── */
+    .hero { text-align: center; margin-bottom: 32px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 7px; height: 28px; padding: 0 14px; border-radius: 99px; background: var(--blue-soft); color: var(--blue); font: 600 12px/1 "Inter"; letter-spacing: .02em; margin-bottom: 14px; }
+    .hero-eyebrow i { width: 13px; height: 13px; }
+    .hero h1 { font: 700 clamp(32px, 4.5vw, 48px)/1.1 "Inter"; color: var(--ink); margin: 0 0 12px; letter-spacing: -.025em; max-width: 760px; margin-inline: auto; }
+    .hero h1 em { font-style: normal; color: var(--blue); }
+    .hero p { font: 400 16px/1.55 "Inter"; color: var(--muted); margin: 0; max-width: 600px; margin-inline: auto; }
+
+    /* ─── Stepper ─── */
+    .stepper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .step-dot { display: flex; align-items: center; gap: 8px; }
+    .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--line); color: var(--muted); display: grid; place-items: center; font: 700 12px/1 "Inter"; transition: .15s; }
+    .step-lbl { font: 600 12.5px/1 "Inter"; color: var(--muted); transition: .15s; }
+    .step-dot.is-active .step-num { background: var(--blue); border-color: var(--blue); color: white; box-shadow: 0 0 0 4px rgba(0,90,255,.10); }
+    .step-dot.is-active .step-lbl { color: var(--ink); }
+    .step-dot.is-done .step-num { background: var(--green); border-color: var(--green); color: white; }
+    .step-dot.is-done .step-lbl { color: var(--ink-2); }
+    .step-bar { width: 32px; height: 2px; background: var(--line); border-radius: 2px; }
+    .step-dot.is-done + .step-bar { background: var(--green); }
+
+    /* ─── Card ─── */
+    .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px 36px; box-shadow: var(--shadow-sm); }
+
+    /* ─── Form ─── */
+    .form-step { display: none; }
+    .form-step.is-active { display: block; }
+    .form-step-head { margin-bottom: 24px; }
+    .form-step-head h2 { font: 700 22px/1.25 "Inter"; color: var(--ink); margin: 0 0 6px; letter-spacing: -.02em; }
+    .form-step-head p { font: 400 14px/1.55 "Inter"; color: var(--muted); margin: 0; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+    .form-grid.is-single { grid-template-columns: 1fr; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field-label { font: 600 13px/1 "Inter"; color: var(--ink); display: flex; align-items: center; gap: 6px; }
+    .field-label .req { color: var(--red); font-weight: 700; }
+    .field-hint { font: 400 11.5px/1.4 "Inter"; color: var(--muted); }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none; }
+    .input-sfx { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font: 400 13px/1 "Inter"; pointer-events: none; }
+    .input { width: 100%; height: 46px; padding: 0 14px 0 42px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); font: 400 15px/1 "Inter"; color: var(--ink); transition: .15s; }
+    .input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,90,255,.10); }
+    .input.no-icon { padding-left: 14px; }
+    select.input { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2386868b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 38px; }
+
+    /* ─── Choice cards (visual selection) ─── */
+    .choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+    .choice { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 14px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-md); background: var(--paper); cursor: pointer; transition: .15s; text-align: left; }
+    .choice:hover { border-color: var(--blue); transform: translateY(-1px); }
+    .choice.is-selected { border-color: var(--blue); background: var(--blue-soft); }
+    .choice.is-selected::after { content: ""; position: absolute; top: 10px; right: 10px; width: 18px; height: 18px; border-radius: 50%; background: var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px no-repeat; }
+    .choice-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--soft); display: grid; place-items: center; color: var(--blue); }
+    .choice-icon i { width: 18px; height: 18px; }
+    .choice.is-selected .choice-icon { background: rgba(255,255,255,.7); }
+    .choice-title { font: 600 13.5px/1.2 "Inter"; color: var(--ink); }
+    .choice-sub { font: 400 11.5px/1.4 "Inter"; color: var(--muted); }
+
+    /* ─── Form actions ─── */
+    .form-actions { display: flex; gap: 10px; justify-content: space-between; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; height: 42px; padding: 0 16px; border-radius: var(--radius-sm); color: var(--muted); font: 600 13px/1 "Inter"; transition: .15s; }
+    .btn-ghost:hover { color: var(--ink); background: var(--soft); }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 22px; border-radius: var(--radius-sm); background: var(--blue); color: white; font: 600 14px/1 "Inter"; transition: .15s; }
+    .btn-primary:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0,90,255,.20); }
+    .btn-primary:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-primary i { width: 15px; height: 15px; }
+
+    /* ─── Loading ─── */
+    .loading-state { text-align: center; padding: 48px 32px; display: none; }
+    .loading-state.is-active { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 56px; height: 56px; border: 3px solid var(--line); border-top-color: var(--blue); border-radius: 50%; margin: 0 auto 18px; animation: spin .9s linear infinite; }
+    .loading-state h3 { font: 700 18px/1.3 "Inter"; color: var(--ink); margin: 0 0 6px; }
+    .loading-state p { font: 400 13.5px/1.5 "Inter"; color: var(--muted); margin: 0 0 22px; }
+    .progress-track { width: 280px; height: 6px; background: var(--soft); border-radius: 99px; margin: 0 auto; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 99px; width: 0; transition: width .4s ease; }
+
+    /* ─── Result ─── */
+    .result-state { display: none; }
+    .result-state.is-active { display: block; }
+
+    .result-hero { background: linear-gradient(135deg, var(--blue-2) 0%, var(--blue) 100%); color: white; border-radius: var(--radius-xl); padding: 38px 42px; margin-bottom: 22px; position: relative; overflow: hidden; }
+    .result-hero::before { content: ""; position: absolute; right: -80px; top: -80px; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.12), transparent 65%); pointer-events: none; }
+    .result-hero::after { content: ""; position: absolute; left: 30%; bottom: -120px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(255,178,29,.18), transparent 65%); pointer-events: none; }
+    .result-hero-inner { position: relative; z-index: 1; }
+    .result-hero-eyebrow { font: 600 12px/1 "Inter"; color: rgba(255,255,255,.7); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+    .result-hero-eyebrow i { width: 13px; height: 13px; color: var(--warm); }
+    .result-hero h2 { font: 700 16px/1.3 "Inter"; color: rgba(255,255,255,.82); margin: 0 0 6px; letter-spacing: -.01em; }
+    .result-hero-val { font: 800 clamp(44px, 6vw, 64px)/1 "Inter"; color: white; letter-spacing: -.03em; margin: 0; }
+    .result-hero-val small { font: 600 18px/1 "Inter"; opacity: .65; margin-left: 6px; }
+    .result-hero-sub { font: 400 14px/1.6 "Inter"; color: rgba(255,255,255,.78); margin: 14px 0 0; max-width: 480px; }
+    .result-hero-sub strong { color: white; font-weight: 700; }
+
+    .result-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+    .stat-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 18px 18px; display: flex; flex-direction: column; gap: 6px; }
+    .stat-card-lbl { font: 400 11.5px/1 "Inter"; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; display: inline-flex; align-items: center; gap: 5px; }
+    .stat-card-lbl i { width: 12px; height: 12px; color: var(--blue); }
+    .stat-card-val { font: 700 22px/1.1 "Inter"; color: var(--ink); letter-spacing: -.02em; }
+    .stat-card-val small { font-size: 13px; font-weight: 600; color: var(--muted); margin-left: 3px; }
+    .stat-card-sub { font: 400 11.5px/1.4 "Inter"; color: var(--muted); }
+
+    .result-impact { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+    .impact-card { background: var(--green-soft); border: 1px solid #c9ecd1; border-radius: var(--radius-md); padding: 18px 22px; display: flex; align-items: center; gap: 16px; }
+    .impact-icon { width: 44px; height: 44px; border-radius: 50%; background: white; display: grid; place-items: center; color: #1a7d3d; flex-shrink: 0; }
+    .impact-icon i { width: 20px; height: 20px; }
+    .impact-card h4 { font: 700 17px/1.2 "Inter"; color: #1a4d24; margin: 0 0 3px; }
+    .impact-card p { font: 400 12.5px/1.4 "Inter"; color: #1a7d3d; margin: 0; }
+
+    /* ─── Spec ─── */
+    .spec-card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 22px; }
+    .spec-card h3 { font: 700 16px/1.3 "Inter"; color: var(--ink); margin: 0 0 16px; }
+    .spec-row { display: grid; grid-template-columns: 1fr auto; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .spec-row:last-child { border-bottom: 0; }
+    .spec-row span { font: 400 13.5px/1.4 "Inter"; color: var(--muted); }
+    .spec-row strong { font: 600 13.5px/1.4 "Inter"; color: var(--ink); text-align: right; }
+
+    /* ─── Especialista CTA ─── */
+    .spec-cta { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-xl); padding: 32px 36px; margin-bottom: 22px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
+    .spec-cta-l h3 { font: 700 22px/1.25 "Inter"; color: var(--ink); margin: 0 0 8px; letter-spacing: -.02em; }
+    .spec-cta-l p { font: 400 14px/1.55 "Inter"; color: var(--muted); margin: 0 0 16px; max-width: 460px; }
+    .spec-cta-l ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .spec-cta-l li { display: flex; align-items: center; gap: 8px; font: 400 13px/1.4 "Inter"; color: var(--ink-2); }
+    .spec-cta-l li i { width: 14px; height: 14px; color: var(--green); flex-shrink: 0; }
+
+    .spec-cta-form { width: 320px; background: var(--soft); border-radius: var(--radius-lg); padding: 22px 22px; display: flex; flex-direction: column; gap: 12px; }
+    .spec-cta-form .field-label { font-size: 12.5px; }
+    .spec-cta-form .input { background: white; height: 42px; padding-left: 38px; }
+    .spec-cta-form .input.no-icon { padding-left: 14px; }
+    .spec-cta-form .btn-primary { width: 100%; justify-content: center; height: 44px; }
+
+    /* ─── Disclaimer ─── */
+    .disclaimer { font: 400 12px/1.6 "Inter"; color: var(--muted); text-align: center; max-width: 720px; margin: 0 auto; }
+
+    /* ─── Modal share (sucesso especialista) ─── */
+    .modal-mask { position: fixed; inset: 0; background: rgba(13,29,82,.42); z-index: 50; opacity: 0; pointer-events: none; transition: .2s; }
+    .modal-mask.open { opacity: 1; pointer-events: all; }
+    .modal-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-54%) scale(.96); width: 440px; max-width: calc(100vw - 32px); z-index: 51; background: white; border-radius: var(--radius-xl); padding: 32px 36px; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: .25s cubic-bezier(.22,1,.36,1); text-align: center; }
+    .modal-box.open { transform: translate(-50%,-50%) scale(1); opacity: 1; pointer-events: all; }
+    .modal-success-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--green-soft); color: var(--green); display: grid; place-items: center; margin: 0 auto 18px; }
+    .modal-success-icon i { width: 28px; height: 28px; }
+    .modal-box h3 { font: 700 20px/1.2 "Inter"; color: var(--ink); margin: 0 0 8px; letter-spacing: -.02em; }
+    .modal-box p { font: 400 14px/1.55 "Inter"; color: var(--muted); margin: 0 0 22px; }
+    .modal-box .btn-primary { width: 100%; justify-content: center; }
+
+    /* ─── Responsive ─── */
+    @media(max-width: 760px) {
+      .header-inner { gap: 16px; }
+      .nav { display: none; }
+      .card { padding: 24px 22px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .result-hero { padding: 28px 24px; }
+      .result-grid { grid-template-columns: 1fr 1fr; }
+      .result-impact { grid-template-columns: 1fr; }
+      .spec-cta { grid-template-columns: 1fr; padding: 24px; }
+      .spec-cta-form { width: auto; }
+      .stepper { gap: 4px; }
+      .step-bar { width: 18px; }
+      .step-lbl { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="index.html" aria-label="Odex">
+        <img src="assets/logo-odex.png" alt="Odex"
+             onerror="this.outerHTML='<span style=&quot;font-size:20px;font-weight:800;color:#005aff;letter-spacing:-.03em;&quot;>odex</span>'">
+      </a>
+      <nav class="nav">
+        <a href="index.html#hero">Home</a>
+        <a href="loja.html">Loja</a>
+        <a class="active" href="calculadora.html">Calculadora</a>
+        <a href="index.html#vantagens">Quem Somos</a>
+        <a href="index.html#platform">Financiamento</a>
+        <a href="index.html#marcas">Marcas</a>
+      </nav>
+      <a class="integrator-link" href="login.html">
+        <i data-lucide="user-round-check" style="width:14px;height:14px;"></i>
+        Área do Integrador
+      </a>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <span class="hero-eyebrow"><i data-lucide="zap"></i> Cálculo gratuito · ~ 1 minuto</span>
+      <h1>Descubra quanto você <em>economiza</em> com energia solar</h1>
+      <p>Responda 5 perguntas rápidas sobre o seu imóvel e veja em segundos o tamanho do sistema ideal, a economia mensal estimada e em quanto tempo o investimento se paga.</p>
+    </section>
+
+    <!-- STEPPER -->
+    <div class="stepper" id="stepper">
+      <div class="step-dot is-active" data-step="1"><span class="step-num">1</span><span class="step-lbl">Localização</span></div>
+      <span class="step-bar"></span>
+      <div class="step-dot" data-step="2"><span class="step-num">2</span><span class="step-lbl">Consumo</span></div>
+      <span class="step-bar"></span>
+      <div class="step-dot" data-step="3"><span class="step-num">3</span><span class="step-lbl">Telhado</span></div>
+      <span class="step-bar"></span>
+      <div class="step-dot" data-step="4"><span class="step-num">4</span><span class="step-lbl">Resultado</span></div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="card" id="formCard">
+
+      <!-- STEP 1 · Localização -->
+      <div class="form-step is-active" data-step="1">
+        <div class="form-step-head">
+          <h2>Onde fica o imóvel?</h2>
+          <p>O CEP define a irradiação solar média da sua região e a tarifa de energia local — dois fatores que mais impactam no cálculo.</p>
+        </div>
+        <div class="form-grid is-single">
+          <div class="field">
+            <label class="field-label" for="cep">CEP <span class="req">*</span></label>
+            <div class="input-wrap">
+              <i data-lucide="map-pin" class="input-icon"></i>
+              <input type="text" id="cep" class="input" placeholder="00000-000" maxlength="9" inputmode="numeric">
+            </div>
+            <span class="field-hint" id="cepHint">Usamos para identificar sua cidade e a média de horas de sol da região.</span>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Tipo de imóvel <span class="req">*</span></label>
+            <div class="choice-grid" data-group="imovel">
+              <button class="choice" data-value="residencial" data-mult="1"><span class="choice-icon"><i data-lucide="home"></i></span><span class="choice-title">Residencial</span><span class="choice-sub">Casa ou apto</span></button>
+              <button class="choice" data-value="comercial" data-mult="0.95"><span class="choice-icon"><i data-lucide="store"></i></span><span class="choice-title">Comercial</span><span class="choice-sub">Loja, escritório</span></button>
+              <button class="choice" data-value="rural" data-mult="0.90"><span class="choice-icon"><i data-lucide="tractor"></i></span><span class="choice-title">Rural</span><span class="choice-sub">Sítio, fazenda</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <span></span>
+          <button class="btn-primary" id="btnNext1" disabled onclick="goToStep(2)">Continuar <i data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 2 · Consumo -->
+      <div class="form-step" data-step="2">
+        <div class="form-step-head">
+          <h2>Qual seu consumo de energia?</h2>
+          <p>Você encontra essas duas informações em qualquer conta de luz dos últimos meses. Preencha pelo menos uma.</p>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label" for="kwh">Consumo médio mensal</label>
+            <div class="input-wrap">
+              <i data-lucide="zap" class="input-icon"></i>
+              <input type="number" id="kwh" class="input" placeholder="500" min="1" style="padding-right:54px;">
+              <span class="input-sfx">kWh</span>
+            </div>
+            <span class="field-hint">Soma do consumo da conta de luz · "kWh consumidos no mês"</span>
+          </div>
+          <div class="field">
+            <label class="field-label" for="valor">Valor médio da conta</label>
+            <div class="input-wrap">
+              <i data-lucide="receipt" class="input-icon"></i>
+              <input type="number" id="valor" class="input" placeholder="425" min="1" style="padding-right:54px;">
+              <span class="input-sfx">R$</span>
+            </div>
+            <span class="field-hint">Total pago em média por mês · usado se você não souber o kWh</span>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-ghost" onclick="goToStep(1)"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Voltar</button>
+          <button class="btn-primary" id="btnNext2" disabled onclick="goToStep(3)">Continuar <i data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 3 · Telhado -->
+      <div class="form-step" data-step="3">
+        <div class="form-step-head">
+          <h2>Como é o telhado do imóvel?</h2>
+          <p>Tipo, orientação e inclinação afetam quanto sol seus painéis vão captar ao longo do dia.</p>
+        </div>
+        <div class="field" style="margin-bottom:22px;">
+          <label class="field-label">Tipo de cobertura <span class="req">*</span></label>
+          <div class="choice-grid" data-group="telhado">
+            <button class="choice" data-value="ceramico"><span class="choice-icon"><i data-lucide="home"></i></span><span class="choice-title">Cerâmico</span><span class="choice-sub">Telha colonial</span></button>
+            <button class="choice" data-value="metalico"><span class="choice-icon"><i data-lucide="square"></i></span><span class="choice-title">Metálico</span><span class="choice-sub">Trapezoidal/zinco</span></button>
+            <button class="choice" data-value="fibrocimento"><span class="choice-icon"><i data-lucide="layers"></i></span><span class="choice-title">Fibrocimento</span><span class="choice-sub">Onduladas</span></button>
+            <button class="choice" data-value="laje"><span class="choice-icon"><i data-lucide="layout-grid"></i></span><span class="choice-title">Laje</span><span class="choice-sub">Concreto plano</span></button>
+            <button class="choice" data-value="solo"><span class="choice-icon"><i data-lucide="trees"></i></span><span class="choice-title">Solo</span><span class="choice-sub">Sem telhado</span></button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:22px;">
+          <label class="field-label">Para que lado seu telhado fica voltado? <span class="req">*</span></label>
+          <span class="field-hint" style="margin-bottom:8px;">Quem mora no Brasil tem o lado <strong>Norte</strong> como o de melhor produção. Olhe sua casa pela imagem do Google Maps se tiver dúvida.</span>
+          <div class="choice-grid" data-group="orientacao">
+            <button class="choice" data-value="norte" data-mult="1.00"><span class="choice-icon"><i data-lucide="sun"></i></span><span class="choice-title">Norte</span><span class="choice-sub">Ideal · 100%</span></button>
+            <button class="choice" data-value="nordeste" data-mult="0.97"><span class="choice-icon"><i data-lucide="sunrise"></i></span><span class="choice-title">Nordeste</span><span class="choice-sub">Ótimo · 97%</span></button>
+            <button class="choice" data-value="noroeste" data-mult="0.97"><span class="choice-icon"><i data-lucide="sunset"></i></span><span class="choice-title">Noroeste</span><span class="choice-sub">Ótimo · 97%</span></button>
+            <button class="choice" data-value="leste" data-mult="0.92"><span class="choice-icon"><i data-lucide="arrow-up-right"></i></span><span class="choice-title">Leste</span><span class="choice-sub">Bom · 92%</span></button>
+            <button class="choice" data-value="oeste" data-mult="0.92"><span class="choice-icon"><i data-lucide="arrow-up-left"></i></span><span class="choice-title">Oeste</span><span class="choice-sub">Bom · 92%</span></button>
+            <button class="choice" data-value="sul" data-mult="0.78"><span class="choice-icon"><i data-lucide="cloud"></i></span><span class="choice-title">Sul</span><span class="choice-sub">Regular · 78%</span></button>
+            <button class="choice" data-value="naosei" data-mult="0.93"><span class="choice-icon"><i data-lucide="help-circle"></i></span><span class="choice-title">Não sei</span><span class="choice-sub">Usa média</span></button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Inclinação do telhado <span class="req">*</span></label>
+            <select class="input no-icon" id="inclinacao">
+              <option value="" disabled selected>Selecione</option>
+              <option value="plano" data-mult="0.95">Plano (laje, sem inclinação)</option>
+              <option value="pouca" data-mult="0.98">Pouca inclinação (até 15°)</option>
+              <option value="media" data-mult="1.00">Inclinação média (15° a 25°)</option>
+              <option value="acentuada" data-mult="0.97">Inclinação acentuada (acima de 25°)</option>
+              <option value="naosei" data-mult="0.97">Não sei informar</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="sombra">Tem sombra no telhado?</label>
+            <select class="input no-icon" id="sombra">
+              <option value="nenhuma" data-mult="1.00" selected>Não, sol direto o dia todo</option>
+              <option value="parcial" data-mult="0.92">Pouca · só em parte do dia</option>
+              <option value="muita" data-mult="0.78">Sim · árvores ou prédios próximos</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-ghost" onclick="goToStep(2)"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Voltar</button>
+          <button class="btn-primary" id="btnCalc" disabled onclick="runCalc()"><i data-lucide="calculator"></i> Calcular minha economia</button>
+        </div>
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-state" id="loadingState">
+        <div class="spinner"></div>
+        <h3 id="loadingTitle">Consultando irradiação da sua região…</h3>
+        <p id="loadingHint">Estamos cruzando os dados do seu CEP com nosso banco</p>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result-state" id="resultState">
+        <!-- Hero economia -->
+        <div class="result-hero">
+          <div class="result-hero-inner">
+            <p class="result-hero-eyebrow"><i data-lucide="sparkles"></i> Sua estimativa</p>
+            <h2>Você pode economizar até</h2>
+            <p class="result-hero-val" id="resEconomiaMes">R$ —<small>/mês</small></p>
+            <p class="result-hero-sub">São <strong id="resEconomiaAno">R$ —</strong> por ano de economia · <strong id="resEconomia25">R$ —</strong> ao longo dos 25 anos de vida útil do sistema solar.</p>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="result-grid">
+          <div class="stat-card">
+            <span class="stat-card-lbl"><i data-lucide="zap"></i> Sistema ideal</span>
+            <span class="stat-card-val" id="resKwp">— <small>kWp</small></span>
+            <span class="stat-card-sub" id="resPaineis">— painéis de 565W</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-lbl"><i data-lucide="banknote"></i> Investimento</span>
+            <span class="stat-card-val" id="resInvest">R$ —</span>
+            <span class="stat-card-sub">Pago em parcelas a partir de <strong id="resParcela">R$ —</strong>/mês</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-lbl"><i data-lucide="hourglass"></i> Payback</span>
+            <span class="stat-card-val" id="resPayback">— <small>anos</small></span>
+            <span class="stat-card-sub">Tempo para o sistema se pagar</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-lbl"><i data-lucide="trending-down"></i> Redução conta</span>
+            <span class="stat-card-val" id="resReducao">—%</span>
+            <span class="stat-card-sub">Da sua fatura de energia</span>
+          </div>
+        </div>
+
+        <!-- Impacto -->
+        <div class="result-impact">
+          <div class="impact-card">
+            <span class="impact-icon"><i data-lucide="leaf"></i></span>
+            <div>
+              <h4 id="resCO2">— kg de CO₂/ano</h4>
+              <p>Emissões evitadas — equivale a tirar <strong id="resCarros">— carros</strong> da rua/ano</p>
+            </div>
+          </div>
+          <div class="impact-card">
+            <span class="impact-icon"><i data-lucide="tree-deciduous"></i></span>
+            <div>
+              <h4 id="resArvores">— árvores</h4>
+              <p>Plantadas em equivalência ao seu impacto ambiental anual</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spec / Detalhes -->
+        <div class="spec-card">
+          <h3>Detalhes da sua simulação</h3>
+          <div class="spec-row"><span>Cidade / UF</span><strong id="specCidade">—</strong></div>
+          <div class="spec-row"><span>Irradiação solar média (HSP)</span><strong id="specHsp">— kWh/m²/dia</strong></div>
+          <div class="spec-row"><span>Consumo médio mensal</span><strong id="specConsumo">— kWh</strong></div>
+          <div class="spec-row"><span>Tarifa estimada da sua região</span><strong id="specTarifa">R$ —/kWh</strong></div>
+          <div class="spec-row"><span>Tipo de telhado</span><strong id="specTelhado">—</strong></div>
+          <div class="spec-row"><span>Geração estimada</span><strong id="specGeracao">— kWh/mês</strong></div>
+          <div class="spec-row"><span>Área necessária no telhado</span><strong id="specArea">— m²</strong></div>
+        </div>
+
+        <!-- Especialista CTA -->
+        <div class="spec-cta">
+          <div class="spec-cta-l">
+            <h3>Pronto pra dar o próximo passo?</h3>
+            <p>Esses números são só uma estimativa. Um dos nossos especialistas faz a análise completa do seu telhado e prepara um orçamento sem compromisso pra você.</p>
+            <ul>
+              <li><i data-lucide="check-circle-2"></i> Avaliação técnica gratuita</li>
+              <li><i data-lucide="check-circle-2"></i> Cotação personalizada em até 24h</li>
+              <li><i data-lucide="check-circle-2"></i> Suporte ao financiamento</li>
+            </ul>
+          </div>
+          <form class="spec-cta-form" onsubmit="event.preventDefault();sendSpecialist();">
+            <div class="field">
+              <label class="field-label">Seu nome</label>
+              <div class="input-wrap">
+                <i data-lucide="user" class="input-icon" style="width:15px;height:15px;"></i>
+                <input type="text" id="specNome" class="input" placeholder="Como podemos te chamar?" required>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">WhatsApp</label>
+              <div class="input-wrap">
+                <i data-lucide="phone" class="input-icon" style="width:15px;height:15px;"></i>
+                <input type="tel" id="specTel" class="input" placeholder="(00) 00000-0000" required>
+              </div>
+            </div>
+            <button class="btn-primary" type="submit">
+              <i data-lucide="message-circle"></i> Falar com especialista
+            </button>
+          </form>
+        </div>
+
+        <p class="disclaimer">Os valores são estimativas baseadas em médias da sua região e nas informações que você nos passou. A geração real depende da visita técnica, marcas dos equipamentos escolhidos, sombreamento real e bandeira tarifária vigente.</p>
+
+        <div style="text-align:center;margin-top:18px;">
+          <button class="btn-ghost" onclick="restart()" style="height:38px;"><i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i> Refazer simulação</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal sucesso especialista -->
+  <div class="modal-mask" id="successMask" onclick="closeSuccess()"></div>
+  <div class="modal-box" id="successBox" role="dialog">
+    <div class="modal-success-icon"><i data-lucide="check"></i></div>
+    <h3>Tudo certo, <span id="successName">parceiro</span>!</h3>
+    <p>Um dos nossos especialistas vai te chamar no WhatsApp em até 1 hora útil com os próximos passos.</p>
+    <button class="btn-primary" onclick="closeSuccess()">Entendi <i data-lucide="check"></i></button>
+  </div>
+
+  <script>
+    // ─── STATE ─────────────────────────────────
+    const state = {
+      cep: '',
+      cidade: '',
+      uf: '',
+      imovel: '',
+      imovelMult: 1,
+      kwh: 0,
+      valor: 0,
+      telhado: '',
+      orientacao: '',
+      orientacaoMult: 0.93,
+      inclinacao: '',
+      inclinacaoMult: 1,
+      sombra: 'nenhuma',
+      sombraMult: 1
+    };
+
+    // ─── HSP médio Brasil por região (kWh/m²/dia) ───
+    // Aproximação por dígito inicial do CEP
+    const HSP_REGIAO = {
+      '0': { hsp: 4.5, regiao: 'SP capital', uf: 'SP', tarifa: 0.93 },
+      '1': { hsp: 4.7, regiao: 'SP interior', uf: 'SP', tarifa: 0.85 },
+      '2': { hsp: 4.5, regiao: 'RJ', uf: 'RJ', tarifa: 0.95 },
+      '3': { hsp: 4.6, regiao: 'MG/ES', uf: 'MG', tarifa: 0.92 },
+      '4': { hsp: 5.5, regiao: 'Bahia', uf: 'BA', tarifa: 0.88 },
+      '5': { hsp: 5.6, regiao: 'PE/AL/PB/RN/SE', uf: 'PE', tarifa: 0.84 },
+      '6': { hsp: 5.4, regiao: 'CE/PI/MA/PA/AM/AP', uf: 'CE', tarifa: 0.83 },
+      '7': { hsp: 5.0, regiao: 'DF/GO/TO/RO/AC/MT', uf: 'DF', tarifa: 0.86 },
+      '8': { hsp: 4.5, regiao: 'PR/SC', uf: 'PR', tarifa: 0.87 },
+      '9': { hsp: 4.3, regiao: 'RS', uf: 'RS', tarifa: 0.83 }
+    };
+
+    function fmtBRL(v) {
+      return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+    }
+    function fmtBRLPrecise(v) {
+      return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 });
+    }
+
+    // ─── Init ──────────────────────────────────
+    lucide.createIcons();
+
+    // CEP mask
+    document.getElementById('cep').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+      if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+      e.target.value = v;
+      state.cep = v;
+      validateStep1();
+    });
+
+    // Tel mask
+    document.getElementById('specTel').addEventListener('input', e => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 2 && v.length <= 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+      else if (v.length > 6 && v.length <= 10) v = '(' + v.slice(0,2) + ') ' + v.slice(2,6) + '-' + v.slice(6);
+      else if (v.length > 10) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+      e.target.value = v;
+    });
+
+    // Choice grids
+    document.querySelectorAll('.choice-grid').forEach(grid => {
+      const group = grid.dataset.group;
+      grid.querySelectorAll('.choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          grid.querySelectorAll('.choice').forEach(b => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          if (group === 'imovel') {
+            state.imovel = btn.dataset.value;
+            state.imovelMult = parseFloat(btn.dataset.mult);
+            validateStep1();
+          } else if (group === 'telhado') {
+            state.telhado = btn.dataset.value;
+            validateStep3();
+          } else if (group === 'orientacao') {
+            state.orientacao = btn.dataset.value;
+            state.orientacaoMult = parseFloat(btn.dataset.mult);
+            validateStep3();
+          }
+        });
+      });
+    });
+
+    // Step 2 inputs
+    document.getElementById('kwh').addEventListener('input', e => {
+      state.kwh = parseFloat(e.target.value) || 0;
+      validateStep2();
+    });
+    document.getElementById('valor').addEventListener('input', e => {
+      state.valor = parseFloat(e.target.value) || 0;
+      validateStep2();
+    });
+
+    // Step 3 selects
+    document.getElementById('inclinacao').addEventListener('change', e => {
+      state.inclinacao = e.target.value;
+      const opt = e.target.options[e.target.selectedIndex];
+      state.inclinacaoMult = parseFloat(opt.dataset.mult) || 1;
+      validateStep3();
+    });
+    document.getElementById('sombra').addEventListener('change', e => {
+      state.sombra = e.target.value;
+      const opt = e.target.options[e.target.selectedIndex];
+      state.sombraMult = parseFloat(opt.dataset.mult) || 1;
+    });
+
+    // ─── Validation ────────────────────────────
+    function validateStep1() {
+      const ok = /^\d{5}-\d{3}$/.test(state.cep) && !!state.imovel;
+      document.getElementById('btnNext1').disabled = !ok;
+    }
+    function validateStep2() {
+      const ok = state.kwh > 0 || state.valor > 0;
+      document.getElementById('btnNext2').disabled = !ok;
+    }
+    function validateStep3() {
+      const ok = !!state.telhado && !!state.orientacao && !!state.inclinacao;
+      document.getElementById('btnCalc').disabled = !ok;
+    }
+
+    // ─── Step navigation ───────────────────────
+    function goToStep(n) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('is-active'));
+      document.querySelector(`.form-step[data-step="${n}"]`).classList.add('is-active');
+      document.querySelectorAll('.step-dot').forEach(d => {
+        const num = parseInt(d.dataset.step);
+        d.classList.remove('is-active','is-done');
+        if (num === n) d.classList.add('is-active');
+        else if (num < n) d.classList.add('is-done');
+      });
+      window.scrollTo({ top: document.querySelector('.stepper').offsetTop - 24, behavior: 'smooth' });
+      setTimeout(() => lucide.createIcons(), 50);
+    }
+
+    // ─── Calculation ───────────────────────────
+    function runCalc() {
+      // Hide form steps, show loading
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('is-active'));
+      document.getElementById('loadingState').classList.add('is-active');
+
+      // Update stepper
+      document.querySelectorAll('.step-dot').forEach(d => {
+        const num = parseInt(d.dataset.step);
+        d.classList.remove('is-active','is-done');
+        if (num < 4) d.classList.add('is-done');
+        else if (num === 4) d.classList.add('is-active');
+      });
+
+      // Animated progress + step labels
+      const steps = [
+        { t: 'Consultando irradiação da sua região…', p: 25 },
+        { t: 'Cruzando seu consumo com o sistema ideal…', p: 55 },
+        { t: 'Calculando economia e payback…', p: 85 },
+        { t: 'Pronto! Veja os resultados abaixo…', p: 100 }
+      ];
+      let i = 0;
+      const fill = document.getElementById('progressFill');
+      const title = document.getElementById('loadingTitle');
+      const tick = () => {
+        if (i >= steps.length) {
+          // Done
+          document.getElementById('loadingState').classList.remove('is-active');
+          renderResult();
+          return;
+        }
+        title.textContent = steps[i].t;
+        fill.style.width = steps[i].p + '%';
+        i++;
+        setTimeout(tick, 650);
+      };
+      fill.style.width = '0%';
+      tick();
+    }
+
+    function renderResult() {
+      // ─── Cálculo real ───
+      const cepDigit = state.cep[0] || '0';
+      const region = HSP_REGIAO[cepDigit] || HSP_REGIAO['0'];
+
+      // Consumo real (kWh) — se só veio R$, deriva via tarifa local
+      let kwh = state.kwh;
+      if (!kwh && state.valor) kwh = state.valor / region.tarifa;
+      kwh = Math.max(50, kwh); // floor
+
+      // Tarifa
+      const tarifa = region.tarifa;
+
+      // Eficiência do sistema (perdas inversor, cabos, sujeira)
+      const efSistema = 0.78;
+
+      // Multiplier composto (orientação × inclinação × sombra × imóvel)
+      const multTotal = state.orientacaoMult * state.inclinacaoMult * state.sombraMult * state.imovelMult;
+
+      // Potência necessária (kWp) = kWh mes / (HSP * 30 * eficiencia * mult)
+      const kWp = kwh / (region.hsp * 30 * efSistema * multTotal);
+
+      // Painéis de 565W
+      const paineis = Math.ceil(kWp / 0.565);
+      const kWpReal = paineis * 0.565;
+
+      // Investimento aproximado: R$3.500/kWp (chave na mão) — ajusta um pouco por porte
+      let custoPorKwp = 3500;
+      if (kWpReal > 8) custoPorKwp = 3300;
+      if (kWpReal > 20) custoPorKwp = 3100;
+      const investimento = Math.round(kWpReal * custoPorKwp);
+
+      // Geração mensal (kWh)
+      const geracaoMes = kWpReal * region.hsp * 30 * efSistema * multTotal;
+      const economiaMes = Math.min(geracaoMes, kwh) * tarifa;
+      const economiaAno = economiaMes * 12;
+      const economia25 = economiaAno * 25;
+
+      // Payback (anos)
+      const payback = investimento / economiaAno;
+
+      // Parcela financiamento (60 meses, juros 1.49% a.m. ~ taxa solar comum)
+      const i = 0.0149, n = 60;
+      const parcela = investimento * (i * Math.pow(1+i, n)) / (Math.pow(1+i, n) - 1);
+
+      // % redução conta
+      const reducao = Math.min(95, Math.round((Math.min(geracaoMes, kwh) / kwh) * 100));
+
+      // Impacto ambiental
+      const co2Ano = Math.round(geracaoMes * 12 * 0.0817); // kg CO2 / kWh (mix BR)
+      const arvores = Math.round(co2Ano / 22); // ~22kg CO2 absorvido por árvore/ano
+      const carros = Math.max(1, Math.round(co2Ano / 2400)); // ~2.4t CO2 por carro/ano
+
+      // Área (m²) — painel 565W ≈ 2.6 m²
+      const area = Math.round(paineis * 2.6);
+
+      // ─── DOM ───
+      document.getElementById('resEconomiaMes').innerHTML = `${fmtBRL(economiaMes)}<small>/mês</small>`;
+      document.getElementById('resEconomiaAno').textContent = fmtBRL(economiaAno);
+      document.getElementById('resEconomia25').textContent = fmtBRL(economia25);
+      document.getElementById('resKwp').innerHTML = `${kWpReal.toFixed(2).replace('.', ',')} <small>kWp</small>`;
+      document.getElementById('resPaineis').textContent = `${paineis} painel${paineis > 1 ? 'es' : ''} de 565W`;
+      document.getElementById('resInvest').textContent = fmtBRL(investimento);
+      document.getElementById('resParcela').textContent = fmtBRL(parcela);
+      document.getElementById('resPayback').innerHTML = `${payback.toFixed(1).replace('.', ',')} <small>anos</small>`;
+      document.getElementById('resReducao').textContent = `-${reducao}%`;
+      document.getElementById('resCO2').textContent = `${co2Ano.toLocaleString('pt-BR')} kg de CO₂/ano`;
+      document.getElementById('resCarros').textContent = `${carros} ${carros === 1 ? 'carro' : 'carros'}`;
+      document.getElementById('resArvores').textContent = `${arvores.toLocaleString('pt-BR')} árvores`;
+
+      // Spec
+      document.getElementById('specCidade').textContent = `${region.regiao} · ${region.uf}`;
+      document.getElementById('specHsp').textContent = `${region.hsp.toFixed(1).replace('.', ',')} kWh/m²/dia`;
+      document.getElementById('specConsumo').textContent = `${Math.round(kwh)} kWh`;
+      document.getElementById('specTarifa').textContent = `${fmtBRLPrecise(tarifa)}/kWh`;
+      const tipoNomes = { ceramico:'Cerâmico', metalico:'Metálico', fibrocimento:'Fibrocimento', laje:'Laje', solo:'Solo' };
+      document.getElementById('specTelhado').textContent = `${tipoNomes[state.telhado] || '—'} · voltado para ${state.orientacao === 'naosei' ? 'média estimada' : state.orientacao}`;
+      document.getElementById('specGeracao').textContent = `${Math.round(geracaoMes).toLocaleString('pt-BR')} kWh/mês`;
+      document.getElementById('specArea').textContent = `${area} m²`;
+
+      // Show
+      document.getElementById('resultState').classList.add('is-active');
+      lucide.createIcons();
+    }
+
+    function restart() {
+      // Reset state (keep CEP if user wants)
+      ['kwh','valor','specNome','specTel'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      document.querySelectorAll('.choice').forEach(c => c.classList.remove('is-selected'));
+      Object.assign(state, { imovel:'', imovelMult:1, kwh:0, valor:0, telhado:'', orientacao:'', orientacaoMult:0.93, inclinacao:'', inclinacaoMult:1, sombra:'nenhuma', sombraMult:1 });
+      document.getElementById('inclinacao').value = '';
+      document.getElementById('sombra').value = 'nenhuma';
+      document.getElementById('resultState').classList.remove('is-active');
+      goToStep(1);
+      validateStep1(); validateStep2(); validateStep3();
+    }
+
+    function sendSpecialist() {
+      const nome = document.getElementById('specNome').value.trim();
+      const tel = document.getElementById('specTel').value.replace(/\D/g,'');
+      if (!nome || !tel || tel.length < 10) {
+        alert('Preencha seu nome e WhatsApp.');
+        return;
+      }
+      document.getElementById('successName').textContent = nome.split(' ')[0];
+      document.getElementById('successMask').classList.add('open');
+      document.getElementById('successBox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+    function closeSuccess() {
+      document.getElementById('successMask').classList.remove('open');
+      document.getElementById('successBox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ESC fecha modal
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('successBox').classList.contains('open')) closeSuccess();
+    });
+  </script>
+
+</body>
+</html>

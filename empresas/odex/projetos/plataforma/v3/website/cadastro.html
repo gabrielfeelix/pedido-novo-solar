@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base href="/odex/plataforma/v2/website/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - Odex Integrador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --blue: #005aff;
+      --blue-hover: #0046c9;
+      --blue-2: #0d1d52;
+      --ink: #151d29;
+      --muted: #5a616f;
+      --line: #e5ebf4;
+      --soft: #f8fafc;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: "Inter", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(0, 90, 255, 0.08), transparent 28%),
+        radial-gradient(circle at 88% 92%, rgba(255, 178, 29, 0.08), transparent 24%),
+        #f1f5f9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; transition: color 150ms; }
+    button, input, select { font: inherit; outline: none; }
+    button { cursor: pointer; }
+
+    .login-shell {
+      width: min(1120px, 100%);
+      min-height: 720px;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(13, 29, 82, 0.04);
+      border-radius: var(--radius-xl);
+      background: white;
+      box-shadow: 0 24px 64px rgba(13, 29, 82, 0.08), 0 4px 16px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Left Panel - Brand */
+    .brand-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px 48px;
+      color: white;
+      background: linear-gradient(135deg, #0d1d52, #003db3);
+      overflow: hidden;
+    }
+
+    .brand-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.06)"/></svg>');
+      mask-image: radial-gradient(circle at top left, black, transparent 80%);
+      pointer-events: none;
+    }
+    
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -20%;
+      right: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(0, 90, 255, 0.4), transparent 60%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .brand-panel > * { position: relative; z-index: 1; }
+
+    .spark {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 40px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .brand-panel h1 {
+      margin: 0;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .brand-panel p {
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .brand-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 64px;
+    }
+
+    /* Right Panel - Form */
+    .form-panel {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px;
+      background: white;
+      overflow-y: auto;
+    }
+
+    .form-card { width: 100%; max-width: 540px; }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .topline img { width: 120px; height: auto; }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 99px;
+      margin-left: -12px;
+      transition: background 150ms, color 150ms;
+    }
+    .back-link:hover { background: var(--soft); color: var(--ink); }
+
+    .form-card h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    /* Steps Indicator */
+    .step-indicator {
+      margin: 24px 0 32px;
+    }
+    .step-text {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .step-text strong {
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .step-text span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      width: 50%;
+      transition: width 300ms ease;
+    }
+
+    /* Grid Layout for Fields */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .full-width { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; }
+    .field label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .field label span.req { color: var(--red); }
+    .field label i { color: var(--muted); cursor: help; }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+    }
+
+    .input-wrap:focus-within {
+      background: white;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 90, 255, 0.1);
+    }
+
+    .input-wrap input, .input-wrap select {
+      width: 100%;
+      height: 46px;
+      background: transparent;
+      border: none;
+      padding: 0 16px;
+      color: var(--ink);
+      font-size: 14px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .input-wrap select { cursor: pointer; padding-right: 40px; }
+    .select-icon {
+      position: absolute;
+      right: 14px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    /* Reveal Password Icon */
+    .input-wrap .reveal-btn {
+      position: absolute;
+      right: 14px;
+      background: none;
+      border: none;
+      padding: 4px;
+      color: var(--muted);
+      pointer-events: auto;
+      display: grid;
+      place-items: center;
+    }
+    .input-wrap .reveal-btn:hover { color: var(--ink); }
+
+    /* Checkbox */
+    .checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 24px 0;
+    }
+    .checkbox-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+    .checkbox-wrap label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .checkbox-wrap a { color: var(--blue); font-weight: 600; }
+    .checkbox-wrap a:hover { text-decoration: underline; }
+
+    /* Section block inside form */
+    .section-block {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin: 32px 0 24px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Actions */
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+    
+    .btn-outline, .btn-solid {
+      flex: 1;
+      height: 48px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 150ms ease;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid var(--blue);
+      color: var(--blue);
+    }
+    .btn-outline:hover { background: var(--soft); }
+
+    .btn-solid {
+      background: var(--blue);
+      border: 0;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 90, 255, 0.2);
+    }
+    .btn-solid:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 90, 255, 0.25); }
+    .btn-solid:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(0, 90, 255, 0.15); }
+
+    .step-container { display: none; animation: fadeIn 300ms ease; }
+    .step-container.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 960px) {
+      .login-shell { grid-template-columns: 1fr; min-height: auto; }
+      .brand-panel { padding: 40px 32px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+      .brand-panel h1 { font-size: 28px; }
+      .brand-footer { margin-top: 32px; }
+      .form-panel { padding: 40px 24px; }
+    }
+    @media (max-width: 600px) {
+      body { padding: 16px; }
+      .form-grid { grid-template-columns: 1fr; gap: 16px; }
+      .form-actions { flex-direction: column-reverse; }
+      .btn-outline, .btn-solid { width: 100%; flex: none; }
+      .section-block { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <!-- Brand Sidebar -->
+    <section class="brand-panel">
+      <div>
+        <div class="spark"><i data-lucide="zap" size="28" color="white"></i></div>
+        <h1>Torne-se um parceiro de energia.</h1>
+        <p>Junte-se à maior rede de integradores solares. Tenha acesso a produtos das melhores marcas, orçamentos rápidos e logística especializada.</p>
+      </div>
+      <div class="brand-footer">
+        <span>Odex Distribuidor Solar</span>
+        <span>Energia para bons negócios</span>
+      </div>
+    </section>
+
+    <!-- Form Area -->
+    <section class="form-panel">
+      <div class="form-card">
+        <div class="topline">
+          <a class="back-link" href="login.html"><i data-lucide="arrow-left" size="16"></i> Voltar ao login</a>
+          <img src="assets/logo-odex.png" alt="Odex">
+        </div>
+
+        <h2>Cadastro</h2>
+
+        <!-- Step 1 -->
+        <div id="step1" class="step-container active">
+          <div class="step-indicator">
+            <div class="step-text">
+              <strong>Passo 1 de 2</strong>
+              <span>Vai levar menos de 3 minutos!</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 50%;"></div>
+            </div>
+          </div>
+
+          <form>
+            <div class="form-grid">
+              <div class="field full-width">
+                <label>Nome <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="text" placeholder="Digite seu nome completo">
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Como conheceu a ODEX? <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <select>
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    <option value="google">Busca no Google</option>
+                    <option value="social">Redes Sociais</option>
+                    <option value="indication">Indicação</option>
+                    <option value="other">Outros</option>
+                  </select>
+                  <i data-lucide="chevron-down" size="16" class="select-icon"></i>
+                </div>
+              </div>
+
+              <div class="field full-width">
+                <label>E-mail <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="email" placeholder="seu@email.com.br">
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Telefone <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="tel" placeholder="(00) 00000-0000">
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Vendedor <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <select>
+                    <option value="sem_vendedor" selected>Sem Vendedor</option>
+                    <option value="joao">João Silva</option>
+                    <option value="maria">Maria Souza</option>
+                  </select>
+                  <i data-lucide="chevron-down" size="16" class="select-icon"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="checkbox-wrap">
+              <input type="checkbox" id="terms">
+              <label for="terms">Li e aceito os <a href="#">termos e condições de uso da plataforma</a>.</label>
+            </div>
+
+            <div class="form-actions">
+              <a href="login.html" class="btn-outline">Cancelar</a>
+              <button type="button" class="btn-solid" id="nextBtn">Prosseguir <i data-lucide="arrow-right" size="18" style="margin-left:8px"></i></button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="step2" class="step-container">
+          <div class="step-indicator">
+            <div class="step-text">
+              <strong>Passo 2 de 2</strong>
+              <span>Oba! Agora vai levar menos de 2 minutos!</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <form>
+            <div class="field full-width" style="margin-bottom: 8px;">
+              <label>CNPJ <span class="req">*</span> <i data-lucide="info" size="14" title="Obrigatório para emissão de notas"></i></label>
+              <div class="input-wrap">
+                <input type="text" placeholder="00.000.000/0000-00">
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-title">Dados do representante legal da empresa</div>
+              <div class="form-grid">
+                <div class="field full-width">
+                  <label>Nome completo <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input type="text" placeholder="Nome do representante">
+                  </div>
+                </div>
+                <div class="field full-width">
+                  <label>CPF <span class="req">*</span></label>
+                  <div class="input-wrap">
+                    <input type="text" placeholder="000.000.000-00">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label>Senha <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="password" id="pass1" placeholder="Crie uma senha">
+                  <button type="button" class="reveal-btn" onclick="togglePass('pass1', 'eye1')">
+                    <i data-lucide="eye" size="18" id="eye1"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Confirmar Senha <span class="req">*</span></label>
+                <div class="input-wrap">
+                  <input type="password" id="pass2" placeholder="Confirme a senha">
+                  <button type="button" class="reveal-btn" onclick="togglePass('pass2', 'eye2')">
+                    <i data-lucide="eye" size="18" id="eye2"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-outline" id="prevBtn"><i data-lucide="arrow-left" size="18" style="margin-right:8px"></i> Voltar</button>
+              <button type="button" class="btn-solid" id="finishBtn">Finalizar Cadastro</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+
+    nextBtn.addEventListener('click', () => {
+      step1.classList.remove('active');
+      step2.classList.add('active');
+      // scroll back to top of form smoothly
+      document.querySelector('.form-panel').scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    prevBtn.addEventListener('click', () => {
+      step2.classList.remove('active');
+      step1.classList.add('active');
+      document.querySelector('.form-panel').scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Toggle password visibility
+    window.togglePass = function(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      
+      const iconName = type === 'password' ? 'eye' : 'eye-off';
+      icon.setAttribute('data-lucide', iconName);
+      lucide.createIcons({ icons: { Eye: lucide.icons.Eye, EyeOff: lucide.icons.EyeOff } });
+    }
+  </script>
+</body>
+</html>

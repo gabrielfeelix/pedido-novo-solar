@@ -74,8 +74,8 @@
           "slug": "plataforma",
           "name": "Plataforma ODEX",
           "status": "validacao",
-          "handoffUrl": "/odex/plataforma/v2",
-          "selectedPrototypeId": "odex-plataforma-v2",
+          "handoffUrl": "/odex/plataforma/v3",
+          "selectedPrototypeId": "odex-plataforma-v3",
           "prototypes": [
             {
               "id": "odex-plataforma-v1",
@@ -95,7 +95,17 @@
               "url": "/odex/plataforma/v2",
               "source": "empresas/odex/projetos/plataforma/v2",
               "notes": "Versao atual da plataforma com Central de Ajuda, Premio Venda Direta, calculadora compartilhavel, chat com a De (IA), Super Admin com CRUD de artigos e website publico integrado.",
-              "createdAt": "2026-05-11",
+              "createdAt": "2026-05-11"
+            },
+            {
+              "id": "odex-plataforma-v3",
+              "name": "Plataforma ODEX",
+              "version": "v3",
+              "slug": "odex-plataforma-v3",
+              "url": "/odex/plataforma/v3",
+              "source": "empresas/odex/projetos/plataforma/v3",
+              "notes": "Iteracao pos-apresentacao Natalia (12/05/2026): logo do integrador na home + orcamento, banner da loja maior, datasheet em destaque no PDP (avaliacoes removidas), area rural km em novo/edicao cliente + endereco + pedido, tab Banners no Super Admin com CRUD e filtros, De (IA) recomendando produtos com adicao real ao carrinho, Monte seu Kit com 4 tipos de projeto (Fotovoltaico, Hibrido com Bateria, BESS, Eletroposto) + categorias Hibrido com Bateria e Eletropostos na Loja.",
+              "createdAt": "2026-05-12",
               "isCurrent": true
             }
           ]

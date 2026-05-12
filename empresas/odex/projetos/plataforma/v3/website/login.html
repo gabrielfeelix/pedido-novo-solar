@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <base href="/odex/plataforma/v2/website/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Odex Integrador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --blue: #005aff;
+      --blue-hover: #0046c9;
+      --blue-2: #0d1d52;
+      --ink: #151d29;
+      --muted: #5a616f;
+      --line: #e5ebf4;
+      --soft: #f8fafc;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: "Inter", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(0, 90, 255, 0.08), transparent 28%),
+        radial-gradient(circle at 88% 92%, rgba(255, 178, 29, 0.08), transparent 24%),
+        #f1f5f9;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; transition: color 150ms; }
+    button, input { font: inherit; outline: none; }
+    button { cursor: pointer; }
+
+    .login-shell {
+      width: min(1120px, 100%);
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      overflow: hidden;
+      border: 1px solid rgba(13, 29, 82, 0.04);
+      border-radius: var(--radius-xl);
+      background: white;
+      box-shadow: 0 24px 64px rgba(13, 29, 82, 0.08), 0 4px 16px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Left Panel - Brand */
+    .brand-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 64px;
+      color: white;
+      background: linear-gradient(135deg, #0d1d52, #003db3);
+      overflow: hidden;
+    }
+
+    /* Refined Overlay Texture/Patterns */
+    .brand-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.06)"/></svg>');
+      mask-image: radial-gradient(circle at top left, black, transparent 80%);
+      pointer-events: none;
+    }
+    
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -20%;
+      right: -20%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(0, 90, 255, 0.4), transparent 60%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .brand-panel > * { position: relative; z-index: 1; }
+
+    .spark {
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 40px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .brand-panel h1 {
+      max-width: 480px;
+      margin: 0;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .brand-panel p {
+      max-width: 420px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .brand-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 64px;
+    }
+    .brand-footer span:last-child {
+      padding-left: 16px;
+      border-left: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Right Panel - Form */
+    .form-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      background: white;
+    }
+
+    .form-card { width: 100%; max-width: 380px; }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .topline img { width: 120px; height: auto; }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 99px;
+      margin-left: -12px;
+      transition: background 150ms, color 150ms;
+    }
+    .back-link:hover { background: var(--soft); color: var(--ink); }
+
+    .form-card h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .hint {
+      margin: 8px 0 32px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Improved Input Container */
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
+    }
+
+    .input-wrap:focus-within {
+      background: white;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 90, 255, 0.1);
+    }
+
+    /* Icon nicely contained */
+    .input-wrap i {
+      position: absolute;
+      left: 14px;
+      color: var(--muted);
+      pointer-events: none;
+      transition: color 200ms ease;
+    }
+
+    .input-wrap:focus-within i { color: var(--blue); }
+
+    .input-wrap input {
+      width: 100%;
+      height: 48px;
+      background: transparent;
+      border: none;
+      padding: 0 16px 0 42px; /* Space for left icon */
+      color: var(--ink);
+      font-size: 14px;
+    }
+    
+    /* Reveal Password Icon */
+    .input-wrap .reveal-btn {
+      position: absolute;
+      right: 14px;
+      left: auto;
+      background: none;
+      border: none;
+      padding: 4px;
+      color: var(--muted);
+      pointer-events: auto;
+      display: grid;
+      place-items: center;
+    }
+    .input-wrap .reveal-btn:hover { color: var(--ink); }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 8px 0 24px;
+    }
+
+    .form-row a {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .form-row a:hover { text-decoration: underline; }
+
+    .login-btn {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      border-radius: var(--radius-md);
+      color: white;
+      background: var(--blue);
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 90, 255, 0.2);
+      transition: background 150ms, transform 150ms, box-shadow 150ms;
+    }
+    .login-btn:hover { background: var(--blue-hover); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 90, 255, 0.25); }
+    .login-btn:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(0, 90, 255, 0.15); }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 32px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--line);
+    }
+    .divider:not(:empty)::before { margin-right: 12px; }
+    .divider:not(:empty)::after { margin-left: 12px; }
+
+    .outline-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      color: var(--ink);
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 150ms, border-color 150ms;
+    }
+    .outline-btn:hover { background: var(--soft); border-color: #cbd5e1; }
+
+    @media (max-width: 900px) {
+      .login-shell { grid-template-columns: 1fr; min-height: auto; }
+      .brand-panel { padding: 40px 32px; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+      .brand-panel h1 { font-size: 32px; }
+      .brand-footer { margin-top: 32px; flex-wrap: wrap; }
+      .form-panel { padding: 40px 24px; }
+    }
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+      .topline { margin-bottom: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <section class="brand-panel">
+      <div>
+        <div class="spark"><i data-lucide="sun-medium" size="28" color="white"></i></div>
+        <h1>Monte kits solares com a Odex.</h1>
+        <p>Acesse sua área de integrador para montar geradores, consultar disponibilidade e transformar projetos em orçamentos com mais agilidade.</p>
+      </div>
+      <div class="brand-footer">
+        <span>Odex Distribuidor Solar</span>
+        <span>Energia para bons negócios</span>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <div class="form-card">
+        <div class="topline">
+          <a class="back-link" href="loja.html"><i data-lucide="arrow-left" size="16"></i> Voltar à loja</a>
+          <img src="assets/logo-odex.png" alt="Odex">
+        </div>
+
+        <h2>Bem-vindo de volta</h2>
+        <p class="hint">Entre com seu e-mail ou CNPJ para acessar.</p>
+
+        <form>
+          <div class="field">
+            <label for="email">E-mail ou CNPJ</label>
+            <div class="input-wrap">
+              <i data-lucide="user" size="18"></i>
+              <input id="email" type="text" autocomplete="username" placeholder="Digite seu acesso">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Senha</label>
+            <div class="input-wrap">
+              <i data-lucide="lock" size="18"></i>
+              <input id="password" type="password" autocomplete="current-password" placeholder="Sua senha secreta">
+              <button type="button" class="reveal-btn" aria-label="Mostrar senha" id="togglePassword">
+                <i data-lucide="eye" size="18" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <a href="#">Esqueci minha senha</a>
+          </div>
+
+          <button class="login-btn" type="button">Entrar na Plataforma</button>
+        </form>
+
+        <div class="divider">Ainda não possui cadastro?</div>
+        
+        <a class="outline-btn" href="cadastro.html">
+          <i data-lucide="briefcase" size="18" style="margin-right: 8px; color: var(--muted);"></i>
+          Quero ser um integrador Odex
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    // Simple script to toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      
+      // We recreate the icon based on state
+      const iconName = type === 'password' ? 'eye' : 'eye-off';
+      eyeIcon.setAttribute('data-lucide', iconName);
+      lucide.createIcons({ icons: { Eye: lucide.icons.Eye, EyeOff: lucide.icons.EyeOff } });
+    });
+  </script>
+</body>
+</html>
