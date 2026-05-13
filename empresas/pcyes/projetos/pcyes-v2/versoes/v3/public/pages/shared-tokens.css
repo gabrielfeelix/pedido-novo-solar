@@ -1,0 +1,83 @@
+/**
+ * PCYES Unified Design Tokens
+ * Shared across all PCYES pages (V2 site + standalone HTML pages)
+ * Ensures visual consistency between the main SPA and injected HTML pages.
+ */
+
+:root,
+#pcyes-influencers,
+#pcyes-fale-conosco,
+#pcyes-reseller-locator,
+.landing-page {
+  /* ── Colors: Dark Mode (default) ── */
+  --p-red-500: #ff2b2e;
+  --p-red-600: #dc1414;
+  --p-red-700: #b81010;
+  --p-red-800: #8a0c0c;
+  --p-red-900: #5c0808;
+  --p-red-glow: rgba(255, 43, 46, 0.15);
+  --p-red-glow-strong: rgba(255, 43, 46, 0.25);
+  --p-red-glow-subtle: rgba(255, 43, 46, 0.08);
+
+  --p-bg-primary: #121212;
+  --p-bg-secondary: #161617;
+  --p-bg-tertiary: #1a1a1c;
+  --p-bg-elevated: #1e1e20;
+  --p-bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --p-text-primary: #ffffff;
+  --p-text-secondary: rgba(255, 255, 255, 0.7);
+  --p-text-muted: rgba(255, 255, 255, 0.5);
+  --p-text-dim: rgba(255, 255, 255, 0.35);
+  --p-text-subtle: rgba(255, 255, 255, 0.2);
+
+  --p-border-subtle: rgba(255, 255, 255, 0.05);
+  --p-border-default: rgba(255, 255, 255, 0.08);
+  --p-border-hover: rgba(255, 255, 255, 0.15);
+  --p-border-active: rgba(255, 43, 46, 0.4);
+
+  --p-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --p-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --p-shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  --p-radius-sm: 2px;
+  --p-radius: 4px;
+  --p-radius-md: 6px;
+  --p-radius-lg: 8px;
+  --p-radius-xl: 12px;
+  --p-radius-2xl: 16px;
+
+  --p-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --p-font-display: 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Light Mode ── */
+.light #pcyes-influencers,
+.light #pcyes-fale-conosco,
+.light #pcyes-reseller-locator,
+.light .landing-page,
+#pcyes-influencers.light,
+#pcyes-fale-conosco.light,
+#pcyes-reseller-locator.light,
+.landing-page.light {
+  --p-bg-primary: #fafafa;
+  --p-bg-secondary: #f5f5f5;
+  --p-bg-tertiary: #f0f0f0;
+  --p-bg-elevated: #ffffff;
+  --p-bg-overlay: rgba(0, 0, 0, 0.3);
+
+  --p-text-primary: #161616;
+  --p-text-secondary: rgba(22, 22, 22, 0.7);
+  --p-text-muted: rgba(22, 22, 22, 0.5);
+  --p-text-dim: rgba(22, 22, 22, 0.35);
+  --p-text-subtle: rgba(22, 22, 22, 0.2);
+
+  --p-border-subtle: rgba(0, 0, 0, 0.05);
+  --p-border-default: rgba(0, 0, 0, 0.08);
+  --p-border-hover: rgba(0, 0, 0, 0.15);
+  --p-border-active: rgba(255, 43, 46, 0.4);
+
+  --p-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --p-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --p-shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.12);
+}

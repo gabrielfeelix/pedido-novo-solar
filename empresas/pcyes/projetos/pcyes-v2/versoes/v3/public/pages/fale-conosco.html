@@ -1,0 +1,1286 @@
+<!-- IMPORTS DE FONTES (Necessário se o Magento não as tiver nativamente) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ===== MAGENTO-SAFE WRAPPER ===== */
+#pcyes-fale-conosco,
+#pcyes-fale-conosco *,
+#pcyes-fale-conosco *::before,
+#pcyes-fale-conosco *::after {
+  box-sizing: border-box;
+}
+
+#pcyes-fale-conosco {
+  --fc-bg: #0a0a0b;
+  --fc-bg-panel: #18181b;
+  --fc-bg-input: #1d1d1f;
+  --fc-text: #ffffff;
+  --fc-muted: #808080;
+  --fc-border: rgba(255, 255, 255, 0.08);
+  --fc-border-input: rgba(255, 255, 255, 0.12);
+  --fc-accent: #ff0004;
+  --fc-accent-dark: #cc0003;
+  --fc-radius-lg: 24px;
+  --fc-radius-input: 8px;
+  --fc-shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.6);
+
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  background: var(--fc-bg);
+  color: var(--fc-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#pcyes-fale-conosco a { color: inherit; text-decoration: none; }
+#pcyes-fale-conosco button { cursor: pointer; border: none; background: none; font: inherit; }
+#pcyes-fale-conosco input,
+#pcyes-fale-conosco select,
+#pcyes-fale-conosco textarea { font: inherit; margin: 0; }
+#pcyes-fale-conosco img { display: block; max-width: 100%; height: auto; }
+#pcyes-fale-conosco p { margin: 0 0 16px 0; }
+
+/* ── HERO ─────────────────────────────────────────── */
+#pcyes-fale-conosco .fc-hero {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  background: var(--fc-bg);
+  padding: 64px 8vw 90px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+#pcyes-fale-conosco .fc-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 40% 50% at 75% 50%, rgba(255, 0, 4, 0.15) 0%, rgba(255, 0, 4, 0) 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#pcyes-fale-conosco .fc-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+#pcyes-fale-conosco .fc-hero-mascot-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+#pcyes-fale-conosco .fc-hero-mascot {
+  max-width: 55%;
+  height: auto;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4)) brightness(0.88) saturate(0.85);
+  animation: fcFloat 6s ease-in-out infinite;
+}
+
+@keyframes fcFloat {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+#pcyes-fale-conosco .fc-quick-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin-top: 32px;
+}
+
+#pcyes-fale-conosco .fc-quick-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--fc-border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.3s, border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  min-height: 120px;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 0, 4, 0.5);
+  background: rgba(255, 0, 4, 0.07);
+  box-shadow: 0 8px 24px rgba(255, 0, 4, 0.12);
+}
+
+#pcyes-fale-conosco .fc-quick-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover .fc-quick-icon { background: var(--fc-accent); }
+
+#pcyes-fale-conosco .fc-quick-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: #bbb;
+  fill: none;
+  transition: stroke 0.3s;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover .fc-quick-icon svg { stroke: #fff; }
+
+#pcyes-fale-conosco .fc-quick-title {
+  font-weight: 600;
+  font-size: 13px !important;
+  line-height: 1.3;
+  margin: 0;
+}
+
+#pcyes-fale-conosco .fc-quick-desc {
+  font-size: 11px !important;
+  color: #666;
+  line-height: 1.4;
+  transition: color 0.3s;
+  margin: 0;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover .fc-quick-desc { color: #999; }
+
+#pcyes-fale-conosco .fc-quick-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px !important;
+  font-weight: 600;
+  color: rgba(255,0,4,0.85);
+  margin-top: auto;
+  transition: color 0.3s;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover .fc-quick-footer { color: rgba(255,0,4,0.9); }
+
+#pcyes-fale-conosco .fc-quick-footer svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+#pcyes-fale-conosco .fc-quick-card:hover .fc-quick-footer svg { transform: translate(2px, -2px); }
+
+#pcyes-fale-conosco .fc-hero-badge {
+  display: inline-block;
+  background: rgba(255,43,46,0.9);
+  color: #cecece;
+  font-weight: 700;
+  font-size: 13px !important;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+#pcyes-fale-conosco .fc-hero-copy h1 {
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 900;
+  font-size: 64px !important;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 0 22px 0;
+}
+
+#pcyes-fale-conosco .fc-red { color: var(--fc-accent); }
+
+#pcyes-fale-conosco .fc-bar {
+  width: 60px;
+  height: 4px;
+  background: var(--fc-accent);
+  border-radius: 4px;
+  margin-bottom: 28px;
+}
+
+#pcyes-fale-conosco .fc-faq-head .fc-bar {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#pcyes-fale-conosco .fc-hero-desc {
+  font-size: 18px !important;
+  color: #aaaaaa;
+  line-height: 1.75;
+  max-width: 640px;
+  margin: 0;
+}
+
+/* ── HERO DIVIDER ─────────────────────────────────── */
+#pcyes-fale-conosco .fc-hero-divider {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+#pcyes-fale-conosco .fc-hero-divider span {
+  position: relative;
+  display: block;
+  width: min(384px, calc(100% - 32px));
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 43, 46, 0.4) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+#pcyes-fale-conosco .fc-hero-divider span::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 300px;
+  height: 20px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(255, 0, 4, 0.25) 0%, rgba(255, 0, 4, 0.08) 40%, rgba(0, 0, 0, 0) 70%);
+}
+
+/* ── MAIN GRID ────────────────────────────────────── */
+#pcyes-fale-conosco .fc-main-wrapper {
+  padding: 0 4vw;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+#pcyes-fale-conosco .fc-main {
+  border-radius: 32px;
+  padding: 100px 6vw;
+  background: #000;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 80px;
+  align-items: start;
+  width: 100%;
+}
+
+/* ── LEFT COLUMN ─────────────────────────────────── */
+#pcyes-fale-conosco .fc-left {
+  position: sticky;
+  top: 100px;
+  order: 2;
+}
+
+#pcyes-fale-conosco .fc-kicker {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 6px;
+  background: var(--fc-accent);
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 800;
+  font-size: 11px !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 20px 0;
+  box-shadow: 0 0 18px rgba(255, 0, 4, 0.35);
+}
+
+#pcyes-fale-conosco .fc-left h2 {
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 900;
+  font-size: 48px !important;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+}
+
+#pcyes-fale-conosco .fc-left > .fc-bar { margin-bottom: 22px; }
+
+#pcyes-fale-conosco .fc-subtitle {
+  font-size: 17px !important;
+  color: #a3a3a3;
+  line-height: 1.65;
+  margin: 0 0 40px 0;
+}
+
+/* Divider */
+#pcyes-fale-conosco .fc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--fc-border) 60%, transparent);
+  margin-bottom: 32px;
+}
+
+/* Social links */
+#pcyes-fale-conosco .fc-social-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+#pcyes-fale-conosco .fc-social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.25s;
+  text-decoration: none;
+}
+
+#pcyes-fale-conosco .fc-social-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+#pcyes-fale-conosco .fc-social-btn:hover {
+  background: var(--fc-accent);
+  border-color: var(--fc-accent);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+#pcyes-fale-conosco .fc-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+#pcyes-fale-conosco .fc-info-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#pcyes-fale-conosco .fc-info-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+#pcyes-fale-conosco .fc-info-item:hover .fc-info-icon {
+  border-color: rgba(255, 0, 4, 0.4);
+  background: rgba(255, 0, 4, 0.08);
+}
+
+#pcyes-fale-conosco .fc-info-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: #777;
+  fill: none;
+  transition: stroke 0.3s;
+}
+
+#pcyes-fale-conosco .fc-info-item:hover .fc-info-icon svg { stroke: var(--fc-accent); }
+
+#pcyes-fale-conosco .fc-info-label {
+  font-size: 10px !important;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 3px 0;
+}
+
+#pcyes-fale-conosco .fc-info-value {
+  font-size: 15px !important;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+#pcyes-fale-conosco .fc-info-value a { transition: color 0.2s; }
+#pcyes-fale-conosco .fc-info-value a:hover { color: var(--fc-accent); }
+
+#pcyes-fale-conosco .fc-info-sub {
+  display: block;
+  font-size: 13px !important;
+  color: #aaa;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+#pcyes-fale-conosco .fc-info-sub.fc-social-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+}
+
+/* ── FORM PANEL ──────────────────────────────────── */
+#pcyes-fale-conosco .fc-form-panel {
+  background: var(--fc-bg-panel);
+  border: 1px solid var(--fc-border);
+  border-radius: var(--fc-radius-lg);
+  padding: 52px;
+  box-shadow: var(--fc-shadow-panel);
+  position: relative;
+  order: 1;
+}
+
+#pcyes-fale-conosco .fc-form-panel::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.09), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+#pcyes-fale-conosco .fc-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+#pcyes-fale-conosco .fc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#pcyes-fale-conosco .fc-field-full { grid-column: 1 / -1; }
+#pcyes-fale-conosco .fc-field.fc-hidden { display: none !important; }
+
+#pcyes-fale-conosco .fc-label {
+  font-size: 13px !important;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+#pcyes-fale-conosco .fc-required { color: var(--fc-accent); margin-left: 2px; }
+
+#pcyes-fale-conosco .fc-field input,
+#pcyes-fale-conosco .fc-field select,
+#pcyes-fale-conosco .fc-field textarea {
+  background: var(--fc-bg-input);
+  border: 1px solid var(--fc-border-input);
+  border-radius: var(--fc-radius-input);
+  color: #fff;
+  font-size: 15px !important;
+  padding: 14px 18px;
+  outline: none;
+  width: 100%;
+  min-height: 52px; /* Padronizando altura */
+  transition: border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#pcyes-fale-conosco .fc-field input::placeholder,
+#pcyes-fale-conosco .fc-field textarea::placeholder { color: #737373; opacity: 1; }
+
+#pcyes-fale-conosco .fc-field input:focus-visible,
+#pcyes-fale-conosco .fc-field textarea:focus-visible {
+  border-color: rgba(255, 0, 4, 0.5);
+  background: #242426;
+  box-shadow: 0 0 0 4px rgba(255, 0, 4, 0.1);
+}
+
+#pcyes-fale-conosco .fc-field.fc-error input,
+#pcyes-fale-conosco .fc-field.fc-error select,
+#pcyes-fale-conosco .fc-field.fc-error textarea {
+  border-color: rgba(255, 0, 4, 0.8) !important;
+  background: rgba(255, 0, 4, 0.05) !important;
+}
+
+#pcyes-fale-conosco .fc-error-msg {
+  font-size: 11px !important;
+  color: var(--fc-accent);
+  display: none;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+#pcyes-fale-conosco .fc-field.fc-error .fc-error-msg { display: block; }
+
+#pcyes-fale-conosco .fc-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  cursor: pointer;
+  height: 52px;
+  line-height: 1.2;
+}
+
+#pcyes-fale-conosco .fc-field select:focus-visible {
+  border-color: rgba(255, 0, 4, 0.5);
+  background: #242426;
+  box-shadow: none;
+}
+
+#pcyes-fale-conosco .fc-field select option { background: var(--fc-bg-panel); color: #fff; }
+#pcyes-fale-conosco .fc-field textarea { min-height: 140px; resize: vertical; }
+
+#pcyes-fale-conosco .fc-submit {
+  background: var(--fc-accent);
+  color: #fff;
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 800;
+  font-size: 16px !important;
+  width: 100%;
+  padding: 18px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(255, 0, 4, 0.25);
+  position: relative;
+  transition: box-shadow 0.3s ease;
+  margin-top: 8px;
+}
+
+#pcyes-fale-conosco .fc-submit svg { width: 18px; height: 18px; }
+
+#pcyes-fale-conosco .fc-btn-text-inner {
+  position: relative;
+  display: inline-block;
+}
+
+#pcyes-fale-conosco .fc-btn-text-inner::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #fff;
+  transition: width 0.3s ease-in-out;
+}
+
+#pcyes-fale-conosco .fc-submit:hover .fc-btn-text-inner::after {
+  width: 100%;
+}
+
+#pcyes-fale-conosco .fc-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+
+#pcyes-fale-conosco .fc-form-heading {
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 800;
+  font-size: 19px !important;
+  margin: 0 0 4px 0;
+  color: #fff;
+}
+
+#pcyes-fale-conosco .fc-form-subheading {
+  font-size: 14px !important;
+  color: #888;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+#pcyes-fale-conosco .fc-helper {
+  display: block;
+  font-size: 11px !important;
+  color: #666;
+  margin-top: 6px;
+}
+
+#pcyes-fale-conosco .fc-submit-hint {
+  font-size: 12px !important;
+  color: #555;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+#pcyes-fale-conosco .fc-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 64px 24px;
+}
+
+#pcyes-fale-conosco .fc-success.fc-show { display: flex; }
+
+#pcyes-fale-conosco .fc-success-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 0, 4, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+#pcyes-fale-conosco .fc-success-icon svg { width: 30px; height: 30px; stroke: var(--fc-accent); fill: none; }
+
+#pcyes-fale-conosco .fc-success h3 {
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 800;
+  font-size: 29px !important;
+  margin: 0 0 10px 0;
+}
+
+#pcyes-fale-conosco .fc-success p { color: #888; margin: 0; font-size: 16px !important; }
+
+/* ── FAQ ─────────────────────────────────────────── */
+#pcyes-fale-conosco .fc-faq {
+  padding: 72px 8vw;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+#pcyes-fale-conosco .fc-faq-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+#pcyes-fale-conosco .fc-faq-head h2 {
+  font-family: 'Figtree', sans-serif !important;
+  font-weight: 900;
+  font-size: 40px !important;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 16px 0 10px 0;
+}
+
+#pcyes-fale-conosco .fc-faq-desc {
+  color: #666;
+  font-size: 16px !important;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+#pcyes-fale-conosco .fc-faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#pcyes-fale-conosco .fc-faq-item {
+  background: var(--fc-bg-panel);
+  border: 1px solid var(--fc-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#pcyes-fale-conosco .fc-faq-item.fc-open {
+  border-color: rgba(255, 0, 4, 0.35);
+  box-shadow: 0 0 24px rgba(255, 0, 4, 0.07);
+}
+
+#pcyes-fale-conosco .fc-faq-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  text-align: left;
+  gap: 16px;
+  cursor: pointer;
+}
+
+#pcyes-fale-conosco .fc-faq-question {
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #bbb;
+  transition: color 0.2s;
+  line-height: 1.4;
+  margin: 0;
+}
+
+#pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-question { color: #fff; }
+
+#pcyes-fale-conosco .fc-faq-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s;
+}
+
+#pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-icon-wrap { background: var(--fc-accent); }
+
+#pcyes-fale-conosco .fc-faq-icon-wrap svg { width: 14px; height: 14px; stroke: #777; fill: none; transition: stroke 0.25s; }
+#pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-icon-wrap svg { stroke: #fff; }
+
+#pcyes-fale-conosco .fc-plus-v { transition: opacity 0.2s; }
+#pcyes-fale-conosco .fc-faq-item.fc-open .fc-plus-v { opacity: 0; }
+
+#pcyes-fale-conosco .fc-faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.35s ease, opacity 0.3s;
+}
+
+#pcyes-fale-conosco .fc-faq-body-inner { overflow: hidden; }
+#pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-body { grid-template-rows: 1fr; opacity: 1; }
+
+#pcyes-fale-conosco .fc-faq-body p {
+  padding: 0 24px 20px;
+  color: #777;
+  font-size: 15px !important;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1200px) {
+  #pcyes-fale-conosco .fc-hero-copy h1 { font-size: 52px !important; }
+  #pcyes-fale-conosco .fc-left h2 { font-size: 40px !important; }
+}
+
+@media (max-width: 1100px) {
+  #pcyes-fale-conosco .fc-main {
+    grid-template-columns: 1fr; gap: 48px; }
+  #pcyes-fale-conosco .fc-left { display: contents; }
+  #pcyes-fale-conosco .fc-left-header { order: 1; position: relative; top: 0; }
+  #pcyes-fale-conosco .fc-form-panel { order: 2; }
+  #pcyes-fale-conosco .fc-left-info { order: 3; }
+}
+
+@media (max-width: 992px) {
+  #pcyes-fale-conosco .fc-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 48px;
+  }
+  #pcyes-fale-conosco .fc-hero-copy {
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+  }
+  #pcyes-fale-conosco .fc-hero-mascot { max-width: 80%; }
+  #pcyes-fale-conosco .fc-quick-cards {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  #pcyes-fale-conosco .fc-hero-copy h1 { font-size: 40px !important; }
+  #pcyes-fale-conosco .fc-hero-desc { font-size: 16px !important; }
+  #pcyes-fale-conosco .fc-left h2 { font-size: 32px !important; }
+  #pcyes-fale-conosco .fc-faq-head h2 { font-size: 29px !important; }
+  #pcyes-fale-conosco .fc-hero { padding: 48px 5vw 40px; }
+  #pcyes-fale-conosco .fc-main {
+  padding: 60px 5vw; }
+  #pcyes-fale-conosco .fc-main-wrapper {
+    padding: 0 2vw;
+  }
+  #pcyes-fale-conosco .fc-form-panel { padding: 28px 20px; }
+  #pcyes-fale-conosco .fc-form { grid-template-columns: 1fr; }
+  #pcyes-fale-conosco .fc-faq { padding: 56px 5vw; }
+}
+
+@media (max-width: 480px) {
+  #pcyes-fale-conosco .fc-hero-copy h1 { font-size: 35px !important; }
+}
+
+/* ===== LIGHT MODE ===== */
+.light #pcyes-fale-conosco {
+  --fc-bg: #fafafa;
+  --fc-bg-panel: #ffffff;
+  --fc-bg-input: #f5f5f5;
+  --fc-text: #161616;
+  --fc-muted: rgba(22,22,22,0.5);
+  --fc-border: rgba(0,0,0,0.08);
+  --fc-border-input: rgba(0,0,0,0.1);
+  --fc-accent: #dc1414;
+  --fc-accent-dark: #b81010;
+}
+.light #pcyes-fale-conosco .fc-hero { background: #fafafa; }
+.light #pcyes-fale-conosco .fc-hero::before { background: radial-gradient(ellipse 40% 50% at 75% 50%, rgba(220,20,20,0.08) 0%, transparent 60%); }
+.light #pcyes-fale-conosco .fc-quick-card { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+.light #pcyes-fale-conosco .fc-quick-card:hover { border-color: rgba(220,20,20,0.4); background: rgba(220,20,20,0.05); }
+.light #pcyes-fale-conosco .fc-quick-icon { background: #f0f0f0; }
+.light #pcyes-fale-conosco .fc-quick-card:hover .fc-quick-icon { background: #dc1414; }
+.light #pcyes-fale-conosco .fc-quick-desc { color: rgba(22,22,22,0.35); }
+.light #pcyes-fale-conosco .fc-quick-card:hover .fc-quick-desc { color: rgba(22,22,22,0.5); }
+.light #pcyes-fale-conosco .fc-hero-desc { color: rgba(22,22,22,0.5); }
+.light #pcyes-fale-conosco .fc-main { background: #f5f5f5; }
+.light #pcyes-fale-conosco .fc-field input,
+.light #pcyes-fale-conosco .fc-field select,
+.light #pcyes-fale-conosco .fc-field textarea { background: #f5f5f5; border-color: rgba(0,0,0,0.1); color: #161616; }
+.light #pcyes-fale-conosco .fc-field input::placeholder,
+.light #pcyes-fale-conosco .fc-field textarea::placeholder { color: rgba(22,22,22,0.35); }
+.light #pcyes-fale-conosco .fc-label { color: rgba(22,22,22,0.7); }
+.light #pcyes-fale-conosco .fc-form-heading { color: #161616; }
+.light #pcyes-fale-conosco .fc-form-subheading { color: rgba(22,22,22,0.5); }
+.light #pcyes-fale-conosco .fc-info-label { color: rgba(22,22,22,0.5); }
+.light #pcyes-fale-conosco .fc-info-value { color: #161616; }
+.light #pcyes-fale-conosco .fc-info-item:hover .fc-info-icon { border-color: rgba(220,20,20,0.4); background: rgba(220,20,20,0.08); }
+.light #pcyes-fale-conosco .fc-faq-item { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+.light #pcyes-fale-conosco .fc-faq-item.fc-open { border-color: rgba(220,20,20,0.35); }
+.light #pcyes-fale-conosco .fc-faq-question { color: rgba(22,22,22,0.7); }
+.light #pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-question { color: #161616; }
+.light #pcyes-fale-conosco .fc-faq-icon-wrap { background: #f0f0f0; }
+.light #pcyes-fale-conosco .fc-faq-item.fc-open .fc-faq-icon-wrap { background: #dc1414; }
+.light #pcyes-fale-conosco .fc-faq-body p { color: rgba(22,22,22,0.5); }
+.light #pcyes-fale-conosco .fc-success-icon { background: rgba(220,20,20,0.1); }
+
+</style>
+
+<div id="pcyes-fale-conosco">
+  <!-- BLOCO 01 · HERO ──────────────────────────────── -->
+  <section class="fc-hero">
+    <div class="fc-hero-copy">
+      <div class="fc-hero-badge">SUPORTE</div>
+      <h1>Como podemos <span class="fc-red">ajudar?</span></h1>
+      <div class="fc-bar"></div>
+      <p class="fc-hero-desc">
+        Confira os atalhos abaixo e as perguntas frequentes antes de enviar uma solicitação. Muitas dúvidas podem ser resolvidas rapidamente por lá!
+      </p>
+
+      <div class="fc-quick-cards">
+        <a href="https://www.pcyes.com.br/faq" target="_blank" rel="noopener" class="fc-quick-card">
+          <div class="fc-quick-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <span class="fc-quick-title">Perguntas Frequentes</span>
+          <span class="fc-quick-desc">Veja respostas rápidas para as dúvidas mais comuns</span>
+          <span class="fc-quick-footer">
+            Acessar
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </span>
+        </a>
+        <a href="https://www.pcyes.com.br/drivers" target="_blank" rel="noopener" class="fc-quick-card">
+          <div class="fc-quick-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </div>
+          <span class="fc-quick-title">Drivers e Manuais</span>
+          <span class="fc-quick-desc">Baixe drivers e manuais dos produtos PCYES</span>
+          <span class="fc-quick-footer">
+            Acessar
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </span>
+        </a>
+        <a href="https://www.pcyes.com.br/seja-um-influenciador" target="_blank" rel="noopener" class="fc-quick-card">
+          <div class="fc-quick-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 10.26 24 10.26 17.55 16.13 19.64 24.39 12 18.52 4.36 24.39 6.45 16.13 0 10.26 8.91 10.26" fill="none"/>
+              <line x1="16" y1="8" x2="2" y2="22"></line>
+              <line x1="17.5" y1="15" x2="9" y2="6.5"></line>
+            </svg>
+          </div>
+          <span class="fc-quick-title">Seja um Influenciador</span>
+          <span class="fc-quick-desc">Conheça o programa e envie sua inscrição</span>
+          <span class="fc-quick-footer">
+            Acessar
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="fc-hero-mascot-wrap">
+      <img src="https://pcyes-cdn.oderco.com.br/Mascote/mascote2.png" alt="Mascote PCYES" class="fc-hero-mascot" width="600" height="600" fetchpriority="high" />
+    </div>
+  </section>
+
+  <!-- Divisor Hero -->
+  <div class="fc-hero-divider" aria-hidden="true"><span></span></div>
+
+  <!-- BLOCO 02 · FORMULÁRIO + INFOS ───────────────── -->
+  <div class="fc-main-wrapper">
+    <section class="fc-main">
+    <!-- COLUNA ESQUERDA -->
+    <div class="fc-left">
+      <div class="fc-left-header">
+        <h2>PRECISA FALAR COM A GENTE?</h2>
+        <div class="fc-bar"></div>
+        <p class="fc-subtitle">
+          Selecione a categoria correta e preencha os campos. Isso ajuda a encaminhar
+          sua solicitação para o time certo e agiliza o retorno.
+        </p>
+      </div>
+
+      <div class="fc-left-info">
+        <div class="fc-divider"></div>
+
+      <div class="fc-info-list">
+        <div class="fc-info-item">
+          <div class="fc-info-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          <div>
+            <p class="fc-info-label">E-mail Comercial</p>
+            <p class="fc-info-value"><a href="mailto:contato@pcyes.com.br">contato@pcyes.com.br</a></p>
+          </div>
+        </div>
+
+        <div class="fc-info-item">
+          <div class="fc-info-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <p class="fc-info-label">Horário de Atendimento</p>
+            <p class="fc-info-value">
+              Segunda a Sexta
+              <span class="fc-info-sub">08:00 às 18:00</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fc-info-item">
+          <div class="fc-info-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <p class="fc-info-label">Sede Administrativa</p>
+            <p class="fc-info-value">
+              Grupo Oderço — Maringá, PR
+              <span class="fc-info-sub">Av. Paranavaí, 1906 - Parque Industrial Bandeirantes · CEP 87070-130</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="fc-info-item">
+          <div class="fc-info-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+          </div>
+          <div>
+            <p class="fc-info-label">Siga a PCYES</p>
+            <p class="fc-info-value">Redes Sociais</p>
+            <span class="fc-info-sub fc-social-links">
+              <a href="https://www.instagram.com/pcyes/" target="_blank" rel="noopener" class="fc-social-btn" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </a>
+              <a href="https://www.youtube.com/PCYESOFICIAL" target="_blank" rel="noopener" class="fc-social-btn" aria-label="YouTube">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/@pcyes.oficial" target="_blank" rel="noopener" class="fc-social-btn" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              </a>
+              <a href="https://br.linkedin.com/company/pcyes" target="_blank" rel="noopener" class="fc-social-btn" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: formulário -->
+    <div class="fc-form-panel">
+      <div class="fc-success" id="fc-success">
+        <div class="fc-success-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2" fill="var(--fc-accent)" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Mensagem Enviada!</h3>
+        <p>Agradecemos o seu contato. Nossa equipe retornará o mais breve possível.</p>
+      </div>
+
+      <h3 class="fc-form-heading">Não encontrou o que precisa?</h3>
+      <p class="fc-form-subheading">Envie sua solicitação abaixo. Nossa equipe responde em até 24h úteis.</p>
+
+      <form id="fc-form" class="fc-form">
+        <label class="fc-field fc-field-full">
+          <span class="fc-label">Tipo de solicitação <b class="fc-required">*</b></span>
+          <select id="fc-motivo" name="motivo_contato" required>
+            <option value="" disabled selected>Escolha o tipo de solicitação</option>
+            <option value="Duvidas">Dúvidas gerais</option>
+            <option value="Suporte">Suporte técnico</option>
+            <option value="Devolucao_pedido">Trocas, devoluções e pedidos</option>
+            <option value="RMA">Garantia de produto (RMA)</option>
+            <option value="Sugestoes">Sugestões</option>
+          </select>
+          <span class="fc-helper">Escolha a categoria certa para agilizar o atendimento.</span>
+        </label>
+
+        <label class="fc-field fc-field-full fc-hidden" id="fc-nf-group">
+          <span class="fc-label">Número da Nota Fiscal <b class="fc-required">*</b></span>
+          <input type="text" id="fc-nf" name="nota_fiscal" placeholder="Ex: 000.000.000" />
+        </label>
+
+        <label class="fc-field">
+          <span class="fc-label">Nome completo <b class="fc-required">*</b></span>
+          <input type="text" name="nome" placeholder="Como devemos chamá-lo?" autocomplete="name" required />
+        </label>
+
+        <label class="fc-field">
+          <span class="fc-label">Telefone / WhatsApp <b class="fc-required">*</b></span>
+          <input type="tel" name="telefone" placeholder="(00) 00000-0000" autocomplete="tel" required />
+        </label>
+
+        <label class="fc-field fc-field-full">
+          <span class="fc-label">E-mail profissional <b class="fc-required">*</b></span>
+          <input type="email" name="email" placeholder="seu@email.com.br" autocomplete="email" spellcheck="false" required />
+        </label>
+
+        <label class="fc-field fc-field-full">
+          <span class="fc-label">Mensagem <b class="fc-required">*</b></span>
+          <textarea name="mensagem" placeholder="Descreva detalhadamente a sua solicitação…" required></textarea>
+        </label>
+
+        <div class="fc-field-full">
+          <p class="fc-submit-hint">Se sua dúvida não foi respondida nos atalhos ou no FAQ, envie sua solicitação.</p>
+          <button type="submit" class="fc-submit" id="fc-btn">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 3L9 11"/>
+              <path d="M17 3L11.8 17L9 11L3 8.2L17 3Z" fill="currentColor" stroke="none"/>
+            </svg>
+            <span id="fc-btn-text"><span class="fc-btn-text-inner">Enviar Solicitação</span></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+  </div>
+
+  <!-- Divisor entre Seção 2 e FAQ -->
+  <div class="fc-hero-divider" aria-hidden="true"><span></span></div>
+
+  <!-- BLOCO 03 · FAQ ───────────────────────────────── -->
+  <section class="fc-faq">
+    <div class="fc-faq-head">
+      <h2>PERGUNTAS FREQUENTES</h2>
+      <div class="fc-bar"></div>
+      <p class="fc-faq-desc">Antes de enviar uma mensagem, confira se sua dúvida já está respondida aqui. A maioria das questões sobre garantia, drivers e revendas tem resposta imediata.</p>
+    </div>
+    <div class="fc-faq-list" id="fc-faq-list"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var faqs = [
+    {
+      q: 'Como faço para solicitar a garantia de um produto?',
+      a: 'Entre em contato conosco através do e-mail ou WhatsApp, informando o seu caso. Será necessário enviar a Nota Fiscal de compra legível e um breve vídeo demonstrando o problema do produto para nossa análise prévia.'
+    },
+    {
+      q: 'Como faço para solicitar orçamento de produtos em grandes quantidades?',
+      a: 'Para compras em volume, solicitamos que nos envie o seu CNPJ junto com os modelos e quantidades desejados, para que possamos direcionar o seu atendimento ao setor comercial responsável.'
+    },
+    {
+      q: 'Após o envio do produto para análise, qual o prazo de retorno?',
+      a: 'Assim que recebemos o produto em nosso centro de triagem, temos um prazo de 5 a 10 dias úteis para a conclusão dos testes e retorno do laudo técnico.'
+    },
+    {
+      q: 'Como funciona a garantia estendida?',
+      a: 'Houve uma alteração em nossa política. Atualmente, alguns modelos de placas de vídeo já possuem a garantia de fábrica de 2 anos a partir da data de compra ou emissão da nota fiscal (já englobando os 90 dias de garantia legal), sem a necessidade de registro no site.'
+    },
+    {
+      q: 'Onde posso encontrar peças de reposição para minha cadeira PCYES?',
+      a: 'Não comercializamos peças de reposição individualmente. Orientamos que entre em contato com nosso atendimento para verificarmos a disponibilidade em estoque. Caso o produto esteja fora do período de garantia, o envio pode ser feito mediante o pagamento do frete pelo cliente.'
+    },
+    {
+      q: 'O volante W270 necessita de instalação de drivers?',
+      a: 'Não, o volante W270 é Plug and Play e não possui drivers específicos para instalação.'
+    },
+    {
+      q: 'Como entro em contato pelo WhatsApp?',
+      a: 'Nosso atendimento via WhatsApp funciona através do número (44) 2101-1428.'
+    },
+    {
+      q: 'A PCYES possui assistência técnica externa ou autorizada?',
+      a: 'Não possuímos assistências técnicas externas ou autorizadas. Todo o processo de garantia e suporte é realizado diretamente com a nossa equipe.'
+    },
+    {
+      q: 'A PCYES possui alguma loja física?',
+      a: 'Não possuímos lojas físicas próprias. Nossos produtos são comercializados através de nossos parceiros e revendedores oficiais.'
+    }
+  ];
+
+  var faqList = document.getElementById('fc-faq-list');
+
+  faqs.forEach(function (faq) {
+    var item = document.createElement('div');
+    item.className = 'fc-faq-item';
+    item.innerHTML =
+      '<button class="fc-faq-btn" type="button">' +
+        '<span class="fc-faq-question">' + faq.q + '</span>' +
+        '<div class="fc-faq-icon-wrap">' +
+          '<svg aria-hidden="true" viewBox="0 0 14 14" stroke-width="2" stroke-linecap="round">' +
+            '<line class="fc-plus-v" x1="7" y1="1" x2="7" y2="13"/>' +
+            '<line x1="1" y1="7" x2="13" y2="7"/>' +
+          '</svg>' +
+        '</div>' +
+      '</button>' +
+      '<div class="fc-faq-body"><div class="fc-faq-body-inner"><p>' + faq.a + '</p></div></div>';
+
+    item.querySelector('.fc-faq-btn').addEventListener('click', function () {
+      var isOpen = item.classList.contains('fc-open');
+      faqList.querySelectorAll('.fc-faq-item').forEach(function (el) {
+        el.classList.remove('fc-open');
+      });
+      if (!isOpen) item.classList.add('fc-open');
+    });
+
+    faqList.appendChild(item);
+  });
+
+  var firstItem = faqList.querySelector('.fc-faq-item');
+  if (firstItem) firstItem.classList.add('fc-open');
+
+  var motivo  = document.getElementById('fc-motivo');
+  var nfGroup = document.getElementById('fc-nf-group');
+  var nfInput = document.getElementById('fc-nf');
+
+  motivo.addEventListener('change', function () {
+    var needs = motivo.value === 'Devolucao_pedido' || motivo.value === 'RMA';
+    nfGroup.classList.toggle('fc-hidden', !needs);
+    nfInput.required = needs;
+    if (!needs) nfInput.value = '';
+  });
+
+  var telefoneInput = document.querySelector('input[name="telefone"]');
+  if (telefoneInput) {
+    telefoneInput.addEventListener('input', function(e) {
+      var val = e.target.value.replace(/\D/g, '').substring(0, 11);
+      if (val.length === 0) e.target.value = '';
+      else if (val.length <= 2) e.target.value = '(' + val;
+      else if (val.length <= 6) e.target.value = '(' + val.substring(0,2) + ') ' + val.substring(2);
+      else if (val.length <= 10) e.target.value = '(' + val.substring(0,2) + ') ' + val.substring(2,6) + '-' + val.substring(6);
+      else e.target.value = '(' + val.substring(0,2) + ') ' + val.substring(2,7) + '-' + val.substring(7);
+    });
+  }
+
+  var nfInp = document.getElementById('fc-nf');
+  if (nfInp) {
+    nfInp.addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/\D/g, '').substring(0, 15);
+    });
+  }
+
+  document.querySelectorAll('#fc-form .fc-field').forEach(function(el) {
+     if (!el.querySelector('.fc-error-msg')) {
+         var msg = document.createElement('span');
+         msg.className = 'fc-error-msg';
+         msg.textContent = 'Campo obrigatório / inválido';
+         el.appendChild(msg);
+     }
+  });
+
+  var form      = document.getElementById('fc-form');
+  var btn       = document.getElementById('fc-btn');
+  var btnText   = document.getElementById('fc-btn-text');
+  var successEl = document.getElementById('fc-success');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    document.querySelectorAll('.fc-error').forEach(function(el) { el.classList.remove('fc-error'); });
+
+    var isValid = true;
+    form.querySelectorAll('input, select, textarea').forEach(function(input) {
+       if (input.required && !input.value.trim() && input.parentElement.style.display !== 'none') {
+           isValid = false;
+           input.closest('.fc-field').classList.add('fc-error');
+       }
+    });
+
+    if (telefoneInput && telefoneInput.value && telefoneInput.value.replace(/\D/g, '').length < 10) {
+        isValid = false;
+        telefoneInput.closest('.fc-field').classList.add('fc-error');
+        telefoneInput.closest('.fc-field').querySelector('.fc-error-msg').textContent = 'Telefone incompleto';
+    } else if (telefoneInput && telefoneInput.parentElement.classList.contains('fc-error')) {
+        telefoneInput.closest('.fc-field').querySelector('.fc-error-msg').textContent = 'Campo obrigatório / inválido';
+    }
+
+    if (!isValid) return;
+
+    btnText.innerHTML = '<span class="fc-btn-text-inner">Enviando…</span>';
+    btn.disabled = true;
+
+    setTimeout(function () {
+      form.style.display = 'none';
+      successEl.style.opacity = 0;
+      successEl.classList.add('fc-show');
+      setTimeout(() => { successEl.style.transition = 'opacity 0.6s'; successEl.style.opacity = 1; }, 50);
+
+      setTimeout(function () {
+        successEl.classList.remove('fc-show');
+        form.style.display = '';
+        form.reset();
+        nfGroup.classList.add('fc-hidden');
+        nfInput.required    = false;
+        btnText.innerHTML = '<span class="fc-btn-text-inner">Enviar Solicitação</span>';
+        btn.disabled        = false;
+      }, 5000);
+    }, 1500);
+  });
+
+  form.querySelectorAll('input, select, textarea').forEach(function(input) {
+      input.addEventListener('input', function() {
+         var field = input.closest('.fc-field');
+         if (field && field.classList.contains('fc-error')) field.classList.remove('fc-error');
+      });
+  });
+
+})();
+</script>

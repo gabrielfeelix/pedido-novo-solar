@@ -1,0 +1,1052 @@
+<!-- IMPORTS DE FONTES -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+    /* ===================================================
+       PCYES x MARINGÁ FC COLLAB
+       Todos os estilos isolados sob #pcyes-maringa-collab
+    =================================================== */
+
+    #pcyes-maringa-collab,
+    #pcyes-maringa-collab *,
+    #pcyes-maringa-collab *::before,
+    #pcyes-maringa-collab *::after {
+      box-sizing: border-box;
+    }
+
+    #pcyes-maringa-collab {
+      --mc-green:        #00A859;
+      --mc-black:        #000000;
+      --mc-bg-dark:      #060606;
+      
+      --font-inter:      'Inter', sans-serif;
+      --font-figtree:    'Figtree', sans-serif;
+
+      --radius-btn:      1000px;
+      --radius-card:     8px;
+
+      background-color: var(--mc-black);
+      color: #ffffff;
+      font-family: var(--font-inter);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    #pcyes-maringa-collab img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #pcyes-maringa-collab a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #pcyes-maringa-collab h1, 
+    #pcyes-maringa-collab h2, 
+    #pcyes-maringa-collab h3, 
+    #pcyes-maringa-collab h4 {
+      font-family: var(--font-figtree);
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    #pcyes-maringa-collab .mc-green-text { color: var(--mc-green); }
+    #pcyes-maringa-collab .mc-uppercase { text-transform: uppercase; }
+    
+    #pcyes-maringa-collab .mc-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-container { padding: 0 40px; }
+    }
+
+    /* Scroll Progress Bar */
+    #mc-scroll-progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00A859 0%, #00D46A 100%);
+      transform-origin: left;
+      transform: scaleX(0);
+      z-index: 9999;
+      transition: transform 0.1s ease-out;
+    }
+
+    /* Buttons */
+    #pcyes-maringa-collab .mc-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 32px;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-inter);
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-align: center;
+      border: none;
+    }
+    #pcyes-maringa-collab .mc-btn-white {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    #pcyes-maringa-collab .mc-btn-white:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #000000;
+      transform: scale(1.02);
+    }
+    #pcyes-maringa-collab .mc-btn-outline {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+    #pcyes-maringa-collab .mc-btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+    @media (max-width: 768px) {
+      #pcyes-maringa-collab .mc-btn { width: 100%; padding: 16px; }
+    }
+
+    /* Base Animations */
+    #pcyes-maringa-collab .mc-fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    #pcyes-maringa-collab .mc-fade-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #pcyes-maringa-collab .mc-fade-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    #pcyes-maringa-collab .mc-fade-left.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    #pcyes-maringa-collab .mc-fade-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s;
+    }
+    #pcyes-maringa-collab .mc-fade-right.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* --- HERO --- */
+    #pcyes-maringa-collab .mc-hero {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 80px);
+      min-height: 450px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: var(--mc-black);
+    }
+    #pcyes-maringa-collab .mc-video-bg {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 120vw; height: 120vh;
+      min-width: 120vw; min-height: 120vh;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-video-bg iframe {
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    /* Exibir o iframe correto baseado no tamanho da tela para autoplay nativo 100% funcional */
+    #pcyes-maringa-collab .iframe-desktop { display: none; }
+    #pcyes-maringa-collab .iframe-mobile { display: block; }
+    @media (min-width: 769px) {
+      #pcyes-maringa-collab .iframe-desktop { display: block; }
+      #pcyes-maringa-collab .iframe-mobile { display: none; }
+    }
+
+    #pcyes-maringa-collab .mc-hero-overlay {
+      position: absolute; inset: 0;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+    #pcyes-maringa-collab .mc-hero-overlay-2 {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.3) 100%);
+      z-index: 1;
+    }
+    #pcyes-maringa-collab .mc-hero-overlay-3 {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 50%);
+      z-index: 1;
+    }
+    #pcyes-maringa-collab .mc-hero-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 24px 48px;
+      width: 100%;
+      max-width: 1024px;
+    }
+    #pcyes-maringa-collab .mc-hero-eyebrow {
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      font-size: 12px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: mcFadeUp 0.5s ease-out 0.2s forwards;
+    }
+    #pcyes-maringa-collab .mc-hero-title {
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: clamp(36px, 7vw, 104px);
+      font-weight: 800;
+      line-height: 0.95;
+    }
+    #pcyes-maringa-collab .mc-hero-title span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    #pcyes-maringa-collab .mc-hero-desc {
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      max-width: 600px;
+      margin-top: 24px;
+      opacity: 0;
+      animation: mcFadeUp 0.6s ease-out 1.2s forwards;
+    }
+    #pcyes-maringa-collab .mc-hero-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+      opacity: 0;
+      animation: mcFadeUp 0.6s ease-out 1.5s forwards;
+    }
+    @media (max-width: 640px) {
+      #pcyes-maringa-collab .mc-hero-actions { flex-direction: column; width: 100%; }
+    }
+    @keyframes mcFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- STORYTELLING --- */
+    #pcyes-maringa-collab .mc-story {
+      position: relative;
+      width: 100%;
+      background-color: #000000;
+      overflow: hidden;
+    }
+    #pcyes-maringa-collab .mc-story-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 650px;
+      align-items: stretch;
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-story-wrapper { 
+        flex-direction: row; 
+      }
+    }
+    
+    #pcyes-maringa-collab .mc-story-img-left, 
+    #pcyes-maringa-collab .mc-story-img-right {
+      position: relative;
+      width: 100%;
+      min-height: 350px;
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-story-img-left, 
+      #pcyes-maringa-collab .mc-story-img-right { 
+        width: 28%; 
+        min-height: 0; /* Permite que o container acompanhe o stretch do parent sem travar */
+      }
+    }
+
+    #pcyes-maringa-collab .mc-story-img-left img, 
+    #pcyes-maringa-collab .mc-story-img-right img {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    
+    #pcyes-maringa-collab .mc-story-gradient-left {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #000000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%);
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-story-gradient-left { 
+        background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 75%, #000000 100%); 
+      }
+    }
+    
+    #pcyes-maringa-collab .mc-story-gradient-right {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, #000000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%);
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-story-gradient-right { 
+        background: linear-gradient(to left, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.85) 75%, #000000 100%); 
+      }
+    }
+    
+    #pcyes-maringa-collab .mc-story-center {
+      width: 100%;
+      padding: 80px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-story-center { 
+        width: 44%; 
+        padding: 128px 24px; 
+      }
+    }
+    #pcyes-maringa-collab .mc-story-content {
+      max-width: 620px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #pcyes-maringa-collab .mc-story-crest {
+      width: 80px; height: 80px;
+      object-fit: contain;
+      margin-bottom: 40px;
+      opacity: 0.3;
+      transform: scale(0.8);
+      transition: all 0.8s ease;
+    }
+    #pcyes-maringa-collab .mc-story-crest.is-visible {
+      opacity: 0.3; transform: scale(1);
+    }
+    @media (min-width: 640px) { #pcyes-maringa-collab .mc-story-crest { width: 96px; height: 96px; } }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-story-crest { width: 112px; height: 112px; } }
+    
+    #pcyes-maringa-collab .mc-story-text {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 1.4vw, 22px);
+      line-height: 1.6;
+    }
+    #pcyes-maringa-collab .mc-separator {
+      width: 40px; height: 1px;
+      background-color: rgba(255,255,255,0.2);
+      margin: 32px auto;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-separator { margin: 40px auto; } }
+    #pcyes-maringa-collab .mc-story-italic {
+      color: rgba(255,255,255,0.4);
+      font-style: italic;
+      margin-top: 24px;
+      font-size: clamp(13px, 1.1vw, 16px);
+    }
+    #pcyes-maringa-collab .mc-story-reveal {
+      margin-top: 40px;
+      font-family: var(--font-figtree);
+      font-size: clamp(24px, 3vw, 40px);
+      font-weight: 800;
+      line-height: 1.1;
+      overflow: hidden;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-story-reveal { margin-top: 56px; } }
+    #pcyes-maringa-collab .mc-story-reveal span {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    #pcyes-maringa-collab .mc-story-reveal.is-visible span { transform: translateY(0%); }
+
+    /* --- MARQUEE --- */
+    #pcyes-maringa-collab .mc-marquee-section {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background-color: var(--mc-black);
+    }
+    #pcyes-maringa-collab .mc-marquee-fade-l {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 80px;
+      background: linear-gradient(to right, #000000, transparent);
+      z-index: 10; pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-marquee-fade-r {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 80px;
+      background: linear-gradient(to left, #000000, transparent);
+      z-index: 10; pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-marquee-track {
+      white-space: nowrap;
+      animation: mcMarquee 35s linear infinite;
+    }
+    #pcyes-maringa-collab .mc-marquee-text {
+      color: rgba(255,255,255,0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-family: var(--font-figtree);
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    @keyframes mcMarquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* --- LIMITED EDITION --- */
+    #pcyes-maringa-collab .mc-limited {
+      padding: 96px 0;
+      background-color: var(--mc-black);
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-limited { padding: 128px 0; } }
+    #pcyes-maringa-collab .mc-limited-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    @media (min-width: 1024px) {
+      #pcyes-maringa-collab .mc-limited-wrap { flex-direction: row; align-items: center; gap: 80px; }
+    }
+    #pcyes-maringa-collab .mc-limited-col { width: 100%; }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-limited-col { width: 50%; } }
+    
+    #pcyes-maringa-collab .mc-limited-title {
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    #pcyes-maringa-collab .mc-limited-bar {
+      width: 64px; height: 3px;
+      background-color: var(--mc-green);
+      margin-bottom: 32px;
+    }
+    #pcyes-maringa-collab .mc-limited-desc {
+      color: rgba(255,255,255,0.7);
+      max-width: 448px;
+      margin-bottom: 32px;
+    }
+    #pcyes-maringa-collab .mc-counters {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    #pcyes-maringa-collab .mc-counter-box {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    #pcyes-maringa-collab .mc-counter-val {
+      font-family: var(--font-figtree);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    #pcyes-maringa-collab .mc-counter-label {
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+    }
+    #pcyes-maringa-collab .mc-counter-line {
+      width: 1px; height: 48px;
+      background-color: rgba(255,255,255,0.2);
+    }
+    #pcyes-maringa-collab .mc-limited-img-wrap {
+      position: relative;
+      max-width: 512px;
+      margin: 0 auto;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    #pcyes-maringa-collab .mc-limited-glow {
+      position: absolute;
+      top: -16px; bottom: -16px; left: -16px; right: -16px;
+      background-color: var(--mc-green);
+      filter: blur(100px);
+      opacity: 0.1;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-limited-img {
+      position: relative;
+      z-index: 10;
+      width: 100%; height: auto;
+      border-radius: var(--radius-card);
+    }
+
+    /* --- SPECS --- */
+    #pcyes-maringa-collab .mc-specs {
+      padding: 96px 0;
+      background-color: var(--mc-bg-dark);
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-specs { padding: 128px 0; } }
+    #pcyes-maringa-collab .mc-specs-banner {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      margin-bottom: 64px;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-specs-banner { height: 400px; } }
+    #pcyes-maringa-collab .mc-specs-banner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    #pcyes-maringa-collab .mc-specs-banner-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--mc-bg-dark), transparent);
+    }
+    #pcyes-maringa-collab .mc-specs-banner-text {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-specs-banner-text { padding: 48px; } }
+    #pcyes-maringa-collab .mc-specs-banner-text p {
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    #pcyes-maringa-collab .mc-specs-banner-text h3 {
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 700;
+    }
+    #pcyes-maringa-collab .mc-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { #pcyes-maringa-collab .mc-specs-grid { grid-template-columns: repeat(3, 1fr); } }
+    #pcyes-maringa-collab .mc-spec-item {
+      background-color: #0a0a0a;
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: background-color 0.3s;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-spec-item { padding: 32px; } }
+    #pcyes-maringa-collab .mc-spec-item:hover { background-color: #111111; }
+    #pcyes-maringa-collab .mc-spec-item h4 {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 700;
+    }
+    #pcyes-maringa-collab .mc-spec-item p {
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+    }
+
+    /* --- URGENCY --- */
+    #pcyes-maringa-collab .mc-urgency {
+      padding: 80px 0;
+      background-color: var(--mc-black);
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-urgency { padding: 112px 0; } }
+    #pcyes-maringa-collab .mc-urgency-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+    #pcyes-maringa-collab .mc-urgency-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px; height: 120px;
+      background-color: var(--mc-green);
+      filter: blur(120px);
+      opacity: 0.07;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-urgency-text {
+      position: relative;
+      z-index: 10;
+      color: rgba(255,255,255,0.9);
+      font-family: var(--font-figtree);
+      font-size: clamp(22px, 3.5vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    #pcyes-maringa-collab .mc-separator-small {
+      width: 48px; height: 1px;
+      background-color: rgba(255,255,255,0.2);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* --- PRODUCT --- */
+    #pcyes-maringa-collab .mc-product {
+      padding: 96px 0;
+      background-color: var(--mc-black);
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-product { padding: 128px 0; } }
+    #pcyes-maringa-collab .mc-product-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    #pcyes-maringa-collab .mc-product-header h3 {
+      font-size: clamp(20px, 3vw, 40px);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    #pcyes-maringa-collab .mc-product-header a {
+      color: rgba(255,255,255,0.5);
+      transition: color 0.3s;
+      display: none;
+    }
+    @media (min-width: 640px) { #pcyes-maringa-collab .mc-product-header a { display: block; } }
+    #pcyes-maringa-collab .mc-product-header a:hover { color: #ffffff; }
+    
+    #pcyes-maringa-collab .mc-product-card {
+      position: relative;
+      background-color: #0a0a0a;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: border-color 0.5s;
+      display: flex;
+      flex-direction: column;
+    }
+    #pcyes-maringa-collab .mc-product-card:hover {
+      border-color: rgba(0, 168, 89, 0.3);
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-product-card { flex-direction: row; } }
+    
+    #pcyes-maringa-collab .mc-product-img {
+      width: 100%;
+      position: relative;
+      aspect-ratio: 4/3;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-product-img { width: 66.666%; aspect-ratio: auto; min-height: 500px; } }
+    #pcyes-maringa-collab .mc-product-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    #pcyes-maringa-collab .mc-product-img-grad-1 {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom right, rgba(0,168,89,0.05), transparent);
+      z-index: 1; pointer-events: none;
+    }
+    #pcyes-maringa-collab .mc-product-img-grad-2 {
+      display: none;
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent, rgba(10,10,10,0.5));
+      z-index: 1; pointer-events: none;
+    }
+    @media (min-width: 1024px) { #pcyes-maringa-collab .mc-product-img-grad-2 { display: block; } }
+    
+    #pcyes-maringa-collab .mc-product-info {
+      width: 100%;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    @media (min-width: 1024px) { 
+      #pcyes-maringa-collab .mc-product-info { width: 33.333%; padding: 48px; border-top: none; border-left: 1px solid rgba(255,255,255,0.05); } 
+    }
+    #pcyes-maringa-collab .mc-product-eyebrow {
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    #pcyes-maringa-collab .mc-product-badge {
+      color: var(--mc-green);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+    #pcyes-maringa-collab .mc-product-info h4 {
+      font-size: clamp(24px, 2.8vw, 36px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    #pcyes-maringa-collab .mc-product-info p {
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 32px;
+    }
+
+/* ===== LIGHT MODE ===== */
+.light #pcyes-maringa-collab {
+  --mc-black: #fafafa;
+  --mc-bg-dark: #f5f5f5;
+}
+.light #pcyes-maringa-collab .mc-story { background-color: #f0f0f0; }
+.light #pcyes-maringa-collab .mc-story-gradient-left { background: linear-gradient(to right, transparent 0%, rgba(240,240,240,0.4) 40%, rgba(240,240,240,0.85) 75%, #f0f0f0 100%); }
+.light #pcyes-maringa-collab .mc-story-gradient-right { background: linear-gradient(to left, transparent 0%, rgba(240,240,240,0.4) 40%, rgba(240,240,240,0.85) 75%, #f0f0f0 100%); }
+.light #pcyes-maringa-collab .mc-hero-overlay { background-color: rgba(250,250,250,0.3); }
+.light #pcyes-maringa-collab .mc-hero-overlay-2 { background: linear-gradient(to top, #fafafa 0%, rgba(250,250,250,0.2) 50%, rgba(250,250,250,0.3) 100%); }
+.light #pcyes-maringa-collab .mc-hero-overlay-3 { background: linear-gradient(to right, rgba(250,250,250,0.5) 0%, transparent 50%); }
+.light #pcyes-maringa-collab .mc-hero-eyebrow { color: rgba(22,22,22,0.5); }
+.light #pcyes-maringa-collab .mc-hero-desc { color: rgba(22,22,22,0.7); }
+.light #pcyes-maringa-collab .mc-story-text { color: rgba(22,22,22,0.9); }
+.light #pcyes-maringa-collab .mc-story-italic { color: rgba(22,22,22,0.4); }
+.light #pcyes-maringa-collab .mc-marquee-text { color: rgba(22,22,22,0.2); }
+.light #pcyes-maringa-collab .mc-marquee-section { border-top-color: rgba(0,0,0,0.1); border-bottom-color: rgba(0,0,0,0.1); background-color: #fafafa; }
+.light #pcyes-maringa-collab .mc-marquee-fade-l { background: linear-gradient(to right, #fafafa, transparent); }
+.light #pcyes-maringa-collab .mc-marquee-fade-r { background: linear-gradient(to left, #fafafa, transparent); }
+.light #pcyes-maringa-collab .mc-limited { background-color: #fafafa; }
+.light #pcyes-maringa-collab .mc-specs { background-color: #f5f5f5; }
+.light #pcyes-maringa-collab .mc-spec-item { background-color: #ffffff; }
+.light #pcyes-maringa-collab .mc-spec-item:hover { background-color: #f5f5f5; }
+.light #pcyes-maringa-collab .mc-spec-item p { color: rgba(22,22,22,0.5); }
+.light #pcyes-maringa-collab .mc-urgency { background-color: #fafafa; }
+.light #pcyes-maringa-collab .mc-urgency-text { color: rgba(22,22,22,0.9); }
+.light #pcyes-maringa-collab .mc-product { background-color: #fafafa; }
+.light #pcyes-maringa-collab .mc-product-card { background-color: #ffffff; border-color: rgba(0,0,0,0.08); }
+.light #pcyes-maringa-collab .mc-product-card:hover { border-color: rgba(0,168,89,0.3); }
+.light #pcyes-maringa-collab .mc-product-eyebrow { color: rgba(22,22,22,0.4); }
+.light #pcyes-maringa-collab .mc-product-info p { color: rgba(22,22,22,0.5); }
+.light #pcyes-maringa-collab .mc-btn-outline { background-color: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #161616; }
+.light #pcyes-maringa-collab .mc-btn-outline:hover { background-color: rgba(0,0,0,0.1); color: #161616; }
+.light #pcyes-maringa-collab .mc-product-header a { color: rgba(22,22,22,0.5); }
+.light #pcyes-maringa-collab .mc-product-header a:hover { color: #161616; }
+
+</style>
+
+<!-- CONTEÚDO DA PÁGINA (WRAPPER) -->
+<div id="pcyes-maringa-collab">
+    
+    <!-- Scroll Progress -->
+    <div id="mc-scroll-progress"></div>
+
+    <main>
+      <!-- HERO SECTION -->
+      <section class="mc-hero">
+        <div class="mc-video-bg">
+          <!-- Desktop Video: Usando iframe e params que forçam o autoplay sem precisar de JS -->
+          <iframe class="iframe-desktop"
+                  src="https://www.youtube.com/embed/Xh2S_T-SQtw?autoplay=1&mute=1&loop=1&playlist=Xh2S_T-SQtw&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+          </iframe>
+          <!-- Mobile Video -->
+          <iframe class="iframe-mobile"
+                  src="https://www.youtube.com/embed/zZ6KEk3BNZ8?autoplay=1&mute=1&loop=1&playlist=zZ6KEk3BNZ8&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+          </iframe>
+        </div>
+        <div class="mc-hero-overlay"></div>
+        <div class="mc-hero-overlay-2"></div>
+        <div class="mc-hero-overlay-3"></div>
+        <div class="mc-hero-content">
+          <span class="mc-hero-eyebrow">2010 — O ano em que Maringá decidiu ser grande.</span>
+          <h1 class="mc-hero-title" id="mc-hero-title">
+            <span class="mc-word">T</span><span class="mc-word">O</span><span class="mc-word">T</span><span class="mc-word">A</span><span class="mc-word">L</span>
+            &nbsp;
+            <span class="mc-word mc-green-text">M</span><span class="mc-word mc-green-text">A</span><span class="mc-word mc-green-text">R</span><span class="mc-word mc-green-text">I</span><span class="mc-word mc-green-text">N</span><span class="mc-word mc-green-text">G</span><span class="mc-word mc-green-text">Á</span>
+          </h1>
+          <p class="mc-hero-desc">Duas forças nascidas na mesma cidade, no mesmo ano.<br>Unidas agora em uma cadeira que é história.</p>
+          <div class="mc-hero-actions">
+            <a href="https://www.pcyes.com.br/cadeira-gamer-ergonomica-maringa-fc-limited-edition-pcmgafc" target="_blank" class="mc-btn mc-btn-white mc-magnetic">
+              Garanta a sua
+            </a>
+            <a href="https://www.youtube.com/watch?v=Xh2S_T-SQtw" target="_blank" class="mc-btn mc-btn-outline mc-magnetic">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
+              Assistir com som
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- STORYTELLING SECTION -->
+      <section class="mc-story">
+        <div class="mc-story-wrapper">
+          <div class="mc-story-img-left">
+            <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/3.png" alt="Cadeiras Maringá FC frente e costas">
+            <div class="mc-story-gradient-left"></div>
+          </div>
+          
+          <div class="mc-story-center">
+            <div class="mc-story-content mc-fade-up">
+              <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/Produto-Oficial.png" alt="Brasão Maringá FC" class="mc-story-crest">
+              
+              <div class="mc-story-text">
+                <p>Maringá não é só uma cidade. É um sentimento que a gente carrega dentro e fora de campo, no verde das ruas e na torcida que não para de crescer.</p>
+                <div class="mc-separator"></div>
+                <p>A <span style="font-weight:600; color:#fff;">PCYES</span> nasceu aqui em 2010. O <span class="mc-green-text" style="font-weight:600;">Maringá FC</span> também. São duas marcas construídas na mesma cidade, pela mesma paixão, e que se uniram pra criar algo que nunca existiu antes.</p>
+                <div class="mc-separator"></div>
+                <p>São 50 unidades numeradas. Uma peça única, com a alma do clube e a tecnologia de quem cresceu aqui. Uma história que só 50 vão poder contar.</p>
+                <p class="mc-story-italic">Mais que um time, uma cidade.</p>
+                
+                <div class="mc-story-reveal" id="mc-reveal-text"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mc-story-img-right">
+            <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/4.png" alt="Cadeira no vestiário">
+            <div class="mc-story-gradient-right"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MARQUEE TICKER -->
+      <div class="mc-marquee-section">
+        <div class="mc-marquee-fade-l"></div>
+        <div class="mc-marquee-fade-r"></div>
+        <div class="mc-marquee-track">
+          <span class="mc-marquee-text">
+            LIMITED EDITION • 01/50 • MARINGÁ FC × PCYES • POWER UP YOUR PAIXÃO • DESDE 2010 • 50 UNIDADES • 
+            LIMITED EDITION • 01/50 • MARINGÁ FC × PCYES • POWER UP YOUR PAIXÃO • DESDE 2010 • 50 UNIDADES • 
+            LIMITED EDITION • 01/50 • MARINGÁ FC × PCYES • POWER UP YOUR PAIXÃO • DESDE 2010 • 50 UNIDADES • 
+            LIMITED EDITION • 01/50 • MARINGÁ FC × PCYES • POWER UP YOUR PAIXÃO • DESDE 2010 • 50 UNIDADES • 
+          </span>
+        </div>
+      </div>
+
+      <!-- LIMITED EDITION SECTION -->
+      <section class="mc-limited">
+        <div class="mc-container">
+          <div class="mc-limited-wrap">
+            <div class="mc-limited-col mc-fade-left">
+              <h2 class="mc-limited-title mc-uppercase">EDIÇÃO<br>LIMITADA</h2>
+              <div class="mc-limited-bar"></div>
+              <p class="mc-limited-desc">
+                50 unidades numeradas. Cada cadeira vem com selo de autenticidade
+                e número exclusivo gravado. As cores do tricolor maringaense,
+                preto, verde e branco, ganham vida no acabamento de linho premium
+                com toda a engenharia <strong style="color:#fff;">PCYES</strong> por trás.
+              </p>
+              
+              <div class="mc-counters">
+                <div class="mc-counter-box">
+                  <span class="mc-counter-val mc-green-text mc-anim-counter" data-target="50">0</span>
+                  <span class="mc-counter-label">unidades</span>
+                </div>
+                <div class="mc-counter-line"></div>
+                <div class="mc-counter-box">
+                  <span class="mc-counter-val">
+                    <span class="mc-anim-counter" data-target="1" data-duration="600">0</span> / <span class="mc-anim-counter" data-target="50">0</span>
+                  </span>
+                  <span class="mc-counter-label">numerada</span>
+                </div>
+              </div>
+              
+              <a href="https://www.pcyes.com.br/cadeira-gamer-ergonomica-maringa-fc-limited-edition-pcmgafc" target="_blank" class="mc-btn mc-btn-white mc-magnetic">
+                Garantir minha unidade <span aria-hidden="true">→</span>
+              </a>
+            </div>
+            
+            <div class="mc-limited-col mc-fade-right">
+              <div class="mc-limited-img-wrap">
+                <div class="mc-limited-glow"></div>
+                <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/Edi%C3%A7%C3%A3o-Limitada.png" alt="Cadeira numerada 01/50" class="mc-limited-img">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPECS SECTION -->
+      <section class="mc-specs">
+        <div class="mc-container">
+          <div class="mc-specs-banner mc-fade-up">
+            <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/3.png" alt="Cadeiras frente e costas">
+            <div class="mc-specs-banner-overlay"></div>
+            <div class="mc-specs-banner-text">
+              <p>Do campo pro setup</p>
+              <h3>Performance <span class="mc-green-text">Real</span></h3>
+            </div>
+          </div>
+          
+          <div class="mc-specs-grid">
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0s;"><h4>Até 150 kg</h4><p>Estrutura metálica reforçada</p></div>
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0.1s;"><h4>Mecanismo Frog</h4><p>Sistema de balanço com trava</p></div>
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0.2s;"><h4>Inclinação 135°</h4><p>Recline total para descanso</p></div>
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0.3s;"><h4>Pistão Classe 4</h4><p>Altura ajustável com precisão</p></div>
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0.4s;"><h4>Braços 4D</h4><p>Ajuste em 4 direções</p></div>
+            <div class="mc-spec-item mc-fade-up" style="transition-delay: 0.5s;"><h4>Acabamento Linho</h4><p>Tecido premium e resistente</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- URGENCY BANNER -->
+      <section class="mc-urgency">
+        <div class="mc-container">
+          <div class="mc-urgency-content mc-fade-up">
+            <div class="mc-urgency-glow"></div>
+            <div class="mc-separator-small"></div>
+            <p class="mc-urgency-text">
+              50 cadeiras. 50 histórias.<br>
+              <span class="mc-green-text">A sua ainda está disponível.</span>
+            </p>
+            <div class="mc-separator-small"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCT SECTION -->
+      <section class="mc-product">
+        <div class="mc-container">
+          <div class="mc-product-header">
+            <h3>A cadeira que fica na história</h3>
+            <a href="https://www.pcyes.com.br/cadeira-gamer-ergonomica-maringa-fc-limited-edition-pcmgafc" target="_blank">Ver detalhes →</a>
+          </div>
+          
+          <div class="mc-product-card mc-fade-up">
+            <div class="mc-product-img">
+              <div class="mc-product-img-grad-1"></div>
+              <img src="https://pcyes-cdn.oderco.com.br/Produtos/Cadeira-Gamer/Maringafc/4.png" alt="Vestiário">
+              <div class="mc-product-img-grad-2"></div>
+            </div>
+            
+            <div class="mc-product-info">
+              <span class="mc-product-eyebrow">Maringá FC × PCYES</span>
+              <span class="mc-product-badge">Limited Edition — 01/50</span>
+              <h4>Power up<br>your <span class="mc-green-text">paixão</span>.</h4>
+              <p>50 unidades. Numeradas.<br>Com a alma do clube e a tecnologia<br>de quem nasceu aqui.</p>
+              <a href="https://www.pcyes.com.br/cadeira-gamer-ergonomica-maringa-fc-limited-edition-pcmgafc" target="_blank" class="mc-btn mc-btn-white" style="width:100%;">
+                Garantir minha unidade
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+    (function() {
+      // 1. HERO TITLE ANIMATION (Staggered letters)
+      setTimeout(() => {
+        const letters = document.querySelectorAll('.mc-hero-title .mc-word');
+        letters.forEach((el, index) => {
+          el.style.transition = 'opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
+          el.style.transitionDelay = `${0.3 + index * 0.05}s`;
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      }, 100);
+
+      // 2. STORYTELLING TEXT REVEAL
+      const revealText = "IMPOSSÍVEL DE IGNORAR.";
+      const revealContainer = document.getElementById('mc-reveal-text');
+      const words = revealText.split(" ");
+      words.forEach((word, index) => {
+        const spanWrapper = document.createElement('span');
+        spanWrapper.style.display = 'inline-block';
+        spanWrapper.style.overflow = 'hidden';
+        spanWrapper.style.marginRight = '0.3em';
+        
+        const spanInner = document.createElement('span');
+        spanInner.textContent = word;
+        spanInner.style.transitionDelay = `${index * 0.06}s`;
+        
+        spanWrapper.appendChild(spanInner);
+        revealContainer.appendChild(spanWrapper);
+      });
+
+      // 3. SCROLL PROGRESS
+      const progressBar = document.getElementById('mc-scroll-progress');
+      window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = winScroll / height;
+        progressBar.style.transform = `scaleX(${scrolled})`;
+      });
+
+      // 4. ANIMATED COUNTERS & FADE UPS (Intersection Observer)
+      const animateCounter = (el) => {
+        if(el.dataset.animated) return;
+        el.dataset.animated = "true";
+        const target = parseInt(el.getAttribute('data-target'));
+        const duration = parseInt(el.getAttribute('data-duration')) || 1800;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+          el.innerText = Math.floor(eased * target);
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          } else {
+            el.innerText = target;
+          }
+        };
+        window.requestAnimationFrame(step);
+      };
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            
+            // If it's a counter, trigger number animation
+            if (entry.target.classList.contains('mc-anim-counter')) {
+              animateCounter(entry.target);
+            } else {
+              // Also find nested counters
+              const nestedCounters = entry.target.querySelectorAll('.mc-anim-counter');
+              nestedCounters.forEach(animateCounter);
+            }
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.mc-fade-up, .mc-fade-left, .mc-fade-right, .mc-story-crest, #mc-reveal-text').forEach(el => {
+        observer.observe(el);
+      });
+
+      // 5. MAGNETIC BUTTON EFFECT
+      const magneticButtons = document.querySelectorAll('.mc-magnetic');
+      magneticButtons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          // Only apply on desktop
+          if(window.innerWidth <= 768) return;
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          // Apply a gentle translation
+          btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = `translate(0px, 0px)`;
+        });
+      });
+
+    })();
+</script>

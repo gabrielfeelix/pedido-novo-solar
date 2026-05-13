@@ -1,0 +1,1980 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Torne-se um Creator PCYES</title>
+    <meta name="description" content="Programa de Creators PCYES. Torne-se um criador de conteúdo parceiro da maior marca gamer do Brasil." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+/* ===== MAGENTO-SAFE WRAPPER ===== */
+#pcyes-influencers, #pcyes-influencers *, #pcyes-influencers *::before, #pcyes-influencers *::after { box-sizing: border-box; }
+#pcyes-influencers {
+  --red: #ff2b2e;
+  --red-dark: #dc1414;
+  --bg-dark: #121212;
+  --bg-darker: #0f0f10;
+  --bg-card: #1a1a1c;
+  --text-muted: rgba(255,255,255,0.5);
+  --text-dim: rgba(255,255,255,0.35);
+  --text-label: #cecece;
+  --border-subtle: rgba(255,255,255,0.05);
+  --border-input: rgba(255,255,255,0.08);
+
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
+  color: #fff;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+#pcyes-influencers a { text-decoration: none; color: inherit; }
+#pcyes-influencers img { display: block; max-width: 100%; }
+#pcyes-influencers .pcyes-container {
+  max-width: 1406px;
+  margin: 0 auto;
+  padding: 0 64px;
+}
+
+/* ===== NOISE OVERLAY ===== */
+#pcyes-influencers .noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.028;
+  mix-blend-mode: overlay;
+}
+
+/* ===== CREATOR HERO ===== */
+#pcyes-influencers .creator-hero {
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  padding: 80px 64px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  min-height: 780px;
+}
+
+#pcyes-influencers .hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, #000 0%, #0d0d0d 40%, #0f0f0f 55%, #0d0d0d 70%, #000 100%);
+}
+
+#pcyes-influencers .hero-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  font-family: 'Figtree', sans-serif;
+  font-weight: 900;
+  font-size: clamp(100px, 22vw, 300px);
+  color: transparent;
+  -webkit-text-stroke: 2px var(--red);
+  opacity: 0.04;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+#pcyes-influencers .hero-glow {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, var(--red) 0%, transparent 60%);
+  opacity: 0.12;
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+#pcyes-influencers .hero-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: inset 0 0 150px rgba(0,0,0,0.85);
+}
+
+#pcyes-influencers .hero-bottom-fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 128px;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(to bottom, transparent 0%, #0a0a0a 100%);
+}
+
+#pcyes-influencers .hero-center {
+  position: relative;
+  text-align: center;
+  max-width: 700px;
+  z-index: 10;
+}
+
+#pcyes-influencers .hero-badge {
+  display: inline-block;
+  background: rgba(255,43,46,0.9);
+  color: #cecece;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+#pcyes-influencers .hero-title {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+
+#pcyes-influencers .hero-title-red { color: var(--red); }
+
+#pcyes-influencers .hero-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--red);
+  border-radius: 9999px;
+  margin: 0 auto 20px;
+}
+
+#pcyes-influencers .hero-desc-primary {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  max-width: 505px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#pcyes-influencers .hero-desc-secondary {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 513px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== CAROUSEL ===== */
+#pcyes-influencers .carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+#pcyes-influencers .carousel-stage {
+  flex: 1;
+  position: relative;
+  height: 420px;
+  padding-top: 32px;
+  overflow: visible;
+}
+
+#pcyes-influencers .creator-card {
+  position: absolute;
+  left: 50%;
+  width: 240px;
+  height: 340px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: #0a0a0a;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1),
+              opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+              filter 0.6s,
+              box-shadow 0.5s,
+              border-color 0.5s;
+  will-change: transform;
+  cursor: pointer;
+}
+
+#pcyes-influencers .creator-card-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+#pcyes-influencers .creator-card-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+#pcyes-influencers .creator-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.28) 36%, rgba(0,0,0,0.04) 60%, transparent 100%);
+}
+
+#pcyes-influencers .creator-card-overlay--side {
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.4) 46%, rgba(0,0,0,0.08) 66%, transparent 100%);
+}
+
+#pcyes-influencers .creator-card-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255,43,46,0.9);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+#pcyes-influencers .featured-top-line {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--red), transparent);
+  display: none;
+  z-index: 2;
+}
+
+#pcyes-influencers .creator-card-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 16px 12px 12px;
+  background: none;
+}
+
+#pcyes-influencers .creator-card[data-idx="0"] .creator-card-img img { object-position: 52% 18%; }
+#pcyes-influencers .creator-card[data-idx="1"] .creator-card-img img { object-position: 52% 18%; }
+#pcyes-influencers .creator-card[data-idx="2"] .creator-card-img img { object-position: 50% 16%; }
+#pcyes-influencers .creator-card[data-idx="3"] .creator-card-img img { object-position: 50% 14%; }
+#pcyes-influencers .creator-card[data-idx="4"] .creator-card-img img { object-position: 64% 16%; }
+
+#pcyes-influencers .creator-name {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+
+#pcyes-influencers .creator-meta { display: flex; justify-content: space-between; align-items: center; }
+
+#pcyes-influencers .creator-platform-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: all .3s ease;
+  padding: 2px 4px;
+  margin-left: -4px;
+  border-radius: 3px;
+}
+
+#pcyes-influencers .creator-platform-link:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-1px);
+}
+
+#pcyes-influencers .creator-platform-link:hover .creator-platform {
+  color: #fff;
+}
+
+#pcyes-influencers .creator-platform-link:hover svg {
+  opacity: 1 !important;
+  transform: translateX(2px);
+}
+
+#pcyes-influencers .creator-platform-link svg {
+  transition: all .3s ease;
+}
+
+#pcyes-influencers .creator-platform { font-size: 11px; color: var(--text-muted); font-family: 'Inter', sans-serif; transition: color .3s; }
+#pcyes-influencers .creator-followers { font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--red); }
+
+@keyframes progressBar {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+#pcyes-influencers .card-progress {
+  margin-top: 10px;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, rgba(255,43,46,0.5), var(--red), rgba(255,43,46,0.5));
+  transform-origin: left;
+  animation: progressBar var(--carousel-progress-duration, 5s) linear forwards;
+}
+
+#pcyes-influencers .carousel-nav {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(22,22,23,0.85);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #999;
+  transition: color .2s, border-color .2s, transform .15s;
+  z-index: 20;
+  position: relative;
+  backdrop-filter: blur(4px);
+}
+
+#pcyes-influencers .carousel-nav:hover {
+  color: #fff;
+  border-color: var(--red);
+  transform: scale(1.05);
+}
+
+#pcyes-influencers .carousel-prev { margin-right: -24px; }
+#pcyes-influencers .carousel-next { margin-left: -24px; }
+
+#pcyes-influencers .carousel-dots { display: flex; align-items: center; gap: 8px; z-index: 10; }
+
+#pcyes-influencers .pcyes-dot {
+  width: 6px; height: 6px;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.15);
+  border: none; cursor: pointer; padding: 0;
+  transition: background .25s, width .25s;
+}
+
+#pcyes-influencers .dot--active { background: var(--red); width: 24px; }
+#pcyes-influencers .pcyes-dot:hover:not(.dot--active) { background: rgba(255,255,255,0.3); }
+
+#pcyes-influencers .hero-cta-wrap { z-index: 10; }
+
+#pcyes-influencers .cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--red);
+  color: #fff;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+  padding: 16px 40px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(255,43,46,0.3);
+  position: relative;
+  outline: none;
+  transform: none;
+  transition: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#pcyes-influencers .cta-button:hover,
+#pcyes-influencers .cta-button:focus-visible,
+#pcyes-influencers .cta-button:visited {
+  color: #fff;
+}
+
+#pcyes-influencers .cta-button::after {
+  content: '';
+  position: absolute;
+  bottom: 13px;
+  left: 40px;
+  right: 40px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.85);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+#pcyes-influencers .cta-button:hover::after { transform: scaleX(1); }
+#pcyes-influencers .cta-button:active::after { transform: scaleX(0.85); }
+
+/* ===== PARTICLES ===== */
+@keyframes floatParticle {
+  0%   { opacity: 0.4; transform: translateY(0); }
+  100% { opacity: 0;   transform: translateY(-120px); }
+}
+
+@keyframes floatTriangle {
+  0%   { opacity: 0.4; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0;   transform: translateY(-120px) rotate(360deg); }
+}
+
+/* ===== GRADIENT DIVIDER ===== */
+#pcyes-influencers .gradient-divider { height: 1px; position: relative; overflow: visible; }
+
+#pcyes-influencers .gradient-divider::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 384px; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,43,46,0.4), transparent);
+}
+
+#pcyes-influencers .gradient-divider::after {
+  content: '';
+  position: absolute;
+  top: -5px; left: 50%;
+  transform: translateX(-50%);
+  width: 300px; height: 20px;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse, rgba(255,0,4,0.25) 0%, rgba(255,0,4,0.08) 40%, transparent 70%);
+}
+
+/* ===== BENEFITS ===== */
+#pcyes-influencers .creator-benefits { background: var(--bg-darker); padding: 120px 0 144px; overflow: hidden; }
+
+#pcyes-influencers .section-head { text-align: center; margin-bottom: 80px; }
+
+#pcyes-influencers .kicker {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 3.2px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+#pcyes-influencers .section-head h2 {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.44px;
+  color: #fff;
+}
+
+#pcyes-influencers .section-head h2 .red { color: var(--red); }
+
+#pcyes-influencers .benefits-grid {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#pcyes-influencers .benefit-card {
+  flex: 1;
+  min-width: 0;
+  max-width: 230px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 75% 55% at 50% 30%, rgba(255,255,255,0.035) 0%, transparent 70%),
+    linear-gradient(to bottom, rgba(255,255,255,0.06) 0%, transparent 90px),
+    linear-gradient(170.9deg, #131315 3.7%, #0a0a0b 54.6%, #050505 96.3%);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+  padding: 24px;
+  padding-top: 0;
+  position: relative;
+  transition: transform .5s cubic-bezier(0.22,1,0.36,1),
+              box-shadow .5s,
+              border-color .5s;
+}
+
+#pcyes-influencers .benefit-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(255,43,46,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+  border-color: var(--red);
+  background:
+    radial-gradient(ellipse 75% 55% at 50% 30%, rgba(255,255,255,0.05) 0%, transparent 70%),
+    linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, transparent 90px),
+    linear-gradient(170.9deg, #18181b 0%, #0d0d0f 55%, #050505 100%);
+}
+
+#pcyes-influencers .benefit-card--top    { margin-top: 0; }
+#pcyes-influencers .benefit-card--offset { margin-top: 40px; }
+
+#pcyes-influencers .benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ff2b2e 30%, #ff2b2e 70%, transparent 100%);
+  opacity: 0.35;
+  transition: opacity .5s;
+  z-index: 1;
+}
+
+#pcyes-influencers .benefit-card:hover::before { opacity: 1; }
+
+#pcyes-influencers .benefit-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 140px;
+  background: linear-gradient(to top, rgba(255,43,46,0.15) 0%, rgba(255,43,46,0.05) 40%, transparent 100%);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity .5s;
+  z-index: 0;
+}
+
+#pcyes-influencers .benefit-card:hover::after { opacity: 1; }
+
+#pcyes-influencers .benefit-icon-wrap {
+  position: relative;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  z-index: 1;
+}
+
+#pcyes-influencers .benefit-icon-glow {
+  position: absolute;
+  width: 120px; height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,43,46,0.15) 0%, rgba(191,32,35,0.07) 40%, transparent 70%);
+  filter: blur(24px);
+  pointer-events: none;
+  transition: opacity .5s;
+}
+
+#pcyes-influencers .benefit-card:hover .benefit-icon-glow { opacity: 1.8; }
+
+#pcyes-influencers .benefit-icon-svg {
+  width: 90px; height: 72px;
+  position: relative; z-index: 1;
+  transition: transform .7s cubic-bezier(0.22,1,0.36,1);
+}
+
+#pcyes-influencers .benefit-card:hover .benefit-icon-svg { transform: scale(1.08); }
+
+#pcyes-influencers .benefit-card h3 {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25;
+  color: #fff;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+#pcyes-influencers .benefit-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #777;
+  transition: color .5s;
+  position: relative;
+  z-index: 1;
+}
+
+#pcyes-influencers .benefit-card:hover p { color: #aaa; }
+
+/* ===== FORM ===== */
+#pcyes-influencers .creator-form {
+  background: var(--bg-dark);
+  padding: 64px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+#pcyes-influencers .form-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+#pcyes-influencers .form-glow--right {
+  right: -10%; top: 40%;
+  background: radial-gradient(circle, rgba(255,0,4,0.06) 0%, rgba(255,0,4,0.03) 30%, transparent 65%);
+}
+
+#pcyes-influencers .form-glow--left {
+  left: -12%; bottom: 0%;
+  background: radial-gradient(circle, rgba(255,0,4,0.05) 0%, rgba(255,0,4,0.02) 30%, transparent 65%);
+}
+
+#pcyes-influencers .landing-form-shell { max-width: 896px; margin: 0 auto; }
+
+#pcyes-influencers .landing-form-title {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 40px);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+#pcyes-influencers .landing-form-subtitle { font-size: 16px; color: #787878; text-align: center; }
+
+#pcyes-influencers .steps-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 40px;
+}
+
+#pcyes-influencers .pcyes-step { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 16px; }
+
+#pcyes-influencers .pcyes-step-circle {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1;
+  transition: background .5s, box-shadow .5s, border-color .5s;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#pcyes-influencers .pcyes-step-circle span {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+  display: inline-block;
+}
+
+#pcyes-influencers .pcyes-step-circle svg {
+  width: 14px;
+  height: 14px;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+#pcyes-influencers .step-circle--active   { background: var(--red); color: #fff; box-shadow: 0 0 0 8px rgba(255,43,46,0.12); border: none; }
+#pcyes-influencers .step-circle--inactive { background: #2a2a2d; border: 1px solid rgba(255,255,255,0.06); color: #555; }
+#pcyes-influencers .step-circle--done     { background: rgba(255,0,4,0.12); color: var(--red); border: 1px solid rgba(255,0,4,0.4); }
+
+#pcyes-influencers .pcyes-step-label { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; color: #fff; white-space: nowrap; transition: color .3s; }
+#pcyes-influencers .step-label--inactive { color: #4a4a4a; font-weight: 400; }
+#pcyes-influencers .step-label--done { color: rgba(255,43,46,0.7); }
+
+#pcyes-influencers .step-connector {
+  position: relative;
+  width: 48px; height: 2px;
+  background: rgba(255,255,255,0.1);
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+#pcyes-influencers .step-connector-fill {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 0%;
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+  transition: width .5s ease-in-out;
+}
+
+#pcyes-influencers .landing-form-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+#pcyes-influencers .landing-form-card-top-line {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255,43,46,0.5), transparent);
+  opacity: 0.5;
+}
+
+#pcyes-influencers .landing-form-card-top-blur {
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 2px;
+  background: var(--red);
+  filter: blur(20px);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+#pcyes-influencers .landing-form-group-head { margin-bottom: 32px; }
+
+#pcyes-influencers .landing-form-group-head h3 {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700; font-size: 20px; color: #fff;
+  margin-bottom: 4px;
+}
+
+#pcyes-influencers .landing-form-group-head p { font-size: 14px; color: var(--text-dim); }
+
+#pcyes-influencers .landing-form-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+#pcyes-influencers .landing-form-fields label {
+  display: flex; flex-direction: column; gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: 14px; color: #b0b0b0;
+}
+
+#pcyes-influencers .landing-form-fields label.pcyes-full,
+#pcyes-influencers .landing-form-fields div.pcyes-full { grid-column: 1 / -1; }
+#pcyes-influencers .landing-form-fields label.pcyes-half { grid-column: span 1; }
+
+#pcyes-influencers .landing-form-fields input,
+#pcyes-influencers .landing-form-fields select,
+#pcyes-influencers .landing-form-fields textarea {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  height: 50px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  width: 100%;
+}
+
+#pcyes-influencers .landing-form-fields input::placeholder,
+#pcyes-influencers .landing-form-fields textarea::placeholder { color: var(--text-dim); }
+#pcyes-influencers .landing-form-fields textarea { height: auto; resize: none; min-height: 90px; }
+
+#pcyes-influencers .landing-form-fields input:focus,
+#pcyes-influencers .landing-form-fields select:focus,
+#pcyes-influencers .landing-form-fields textarea:focus {
+  border-color: rgba(255,43,46,0.6);
+  box-shadow: 0 0 12px rgba(255,43,46,0.3);
+  background: #161616;
+}
+
+#pcyes-influencers .landing-form-fields input.pcyes-error,
+#pcyes-influencers .landing-form-fields select.pcyes-error,
+#pcyes-influencers .landing-form-fields textarea.pcyes-error {
+  border-color: rgba(255,43,46,0.7);
+}
+
+#pcyes-influencers .landing-form-fields select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+}
+
+#pcyes-influencers .landing-form-fields select option { background: #1a1a1a; color: #fff; }
+
+#pcyes-influencers .landing-form-error {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #ff2b2e;
+  margin-top: 6px;
+}
+
+#pcyes-influencers .landing-form-actions { display: flex; justify-content: flex-end; }
+#pcyes-influencers .form-actions--split { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+
+#pcyes-influencers .landing-btn-proximo {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--red); color: #fff;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 600; font-size: 16px;
+  padding: 14px 28px; border-radius: 24px;
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255,43,46,0.25);
+  position: relative;
+  outline: none;
+  transform: none;
+  transition: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#pcyes-influencers .landing-btn-proximo:hover,
+#pcyes-influencers .landing-btn-proximo:focus-visible,
+#pcyes-influencers .landing-btn-proximo:active {
+  background: var(--red);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(255,43,46,0.25);
+  outline: none;
+  transform: none;
+}
+
+#pcyes-influencers .landing-btn-proximo::after {
+  content: '';
+  position: absolute;
+  bottom: 11px;
+  left: 28px;
+  right: 28px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.85);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+#pcyes-influencers .landing-btn-proximo:hover::after { transform: scaleX(1); }
+#pcyes-influencers .landing-btn-proximo:active::after { transform: scaleX(0.85); }
+#pcyes-influencers .landing-btn-proximo:disabled { opacity: 0.7; cursor: not-allowed; }
+#pcyes-influencers .landing-btn-proximo:disabled::after { display: none; }
+
+#pcyes-influencers .btn-voltar {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #1c1c1d;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 500; font-size: 16px;
+  padding: 14px 24px; border-radius: 24px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  transform: none;
+  transition: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#pcyes-influencers .btn-voltar:hover,
+#pcyes-influencers .btn-voltar:focus-visible,
+#pcyes-influencers .btn-voltar:active {
+  background: #1c1c1d;
+  border-color: rgba(255,255,255,0.08);
+  color: #fff;
+  box-shadow: none;
+  outline: none;
+  transform: none;
+}
+
+#pcyes-influencers .btn-voltar::after {
+  content: '';
+  position: absolute;
+  bottom: 11px;
+  left: 24px;
+  right: 24px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.5);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+
+#pcyes-influencers .btn-voltar:hover::after { transform: scaleX(1); }
+#pcyes-influencers .btn-voltar:active::after { transform: scaleX(0.85); }
+
+/* Platform buttons */
+#pcyes-influencers .platform-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+
+#pcyes-influencers .platform-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #252528;
+  color: #999;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+  user-select: none;
+}
+
+#pcyes-influencers .platform-btn:hover { border-color: rgba(255,255,255,0.18); color: #ccc; }
+
+#pcyes-influencers .platform-btn--selected {
+  background: rgba(255,0,4,0.12);
+  border-color: rgba(255,0,4,0.4);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Upload area */
+#pcyes-influencers .upload-area {
+  border: 2px dashed rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  background: #252528;
+}
+
+#pcyes-influencers .upload-area:hover { border-color: rgba(255,255,255,0.24); background: #2a2a2d; }
+
+#pcyes-influencers .upload-area--has-file {
+  border-color: rgba(255,0,4,0.3);
+  background: rgba(255,0,4,0.04);
+}
+
+#pcyes-influencers .upload-icon { margin: 0 auto 12px; color: #555; }
+
+#pcyes-influencers .upload-filename {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,0,4,0.1);
+  color: var(--red);
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#pcyes-influencers .upload-clear {
+  background: none; border: none; cursor: pointer;
+  color: #888; padding: 2px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .2s;
+}
+
+#pcyes-influencers .upload-clear:hover { color: #fff; }
+
+/* Spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+#pcyes-influencers .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+
+/* ===== LIGHT MODE ===== */
+.light #pcyes-influencers {
+  --red: #dc1414;
+  --red-dark: #b81010;
+  --bg-dark: #fafafa;
+  --bg-darker: #f0f0f0;
+  --bg-card: #ffffff;
+  --text-muted: rgba(22,22,22,0.5);
+  --text-dim: rgba(22,22,22,0.35);
+  --text-label: rgba(22,22,22,0.7);
+  --border-subtle: rgba(0,0,0,0.05);
+  --border-input: rgba(0,0,0,0.1);
+}
+.light #pcyes-influencers .creator-hero { background: #f5f5f5; }
+.light #pcyes-influencers .hero-bg-gradient { background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 40%, #fafafa 55%, #fafafa 70%, #f5f5f5 100%); }
+.light #pcyes-influencers .hero-bottom-fade { background: linear-gradient(to bottom, transparent 0%, #f0f0f0 100%); }
+.light #pcyes-influencers .hero-vignette { box-shadow: none; }
+.light #pcyes-influencers .creator-card { background: #f5f5f5; border-color: rgba(0,0,0,0.08); }
+.light #pcyes-influencers .creator-card-overlay { background: linear-gradient(to top, rgba(245,245,245,0.9) 0%, rgba(245,245,245,0.3) 36%, transparent 60%); }
+.light #pcyes-influencers .creator-card-overlay--side { background: linear-gradient(to top, rgba(245,245,245,0.95) 0%, rgba(245,245,245,0.5) 46%, transparent 66%); }
+.light #pcyes-influencers .creator-name { color: #161616; }
+.light #pcyes-influencers .creator-platform { color: rgba(22,22,22,0.5); }
+.light #pcyes-influencers .carousel-nav { background: rgba(245,245,245,0.9); border-color: rgba(0,0,0,0.08); color: rgba(22,22,22,0.5); }
+.light #pcyes-influencers .carousel-nav:hover { color: #161616; }
+.light #pcyes-influencers .benefit-card { background: linear-gradient(170.9deg, #f5f5f5 3.7%, #fafafa 54.6%, #f0f0f0 96.3%); border-color: rgba(0,0,0,0.05); }
+.light #pcyes-influencers .benefit-card:hover { border-color: #dc1414; background: linear-gradient(170.9deg, #ffffff 0%, #f5f5f5 55%, #f0f0f0 100%); }
+.light #pcyes-influencers .benefit-card p { color: rgba(22,22,22,0.5); }
+.light #pcyes-influencers .benefit-card:hover p { color: rgba(22,22,22,0.7); }
+.light #pcyes-influencers .creator-benefits { background: #f0f0f0; }
+.light #pcyes-influencers .creator-form { background: #fafafa; }
+.light #pcyes-influencers .landing-form-card { background: #ffffff; border-color: rgba(0,0,0,0.08); }
+.light #pcyes-influencers .landing-form-fields input,
+.light #pcyes-influencers .landing-form-fields select,
+.light #pcyes-influencers .landing-form-fields textarea { background: #f5f5f5; border-color: rgba(0,0,0,0.1); color: #161616; }
+.light #pcyes-influencers .landing-form-fields input::placeholder,
+.light #pcyes-influencers .landing-form-fields textarea::placeholder { color: rgba(22,22,22,0.35); }
+.light #pcyes-influencers .upload-area { background: #f5f5f5; border-color: rgba(0,0,0,0.1); }
+.light #pcyes-influencers .platform-btn { background: #f0f0f0; border-color: rgba(0,0,0,0.08); color: rgba(22,22,22,0.5); }
+.light #pcyes-influencers .platform-btn:hover { border-color: rgba(0,0,0,0.15); color: #161616; }
+.light #pcyes-influencers .step-circle--inactive { background: #e0e0e0; border-color: rgba(0,0,0,0.08); color: rgba(22,22,22,0.35); }
+.light #pcyes-influencers .step-connector { background: rgba(0,0,0,0.08); }
+.light #pcyes-influencers .btn-voltar { background: #f0f0f0; border-color: rgba(0,0,0,0.08); color: #161616; }
+.light #pcyes-influencers .pcyes-dot { background: rgba(0,0,0,0.1); }
+.light #pcyes-influencers .noise-overlay { opacity: 0; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+  #pcyes-influencers .pcyes-container { padding: 0 40px; }
+  #pcyes-influencers .creator-hero { padding: 64px 40px 48px; }
+  #pcyes-influencers .benefits-grid { gap: 12px; }
+}
+
+@media (max-width: 900px) {
+  #pcyes-influencers .pcyes-container { padding: 0 24px; }
+  #pcyes-influencers .creator-hero { padding: 48px 24px 40px; }
+  #pcyes-influencers .benefits-grid { flex-wrap: wrap; justify-content: center; }
+  #pcyes-influencers .benefit-card { max-width: 46%; min-width: 200px; }
+  #pcyes-influencers .benefit-card--offset { margin-top: 0; }
+  #pcyes-influencers .landing-form-card { padding: 32px 24px; }
+  #pcyes-influencers .carousel-wrapper { max-width: 100%; }
+}
+
+@media (max-width: 680px) {
+  #pcyes-influencers .creator-hero { padding: 40px 20px 36px; gap: 28px; min-height: auto; }
+  #pcyes-influencers .hero-watermark { font-size: 80px; }
+  #pcyes-influencers .carousel-stage { height: 320px; }
+  #pcyes-influencers .creator-card { width: 180px; height: 260px; }
+  #pcyes-influencers .creator-card-img { height: 186px; }
+  #pcyes-influencers .carousel-wrapper { max-width: 340px; }
+  #pcyes-influencers .benefits-grid { flex-direction: column; align-items: center; }
+  #pcyes-influencers .benefit-card { max-width: 340px; width: 100%; }
+  #pcyes-influencers .landing-form-fields { grid-template-columns: 1fr; }
+  #pcyes-influencers .landing-form-fields label.pcyes-half { grid-column: 1 / -1; }
+  #pcyes-influencers .steps-row {
+    justify-content: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #pcyes-influencers .form-actions--split { flex-direction: column-reverse; }
+  #pcyes-influencers .btn-voltar, .landing-btn-proximo { width: 100%; justify-content: center; }
+}
+    </style>
+  </head>
+  <body>
+<div id="pcyes-influencers">
+    <!-- Noise Overlay -->
+    <div class="noise-overlay" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <filter id="pcyes-noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch"/>
+          <feColorMatrix type="saturate" values="0"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#pcyes-noise)"/>
+      </svg>
+    </div>
+
+    <main id="top">
+      <!-- HERO SECTION -->
+      <section class="creator-hero">
+        <div class="hero-bg-gradient" aria-hidden="true"></div>
+        <div class="hero-watermark" aria-hidden="true">CREATORS</div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-vignette" aria-hidden="true"></div>
+        <div class="hero-bottom-fade" aria-hidden="true"></div>
+
+        <div class="hero-center">
+          <div class="hero-badge">Programa de Creators</div>
+          <h1 class="hero-title">
+            TORNE-SE UM<br/>
+            <span class="hero-title-red">CREATOR PCYES</span>
+          </h1>
+          <div class="hero-bar"></div>
+          <p class="hero-desc-primary">
+            A PCYES está construindo o futuro do setup gamer no Brasil. E
+            queremos criadores que ajudem a contar essa história.
+          </p>
+          <p class="hero-desc-secondary">
+            Se você vive o universo de games, tecnologia e cultura digital, seu
+            conteúdo pode ir além. Aqui, você não só divulga produtos: você
+            cria experiências com uma marca que cresce junto com você.
+          </p>
+        </div>
+
+        <!-- CAROUSEL -->
+        <div class="carousel-wrapper">
+          <button class="carousel-nav carousel-prev" aria-label="Anterior">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+
+          <div class="carousel-stage" id="carousel-stage">
+            <!-- Card 0: Kingsize (initial featured) -->
+            <article class="creator-card" data-idx="0" data-url="https://www.instagram.com/kingsizejoga/">
+              <div class="creator-card-img">
+                <img src="https://pcyes-cdn.oderco.com.br/Influenciadores/KINGSIZE-3x.jpg" alt="Kingsize" loading="lazy" />
+                <div class="creator-card-overlay"></div>
+                <div class="creator-card-tag">Gamer</div>
+                <div class="featured-top-line"></div>
+              </div>
+              <div class="creator-card-info">
+                <p class="creator-name">Kingsize</p>
+                <div class="creator-meta">
+                  <a href="https://www.instagram.com/kingsizejoga/" target="_blank" rel="noopener noreferrer" class="creator-platform-link">
+                    <span class="creator-platform">Instagram</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;opacity:0.7"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <span class="creator-followers">121K seguidores</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 1: Werdum -->
+            <article class="creator-card" data-idx="1" data-url="https://www.youtube.com/@FabricioWerdumOficial">
+              <div class="creator-card-img">
+                <img src="https://pcyes-cdn.oderco.com.br/Influenciadores/WERDUM-3x.jpg" alt="Werdum" loading="lazy" />
+                <div class="creator-card-overlay"></div>
+                <div class="creator-card-tag">Podcast</div>
+                <div class="featured-top-line"></div>
+              </div>
+              <div class="creator-card-info">
+                <p class="creator-name">Werdum</p>
+                <div class="creator-meta">
+                  <a href="https://www.youtube.com/@FabricioWerdumOficial" target="_blank" rel="noopener noreferrer" class="creator-platform-link">
+                    <span class="creator-platform">YouTube</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;opacity:0.7"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <span class="creator-followers">419K seguidores</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 2: Wesy -->
+            <article class="creator-card" data-idx="2" data-url="https://www.youtube.com/@wesy/featured">
+              <div class="creator-card-img">
+                <img src="https://pcyes-cdn.oderco.com.br/Influenciadores/WESY-3x.jpg" alt="Wesy" loading="lazy" />
+                <div class="creator-card-overlay"></div>
+                <div class="creator-card-tag">Gamer</div>
+                <div class="featured-top-line"></div>
+              </div>
+              <div class="creator-card-info">
+                <p class="creator-name">Wesy</p>
+                <div class="creator-meta">
+                  <a href="https://www.youtube.com/@wesy/featured" target="_blank" rel="noopener noreferrer" class="creator-platform-link">
+                    <span class="creator-platform">YouTube</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;opacity:0.7"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <span class="creator-followers">401K seguidores</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 3: Atriakii -->
+            <article class="creator-card" data-idx="3" data-url="https://www.instagram.com/atriakii/">
+              <div class="creator-card-img">
+                <img src="https://pcyes-cdn.oderco.com.br/Influenciadores/AATRIA-3x.jpg" alt="Atriakii" loading="lazy" />
+                <div class="creator-card-overlay"></div>
+                <div class="creator-card-tag">Gamer</div>
+                <div class="featured-top-line"></div>
+              </div>
+              <div class="creator-card-info">
+                <p class="creator-name">Atriakii</p>
+                <div class="creator-meta">
+                  <a href="https://www.instagram.com/atriakii/" target="_blank" rel="noopener noreferrer" class="creator-platform-link">
+                    <span class="creator-platform">Instagram</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;opacity:0.7"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <span class="creator-followers">68.6K seguidores</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 4: Antonio -->
+            <article class="creator-card" data-idx="4" data-url="https://www.instagram.com/antoniojogaoficial/">
+              <div class="creator-card-img">
+                <img src="https://pcyes-cdn.oderco.com.br/Influenciadores/ANTONIO-3x.jpg" alt="Antonio" loading="lazy" />
+                <div class="creator-card-overlay"></div>
+                <div class="creator-card-tag">Gamer</div>
+                <div class="featured-top-line"></div>
+              </div>
+              <div class="creator-card-info">
+                <p class="creator-name">Antonio</p>
+                <div class="creator-meta">
+                  <a href="https://www.instagram.com/antoniojogaoficial/" target="_blank" rel="noopener noreferrer" class="creator-platform-link">
+                    <span class="creator-platform">Instagram</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;opacity:0.7"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                  <span class="creator-followers">7K seguidores</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <button class="carousel-nav carousel-next" aria-label="Próximo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="carousel-dots" role="tablist" aria-label="Slides do carrossel">
+          <button class="pcyes-dot dot--active" aria-label="Creator 1"></button>
+          <button class="pcyes-dot" aria-label="Creator 2"></button>
+          <button class="pcyes-dot" aria-label="Creator 3"></button>
+          <button class="pcyes-dot" aria-label="Creator 4"></button>
+          <button class="pcyes-dot" aria-label="Creator 5"></button>
+        </div>
+
+        <div class="hero-cta-wrap">
+          <a class="cta-button" href="#formulario">
+            QUERO SER CREATOR
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- DIVIDER -->
+      <div class="gradient-divider" aria-hidden="true"></div>
+
+      <!-- BENEFITS -->
+      <section class="creator-benefits">
+        <div class="pcyes-container">
+          <div class="section-head">
+            <span class="kicker">O programa</span>
+            <h2>O QUE SIGNIFICA SER<br /><span class="red">CREATOR PCYES</span></h2>
+          </div>
+
+          <div class="benefits-grid">
+            <article class="benefit-card benefit-card--top">
+              <div class="benefit-icon-wrap">
+                <div class="benefit-icon-glow"></div>
+                <svg class="benefit-icon-svg" viewBox="0 0 140.241 111.958" fill="none" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="ic1-fill" x1="70.12" y1="0" x2="70.12" y2="111.958" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#58585f"/><stop offset="1" stop-color="#353539"/>
+                    </linearGradient>
+                    <linearGradient id="ic1-shine" x1="126.22" y1="0" x2="21.04" y2="117.56" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.90"/>
+                      <stop offset="0.55" stop-color="#aaaaaa" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="#666666" stop-opacity="0.10"/>
+                    </linearGradient>
+                    <radialGradient id="ic1-glow" cx="56.1" cy="33.59" r="77.13" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.10"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <path d="M135.96 31.886C134.608 30.5314 132.998 29.4574 131.225 28.7262C129.452 27.9948 127.552 27.621 125.632 27.6259H73.0421V18.9361C73.0001 18.5423 73.0461 18.1443 73.1774 17.7707C73.3096 17.397 73.522 17.0571 73.8024 16.7755C74.0819 16.4939 74.4205 16.2777 74.7941 16.1425C75.1688 16.0074 75.5675 15.9567 75.9642 15.994H89.2941C91.1823 15.992 92.9924 15.2445 94.3277 13.9157C95.663 12.5867 96.4133 10.785 96.4153 8.90571V2.90802C96.4153 2.13682 96.1078 1.39713 95.5598 0.851757C95.0119 0.306385 94.2686 0 93.4943 0C92.7189 0 91.9757 0.306385 91.4277 0.851757C90.8798 1.39713 90.5722 2.13682 90.5722 2.90802V8.90571C90.5722 9.24301 90.437 9.56644 90.1976 9.80493C89.9582 10.0434 89.6326 10.1776 89.2941 10.178H75.9642C74.8032 10.1441 73.6482 10.3465 72.5693 10.7729C71.4905 11.1994 70.5108 11.8408 69.6904 12.6577C68.869 13.4747 68.2249 14.45 67.7961 15.5238C67.3684 16.5976 67.1651 17.7471 67.1991 18.902V27.6259H14.6084C10.7344 27.6272 7.01956 29.1596 4.28025 31.886C1.54095 34.6125 0.00140241 38.31 0 42.1658V97.418C0.00140241 101.273 1.54095 104.97 4.28025 107.697C7.01956 110.424 10.7344 111.957 14.6084 111.958H125.632C129.506 111.957 133.221 110.424 135.96 107.697C138.7 104.97 140.24 101.273 140.241 97.418V42.1658C140.246 40.2557 139.87 38.3637 139.136 36.5991C138.4 34.8346 137.322 33.2326 135.96 31.886ZM109.563 47.2548H112.485C113.259 47.2548 114.002 47.5612 114.55 48.1065C115.098 48.6519 115.407 49.3916 115.407 50.1628C115.407 50.9341 115.098 51.6737 114.55 52.219C114.002 52.7644 113.259 53.0708 112.485 53.0708H109.563C108.789 53.0708 108.045 52.7644 107.497 52.219C106.949 51.6737 106.642 50.9341 106.642 50.1628C106.642 49.3916 106.949 48.6519 107.497 48.1065C108.045 47.5612 108.789 47.2548 109.563 47.2548ZM97.8768 47.2548H100.798C101.573 47.2548 102.316 47.5612 102.864 48.1065C103.412 48.6519 103.72 49.3916 103.72 50.1628C103.72 50.9341 103.412 51.6737 102.864 52.219C102.316 52.7644 101.573 53.0708 100.798 53.0708H97.8768C97.1015 53.0708 96.3582 52.7644 95.8102 52.219C95.2623 51.6737 94.9548 50.9341 94.9548 50.1628C94.9548 49.3916 95.2623 48.6519 95.8102 48.1065C96.3582 47.5612 97.1015 47.2548 97.8768 47.2548ZM86.1897 47.2548H89.1117C89.8861 47.2548 90.6293 47.5612 91.1773 48.1065C91.7252 48.6519 92.0328 49.3916 92.0328 50.1628C92.0328 50.9341 91.7252 51.6737 91.1773 52.219C90.6293 52.7644 89.8861 53.0708 89.1117 53.0708H86.1897C85.4144 53.0708 84.6721 52.7644 84.1242 52.219C83.5762 51.6737 83.2677 50.9341 83.2677 50.1628C83.2677 49.3916 83.5762 48.6519 84.1242 48.1065C84.6721 47.5612 85.4144 47.2548 86.1897 47.2548ZM86.1897 58.8867H89.1117C89.8861 58.8867 90.6293 59.1931 91.1773 59.7385C91.7252 60.2838 92.0328 61.0235 92.0328 61.7947C92.0328 62.5659 91.7252 63.3056 91.1773 63.851C90.6293 64.3964 89.8861 64.7028 89.1117 64.7028H86.1897C85.4144 64.7028 84.6721 64.3964 84.1242 63.851C83.5762 63.3056 83.2677 62.5659 83.2677 61.7947C83.2677 61.0235 83.5762 60.2838 84.1242 59.7385C84.6721 59.1931 85.4144 58.8867 86.1897 58.8867ZM86.1897 70.5187H89.1117C89.8861 70.5187 90.6293 70.8251 91.1773 71.3705C91.7252 71.9157 92.0328 72.6554 92.0328 73.4267C92.0328 74.1979 91.7252 74.9376 91.1773 75.483C90.6293 76.0282 89.8861 76.3346 89.1117 76.3346H86.1897C85.4144 76.3346 84.6721 76.0282 84.1242 75.483C83.5762 74.9376 83.2677 74.1979 83.2677 73.4267C83.2677 72.6554 83.5762 71.9157 84.1242 71.3705C84.6721 70.8251 85.4144 70.5187 86.1897 70.5187ZM74.5027 47.2548H77.4247C78.2 47.2548 78.9423 47.5612 79.4902 48.1065C80.0382 48.6519 80.3467 49.3916 80.3467 50.1628C80.3467 50.9341 80.0382 51.6737 79.4902 52.219C78.9423 52.7644 78.2 53.0708 77.4247 53.0708H74.5027C73.7283 53.0708 72.985 52.7644 72.4371 52.219C71.8892 51.6737 71.5816 50.9341 71.5816 50.1628C71.5816 49.3916 71.8892 48.6519 72.4371 48.1065C72.985 47.5612 73.7283 47.2548 74.5027 47.2548ZM74.5027 58.8867H77.4247C78.2 58.8867 78.9423 59.1931 79.4902 59.7385C80.0382 60.2838 80.3467 61.0235 80.3467 61.7947C80.3467 62.5659 80.0382 63.3056 79.4902 63.851C78.9423 64.3964 78.2 64.7028 77.4247 64.7028H74.5027C73.7283 64.7028 72.985 64.3964 72.4371 63.851C71.8892 63.3056 71.5816 62.5659 71.5816 61.7947C71.5816 61.0235 71.8892 60.2838 72.4371 59.7385C72.985 59.1931 73.7283 58.8867 74.5027 58.8867ZM74.5027 70.5187H77.4247C78.2 70.5187 78.9423 70.8251 79.4902 71.3705C80.0382 71.9157 80.3467 72.6554 80.3467 73.4267C80.3467 74.1979 80.0382 74.9376 79.4902 75.483C78.9423 76.0282 78.2 76.3346 77.4247 76.3346H74.5027C73.7283 76.3346 72.985 76.0282 72.4371 75.483C71.8892 74.9376 71.5816 74.1979 71.5816 73.4267C71.5816 72.6554 71.8892 71.9157 72.4371 71.3705C72.985 70.8251 73.7283 70.5187 74.5027 70.5187ZM62.8166 47.2548H65.7376C66.5129 47.2548 67.2562 47.5612 67.8041 48.1065C68.3521 48.6519 68.6596 49.3916 68.6596 50.1628C68.6596 50.9341 68.3521 51.6737 67.8041 52.219C67.2562 52.7644 66.5129 53.0708 65.7376 53.0708H62.8166C62.0413 53.0708 61.298 52.7644 60.75 52.219C60.2021 51.6737 59.8946 50.9341 59.8946 50.1628C59.8946 49.3916 60.2021 48.6519 60.75 48.1065C61.298 47.5612 62.0413 47.2548 62.8166 47.2548ZM68.6596 73.4267C68.6596 74.1979 68.3521 74.9375 67.8041 75.4829C67.2562 76.0283 66.5129 76.3346 65.7376 76.3346H62.8166C62.0413 76.3346 61.298 76.0282 60.75 75.483C60.2021 74.9376 59.8946 74.1979 59.8946 73.4267C59.8946 72.6554 60.2021 71.9157 60.75 71.3705C61.298 70.8251 62.0413 70.5187 62.8166 70.5187H65.7376C66.5129 70.5187 67.2562 70.8251 67.8041 71.3705C68.3521 71.9158 68.6596 72.6554 68.6596 73.4267ZM61.3551 58.8867H64.2771C65.0524 58.8867 65.7947 59.1931 66.3426 59.7385C66.8906 60.2838 67.1991 61.0235 67.1991 61.7947C67.1991 62.5659 66.8906 63.3056 66.3426 63.851C65.7947 64.3964 65.0524 64.7028 64.2771 64.7028H61.3551C60.5807 64.7028 59.8375 64.3964 59.2895 63.851C58.7416 63.3056 58.4341 62.5659 58.4341 61.7947C58.4341 61.0235 58.7416 60.2838 59.2895 59.7385C59.8375 59.1931 60.5807 58.8867 61.3551 58.8867ZM51.1295 47.2548H54.0515C54.8259 47.2548 55.5691 47.5612 56.1171 48.1065C56.665 48.6519 56.9726 49.3916 56.9726 50.1628C56.9726 50.9341 56.665 51.6737 56.1171 52.219C55.5691 52.7644 54.8259 53.0708 54.0515 53.0708H51.1295C50.3542 53.0708 49.6119 52.7644 49.064 52.219C48.516 51.6737 48.2075 50.9341 48.2075 50.1628C48.2075 49.3916 48.516 48.6519 49.064 48.1065C49.6119 47.5612 50.3542 47.2548 51.1295 47.2548ZM56.9726 73.4267C56.9726 74.1979 56.665 74.9375 56.1171 75.4829C55.5691 76.0283 54.8259 76.3346 54.0515 76.3346H51.1295C50.3542 76.3346 49.6119 76.0282 49.064 75.483C48.516 74.9376 48.2075 74.1979 48.2075 73.4267C48.2075 72.6554 48.516 71.9157 49.064 71.3705C49.6119 70.8251 50.3542 70.5187 51.1295 70.5187H54.0515C54.8259 70.5187 55.5691 70.8251 56.1171 71.3705C56.665 71.9158 56.9726 72.6554 56.9726 73.4267ZM49.669 58.8867H52.59C53.3653 58.8867 54.1086 59.1931 54.6566 59.7385C55.2045 60.2838 55.512 61.0235 55.512 61.7947C55.512 62.5659 55.2045 63.3056 54.6566 63.851C54.1086 64.3964 53.3653 64.7028 52.59 64.7028H49.669C48.8937 64.7028 48.1504 64.3964 47.6025 63.851C47.0545 63.3056 46.747 62.5659 46.747 61.7947C46.747 61.0235 47.0545 60.2838 47.6025 59.7385C48.1504 59.1931 48.8937 58.8867 49.669 58.8867ZM39.4424 47.2548H42.3645C43.1398 47.2548 43.8821 47.5612 44.43 48.1065C44.9779 48.6519 45.2865 49.3916 45.2865 50.1628C45.2865 50.9341 44.9779 51.6737 44.43 52.219C43.8821 52.7644 43.1398 53.0708 42.3645 53.0708H39.4424C38.6681 53.0708 37.9248 52.7644 37.3769 52.219C36.829 51.6737 36.5214 50.9341 36.5214 50.1628C36.5214 49.3916 36.829 48.6519 37.3769 48.1065C37.9248 47.5612 38.6681 47.2548 39.4424 47.2548ZM27.756 47.2548H30.6774C31.4527 47.2548 32.196 47.5612 32.7439 48.1065C33.2919 48.6519 33.5994 49.3916 33.5994 50.1628C33.5994 50.9341 33.2919 51.6737 32.7439 52.219C32.196 52.7644 31.4527 53.0708 30.6774 53.0708H27.756C26.9811 53.0708 26.238 52.7644 25.69 52.219C25.1422 51.6737 24.8344 50.9341 24.8344 50.1628C24.8344 49.3916 25.1422 48.6519 25.69 48.1065C26.238 47.5612 26.9811 47.2548 27.756 47.2548ZM16.0693 47.2548H18.9909C19.7659 47.2548 20.509 47.5612 21.0569 48.1065C21.6048 48.6519 21.9126 49.3916 21.9126 50.1628C21.9126 50.9341 21.6048 51.6737 21.0569 52.219C20.509 52.7644 19.7659 53.0708 18.9909 53.0708H16.0693C15.2944 53.0708 14.5513 52.7644 14.0034 52.219C13.4554 51.6737 13.1476 50.9341 13.1476 50.1628C13.1476 49.3916 13.4554 48.6519 14.0034 48.1065C14.5513 47.5612 15.2944 47.2548 16.0693 47.2548ZM16.0693 58.8867H28.4866C29.261 58.8867 30.0042 59.1931 30.5522 59.7385C31.1001 60.2838 31.4076 61.0235 31.4076 61.7947C31.4076 62.5659 31.1001 63.3056 30.5522 63.851C30.0042 64.3964 29.261 64.7028 28.4866 64.7028H16.0693C15.2944 64.7028 14.5513 64.3964 14.0034 63.851C13.4554 63.3056 13.1476 62.5659 13.1476 61.7947C13.1476 61.0235 13.4554 60.2838 14.0034 59.7385C14.5513 59.1931 15.2944 58.8867 16.0693 58.8867ZM18.9909 92.3282H16.0693C15.2944 92.3282 14.5513 92.0221 14.0034 91.4767C13.4554 90.9314 13.1476 90.1916 13.1476 89.4209C13.1476 88.6492 13.4554 87.9097 14.0034 87.3643C14.5513 86.8189 15.2944 86.5127 16.0693 86.5127H18.9909C19.7659 86.5127 20.509 86.8189 21.0569 87.3643C21.6048 87.9097 21.9126 88.6492 21.9126 89.4209C21.9126 90.1916 21.6048 90.9314 21.0569 91.4767C20.509 92.0221 19.7659 92.3282 18.9909 92.3282ZM30.6774 92.3282H27.756C26.9811 92.3282 26.238 92.0221 25.69 91.4767C25.1422 90.9314 24.8344 90.1916 24.8344 89.4209C24.8344 88.6492 25.1422 87.9097 25.69 87.3643C26.238 86.8189 26.9811 86.5127 27.756 86.5127H30.6774C31.4527 86.5127 32.196 86.8189 32.7439 87.3643C33.2919 87.9097 33.5994 88.6492 33.5994 89.4209C33.5994 90.1916 33.2919 90.9314 32.7439 91.4767C32.196 92.0221 31.4527 92.3282 30.6774 92.3282ZM31.4076 76.3346H16.0693C15.2944 76.3346 14.5513 76.0282 14.0034 75.483C13.4554 74.9376 13.1476 74.1979 13.1476 73.4267C13.1476 72.6554 13.4554 71.9157 14.0034 71.3705C14.5513 70.8251 15.2944 70.5187 16.0693 70.5187H31.4076C32.183 70.5187 32.9262 70.8251 33.4742 71.3705C34.0221 71.9157 34.3297 72.6554 34.3297 73.4267C34.3297 74.1979 34.0221 74.9376 33.4742 75.483C32.9262 76.0282 32.183 76.3346 31.4076 76.3346ZM35.0599 61.7947C35.0599 61.0235 35.3684 60.2838 35.9164 59.7385C36.4643 59.1932 37.2066 58.8868 37.9819 58.8867H40.9039C41.6783 58.8867 42.4216 59.1931 42.9695 59.7385C43.5174 60.2838 43.825 61.0235 43.825 61.7947C43.825 62.5659 43.5174 63.3056 42.9695 63.851C42.4216 64.3964 41.6783 64.7028 40.9039 64.7028H37.9819C37.2066 64.7027 36.4643 64.3963 35.9164 63.8509C35.3684 63.3056 35.0599 62.5659 35.0599 61.7947ZM39.4424 70.5187H42.3645C43.1398 70.5187 43.8821 70.8251 44.43 71.3705C44.9779 71.9157 45.2865 72.6554 45.2865 73.4267C45.2865 74.1979 44.9779 74.9376 44.43 75.483C43.8821 76.0282 43.1398 76.3346 42.3645 76.3346H39.4424C38.6681 76.3346 37.9248 76.0282 37.3769 75.483C36.829 74.9376 36.5214 74.1979 36.5214 73.4267C36.5214 72.6554 36.829 71.9157 37.3769 71.3705C37.9248 70.8251 38.6681 70.5187 39.4424 70.5187ZM98.607 92.3282H40.1727C39.3984 92.3282 38.6551 92.0221 38.1071 91.4767C37.5592 90.9314 37.2517 90.1916 37.2517 89.4209C37.2517 88.6492 37.5592 87.9097 38.1071 87.3643C38.6551 86.8189 39.3984 86.5127 40.1727 86.5127H98.607C99.3814 86.5127 100.125 86.8189 100.673 87.3643C101.221 87.9097 101.528 88.6492 101.528 89.4209C101.528 90.1916 101.221 90.9314 100.673 91.4767C100.125 92.0221 99.3814 92.3282 98.607 92.3282ZM100.798 76.3346H97.8768C97.1015 76.3346 96.3582 76.0282 95.8102 75.483C95.2623 74.9376 94.9548 74.1979 94.9548 73.4267C94.9548 72.6554 95.2623 71.9157 95.8102 71.3705C96.3582 70.8251 97.1015 70.5187 97.8768 70.5187H100.798C101.573 70.5187 102.316 70.8251 102.864 71.3705C103.412 71.9157 103.72 72.6554 103.72 73.4267C103.72 74.1979 103.412 74.9376 102.864 75.483C102.316 76.0282 101.573 76.3346 100.798 76.3346ZM102.259 64.7028H99.3373C98.562 64.7028 97.8197 64.3964 97.2718 63.851C96.7238 63.3056 96.4153 62.5659 96.4153 61.7947C96.4153 61.0235 96.7238 60.2838 97.2718 59.7385C97.8197 59.1931 98.562 58.8867 99.3373 58.8867H102.259C103.034 58.8867 103.777 59.1931 104.325 59.7385C104.873 60.2838 105.18 61.0235 105.18 61.7947C105.18 62.5659 104.873 63.3056 104.325 63.851C103.777 64.3964 103.034 64.7028 102.259 64.7028ZM111.755 92.3282H108.833C108.058 92.3282 107.315 92.0221 106.767 91.4767C106.219 90.9314 105.911 90.1916 105.911 89.4209C105.911 88.6492 106.219 87.9097 106.767 87.3643C107.315 86.8189 108.058 86.5127 108.833 86.5127H111.755C112.529 86.5127 113.272 86.8189 113.82 87.3643C114.368 87.9097 114.676 88.6492 114.676 89.4209C114.676 90.1916 114.368 90.9314 113.82 91.4767C113.272 92.0221 112.529 92.3282 111.755 92.3282ZM111.755 82.1507C111.755 81.3794 112.062 80.6398 112.61 80.0944C113.158 79.549 113.901 79.2427 114.676 79.2427H117.598C118.373 79.2427 119.116 79.549 119.664 80.0944C120.211 80.6397 120.52 81.3794 120.52 82.1507C120.52 82.9219 120.211 83.6616 119.664 84.2069C119.116 84.7522 118.373 85.0586 117.598 85.0586H114.676C113.901 85.0586 113.158 84.7522 112.61 84.2068C112.062 83.6615 111.755 82.9219 111.755 82.1507ZM123.441 92.3282H120.52C119.744 92.3282 119.001 92.0221 118.453 91.4767C117.905 90.9314 117.598 90.1916 117.598 89.4209C117.598 88.6492 117.905 87.9097 118.453 87.3643C119.001 86.8189 119.744 86.5127 120.52 86.5127H123.441C124.216 86.5127 124.959 86.8189 125.507 87.3643C126.055 87.9097 126.363 88.6492 126.363 89.4209C126.363 90.1916 126.055 90.9314 125.507 91.4767C124.959 92.0221 124.216 92.3282 123.441 92.3282ZM124.172 76.3346H108.833C108.058 76.3346 107.315 76.0282 106.767 75.483C106.219 74.9376 105.911 74.1979 105.911 73.4267C105.911 72.6554 106.219 71.9157 106.767 71.3705C107.315 70.8251 108.058 70.5187 108.833 70.5187H124.172C124.946 70.5187 125.69 70.8251 126.238 71.3705C126.785 71.9157 127.093 72.6554 127.093 73.4267C127.093 74.1979 126.785 74.9376 126.238 75.483C125.69 76.0282 124.946 76.3346 124.172 76.3346ZM124.172 64.7028H111.755C110.979 64.7028 110.236 64.3964 109.688 63.851C109.14 63.3056 108.833 62.5659 108.833 61.7947C108.833 61.0235 109.14 60.2838 109.688 59.7385C110.236 59.1931 110.979 58.8867 111.755 58.8867H124.172C124.946 58.8867 125.69 59.1931 126.238 59.7385C126.785 60.2838 127.093 61.0235 127.093 61.7947C127.093 62.5659 126.785 63.3056 126.238 63.851C125.69 64.3964 124.946 64.7028 124.172 64.7028ZM124.172 53.0708H121.25C120.475 53.0708 119.732 52.7644 119.184 52.219C118.636 51.6737 118.328 50.9341 118.328 50.1628C118.328 49.3916 118.636 48.6519 119.184 48.1065C119.732 47.5612 120.475 47.2548 121.25 47.2548H124.172C124.946 47.2548 125.69 47.5612 126.238 48.1065C126.785 48.6519 127.093 49.3916 127.093 50.1628C127.093 50.9341 126.785 51.6737 126.238 52.219C125.69 52.7644 124.946 53.0708 124.172 53.0708Z" fill="url(#ic1-fill)"/>
+                  <path d="M135.96 31.886C134.608 30.5314 132.998 29.4574 131.225 28.7262C129.452 27.9948 127.552 27.621 125.632 27.6259H73.0421V18.9361C73.0001 18.5423 73.0461 18.1443 73.1774 17.7707C73.3096 17.397 73.522 17.0571 73.8024 16.7755C74.0819 16.4939 74.4205 16.2777 74.7941 16.1425C75.1688 16.0074 75.5675 15.9567 75.9642 15.994H89.2941C91.1823 15.992 92.9924 15.2445 94.3277 13.9157C95.663 12.5867 96.4133 10.785 96.4153 8.90571V2.90802C96.4153 2.13682 96.1078 1.39713 95.5598 0.851757C95.0119 0.306385 94.2686 0 93.4943 0C92.7189 0 91.9757 0.306385 91.4277 0.851757C90.8798 1.39713 90.5722 2.13682 90.5722 2.90802V8.90571C90.5722 9.24301 90.437 9.56644 90.1976 9.80493C89.9582 10.0434 89.6326 10.1776 89.2941 10.178H75.9642C74.8032 10.1441 73.6482 10.3465 72.5693 10.7729C71.4905 11.1994 70.5108 11.8408 69.6904 12.6577C68.869 13.4747 68.2249 14.45 67.7961 15.5238C67.3684 16.5976 67.1651 17.7471 67.1991 18.902V27.6259H14.6084C10.7344 27.6272 7.01956 29.1596 4.28025 31.886C1.54095 34.6125 0.00140241 38.31 0 42.1658V97.418C0.00140241 101.273 1.54095 104.97 4.28025 107.697C7.01956 110.424 10.7344 111.957 14.6084 111.958H125.632C129.506 111.957 133.221 110.424 135.96 107.697C138.7 104.97 140.24 101.273 140.241 97.418V42.1658C140.246 40.2557 139.87 38.3637 139.136 36.5991C138.4 34.8346 137.322 33.2326 135.96 31.886ZM109.563 47.2548H112.485C113.259 47.2548 114.002 47.5612 114.55 48.1065C115.098 48.6519 115.407 49.3916 115.407 50.1628C115.407 50.9341 115.098 51.6737 114.55 52.219C114.002 52.7644 113.259 53.0708 112.485 53.0708H109.563C108.789 53.0708 108.045 52.7644 107.497 52.219C106.949 51.6737 106.642 50.9341 106.642 50.1628C106.642 49.3916 106.949 48.6519 107.497 48.1065C108.045 47.5612 108.789 47.2548 109.563 47.2548ZM97.8768 47.2548H100.798C101.573 47.2548 102.316 47.5612 102.864 48.1065C103.412 48.6519 103.72 49.3916 103.72 50.1628C103.72 50.9341 103.412 51.6737 102.864 52.219C102.316 52.7644 101.573 53.0708 100.798 53.0708H97.8768C97.1015 53.0708 96.3582 52.7644 95.8102 52.219C95.2623 51.6737 94.9548 50.9341 94.9548 50.1628C94.9548 49.3916 95.2623 48.6519 95.8102 48.1065C96.3582 47.5612 97.1015 47.2548 97.8768 47.2548ZM86.1897 47.2548H89.1117C89.8861 47.2548 90.6293 47.5612 91.1773 48.1065C91.7252 48.6519 92.0328 49.3916 92.0328 50.1628C92.0328 50.9341 91.7252 51.6737 91.1773 52.219C90.6293 52.7644 89.8861 53.0708 89.1117 53.0708H86.1897C85.4144 53.0708 84.6721 52.7644 84.1242 52.219C83.5762 51.6737 83.2677 50.9341 83.2677 50.1628C83.2677 49.3916 83.5762 48.6519 84.1242 48.1065C84.6721 47.5612 85.4144 47.2548 86.1897 47.2548ZM86.1897 58.8867H89.1117C89.8861 58.8867 90.6293 59.1931 91.1773 59.7385C91.7252 60.2838 92.0328 61.0235 92.0328 61.7947C92.0328 62.5659 91.7252 63.3056 91.1773 63.851C90.6293 64.3964 89.8861 64.7028 89.1117 64.7028H86.1897C85.4144 64.7028 84.6721 64.3964 84.1242 63.851C83.5762 63.3056 83.2677 62.5659 83.2677 61.7947C83.2677 61.0235 83.5762 60.2838 84.1242 59.7385C84.6721 59.1931 85.4144 58.8867 86.1897 58.8867ZM86.1897 70.5187H89.1117C89.8861 70.5187 90.6293 70.8251 91.1773 71.3705C91.7252 71.9157 92.0328 72.6554 92.0328 73.4267C92.0328 74.1979 91.7252 74.9376 91.1773 75.483C90.6293 76.0282 89.8861 76.3346 89.1117 76.3346H86.1897C85.4144 76.3346 84.6721 76.0282 84.1242 75.483C83.5762 74.9376 83.2677 74.1979 83.2677 73.4267C83.2677 72.6554 83.5762 71.9157 84.1242 71.3705C84.6721 70.8251 85.4144 70.5187 86.1897 70.5187ZM74.5027 47.2548H77.4247C78.2 47.2548 78.9423 47.5612 79.4902 48.1065C80.0382 48.6519 80.3467 49.3916 80.3467 50.1628C80.3467 50.9341 80.0382 51.6737 79.4902 52.219C78.9423 52.7644 78.2 53.0708 77.4247 53.0708H74.5027C73.7283 53.0708 72.985 52.7644 72.4371 52.219C71.8892 51.6737 71.5816 50.9341 71.5816 50.1628C71.5816 49.3916 71.8892 48.6519 72.4371 48.1065C72.985 47.5612 73.7283 47.2548 74.5027 47.2548ZM74.5027 58.8867H77.4247C78.2 58.8867 78.9423 59.1931 79.4902 59.7385C80.0382 60.2838 80.3467 61.0235 80.3467 61.7947C80.3467 62.5659 80.0382 63.3056 79.4902 63.851C78.9423 64.3964 78.2 64.7028 77.4247 64.7028H74.5027C73.7283 64.7028 72.985 64.3964 72.4371 63.851C71.8892 63.3056 71.5816 62.5659 71.5816 61.7947C71.5816 61.0235 71.8892 60.2838 72.4371 59.7385C72.985 59.1931 73.7283 58.8867 74.5027 58.8867ZM74.5027 70.5187H77.4247C78.2 70.5187 78.9423 70.8251 79.4902 71.3705C80.0382 71.9157 80.3467 72.6554 80.3467 73.4267C80.3467 74.1979 80.0382 74.9376 79.4902 75.483C78.9423 76.0282 78.2 76.3346 77.4247 76.3346H74.5027C73.7283 76.3346 72.985 76.0282 72.4371 75.483C71.8892 74.9376 71.5816 74.1979 71.5816 73.4267C71.5816 72.6554 71.8892 71.9157 72.4371 71.3705C72.985 70.8251 73.7283 70.5187 74.5027 70.5187ZM62.8166 47.2548H65.7376C66.5129 47.2548 67.2562 47.5612 67.8041 48.1065C68.3521 48.6519 68.6596 49.3916 68.6596 50.1628C68.6596 50.9341 68.3521 51.6737 67.8041 52.219C67.2562 52.7644 66.5129 53.0708 65.7376 53.0708H62.8166C62.0413 53.0708 61.298 52.7644 60.75 52.219C60.2021 51.6737 59.8946 50.9341 59.8946 50.1628C59.8946 49.3916 60.2021 48.6519 60.75 48.1065C61.298 47.5612 62.0413 47.2548 62.8166 47.2548ZM68.6596 73.4267C68.6596 74.1979 68.3521 74.9375 67.8041 75.4829C67.2562 76.0283 66.5129 76.3346 65.7376 76.3346H62.8166C62.0413 76.3346 61.298 76.0282 60.75 75.483C60.2021 74.9376 59.8946 74.1979 59.8946 73.4267C59.8946 72.6554 60.2021 71.9157 60.75 71.3705C61.298 70.8251 62.0413 70.5187 62.8166 70.5187H65.7376C66.5129 70.5187 67.2562 70.8251 67.8041 71.3705C68.3521 71.9158 68.6596 72.6554 68.6596 73.4267ZM61.3551 58.8867H64.2771C65.0524 58.8867 65.7947 59.1931 66.3426 59.7385C66.8906 60.2838 67.1991 61.0235 67.1991 61.7947C67.1991 62.5659 66.8906 63.3056 66.3426 63.851C65.7947 64.3964 65.0524 64.7028 64.2771 64.7028H61.3551C60.5807 64.7028 59.8375 64.3964 59.2895 63.851C58.7416 63.3056 58.4341 62.5659 58.4341 61.7947C58.4341 61.0235 58.7416 60.2838 59.2895 59.7385C59.8375 59.1931 60.5807 58.8867 61.3551 58.8867ZM51.1295 47.2548H54.0515C54.8259 47.2548 55.5691 47.5612 56.1171 48.1065C56.665 48.6519 56.9726 49.3916 56.9726 50.1628C56.9726 50.9341 56.665 51.6737 56.1171 52.219C55.5691 52.7644 54.8259 53.0708 54.0515 53.0708H51.1295C50.3542 53.0708 49.6119 52.7644 49.064 52.219C48.516 51.6737 48.2075 50.9341 48.2075 50.1628C48.2075 49.3916 48.516 48.6519 49.064 48.1065C49.6119 47.5612 50.3542 47.2548 51.1295 47.2548ZM56.9726 73.4267C56.9726 74.1979 56.665 74.9375 56.1171 75.4829C55.5691 76.0283 54.8259 76.3346 54.0515 76.3346H51.1295C50.3542 76.3346 49.6119 76.0282 49.064 75.483C48.516 74.9376 48.2075 74.1979 48.2075 73.4267C48.2075 72.6554 48.516 71.9157 49.064 71.3705C49.6119 70.8251 50.3542 70.5187 51.1295 70.5187H54.0515C54.8259 70.5187 55.5691 70.8251 56.1171 71.3705C56.665 71.9158 56.9726 72.6554 56.9726 73.4267ZM49.669 58.8867H52.59C53.3653 58.8867 54.1086 59.1931 54.6566 59.7385C55.2045 60.2838 55.512 61.0235 55.512 61.7947C55.512 62.5659 55.2045 63.3056 54.6566 63.851C54.1086 64.3964 53.3653 64.7028 52.59 64.7028H49.669C48.8937 64.7028 48.1504 64.3964 47.6025 63.851C47.0545 63.3056 46.747 62.5659 46.747 61.7947C46.747 61.0235 47.0545 60.2838 47.6025 59.7385C48.1504 59.1931 48.8937 58.8867 49.669 58.8867ZM39.4424 47.2548H42.3645C43.1398 47.2548 43.8821 47.5612 44.43 48.1065C44.9779 48.6519 45.2865 49.3916 45.2865 50.1628C45.2865 50.9341 44.9779 51.6737 44.43 52.219C43.8821 52.7644 43.1398 53.0708 42.3645 53.0708H39.4424C38.6681 53.0708 37.9248 52.7644 37.3769 52.219C36.829 51.6737 36.5214 50.9341 36.5214 50.1628C36.5214 49.3916 36.829 48.6519 37.3769 48.1065C37.9248 47.5612 38.6681 47.2548 39.4424 47.2548ZM27.756 47.2548H30.6774C31.4527 47.2548 32.196 47.5612 32.7439 48.1065C33.2919 48.6519 33.5994 49.3916 33.5994 50.1628C33.5994 50.9341 33.2919 51.6737 32.7439 52.219C32.196 52.7644 31.4527 53.0708 30.6774 53.0708H27.756C26.9811 53.0708 26.238 52.7644 25.69 52.219C25.1422 51.6737 24.8344 50.9341 24.8344 50.1628C24.8344 49.3916 25.1422 48.6519 25.69 48.1065C26.238 47.5612 26.9811 47.2548 27.756 47.2548ZM16.0693 47.2548H18.9909C19.7659 47.2548 20.509 47.5612 21.0569 48.1065C21.6048 48.6519 21.9126 49.3916 21.9126 50.1628C21.9126 50.9341 21.6048 51.6737 21.0569 52.219C20.509 52.7644 19.7659 53.0708 18.9909 53.0708H16.0693C15.2944 53.0708 14.5513 52.7644 14.0034 52.219C13.4554 51.6737 13.1476 50.9341 13.1476 50.1628C13.1476 49.3916 13.4554 48.6519 14.0034 48.1065C14.5513 47.5612 15.2944 47.2548 16.0693 47.2548ZM16.0693 58.8867H28.4866C29.261 58.8867 30.0042 59.1931 30.5522 59.7385C31.1001 60.2838 31.4076 61.0235 31.4076 61.7947C31.4076 62.5659 31.1001 63.3056 30.5522 63.851C30.0042 64.3964 29.261 64.7028 28.4866 64.7028H16.0693C15.2944 64.7028 14.5513 64.3964 14.0034 63.851C13.4554 63.3056 13.1476 62.5659 13.1476 61.7947C13.1476 61.0235 13.4554 60.2838 14.0034 59.7385C14.5513 59.1931 15.2944 58.8867 16.0693 58.8867ZM18.9909 92.3282H16.0693C15.2944 92.3282 14.5513 92.0221 14.0034 91.4767C13.4554 90.9314 13.1476 90.1916 13.1476 89.4209C13.1476 88.6492 13.4554 87.9097 14.0034 87.3643C14.5513 86.8189 15.2944 86.5127 16.0693 86.5127H18.9909C19.7659 86.5127 20.509 86.8189 21.0569 87.3643C21.6048 87.9097 21.9126 88.6492 21.9126 89.4209C21.9126 90.1916 21.6048 90.9314 21.0569 91.4767C20.509 92.0221 19.7659 92.3282 18.9909 92.3282ZM30.6774 92.3282H27.756C26.9811 92.3282 26.238 92.0221 25.69 91.4767C25.1422 90.9314 24.8344 90.1916 24.8344 89.4209C24.8344 88.6492 25.1422 87.9097 25.69 87.3643C26.238 86.8189 26.9811 86.5127 27.756 86.5127H30.6774C31.4527 86.5127 32.196 86.8189 32.7439 87.3643C33.2919 87.9097 33.5994 88.6492 33.5994 89.4209C33.5994 90.1916 33.2919 90.9314 32.7439 91.4767C32.196 92.0221 31.4527 92.3282 30.6774 92.3282ZM31.4076 76.3346H16.0693C15.2944 76.3346 14.5513 76.0282 14.0034 75.483C13.4554 74.9376 13.1476 74.1979 13.1476 73.4267C13.1476 72.6554 13.4554 71.9157 14.0034 71.3705C14.5513 70.8251 15.2944 70.5187 16.0693 70.5187H31.4076C32.183 70.5187 32.9262 70.8251 33.4742 71.3705C34.0221 71.9157 34.3297 72.6554 34.3297 73.4267C34.3297 74.1979 34.0221 74.9376 33.4742 75.483C32.9262 76.0282 32.183 76.3346 31.4076 76.3346ZM35.0599 61.7947C35.0599 61.0235 35.3684 60.2838 35.9164 59.7385C36.4643 59.1932 37.2066 58.8868 37.9819 58.8867H40.9039C41.6783 58.8867 42.4216 59.1931 42.9695 59.7385C43.5174 60.2838 43.825 61.0235 43.825 61.7947C43.825 62.5659 43.5174 63.3056 42.9695 63.851C42.4216 64.3964 41.6783 64.7028 40.9039 64.7028H37.9819C37.2066 64.7027 36.4643 64.3963 35.9164 63.8509C35.3684 63.3056 35.0599 62.5659 35.0599 61.7947ZM39.4424 70.5187H42.3645C43.1398 70.5187 43.8821 70.8251 44.43 71.3705C44.9779 71.9157 45.2865 72.6554 45.2865 73.4267C45.2865 74.1979 44.9779 74.9376 44.43 75.483C43.8821 76.0282 43.1398 76.3346 42.3645 76.3346H39.4424C38.6681 76.3346 37.9248 76.0282 37.3769 75.483C36.829 74.9376 36.5214 74.1979 36.5214 73.4267C36.5214 72.6554 36.829 71.9157 37.3769 71.3705C37.9248 70.8251 38.6681 70.5187 39.4424 70.5187ZM98.607 92.3282H40.1727C39.3984 92.3282 38.6551 92.0221 38.1071 91.4767C37.5592 90.9314 37.2517 90.1916 37.2517 89.4209C37.2517 88.6492 37.5592 87.9097 38.1071 87.3643C38.6551 86.8189 39.3984 86.5127 40.1727 86.5127H98.607C99.3814 86.5127 100.125 86.8189 100.673 87.3643C101.221 87.9097 101.528 88.6492 101.528 89.4209C101.528 90.1916 101.221 90.9314 100.673 91.4767C100.125 92.0221 99.3814 92.3282 98.607 92.3282ZM100.798 76.3346H97.8768C97.1015 76.3346 96.3582 76.0282 95.8102 75.483C95.2623 74.9376 94.9548 74.1979 94.9548 73.4267C94.9548 72.6554 95.2623 71.9157 95.8102 71.3705C96.3582 70.8251 97.1015 70.5187 97.8768 70.5187H100.798C101.573 70.5187 102.316 70.8251 102.864 71.3705C103.412 71.9157 103.72 72.6554 103.72 73.4267C103.72 74.1979 103.412 74.9376 102.864 75.483C102.316 76.0282 101.573 76.3346 100.798 76.3346ZM102.259 64.7028H99.3373C98.562 64.7028 97.8197 64.3964 97.2718 63.851C96.7238 63.3056 96.4153 62.5659 96.4153 61.7947C96.4153 61.0235 96.7238 60.2838 97.2718 59.7385C97.8197 59.1931 98.562 58.8867 99.3373 58.8867H102.259C103.034 58.8867 103.777 59.1931 104.325 59.7385C104.873 60.2838 105.18 61.0235 105.18 61.7947C105.18 62.5659 104.873 63.3056 104.325 63.851C103.777 64.3964 103.034 64.7028 102.259 64.7028ZM111.755 92.3282H108.833C108.058 92.3282 107.315 92.0221 106.767 91.4767C106.219 90.9314 105.911 90.1916 105.911 89.4209C105.911 88.6492 106.219 87.9097 106.767 87.3643C107.315 86.8189 108.058 86.5127 108.833 86.5127H111.755C112.529 86.5127 113.272 86.8189 113.82 87.3643C114.368 87.9097 114.676 88.6492 114.676 89.4209C114.676 90.1916 114.368 90.9314 113.82 91.4767C113.272 92.0221 112.529 92.3282 111.755 92.3282ZM111.755 82.1507C111.755 81.3794 112.062 80.6398 112.61 80.0944C113.158 79.549 113.901 79.2427 114.676 79.2427H117.598C118.373 79.2427 119.116 79.549 119.664 80.0944C120.211 80.6397 120.52 81.3794 120.52 82.1507C120.52 82.9219 120.211 83.6616 119.664 84.2069C119.116 84.7522 118.373 85.0586 117.598 85.0586H114.676C113.901 85.0586 113.158 84.7522 112.61 84.2068C112.062 83.6615 111.755 82.9219 111.755 82.1507ZM123.441 92.3282H120.52C119.744 92.3282 119.001 92.0221 118.453 91.4767C117.905 90.9314 117.598 90.1916 117.598 89.4209C117.598 88.6492 117.905 87.9097 118.453 87.3643C119.001 86.8189 119.744 86.5127 120.52 86.5127H123.441C124.216 86.5127 124.959 86.8189 125.507 87.3643C126.055 87.9097 126.363 88.6492 126.363 89.4209C126.363 90.1916 126.055 90.9314 125.507 91.4767C124.959 92.0221 124.216 92.3282 123.441 92.3282ZM124.172 76.3346H108.833C108.058 76.3346 107.315 76.0282 106.767 75.483C106.219 74.9376 105.911 74.1979 105.911 73.4267C105.911 72.6554 106.219 71.9157 106.767 71.3705C107.315 70.8251 108.058 70.5187 108.833 70.5187H124.172C124.946 70.5187 125.69 70.8251 126.238 71.3705C126.785 71.9157 127.093 72.6554 127.093 73.4267C127.093 74.1979 126.785 74.9376 126.238 75.483C125.69 76.0282 124.946 76.3346 124.172 76.3346ZM124.172 64.7028H111.755C110.979 64.7028 110.236 64.3964 109.688 63.851C109.14 63.3056 108.833 62.5659 108.833 61.7947C108.833 61.0235 109.14 60.2838 109.688 59.7385C110.236 59.1931 110.979 58.8867 111.755 58.8867H124.172C124.946 58.8867 125.69 59.1931 126.238 59.7385C126.785 60.2838 127.093 61.0235 127.093 61.7947C127.093 62.5659 126.785 63.3056 126.238 63.851C125.69 64.3964 124.946 64.7028 124.172 64.7028ZM124.172 53.0708H121.25C120.475 53.0708 119.732 52.7644 119.184 52.219C118.636 51.6737 118.328 50.9341 118.328 50.1628C118.328 49.3916 118.636 48.6519 119.184 48.1065C119.732 47.5612 120.475 47.2548 121.25 47.2548H124.172C124.946 47.2548 125.69 47.5612 126.238 48.1065C126.785 48.6519 127.093 49.3916 127.093 50.1628C127.093 50.9341 126.785 51.6737 126.238 52.219C125.69 52.7644 124.946 53.0708 124.172 53.0708Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.55"/>
+                  <path d="M135.96 31.886C134.608 30.5314 132.998 29.4574 131.225 28.7262C129.452 27.9948 127.552 27.621 125.632 27.6259H73.0421V18.9361C73.0001 18.5423 73.0461 18.1443 73.1774 17.7707C73.3096 17.397 73.522 17.0571 73.8024 16.7755C74.0819 16.4939 74.4205 16.2777 74.7941 16.1425C75.1688 16.0074 75.5675 15.9567 75.9642 15.994H89.2941C91.1823 15.992 92.9924 15.2445 94.3277 13.9157C95.663 12.5867 96.4133 10.785 96.4153 8.90571V2.90802C96.4153 2.13682 96.1078 1.39713 95.5598 0.851757C95.0119 0.306385 94.2686 0 93.4943 0C92.7189 0 91.9757 0.306385 91.4277 0.851757C90.8798 1.39713 90.5722 2.13682 90.5722 2.90802V8.90571C90.5722 9.24301 90.437 9.56644 90.1976 9.80493C89.9582 10.0434 89.6326 10.1776 89.2941 10.178H75.9642C74.8032 10.1441 73.6482 10.3465 72.5693 10.7729C71.4905 11.1994 70.5108 11.8408 69.6904 12.6577C68.869 13.4747 68.2249 14.45 67.7961 15.5238C67.3684 16.5976 67.1651 17.7471 67.1991 18.902V27.6259H14.6084C10.7344 27.6272 7.01956 29.1596 4.28025 31.886C1.54095 34.6125 0.00140241 38.31 0 42.1658V97.418C0.00140241 101.273 1.54095 104.97 4.28025 107.697C7.01956 110.424 10.7344 111.957 14.6084 111.958H125.632C129.506 111.957 133.221 110.424 135.96 107.697C138.7 104.97 140.24 101.273 140.241 97.418V42.1658C140.246 40.2557 139.87 38.3637 139.136 36.5991C138.4 34.8346 137.322 33.2326 135.96 31.886ZM109.563 47.2548H112.485C113.259 47.2548 114.002 47.5612 114.55 48.1065C115.098 48.6519 115.407 49.3916 115.407 50.1628C115.407 50.9341 115.098 51.6737 114.55 52.219C114.002 52.7644 113.259 53.0708 112.485 53.0708H109.563C108.789 53.0708 108.045 52.7644 107.497 52.219C106.949 51.6737 106.642 50.9341 106.642 50.1628C106.642 49.3916 106.949 48.6519 107.497 48.1065C108.045 47.5612 108.789 47.2548 109.563 47.2548ZM97.8768 47.2548H100.798C101.573 47.2548 102.316 47.5612 102.864 48.1065C103.412 48.6519 103.72 49.3916 103.72 50.1628C103.72 50.9341 103.412 51.6737 102.864 52.219C102.316 52.7644 101.573 53.0708 100.798 53.0708H97.8768C97.1015 53.0708 96.3582 52.7644 95.8102 52.219C95.2623 51.6737 94.9548 50.9341 94.9548 50.1628C94.9548 49.3916 95.2623 48.6519 95.8102 48.1065C96.3582 47.5612 97.1015 47.2548 97.8768 47.2548ZM86.1897 47.2548H89.1117C89.8861 47.2548 90.6293 47.5612 91.1773 48.1065C91.7252 48.6519 92.0328 49.3916 92.0328 50.1628C92.0328 50.9341 91.7252 51.6737 91.1773 52.219C90.6293 52.7644 89.8861 53.0708 89.1117 53.0708H86.1897C85.4144 53.0708 84.6721 52.7644 84.1242 52.219C83.5762 51.6737 83.2677 50.9341 83.2677 50.1628C83.2677 49.3916 83.5762 48.6519 84.1242 48.1065C84.6721 47.5612 85.4144 47.2548 86.1897 47.2548ZM86.1897 58.8867H89.1117C89.8861 58.8867 90.6293 59.1931 91.1773 59.7385C91.7252 60.2838 92.0328 61.0235 92.0328 61.7947C92.0328 62.5659 91.7252 63.3056 91.1773 63.851C90.6293 64.3964 89.8861 64.7028 89.1117 64.7028H86.1897C85.4144 64.7028 84.6721 64.3964 84.1242 63.851C83.5762 63.3056 83.2677 62.5659 83.2677 61.7947C83.2677 61.0235 83.5762 60.2838 84.1242 59.7385C84.6721 59.1931 85.4144 58.8867 86.1897 58.8867ZM86.1897 70.5187H89.1117C89.8861 70.5187 90.6293 70.8251 91.1773 71.3705C91.7252 71.9157 92.0328 72.6554 92.0328 73.4267C92.0328 74.1979 91.7252 74.9376 91.1773 75.483C90.6293 76.0282 89.8861 76.3346 89.1117 76.3346H86.1897C85.4144 76.3346 84.6721 76.0282 84.1242 75.483C83.5762 74.9376 83.2677 74.1979 83.2677 73.4267C83.2677 72.6554 83.5762 71.9157 84.1242 71.3705C84.6721 70.8251 85.4144 70.5187 86.1897 70.5187ZM74.5027 47.2548H77.4247C78.2 47.2548 78.9423 47.5612 79.4902 48.1065C80.0382 48.6519 80.3467 49.3916 80.3467 50.1628C80.3467 50.9341 80.0382 51.6737 79.4902 52.219C78.9423 52.7644 78.2 53.0708 77.4247 53.0708H74.5027C73.7283 53.0708 72.985 52.7644 72.4371 52.219C71.8892 51.6737 71.5816 50.9341 71.5816 50.1628C71.5816 49.3916 71.8892 48.6519 72.4371 48.1065C72.985 47.5612 73.7283 47.2548 74.5027 47.2548ZM74.5027 58.8867H77.4247C78.2 58.8867 78.9423 59.1931 79.4902 59.7385C80.0382 60.2838 80.3467 61.0235 80.3467 61.7947C80.3467 62.5659 80.0382 63.3056 79.4902 63.851C78.9423 64.3964 78.2 64.7028 77.4247 64.7028H74.5027C73.7283 64.7028 72.985 64.3964 72.4371 63.851C71.8892 63.3056 71.5816 62.5659 71.5816 61.7947C71.5816 61.0235 71.8892 60.2838 72.4371 59.7385C72.985 59.1931 73.7283 58.8867 74.5027 58.8867ZM74.5027 70.5187H77.4247C78.2 70.5187 78.9423 70.8251 79.4902 71.3705C80.0382 71.9157 80.3467 72.6554 80.3467 73.4267C80.3467 74.1979 80.0382 74.9376 79.4902 75.483C78.9423 76.0282 78.2 76.3346 77.4247 76.3346H74.5027C73.7283 76.3346 72.985 76.0282 72.4371 75.483C71.8892 74.9376 71.5816 74.1979 71.5816 73.4267C71.5816 72.6554 71.8892 71.9157 72.4371 71.3705C72.985 70.8251 73.7283 70.5187 74.5027 70.5187ZM62.8166 47.2548H65.7376C66.5129 47.2548 67.2562 47.5612 67.8041 48.1065C68.3521 48.6519 68.6596 49.3916 68.6596 50.1628C68.6596 50.9341 68.3521 51.6737 67.8041 52.219C67.2562 52.7644 66.5129 53.0708 65.7376 53.0708H62.8166C62.0413 53.0708 61.298 52.7644 60.75 52.219C60.2021 51.6737 59.8946 50.9341 59.8946 50.1628C59.8946 49.3916 60.2021 48.6519 60.75 48.1065C61.298 47.5612 62.0413 47.2548 62.8166 47.2548ZM68.6596 73.4267C68.6596 74.1979 68.3521 74.9375 67.8041 75.4829C67.2562 76.0283 66.5129 76.3346 65.7376 76.3346H62.8166C62.0413 76.3346 61.298 76.0282 60.75 75.483C60.2021 74.9376 59.8946 74.1979 59.8946 73.4267C59.8946 72.6554 60.2021 71.9157 60.75 71.3705C61.298 70.8251 62.0413 70.5187 62.8166 70.5187H65.7376C66.5129 70.5187 67.2562 70.8251 67.8041 71.3705C68.3521 71.9158 68.6596 72.6554 68.6596 73.4267ZM61.3551 58.8867H64.2771C65.0524 58.8867 65.7947 59.1931 66.3426 59.7385C66.8906 60.2838 67.1991 61.0235 67.1991 61.7947C67.1991 62.5659 66.8906 63.3056 66.3426 63.851C65.7947 64.3964 65.0524 64.7028 64.2771 64.7028H61.3551C60.5807 64.7028 59.8375 64.3964 59.2895 63.851C58.7416 63.3056 58.4341 62.5659 58.4341 61.7947C58.4341 61.0235 58.7416 60.2838 59.2895 59.7385C59.8375 59.1931 60.5807 58.8867 61.3551 58.8867ZM51.1295 47.2548H54.0515C54.8259 47.2548 55.5691 47.5612 56.1171 48.1065C56.665 48.6519 56.9726 49.3916 56.9726 50.1628C56.9726 50.9341 56.665 51.6737 56.1171 52.219C55.5691 52.7644 54.8259 53.0708 54.0515 53.0708H51.1295C50.3542 53.0708 49.6119 52.7644 49.064 52.219C48.516 51.6737 48.2075 50.9341 48.2075 50.1628C48.2075 49.3916 48.516 48.6519 49.064 48.1065C49.6119 47.5612 50.3542 47.2548 51.1295 47.2548ZM56.9726 73.4267C56.9726 74.1979 56.665 74.9375 56.1171 75.4829C55.5691 76.0283 54.8259 76.3346 54.0515 76.3346H51.1295C50.3542 76.3346 49.6119 76.0282 49.064 75.483C48.516 74.9376 48.2075 74.1979 48.2075 73.4267C48.2075 72.6554 48.516 71.9157 49.064 71.3705C49.6119 70.8251 50.3542 70.5187 51.1295 70.5187H54.0515C54.8259 70.5187 55.5691 70.8251 56.1171 71.3705C56.665 71.9158 56.9726 72.6554 56.9726 73.4267ZM49.669 58.8867H52.59C53.3653 58.8867 54.1086 59.1931 54.6566 59.7385C55.2045 60.2838 55.512 61.0235 55.512 61.7947C55.512 62.5659 55.2045 63.3056 54.6566 63.851C54.1086 64.3964 53.3653 64.7028 52.59 64.7028H49.669C48.8937 64.7028 48.1504 64.3964 47.6025 63.851C47.0545 63.3056 46.747 62.5659 46.747 61.7947C46.747 61.0235 47.0545 60.2838 47.6025 59.7385C48.1504 59.1931 48.8937 58.8867 49.669 58.8867ZM39.4424 47.2548H42.3645C43.1398 47.2548 43.8821 47.5612 44.43 48.1065C44.9779 48.6519 45.2865 49.3916 45.2865 50.1628C45.2865 50.9341 44.9779 51.6737 44.43 52.219C43.8821 52.7644 43.1398 53.0708 42.3645 53.0708H39.4424C38.6681 53.0708 37.9248 52.7644 37.3769 52.219C36.829 51.6737 36.5214 50.9341 36.5214 50.1628C36.5214 49.3916 36.829 48.6519 37.3769 48.1065C37.9248 47.5612 38.6681 47.2548 39.4424 47.2548ZM27.756 47.2548H30.6774C31.4527 47.2548 32.196 47.5612 32.7439 48.1065C33.2919 48.6519 33.5994 49.3916 33.5994 50.1628C33.5994 50.9341 33.2919 51.6737 32.7439 52.219C32.196 52.7644 31.4527 53.0708 30.6774 53.0708H27.756C26.9811 53.0708 26.238 52.7644 25.69 52.219C25.1422 51.6737 24.8344 50.9341 24.8344 50.1628C24.8344 49.3916 25.1422 48.6519 25.69 48.1065C26.238 47.5612 26.9811 47.2548 27.756 47.2548ZM16.0693 47.2548H18.9909C19.7659 47.2548 20.509 47.5612 21.0569 48.1065C21.6048 48.6519 21.9126 49.3916 21.9126 50.1628C21.9126 50.9341 21.6048 51.6737 21.0569 52.219C20.509 52.7644 19.7659 53.0708 18.9909 53.0708H16.0693C15.2944 53.0708 14.5513 52.7644 14.0034 52.219C13.4554 51.6737 13.1476 50.9341 13.1476 50.1628C13.1476 49.3916 13.4554 48.6519 14.0034 48.1065C14.5513 47.5612 15.2944 47.2548 16.0693 47.2548ZM16.0693 58.8867H28.4866C29.261 58.8867 30.0042 59.1931 30.5522 59.7385C31.1001 60.2838 31.4076 61.0235 31.4076 61.7947C31.4076 62.5659 31.1001 63.3056 30.5522 63.851C30.0042 64.3964 29.261 64.7028 28.4866 64.7028H16.0693C15.2944 64.7028 14.5513 64.3964 14.0034 63.851C13.4554 63.3056 13.1476 62.5659 13.1476 61.7947C13.1476 61.0235 13.4554 60.2838 14.0034 59.7385C14.5513 59.1931 15.2944 58.8867 16.0693 58.8867ZM18.9909 92.3282H16.0693C15.2944 92.3282 14.5513 92.0221 14.0034 91.4767C13.4554 90.9314 13.1476 90.1916 13.1476 89.4209C13.1476 88.6492 13.4554 87.9097 14.0034 87.3643C14.5513 86.8189 15.2944 86.5127 16.0693 86.5127H18.9909C19.7659 86.5127 20.509 86.8189 21.0569 87.3643C21.6048 87.9097 21.9126 88.6492 21.9126 89.4209C21.9126 90.1916 21.6048 90.9314 21.0569 91.4767C20.509 92.0221 19.7659 92.3282 18.9909 92.3282ZM30.6774 92.3282H27.756C26.9811 92.3282 26.238 92.0221 25.69 91.4767C25.1422 90.9314 24.8344 90.1916 24.8344 89.4209C24.8344 88.6492 25.1422 87.9097 25.69 87.3643C26.238 86.8189 26.9811 86.5127 27.756 86.5127H30.6774C31.4527 86.5127 32.196 86.8189 32.7439 87.3643C33.2919 87.9097 33.5994 88.6492 33.5994 89.4209C33.5994 90.1916 33.2919 90.9314 32.7439 91.4767C32.196 92.0221 31.4527 92.3282 30.6774 92.3282ZM31.4076 76.3346H16.0693C15.2944 76.3346 14.5513 76.0282 14.0034 75.483C13.4554 74.9376 13.1476 74.1979 13.1476 73.4267C13.1476 72.6554 13.4554 71.9157 14.0034 71.3705C14.5513 70.8251 15.2944 70.5187 16.0693 70.5187H31.4076C32.183 70.5187 32.9262 70.8251 33.4742 71.3705C34.0221 71.9157 34.3297 72.6554 34.3297 73.4267C34.3297 74.1979 34.0221 74.9376 33.4742 75.483C32.9262 76.0282 32.183 76.3346 31.4076 76.3346ZM35.0599 61.7947C35.0599 61.0235 35.3684 60.2838 35.9164 59.7385C36.4643 59.1932 37.2066 58.8868 37.9819 58.8867H40.9039C41.6783 58.8867 42.4216 59.1931 42.9695 59.7385C43.5174 60.2838 43.825 61.0235 43.825 61.7947C43.825 62.5659 43.5174 63.3056 42.9695 63.851C42.4216 64.3964 41.6783 64.7028 40.9039 64.7028H37.9819C37.2066 64.7027 36.4643 64.3963 35.9164 63.8509C35.3684 63.3056 35.0599 62.5659 35.0599 61.7947ZM39.4424 70.5187H42.3645C43.1398 70.5187 43.8821 70.8251 44.43 71.3705C44.9779 71.9157 45.2865 72.6554 45.2865 73.4267C45.2865 74.1979 44.9779 74.9376 44.43 75.483C43.8821 76.0282 43.1398 76.3346 42.3645 76.3346H39.4424C38.6681 76.3346 37.9248 76.0282 37.3769 75.483C36.829 74.9376 36.5214 74.1979 36.5214 73.4267C36.5214 72.6554 36.829 71.9157 37.3769 71.3705C37.9248 70.8251 38.6681 70.5187 39.4424 70.5187ZM98.607 92.3282H40.1727C39.3984 92.3282 38.6551 92.0221 38.1071 91.4767C37.5592 90.9314 37.2517 90.1916 37.2517 89.4209C37.2517 88.6492 37.5592 87.9097 38.1071 87.3643C38.6551 86.8189 39.3984 86.5127 40.1727 86.5127H98.607C99.3814 86.5127 100.125 86.8189 100.673 87.3643C101.221 87.9097 101.528 88.6492 101.528 89.4209C101.528 90.1916 101.221 90.9314 100.673 91.4767C100.125 92.0221 99.3814 92.3282 98.607 92.3282ZM100.798 76.3346H97.8768C97.1015 76.3346 96.3582 76.0282 95.8102 75.483C95.2623 74.9376 94.9548 74.1979 94.9548 73.4267C94.9548 72.6554 95.2623 71.9157 95.8102 71.3705C96.3582 70.8251 97.1015 70.5187 97.8768 70.5187H100.798C101.573 70.5187 102.316 70.8251 102.864 71.3705C103.412 71.9157 103.72 72.6554 103.72 73.4267C103.72 74.1979 103.412 74.9376 102.864 75.483C102.316 76.0282 101.573 76.3346 100.798 76.3346ZM102.259 64.7028H99.3373C98.562 64.7028 97.8197 64.3964 97.2718 63.851C96.7238 63.3056 96.4153 62.5659 96.4153 61.7947C96.4153 61.0235 96.7238 60.2838 97.2718 59.7385C97.8197 59.1931 98.562 58.8867 99.3373 58.8867H102.259C103.034 58.8867 103.777 59.1931 104.325 59.7385C104.873 60.2838 105.18 61.0235 105.18 61.7947C105.18 62.5659 104.873 63.3056 104.325 63.851C103.777 64.3964 103.034 64.7028 102.259 64.7028ZM111.755 92.3282H108.833C108.058 92.3282 107.315 92.0221 106.767 91.4767C106.219 90.9314 105.911 90.1916 105.911 89.4209C105.911 88.6492 106.219 87.9097 106.767 87.3643C107.315 86.8189 108.058 86.5127 108.833 86.5127H111.755C112.529 86.5127 113.272 86.8189 113.82 87.3643C114.368 87.9097 114.676 88.6492 114.676 89.4209C114.676 90.1916 114.368 90.9314 113.82 91.4767C113.272 92.0221 112.529 92.3282 111.755 92.3282ZM111.755 82.1507C111.755 81.3794 112.062 80.6398 112.61 80.0944C113.158 79.549 113.901 79.2427 114.676 79.2427H117.598C118.373 79.2427 119.116 79.549 119.664 80.0944C120.211 80.6397 120.52 81.3794 120.52 82.1507C120.52 82.9219 120.211 83.6616 119.664 84.2069C119.116 84.7522 118.373 85.0586 117.598 85.0586H114.676C113.901 85.0586 113.158 84.7522 112.61 84.2068C112.062 83.6615 111.755 82.9219 111.755 82.1507ZM123.441 92.3282H120.52C119.744 92.3282 119.001 92.0221 118.453 91.4767C117.905 90.9314 117.598 90.1916 117.598 89.4209C117.598 88.6492 117.905 87.9097 118.453 87.3643C119.001 86.8189 119.744 86.5127 120.52 86.5127H123.441C124.216 86.5127 124.959 86.8189 125.507 87.3643C126.055 87.9097 126.363 88.6492 126.363 89.4209C126.363 90.1916 126.055 90.9314 125.507 91.4767C124.959 92.0221 124.216 92.3282 123.441 92.3282ZM124.172 76.3346H108.833C108.058 76.3346 107.315 76.0282 106.767 75.483C106.219 74.9376 105.911 74.1979 105.911 73.4267C105.911 72.6554 106.219 71.9157 106.767 71.3705C107.315 70.8251 108.058 70.5187 108.833 70.5187H124.172C124.946 70.5187 125.69 70.8251 126.238 71.3705C126.785 71.9157 127.093 72.6554 127.093 73.4267C127.093 74.1979 126.785 74.9376 126.238 75.483C125.69 76.0282 124.946 76.3346 124.172 76.3346ZM124.172 64.7028H111.755C110.979 64.7028 110.236 64.3964 109.688 63.851C109.14 63.3056 108.833 62.5659 108.833 61.7947C108.833 61.0235 109.14 60.2838 109.688 59.7385C110.236 59.1931 110.979 58.8867 111.755 58.8867H124.172C124.946 58.8867 125.69 59.1931 126.238 59.7385C126.785 60.2838 127.093 61.0235 127.093 61.7947C127.093 62.5659 126.785 63.3056 126.238 63.851C125.69 64.3964 124.946 64.7028 124.172 64.7028ZM124.172 53.0708H121.25C120.475 53.0708 119.732 52.7644 119.184 52.219C118.636 51.6737 118.328 50.9341 118.328 50.1628C118.328 49.3916 118.636 48.6519 119.184 48.1065C119.732 47.5612 120.475 47.2548 121.25 47.2548H124.172C124.946 47.2548 125.69 47.5612 126.238 48.1065C126.785 48.6519 127.093 49.3916 127.093 50.1628C127.093 50.9341 126.785 51.6737 126.238 52.219C125.69 52.7644 124.946 53.0708 124.172 53.0708Z" fill="none" stroke="url(#ic1-shine)" stroke-width="3.65"/>
+                </svg>
+              </div>
+              <h3>Equipamentos Premium</h3>
+              <p>Receba produtos da PCYES, como teclados, headsets, gabinetes e outros itens para elevar de verdade a qualidade do seu setup.</p>
+            </article>
+
+            <article class="benefit-card benefit-card--offset">
+              <div class="benefit-icon-wrap">
+                <div class="benefit-icon-glow"></div>
+                <svg class="benefit-icon-svg" viewBox="0 0 112 112" fill="none" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="ic2-fill" x1="56" y1="0" x2="56" y2="112" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#58585f"/><stop offset="1" stop-color="#353539"/>
+                    </linearGradient>
+                    <linearGradient id="ic2-shine" x1="100.8" y1="0" x2="16.8" y2="117.6" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.90"/>
+                      <stop offset="0.55" stop-color="#aaaaaa" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="#666666" stop-opacity="0.10"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M26.7012 63.2077C17.8792 60.2298 11.2981 56.7876 6.93149 53.133C2.56373 49.4774 0.456459 45.6502 0.456459 41.8905C0.456459 38.1306 2.56442 34.3003 6.93248 30.6373C11.299 26.9752 17.8793 23.5209 26.7012 20.5283L26.7022 20.5293L79.3768 2.77915C91.1179 -1.19053 100.014 0.126725 105.02 5.21061C110.028 10.2972 111.326 19.3411 107.441 31.2529L89.8837 84.6207L89.8827 84.6217C86.9458 93.5708 83.5486 100.247 79.9405 104.676C76.3308 109.108 72.5538 111.243 68.8489 111.243C65.144 111.243 61.367 109.108 57.7573 104.676C54.1492 100.247 50.7516 93.5708 47.8154 84.6217L42.6235 68.7645L42.5525 68.5466L42.3354 68.4742L26.7012 63.2077ZM81.4232 27.5832C79.5533 25.6866 76.4618 25.6867 74.5918 27.5832L74.5908 27.5842L52.4252 50.1846C50.5577 52.0787 50.5577 55.2067 52.4252 57.1008C53.3898 58.0789 54.6164 58.5373 55.8404 58.5373C57.0646 58.5373 58.292 58.0792 59.2566 57.1008L81.4223 34.4975L81.4232 34.4985C83.2903 32.6043 83.2904 29.4772 81.4232 27.5832Z" fill="url(#ic2-fill)"/>
+                  <path d="M26.7012 63.2077C17.8792 60.2298 11.2981 56.7876 6.93149 53.133C2.56373 49.4774 0.456459 45.6502 0.456459 41.8905C0.456459 38.1306 2.56442 34.3003 6.93248 30.6373C11.299 26.9752 17.8793 23.5209 26.7012 20.5283L26.7022 20.5293L79.3768 2.77915C91.1179 -1.19053 100.014 0.126725 105.02 5.21061C110.028 10.2972 111.326 19.3411 107.441 31.2529L89.8837 84.6207L89.8827 84.6217C86.9458 93.5708 83.5486 100.247 79.9405 104.676C76.3308 109.108 72.5538 111.243 68.8489 111.243C65.144 111.243 61.367 109.108 57.7573 104.676C54.1492 100.247 50.7516 93.5708 47.8154 84.6217L42.6235 68.7645L42.5525 68.5466L42.3354 68.4742L26.7012 63.2077ZM81.4232 27.5832C79.5533 25.6866 76.4618 25.6867 74.5918 27.5832L74.5908 27.5842L52.4252 50.1846C50.5577 52.0787 50.5577 55.2067 52.4252 57.1008C53.3898 58.0789 54.6164 58.5373 55.8404 58.5373C57.0646 58.5373 58.292 58.0792 59.2566 57.1008L81.4223 34.4975L81.4232 34.4985C83.2903 32.6043 83.2904 29.4772 81.4232 27.5832Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.04"/>
+                  <path d="M26.7012 63.2077C17.8792 60.2298 11.2981 56.7876 6.93149 53.133C2.56373 49.4774 0.456459 45.6502 0.456459 41.8905C0.456459 38.1306 2.56442 34.3003 6.93248 30.6373C11.299 26.9752 17.8793 23.5209 26.7012 20.5283L26.7022 20.5293L79.3768 2.77915C91.1179 -1.19053 100.014 0.126725 105.02 5.21061C110.028 10.2972 111.326 19.3411 107.441 31.2529L89.8837 84.6207L89.8827 84.6217C86.9458 93.5708 83.5486 100.247 79.9405 104.676C76.3308 109.108 72.5538 111.243 68.8489 111.243C65.144 111.243 61.367 109.108 57.7573 104.676C54.1492 100.247 50.7516 93.5708 47.8154 84.6217L42.6235 68.7645L42.5525 68.5466L42.3354 68.4742L26.7012 63.2077ZM81.4232 27.5832C79.5533 25.6866 76.4618 25.6867 74.5918 27.5832L74.5908 27.5842L52.4252 50.1846C50.5577 52.0787 50.5577 55.2067 52.4252 57.1008C53.3898 58.0789 54.6164 58.5373 55.8404 58.5373C57.0646 58.5373 58.292 58.0792 59.2566 57.1008L81.4223 34.4975L81.4232 34.4985C83.2903 32.6043 83.2904 29.4772 81.4232 27.5832Z" fill="none" stroke="url(#ic2-shine)" stroke-width="2.91"/>
+                </svg>
+              </div>
+              <h3>Campanhas Exclusivas</h3>
+              <p>Reviews, unboxings e lançamentos da marca. Trabalhamos com briefings claros, mas sempre valorizando sua liberdade criativa.</p>
+            </article>
+
+            <article class="benefit-card benefit-card--top">
+              <div class="benefit-icon-wrap">
+                <div class="benefit-icon-glow"></div>
+                <svg class="benefit-icon-svg" viewBox="0 0 71.008 71.008" fill="none" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="ic3-fill" x1="35.5" y1="0" x2="35.5" y2="71.008" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#58585f"/><stop offset="1" stop-color="#353539"/>
+                    </linearGradient>
+                    <linearGradient id="ic3-shine" x1="63.9" y1="0" x2="10.65" y2="74.56" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.90"/>
+                      <stop offset="0.55" stop-color="#aaaaaa" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="#666666" stop-opacity="0.10"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 10.3552C0 4.63619 4.6362 0 10.3552 0H42.9012C48.6203 0 53.2565 4.6362 53.2565 10.3552V11.8346H55.5157C58.8777 11.8346 61.951 13.734 63.4546 16.7411L70.0703 29.9725C70.6865 31.205 71.0073 32.564 71.0073 33.9419V53.2555C71.0073 58.1575 67.0335 62.1314 62.1314 62.1314H58.8C57.4861 67.2357 52.8527 71.0073 47.3382 71.0073C41.8238 71.0073 37.1903 67.2357 35.8765 62.1314H29.2136C27.8998 67.2357 23.2663 71.0073 17.7518 71.0073C11.9127 71.0073 7.06127 66.7785 6.09308 61.2164C2.50005 59.5916 0 55.9759 0 51.7762V10.3552ZM53.2565 17.7518V29.5864H63.2615L58.162 19.3874C57.6609 18.385 56.6364 17.7518 55.5157 17.7518H53.2565ZM17.7518 53.2555C14.4838 53.2555 11.8346 55.9048 11.8346 59.1728C11.8346 62.4408 14.4838 65.09 17.7518 65.09C21.0198 65.09 23.6691 62.4408 23.6691 59.1728C23.6691 55.9048 21.0198 53.2555 17.7518 53.2555ZM41.4209 59.1728C41.4209 62.4408 44.0702 65.09 47.3382 65.09C50.6062 65.09 53.2555 62.4408 53.2555 59.1728C53.2555 55.9048 50.6062 53.2555 47.3382 53.2555C44.0702 53.2555 41.4209 55.9048 41.4209 59.1728Z" fill="url(#ic3-fill)"/>
+                  <path d="M0 10.3552C0 4.63619 4.6362 0 10.3552 0H42.9012C48.6203 0 53.2565 4.6362 53.2565 10.3552V11.8346H55.5157C58.8777 11.8346 61.951 13.734 63.4546 16.7411L70.0703 29.9725C70.6865 31.205 71.0073 32.564 71.0073 33.9419V53.2555C71.0073 58.1575 67.0335 62.1314 62.1314 62.1314H58.8C57.4861 67.2357 52.8527 71.0073 47.3382 71.0073C41.8238 71.0073 37.1903 67.2357 35.8765 62.1314H29.2136C27.8998 67.2357 23.2663 71.0073 17.7518 71.0073C11.9127 71.0073 7.06127 66.7785 6.09308 61.2164C2.50005 59.5916 0 55.9759 0 51.7762V10.3552ZM53.2565 17.7518V29.5864H63.2615L58.162 19.3874C57.6609 18.385 56.6364 17.7518 55.5157 17.7518H53.2565ZM17.7518 53.2555C14.4838 53.2555 11.8346 55.9048 11.8346 59.1728C11.8346 62.4408 14.4838 65.09 17.7518 65.09C21.0198 65.09 23.6691 62.4408 23.6691 59.1728C23.6691 55.9048 21.0198 53.2555 17.7518 53.2555ZM41.4209 59.1728C41.4209 62.4408 44.0702 65.09 47.3382 65.09C50.6062 65.09 53.2555 62.4408 53.2555 59.1728C53.2555 55.9048 50.6062 53.2555 47.3382 53.2555C44.0702 53.2555 41.4209 55.9048 41.4209 59.1728Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.29"/>
+                  <path d="M0 10.3552C0 4.63619 4.6362 0 10.3552 0H42.9012C48.6203 0 53.2565 4.6362 53.2565 10.3552V11.8346H55.5157C58.8777 11.8346 61.951 13.734 63.4546 16.7411L70.0703 29.9725C70.6865 31.205 71.0073 32.564 71.0073 33.9419V53.2555C71.0073 58.1575 67.0335 62.1314 62.1314 62.1314H58.8C57.4861 67.2357 52.8527 71.0073 47.3382 71.0073C41.8238 71.0073 37.1903 67.2357 35.8765 62.1314H29.2136C27.8998 67.2357 23.2663 71.0073 17.7518 71.0073C11.9127 71.0073 7.06127 66.7785 6.09308 61.2164C2.50005 59.5916 0 55.9759 0 51.7762V10.3552ZM53.2565 17.7518V29.5864H63.2615L58.162 19.3874C57.6609 18.385 56.6364 17.7518 55.5157 17.7518H53.2565ZM17.7518 53.2555C14.4838 53.2555 11.8346 55.9048 11.8346 59.1728C11.8346 62.4408 14.4838 65.09 17.7518 65.09C21.0198 65.09 23.6691 62.4408 23.6691 59.1728C23.6691 55.9048 21.0198 53.2555 17.7518 53.2555ZM41.4209 59.1728C41.4209 62.4408 44.0702 65.09 47.3382 65.09C50.6062 65.09 53.2555 62.4408 53.2555 59.1728C53.2555 55.9048 50.6062 53.2555 47.3382 53.2555C44.0702 53.2555 41.4209 55.9048 41.4209 59.1728Z" fill="none" stroke="url(#ic3-shine)" stroke-width="1.85"/>
+                </svg>
+              </div>
+              <h3>Acesso Antecipado</h3>
+              <p>Fique sabendo em primeira mão sobre todas as novidades, campanhas especiais e nossos lançamentos.</p>
+            </article>
+
+            <article class="benefit-card benefit-card--offset">
+              <div class="benefit-icon-wrap">
+                <div class="benefit-icon-glow"></div>
+                <svg class="benefit-icon-svg" viewBox="0 0 51 61" fill="none" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="ic4-fill" x1="25.5" y1="0" x2="25.5" y2="61" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#58585f"/><stop offset="1" stop-color="#353539"/>
+                    </linearGradient>
+                    <linearGradient id="ic4-shine" x1="45.9" y1="0" x2="7.65" y2="64.05" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.90"/>
+                      <stop offset="0.55" stop-color="#aaaaaa" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="#666666" stop-opacity="0.10"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M27.2731 1.23338C26.2972 0.256144 24.7133 0.255258 23.7363 1.2314C17.5207 7.44141 10.646 10.4947 2.99987 10.4947C1.61916 10.4947 0.499872 11.6135 0.499872 12.9935V27.9921C0.499872 44.0754 8.70616 55.0092 24.7093 60.3409C25.2225 60.5119 25.7773 60.5119 26.2905 60.3409C42.2936 55.0092 50.4999 44.0754 50.4999 27.9921V12.9935C50.4999 11.6135 49.3806 10.4947 47.9999 10.4947C40.3445 10.4947 33.4734 7.44197 27.2731 1.23338ZM39.7677 21.2215C40.744 22.1973 40.744 23.7794 39.7677 24.7552L24.7677 39.7476C23.7914 40.7234 22.2084 40.7234 21.2321 39.7476L13.7342 32.2534C12.7579 31.2776 12.7558 29.6934 13.7321 28.7176C14.7084 27.7418 16.2914 27.7418 17.2677 28.7176L22.9999 34.447L36.2301 21.2236C37.2064 20.2478 38.7914 20.2457 39.7677 21.2215Z" fill="url(#ic4-fill)"/>
+                  <path d="M27.2731 1.23338C26.2972 0.256144 24.7133 0.255258 23.7363 1.2314C17.5207 7.44141 10.646 10.4947 2.99987 10.4947C1.61916 10.4947 0.499872 11.6135 0.499872 12.9935V27.9921C0.499872 44.0754 8.70616 55.0092 24.7093 60.3409C25.2225 60.5119 25.7773 60.5119 26.2905 60.3409C42.2936 55.0092 50.4999 44.0754 50.4999 27.9921V12.9935C50.4999 11.6135 49.3806 10.4947 47.9999 10.4947C40.3445 10.4947 33.4734 7.44197 27.2731 1.23338ZM39.7677 21.2215C40.744 22.1973 40.744 23.7794 39.7677 24.7552L24.7677 39.7476C23.7914 40.7234 22.2084 40.7234 21.2321 39.7476L13.7342 32.2534C12.7579 31.2776 12.7558 29.6934 13.7321 28.7176C14.7084 27.7418 16.2914 27.7418 17.2677 28.7176L22.9999 34.447L36.2301 21.2236C37.2064 20.2478 38.7914 20.2457 39.7677 21.2215Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.11"/>
+                  <path d="M27.2731 1.23338C26.2972 0.256144 24.7133 0.255258 23.7363 1.2314C17.5207 7.44141 10.646 10.4947 2.99987 10.4947C1.61916 10.4947 0.499872 11.6135 0.499872 12.9935V27.9921C0.499872 44.0754 8.70616 55.0092 24.7093 60.3409C25.2225 60.5119 25.7773 60.5119 26.2905 60.3409C42.2936 55.0092 50.4999 44.0754 50.4999 27.9921V12.9935C50.4999 11.6135 49.3806 10.4947 47.9999 10.4947C40.3445 10.4947 33.4734 7.44197 27.2731 1.23338ZM39.7677 21.2215C40.744 22.1973 40.744 23.7794 39.7677 24.7552L24.7677 39.7476C23.7914 40.7234 22.2084 40.7234 21.2321 39.7476L13.7342 32.2534C12.7579 31.2776 12.7558 29.6934 13.7321 28.7176C14.7084 27.7418 16.2914 27.7418 17.2677 28.7176L22.9999 34.447L36.2301 21.2236C37.2064 20.2478 38.7914 20.2457 39.7677 21.2215Z" fill="none" stroke="url(#ic4-shine)" stroke-width="1.59"/>
+                </svg>
+              </div>
+              <h3>Parceria de Longo Prazo</h3>
+              <p>Aqui buscamos relações duradouras, não apenas ações pontuais. Construímos parcerias contínuas com creators que querem crescer junto com a marca.</p>
+            </article>
+
+            <article class="benefit-card benefit-card--top">
+              <div class="benefit-icon-wrap">
+                <div class="benefit-icon-glow"></div>
+                <svg class="benefit-icon-svg" viewBox="0 0 93 99" fill="none" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="ic5-fill" x1="46.5" y1="0" x2="46.5" y2="99" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#58585f"/><stop offset="1" stop-color="#353539"/>
+                    </linearGradient>
+                    <linearGradient id="ic5-shine" x1="83.7" y1="0" x2="13.95" y2="103.95" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.90"/>
+                      <stop offset="0.55" stop-color="#aaaaaa" stop-opacity="0.30"/>
+                      <stop offset="1" stop-color="#666666" stop-opacity="0.10"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M71.3 0C69.5879 0 68.2 1.38512 68.2 3.09375C68.2 4.80238 69.5879 6.1875 71.3 6.1875H82.4159L52.7 35.8435L36.292 19.4686C35.0815 18.2605 33.1186 18.2605 31.908 19.4686L0.907969 50.4061C-0.302656 51.6143 -0.302656 53.5731 0.907969 54.7814C2.11859 55.9895 4.08141 55.9895 5.29203 54.7814L34.1 26.0315L50.508 42.4064C51.7186 43.6145 53.6814 43.6145 54.892 42.4064L86.8 10.5627V21.6562C86.8 23.3649 88.1879 24.75 89.9 24.75C91.6121 24.75 93 23.3649 93 21.6562V3.09375C93 1.38512 91.6121 0 89.9 0H71.3ZM77.5 43.3125C75.7879 43.3125 74.4 44.6976 74.4 46.4063V95.9063C74.4 97.6149 75.7879 99 77.5 99C79.2121 99 80.6 97.6149 80.6 95.9063V46.4063C80.6 44.6976 79.2121 43.3125 77.5 43.3125ZM27.9 55.6875C26.1879 55.6875 24.8 57.0726 24.8 58.7812V95.9063C24.8 97.6149 26.1879 99 27.9 99C29.6121 99 31 97.6149 31 95.9063V58.7812C31 57.0726 29.6121 55.6875 27.9 55.6875ZM49.6 71.1562C49.6 69.4476 50.9879 68.0625 52.7 68.0625C54.4121 68.0625 55.8 69.4476 55.8 71.1562V95.9063C55.8 97.6149 54.4121 99 52.7 99C50.9879 99 49.6 97.6149 49.6 95.9063V71.1562ZM1.1486e-07 77.3438C1.1486e-07 75.6351 1.38792 74.25 3.1 74.25C4.81208 74.25 6.2 75.6351 6.2 77.3438V95.9063C6.2 97.6149 4.81208 99 3.1 99C1.38792 99 1.1486e-07 97.6149 1.1486e-07 95.9063V77.3438Z" fill="url(#ic5-fill)"/>
+                  <path d="M71.3 0C69.5879 0 68.2 1.38512 68.2 3.09375C68.2 4.80238 69.5879 6.1875 71.3 6.1875H82.4159L52.7 35.8435L36.292 19.4686C35.0815 18.2605 33.1186 18.2605 31.908 19.4686L0.907969 50.4061C-0.302656 51.6143 -0.302656 53.5731 0.907969 54.7814C2.11859 55.9895 4.08141 55.9895 5.29203 54.7814L34.1 26.0315L50.508 42.4064C51.7186 43.6145 53.6814 43.6145 54.892 42.4064L86.8 10.5627V21.6562C86.8 23.3649 88.1879 24.75 89.9 24.75C91.6121 24.75 93 23.3649 93 21.6562V3.09375C93 1.38512 91.6121 0 89.9 0H71.3ZM77.5 43.3125C75.7879 43.3125 74.4 44.6976 74.4 46.4063V95.9063C74.4 97.6149 75.7879 99 77.5 99C79.2121 99 80.6 97.6149 80.6 95.9063V46.4063C80.6 44.6976 79.2121 43.3125 77.5 43.3125ZM27.9 55.6875C26.1879 55.6875 24.8 57.0726 24.8 58.7812V95.9063C24.8 97.6149 26.1879 99 27.9 99C29.6121 99 31 97.6149 31 95.9063V58.7812C31 57.0726 29.6121 55.6875 27.9 55.6875ZM49.6 71.1562C49.6 69.4476 50.9879 68.0625 52.7 68.0625C54.4121 68.0625 55.8 69.4476 55.8 71.1562V95.9063C55.8 97.6149 54.4121 99 52.7 99C50.9879 99 49.6 97.6149 49.6 95.9063V71.1562ZM1.1486e-07 77.3438C1.1486e-07 75.6351 1.38792 74.25 3.1 74.25C4.81208 74.25 6.2 75.6351 6.2 77.3438V95.9063C6.2 97.6149 4.81208 99 3.1 99C1.38792 99 1.1486e-07 97.6149 1.1486e-07 95.9063V77.3438Z" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.80"/>
+                  <path d="M71.3 0C69.5879 0 68.2 1.38512 68.2 3.09375C68.2 4.80238 69.5879 6.1875 71.3 6.1875H82.4159L52.7 35.8435L36.292 19.4686C35.0815 18.2605 33.1186 18.2605 31.908 19.4686L0.907969 50.4061C-0.302656 51.6143 -0.302656 53.5731 0.907969 54.7814C2.11859 55.9895 4.08141 55.9895 5.29203 54.7814L34.1 26.0315L50.508 42.4064C51.7186 43.6145 53.6814 43.6145 54.892 42.4064L86.8 10.5627V21.6562C86.8 23.3649 88.1879 24.75 89.9 24.75C91.6121 24.75 93 23.3649 93 21.6562V3.09375C93 1.38512 91.6121 0 89.9 0H71.3ZM77.5 43.3125C75.7879 43.3125 74.4 44.6976 74.4 46.4063V95.9063C74.4 97.6149 75.7879 99 77.5 99C79.2121 99 80.6 97.6149 80.6 95.9063V46.4063C80.6 44.6976 79.2121 43.3125 77.5 43.3125ZM27.9 55.6875C26.1879 55.6875 24.8 57.0726 24.8 58.7812V95.9063C24.8 97.6149 26.1879 99 27.9 99C29.6121 99 31 97.6149 31 95.9063V58.7812C31 57.0726 29.6121 55.6875 27.9 55.6875ZM49.6 71.1562C49.6 69.4476 50.9879 68.0625 52.7 68.0625C54.4121 68.0625 55.8 69.4476 55.8 71.1562V95.9063C55.8 97.6149 54.4121 99 52.7 99C50.9879 99 49.6 97.6149 49.6 95.9063V71.1562ZM1.1486e-07 77.3438C1.1486e-07 75.6351 1.38792 74.25 3.1 74.25C4.81208 74.25 6.2 75.6351 6.2 77.3438V95.9063C6.2 97.6149 4.81208 99 3.1 99C1.38792 99 1.1486e-07 97.6149 1.1486e-07 95.9063V77.3438Z" fill="none" stroke="url(#ic5-shine)" stroke-width="2.57"/>
+                </svg>
+              </div>
+              <h3>Crescimento Conjunto</h3>
+              <p>Quando a marca cresce, nossos creators crescem também. Acreditamos em uma parceria de via dupla, onde todos evoluem juntos.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- DIVIDER -->
+      <div class="gradient-divider" aria-hidden="true"></div>
+
+      <!-- FORM -->
+      <section class="creator-form" id="formulario">
+        <div class="form-glow form-glow--right" aria-hidden="true"></div>
+        <div class="form-glow form-glow--left" aria-hidden="true"></div>
+
+        <div class="pcyes-container landing-form-shell">
+          <div class="section-head">
+            <span class="kicker">Cadastre-se</span>
+            <h2 class="landing-form-title">INSCREVA-SE!</h2>
+            <p class="landing-form-subtitle">Preencha o formulário em dois passos rápidos para iniciar o processo.</p>
+          </div>
+
+          <div class="steps-row" id="steps-row">
+            <div class="pcyes-step">
+              <div class="pcyes-step-circle step-circle--active" id="step-circle-1"><span>1</span></div>
+              <span class="pcyes-step-label" id="step-label-1">Sobre você</span>
+            </div>
+            <div class="pcyes-step-connector">
+              <div class="pcyes-step-connector-fill" id="step-connector-fill"></div>
+            </div>
+            <div class="pcyes-step">
+              <div class="pcyes-step-circle step-circle--inactive" id="step-circle-2"><span>2</span></div>
+              <span class="pcyes-step-label step-label--inactive" id="step-label-2">Seu conteúdo</span>
+            </div>
+          </div>
+
+          <div class="landing-form-card" id="form-card">
+            <div class="landing-form-card-top-line"></div>
+            <div class="landing-form-card-top-blur"></div>
+            <form id="creator-form" novalidate>
+              <div class="landing-form-group-head">
+                <h3>Dados pessoais</h3>
+                <p>Precisamos de algumas informações básicas sobre você.</p>
+              </div>
+              <div class="landing-form-fields">
+                <label class="pcyes-full">
+                  Para que possamos nos conhecer melhor, qual seu nome completo? *
+                  <input name="nome" type="text" placeholder="Seu nome completo" autocomplete="name" />
+                </label>
+                <label class="pcyes-half">
+                  E sua idade? *
+                  <input name="idade" type="number" placeholder="Ex: 25" min="13" max="99" />
+                </label>
+                <label class="pcyes-half">
+                  Qual é o seu e-mail? *
+                  <input name="email" type="email" placeholder="seu@email.com" autocomplete="email" />
+                </label>
+                <label class="pcyes-full">
+                  Qual é o seu número de telefone? *
+                  <input name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="15" />
+                </label>
+              </div>
+              <div class="landing-form-actions">
+                <button type="submit" class="landing-btn-proximo" id="btn-step1">
+                  Próximo
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+(function () {
+
+/* ===== FLOATING PARTICLES ===== */
+(function () {
+  var hero = document.querySelector('.creator-hero');
+  if (!hero) return;
+  for (var i = 0; i < 25; i++) {
+    var p = document.createElement('div');
+    var isCircle = Math.random() > 0.5;
+    var size = Math.random() * 5 + 2;
+    var duration = (Math.random() * 20 + 15).toFixed(1);
+    var delay = -(Math.random() * parseFloat(duration)).toFixed(1);
+    p.style.cssText =
+      'position:absolute;pointer-events:none;z-index:1;' +
+      'left:' + (Math.random() * 100).toFixed(1) + '%;' +
+      'top:' + (Math.random() * 100).toFixed(1) + '%;' +
+      'animation-name:' + (isCircle ? 'floatParticle' : 'floatTriangle') + ';' +
+      'animation-duration:' + duration + 's;' +
+      'animation-timing-function:linear;' +
+      'animation-delay:' + delay + 's;' +
+      'animation-iteration-count:infinite;';
+    if (isCircle) {
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.background = '#ff2b2e';
+      p.style.borderRadius = '50%';
+      p.style.opacity = '0.4';
+    } else {
+      p.style.width = '0';
+      p.style.height = '0';
+      p.style.borderLeft = (size / 2) + 'px solid transparent';
+      p.style.borderRight = (size / 2) + 'px solid transparent';
+      p.style.borderBottom = size + 'px solid rgba(255,43,46,0.5)';
+      p.style.opacity = '0.4';
+    }
+    hero.appendChild(p);
+  }
+})();
+
+/* ===== CAROUSEL ===== */
+(function () {
+  var stage = document.getElementById('carousel-stage');
+  if (!stage) return;
+
+  var cards   = Array.from(stage.querySelectorAll('.creator-card'));
+  var dots    = Array.from(document.querySelectorAll('.dot'));
+  var prevBtn = document.querySelector('.carousel-prev');
+  var nextBtn = document.querySelector('.carousel-next');
+  var total   = cards.length; // 5
+  var AUTOPLAY_MS = 5000;
+  var autoplay = null;
+  var current = 0; // Kingsize starts featured
+
+  /* Position config keyed by offset (-2,-1,0,1,2)
+     All cards have left:50% in CSS, so translateX(-50%) = centered.
+     x values = translateX(calc(-50% + x_offset)) equivalent:
+       offset -2: -50% + (-125%) = -175%
+       offset -1: -50% + (-62%)  = -112%
+       offset  0: -50% + 0%      = -50%
+       offset +1: -50% + 62%     = 12%
+       offset +2: -50% + 125%    = 75%
+  */
+  var POS = {
+    '-2': { x: '-175%', scale: 0.55, opacity: 0.25, blur: 5,   z: 1 },
+    '-1': { x: '-112%', scale: 0.75, opacity: 0.60, blur: 2.5, z: 2 },
+    '0':  { x: '-50%',  scale: 1,    opacity: 1,    blur: 0,   z: 3 },
+    '1':  { x: '12%',   scale: 0.75, opacity: 0.60, blur: 2.5, z: 2 },
+    '2':  { x: '75%',   scale: 0.55, opacity: 0.25, blur: 5,   z: 1 }
+  };
+
+  function getOffset(idx) {
+    var o = idx - current;
+    if (o > 2)  o -= total;
+    if (o < -2) o += total;
+    return o;
+  }
+
+  function applyPositions() {
+    cards.forEach(function (card, idx) {
+      var o   = getOffset(idx);
+      var cfg = POS[String(o)];
+      if (!cfg) return;
+
+      var isCenter = o === 0;
+      card.style.transform   = 'translateX(' + cfg.x + ') scale(' + cfg.scale + ')';
+      card.style.opacity     = cfg.opacity;
+      card.style.filter      = cfg.blur > 0 ? 'blur(' + cfg.blur + 'px)' : 'none';
+      card.style.zIndex      = cfg.z;
+      card.style.cursor      = isCenter ? 'default' : 'pointer';
+      card.style.borderColor = isCenter ? '#ff2b2e' : 'rgba(255,255,255,0.06)';
+      card.style.boxShadow   = isCenter
+        ? '0 25px 70px rgba(0,0,0,0.8),0 0 60px rgba(255,43,46,0.15),0 0 120px rgba(255,43,46,0.08)'
+        : '0 8px 30px rgba(0,0,0,0.7)';
+      card.style.WebkitBoxReflect = isCenter
+        ? 'below 4px linear-gradient(transparent 70%,rgba(255,255,255,0.15) 100%)'
+        : 'none';
+
+      // Top accent line
+      var topLine = card.querySelector('.featured-top-line');
+      if (topLine) topLine.style.display = isCenter ? 'block' : 'none';
+
+      // Progress bar (reset on card change)
+      var bar = card.querySelector('.card-progress');
+      if (bar) bar.remove();
+      if (isCenter) {
+        var newBar = document.createElement('div');
+        newBar.className = 'card-progress';
+        newBar.style.setProperty('--carousel-progress-duration', (AUTOPLAY_MS / 1000) + 's');
+        var info = card.querySelector('.creator-card-info');
+        if (info) info.appendChild(newBar);
+      }
+    });
+  }
+
+  function stopAutoplay() {
+    if (autoplay) {
+      clearTimeout(autoplay);
+      autoplay = null;
+    }
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoplay = setTimeout(function () {
+      go(current + 1);
+    }, AUTOPLAY_MS);
+  }
+
+  function go(newIdx) {
+    current = ((newIdx % total) + total) % total;
+    applyPositions();
+    dots.forEach(function (d, i) { d.classList.toggle('dot--active', i === current); });
+    startAutoplay();
+  }
+
+  // Click side cards to select them
+  cards.forEach(function (card, idx) {
+    card.addEventListener('click', function () {
+      if (getOffset(idx) !== 0) go(idx);
+    });
+  });
+
+  if (prevBtn) prevBtn.addEventListener('click', function () { go(current - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { go(current + 1); });
+  dots.forEach(function (dot, i) { dot.addEventListener('click', function () { go(i); }); });
+
+  var wrapper  = document.querySelector('.carousel-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', function () { stopAutoplay(); });
+    wrapper.addEventListener('mouseleave', function () {
+      startAutoplay();
+    });
+  }
+
+  var touchStartX = 0;
+  stage.addEventListener('touchstart', function (e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend',   function (e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) go(dx < 0 ? current + 1 : current - 1);
+  });
+
+  go(current);
+  window.addEventListener('resize', applyPositions);
+})();
+
+/* ===== SMOOTH SCROLL ===== */
+document.querySelectorAll('a[href="#formulario"]').forEach(function (link) {
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    var t = document.getElementById('formulario');
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* ===== MULTI-STEP FORM ===== */
+(function () {
+  var form     = document.getElementById('creator-form');
+  var formCard = document.getElementById('form-card');
+  var formSection = document.getElementById('formulario');
+  if (!form) return;
+
+  var step = 1;
+  var selectedPlatforms = [];
+  var uploadedFileName  = null;
+  var submitTimer       = null;
+
+  var PLATFORMS = ['YouTube','Twitch','Instagram','TikTok','X (Twitter)','Facebook','Discord','Blog / Site'];
+
+  var COMO_OPTIONS = [
+    { value: '',              label: 'Selecione' },
+    { value: 'redes-sociais', label: 'Redes sociais' },
+    { value: 'youtube',       label: 'YouTube' },
+    { value: 'amigos',        label: 'Indicação de amigos' },
+    { value: 'evento',        label: 'Evento / feira' },
+    { value: 'busca',         label: 'Busca no Google' },
+    { value: 'loja',          label: 'Em uma loja / e-commerce' },
+    { value: 'outro',         label: 'Outro' }
+  ];
+
+  function scrollFormSection() {
+    var target = formSection || formCard;
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function formatPhone(v) {
+    var d = v.replace(/\D/g, '').slice(0, 11);
+    if (d.length <= 2)  return d;
+    if (d.length <= 7)  return '(' + d.slice(0,2) + ') ' + d.slice(2);
+    return '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+  }
+
+  // Phone live formatting on step 1
+  function attachPhoneFormatting(input) {
+    input.addEventListener('input', function () {
+      var pos = this.selectionStart;
+      var digitsBeforeCursor = this.value.slice(0, pos).replace(/\D/g, '').length;
+      this.value = formatPhone(this.value);
+      var newPos = this.value.length;
+      var count = 0;
+      for (var i = 0; i < this.value.length; i++) {
+        if (/\d/.test(this.value[i])) {
+          count++;
+          if (count === digitsBeforeCursor) { newPos = i + 1; break; }
+        }
+      }
+      if (digitsBeforeCursor === 0) newPos = 0;
+      this.setSelectionRange(newPos, newPos);
+    });
+  }
+
+  var telInput = form.querySelector('[name="telefone"]');
+  if (telInput) attachPhoneFormatting(telInput);
+
+  function clearError(field) {
+    field.classList.remove('error');
+    var err = field.parentElement.querySelector('.form-error');
+    if (err) err.remove();
+  }
+
+  function showError(field, msg) {
+    field.classList.add('error');
+    var existing = field.parentElement.querySelector('.form-error');
+    if (!existing) {
+      var e = document.createElement('p');
+      e.className = 'form-error';
+      e.textContent = msg;
+      field.parentElement.appendChild(e);
+    }
+  }
+
+  function validateStep1() {
+    var valid = true;
+    var nome  = form.querySelector('[name="nome"]');
+    var idade = form.querySelector('[name="idade"]');
+    var email = form.querySelector('[name="email"]');
+    var tel   = form.querySelector('[name="telefone"]');
+
+    [nome, idade, email, tel].forEach(function (f) { if (f) clearError(f); });
+
+    if (!nome.value.trim()) { showError(nome, 'Campo obrigatório'); valid = false; }
+    var idadeVal = parseInt(idade.value, 10);
+    if (!idade.value || isNaN(idadeVal) || idadeVal < 13) { showError(idade, 'Idade mínima: 13 anos'); valid = false; }
+    if (!email.value.trim() || !email.value.includes('@')) { showError(email, 'E-mail inválido'); valid = false; }
+    var digits = tel.value.replace(/\D/g, '');
+    if (digits.length < 10) { showError(tel, 'Telefone inválido'); valid = false; }
+
+    if (!valid) { var firstErr = form.querySelector('.error'); if (firstErr) firstErr.focus(); }
+    return valid;
+  }
+
+  /* ---- STEP 2 ---- */
+  function activateStep2() {
+    // Update step indicator
+    var c1 = document.getElementById('step-circle-1');
+    var l1 = document.getElementById('step-label-1');
+    var c2 = document.getElementById('step-circle-2');
+    var l2 = document.getElementById('step-label-2');
+    var fill = document.getElementById('step-connector-fill');
+
+    if (c1) { c1.className = 'pcyes-step-circle step-circle--done'; c1.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="#ff2b2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+    if (l1) { l1.className = 'pcyes-step-label step-label--done'; }
+    if (c2) { c2.className = 'pcyes-step-circle step-circle--active'; c2.innerHTML = '<span>2</span>'; }
+    if (l2) { l2.className = 'pcyes-step-label'; }
+    if (fill) { fill.style.width = '100%'; }
+
+    // Build step 2 HTML
+    var platformBtns = PLATFORMS.map(function (p) {
+      return '<button type="button" class="platform-btn" data-platform="' + p + '">' + p + '</button>';
+    }).join('');
+
+    var selectOptions = COMO_OPTIONS.map(function (o) {
+      return '<option value="' + o.value + '">' + o.label + '</option>';
+    }).join('');
+
+    form.innerHTML =
+      '<div class="landing-form-group-head">' +
+        '<h3>Sobre seu conteúdo</h3>' +
+        '<p>Mostre seus canais, seus links e seu estilo.</p>' +
+      '</div>' +
+      '<div class="landing-form-fields">' +
+        '<div class="pcyes-full">' +
+          '<label style="display:flex;flex-direction:column;gap:8px;font-family:Inter,sans-serif;font-weight:600;font-size:14px;color:#b0b0b0">' +
+            'Em quais plataformas você produz conteúdo atualmente? *' +
+          '</label>' +
+          '<div class="platform-grid" id="platform-grid" style="margin-top:8px">' + platformBtns + '</div>' +
+          '<p class="form-pcyes-error" id="plataformas-error" style="display:none">Selecione ao menos uma plataforma</p>' +
+        '</div>' +
+        '<label class="pcyes-full">' +
+          'Links dos seus perfis nas redes *' +
+          '<textarea name="links" rows="3" placeholder="Ex:&#10;https://youtube.com/@seucanal&#10;https://instagram.com/seuperfil"></textarea>' +
+        '</label>' +
+        '<label class="pcyes-full">' +
+          'Como você conheceu nossa marca? *' +
+          '<select name="comoConheceu">' + selectOptions + '</select>' +
+        '</label>' +
+        '<div class="pcyes-full">' +
+          '<label style="display:flex;flex-direction:column;gap:8px;font-family:Inter,sans-serif;font-weight:600;font-size:14px;color:#b0b0b0">' +
+            'Upload do seu media kit <span style="color:#555;font-weight:400">(opcional)</span>' +
+          '</label>' +
+          '<div class="upload-area" id="upload-area" style="margin-top:8px">' +
+            '<div id="upload-empty">' +
+              '<svg class="upload-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+              '<p style="color:#888;font-size:14px;font-weight:500;margin-bottom:4px">Clique para fazer upload ou arraste o arquivo</p>' +
+              '<p style="color:#555;font-size:12px">PDF, DOC, PPTX ou ZIP (máx. 10MB)</p>' +
+            '</div>' +
+            '<div id="upload-has-file" style="display:none">' +
+              '<div style="display:flex;align-items:center;justify-content:center;gap:10px">' +
+                '<span class="upload-filename" id="upload-filename-label">' +
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+                  '<span id="filename-text"></span>' +
+                '</span>' +
+                '<button type="button" class="upload-clear" id="upload-clear">' +
+                  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+            '<input type="file" id="file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip" style="display:none" />' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="landing-form-actions form-actions--split">' +
+        '<button type="button" class="btn-voltar" id="btn-voltar">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>' +
+          'Voltar' +
+        '</button>' +
+        '<button type="submit" class="landing-btn-proximo" id="btn-step2">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
+          'Enviar Solicitação' +
+        '</button>' +
+      '</div>';
+
+    // Attach step 2 handlers
+    attachStep2Handlers();
+    scrollFormSection();
+  }
+
+  function attachStep2Handlers() {
+    // Platform toggle buttons
+    selectedPlatforms = [];
+    var grid = document.getElementById('platform-grid');
+    if (grid) {
+      grid.querySelectorAll('.platform-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var pl = this.getAttribute('data-platform');
+          var idx = selectedPlatforms.indexOf(pl);
+          if (idx === -1) {
+            selectedPlatforms.push(pl);
+            this.classList.add('platform-btn--selected');
+            this.innerHTML = '&#10003; ' + pl;
+          } else {
+            selectedPlatforms.splice(idx, 1);
+            this.classList.remove('platform-btn--selected');
+            this.textContent = pl;
+          }
+          document.getElementById('plataformas-error').style.display = 'none';
+        });
+      });
+    }
+
+    // File upload
+    var uploadArea  = document.getElementById('upload-area');
+    var fileInput   = document.getElementById('file-input');
+    var uploadEmpty = document.getElementById('upload-empty');
+    var uploadFile  = document.getElementById('upload-has-file');
+    var filenameEl  = document.getElementById('filename-text');
+    var clearBtn    = document.getElementById('upload-clear');
+
+    if (uploadArea) {
+      uploadArea.addEventListener('click', function (e) {
+        if (clearBtn && (e.target === clearBtn || clearBtn.contains(e.target))) return;
+        fileInput.click();
+      });
+    }
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        var f = this.files && this.files[0];
+        if (f) {
+          uploadedFileName = f.name;
+          filenameEl.textContent = f.name;
+          uploadEmpty.style.display = 'none';
+          uploadFile.style.display = 'block';
+          uploadArea.classList.add('upload-area--has-file');
+        }
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        uploadedFileName = null;
+        fileInput.value = '';
+        uploadEmpty.style.display = 'block';
+        uploadFile.style.display = 'none';
+        uploadArea.classList.remove('upload-area--has-file');
+      });
+    }
+
+    // Back button
+    var backBtn = document.getElementById('btn-voltar');
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        clearTimeout(submitTimer);
+        step = 1;
+        // Reset step indicator
+        var c1   = document.getElementById('step-circle-1');
+        var l1   = document.getElementById('step-label-1');
+        var c2   = document.getElementById('step-circle-2');
+        var l2   = document.getElementById('step-label-2');
+        var fill = document.getElementById('step-connector-fill');
+        if (c1)   { c1.className = 'pcyes-step-circle step-circle--active'; c1.innerHTML = '<span>1</span>'; }
+        if (l1)   { l1.className = 'pcyes-step-label'; }
+        if (c2)   { c2.className = 'pcyes-step-circle step-circle--inactive'; c2.innerHTML = '<span>2</span>'; }
+        if (l2)   { l2.className = 'pcyes-step-label step-label--inactive'; }
+        if (fill) { fill.style.width = '0%'; }
+
+        form.innerHTML =
+          '<div class="landing-form-group-head">' +
+            '<h3>Dados pessoais</h3>' +
+            '<p>Precisamos de algumas informações básicas sobre você.</p>' +
+          '</div>' +
+          '<div class="landing-form-fields">' +
+            '<label class="pcyes-full">Para que possamos nos conhecer melhor, qual seu nome completo? *' +
+              '<input name="nome" type="text" placeholder="Seu nome completo" autocomplete="name" />' +
+            '</label>' +
+            '<label class="pcyes-half">E sua idade? *' +
+              '<input name="idade" type="number" placeholder="Ex: 25" min="13" max="99" />' +
+            '</label>' +
+            '<label class="pcyes-half">Qual é o seu e-mail? *' +
+              '<input name="email" type="email" placeholder="seu@email.com" autocomplete="email" />' +
+            '</label>' +
+            '<label class="pcyes-full">Qual é o seu número de telefone? *' +
+              '<input name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="15" />' +
+            '</label>' +
+          '</div>' +
+          '<div class="landing-form-actions">' +
+            '<button type="submit" class="landing-btn-proximo" id="btn-step1">Próximo ' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+            '</button>' +
+          '</div>';
+
+        // Re-attach phone formatting
+        var tel = form.querySelector('[name="telefone"]');
+        if (tel) attachPhoneFormatting(tel);
+        scrollFormSection();
+      });
+    }
+  }
+
+  function validateStep2() {
+    var valid = true;
+    var platErr = document.getElementById('plataformas-error');
+    var links = form.querySelector('[name="links"]');
+    var como  = form.querySelector('[name="comoConheceu"]');
+
+    if (platErr) platErr.style.display = 'none';
+    if (links) clearError(links);
+    if (como)  clearError(como);
+
+    if (selectedPlatforms.length === 0) {
+      if (platErr) platErr.style.display = 'block';
+      valid = false;
+    }
+    if (links && !links.value.trim()) { showError(links, 'Adicione pelo menos um link'); valid = false; }
+    if (como  && !como.value)          { showError(como,  'Selecione uma opção');          valid = false; }
+    return valid;
+  }
+
+  function showSuccess() {
+    formCard.innerHTML =
+      '<div style="text-align:center;padding:60px 24px">' +
+        '<div style="width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:popIn .5s ease">' +
+          '<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ff2b2e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' +
+        '</div>' +
+        '<h3 style="font-family:Figtree,sans-serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:12px">Inscrição Enviada!</h3>' +
+        '<p style="color:#777;font-size:16px;line-height:1.6;max-width:420px;margin:0 auto">Obrigado pelo seu interesse! Nosso time vai analisar seu perfil e entrará em contato em breve.</p>' +
+      '</div>';
+  }
+
+  // Form submit handler
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (step === 1) {
+      if (!validateStep1()) return;
+      step = 2;
+      activateStep2();
+      return;
+    }
+
+    // Step 2 submit
+    if (!validateStep2()) return;
+
+    var btn = document.getElementById('btn-step2');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Enviando...';
+    }
+
+    submitTimer = setTimeout(function () {
+      showSuccess();
+    }, 1500);
+  });
+
+})();
+})();
+    </script>
+</div>
+  </body>
+</html>
