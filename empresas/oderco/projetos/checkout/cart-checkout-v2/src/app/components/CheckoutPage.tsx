@@ -838,13 +838,18 @@ export function CheckoutPage() {
   const [cifOptionsES, setCifOptionsES] = useState<ShippingOption[]>([]);
   const [isLoadingCif, setIsLoadingCif] = useState(false);
 
-  /* ── Credit — 2 fontes mutuamente exclusivas: Depósito ou RMA ── */
+  /* ── Credit — 2 fontes combináveis: usuário pode aplicar RMA, Depósito ou AMBAS.
+       Cada fonte contribui seu valor TOTAL disponível. ── */
   const mockDeposito = 20850.00;
   const mockRMA = 8420.50;
-  const [creditType, setCreditType] = useState<'none' | 'rma' | 'deposito'>('none');
-  const useCredit = creditType !== 'none';
-  const mockCredit = creditType === 'rma' ? mockRMA : creditType === 'deposito' ? mockDeposito : 0;
-  const creditLabel = creditType === 'rma' ? 'RMA' : 'Crédito Depósito';
+  const [creditSources, setCreditSources] = useState<{ rma: boolean; deposito: boolean }>({ rma: false, deposito: false });
+  const useCredit = creditSources.rma || creditSources.deposito;
+  const mockCredit = (creditSources.rma ? mockRMA : 0) + (creditSources.deposito ? mockDeposito : 0);
+  const creditLabel = creditSources.rma && creditSources.deposito
+    ? 'RMA + Crédito Depósito'
+    : creditSources.rma ? 'RMA'
+    : creditSources.deposito ? 'Crédito Depósito'
+    : 'Crédito';
 
   /* ── Consultor contact request ── */
   const [wantConsultor, setWantConsultor] = useState(true);
@@ -1402,16 +1407,23 @@ export function CheckoutPage() {
 
   /* ═══════════════════════════════════════════════════════════
      RENDER: CREDIT BLOCK (above Payment)
-     Duas fontes mutuamente exclusivas: RMA ou Crédito Depósito.
+     Duas fontes combináveis: usuário marca uma ou ambas (checkboxes).
+     Cada fonte usa o valor TOTAL disponível quando ativada.
   ═══════════════════════════════════════════════════════════ */
   const renderCreditBlock = () => {
     const creditCoversAll = grandTotalAfterCredit === 0 && useCredit;
+    const bothSelected = creditSources.rma && creditSources.deposito;
 
     type CreditOption = { key: 'rma' | 'deposito'; label: string; sub: string; amount: number };
     const options: CreditOption[] = [
       { key: 'rma',      label: 'RMA',              sub: 'Devolução de mercadoria', amount: mockRMA },
       { key: 'deposito', label: 'Crédito Depósito', sub: 'Saldo em conta',          amount: mockDeposito },
     ];
+
+    const toggleSource = (key: 'rma' | 'deposito') => {
+      setCreditSources(prev => ({ ...prev, [key]: !prev[key] }));
+    };
+    const clearAll = () => setCreditSources({ rma: false, deposito: false });
 
     return (
       <div
@@ -1430,7 +1442,7 @@ export function CheckoutPage() {
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="var(--primary)"
-              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 1v22" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
             </svg>
           </div>
@@ -1439,36 +1451,36 @@ export function CheckoutPage() {
               Usar crédito disponível
             </span>
             <span className="block" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-              Escolha uma fonte — RMA ou Crédito Depósito
+              Selecione uma ou ambas as fontes — somam-se ao desconto
             </span>
           </div>
           {useCredit && (
             <button
-              onClick={() => setCreditType('none')}
-              className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity shrink-0"
-              style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}
-              aria-label="Remover crédito aplicado"
+              onClick={clearAll}
+              className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+              style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px', outlineColor: 'var(--primary)' }}
+              aria-label="Remover todos os créditos aplicados"
             >
-              REMOVER
+              LIMPAR
             </button>
           )}
         </div>
 
-        {/* Options — 2 cards mutuamente exclusivos */}
+        {/* Options — 2 cards checkbox-style (multi-select) */}
         <div
-          role="radiogroup"
-          aria-label="Fonte de crédito"
+          role="group"
+          aria-label="Fontes de crédito"
           className="px-5 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5"
         >
           {options.map((opt) => {
-            const isSelected = creditType === opt.key;
+            const isSelected = creditSources[opt.key];
             return (
               <button
                 key={opt.key}
                 type="button"
-                role="radio"
+                role="checkbox"
                 aria-checked={isSelected}
-                onClick={() => setCreditType(isSelected ? 'none' : opt.key)}
+                onClick={() => toggleSource(opt.key)}
                 className="rounded-lg cursor-pointer transition-all text-left flex items-start gap-2.5 p-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                   background: isSelected ? 'var(--primary-surface-md)' : 'var(--card)',
@@ -1477,16 +1489,19 @@ export function CheckoutPage() {
                 }}
               >
                 <span
-                  className="rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                  className="flex items-center justify-center shrink-0 mt-0.5 transition-colors"
                   style={{
                     width: 18, height: 18,
+                    borderRadius: 4,
                     border: `2px solid ${isSelected ? 'var(--primary)' : 'var(--muted-foreground)'}`,
-                    background: 'var(--card)',
+                    background: isSelected ? 'var(--primary)' : 'var(--card)',
                   }}
                   aria-hidden="true"
                 >
                   {isSelected && (
-                    <span className="rounded-full" style={{ width: 8, height: 8, background: 'var(--primary)' }} />
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--primary-foreground)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
                   )}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -1516,9 +1531,22 @@ export function CheckoutPage() {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               style={{ overflow: 'hidden' }}
             >
-              <div className="px-5 pb-4 flex flex-col gap-2" style={{ borderTop: '1px solid var(--primary-border-xs)' }}>
-                <div className="flex items-center justify-between pt-3">
-                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+              <div className="px-5 pb-4 flex flex-col gap-1.5" style={{ borderTop: '1px solid var(--primary-border-xs)' }}>
+                {bothSelected && (
+                  <>
+                    <div className="flex items-center justify-between pt-3" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      <span>· RMA</span>
+                      <span style={{ fontVariantNumeric: 'tabular-nums' }}>− {formatCurrency(Math.min(mockRMA, grandTotal))}</span>
+                    </div>
+                    <div className="flex items-center justify-between" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      <span>· Crédito Depósito</span>
+                      <span style={{ fontVariantNumeric: 'tabular-nums' }}>− {formatCurrency(Math.max(0, totalCreditApplied - Math.min(mockRMA, grandTotal)))}</span>
+                    </div>
+                  </>
+                )}
+                <div className={`flex items-center justify-between ${bothSelected ? 'pt-1.5 mt-1' : 'pt-3'}`}
+                  style={bothSelected ? { borderTop: '1px dashed var(--primary-border-xs)' } : {}}>
+                  <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-semibold)' }}>
                     {creditLabel} aplicado
                   </span>
                   <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)' }}>
@@ -1527,7 +1555,7 @@ export function CheckoutPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-                    Saldo restante de {creditLabel}
+                    Saldo restante
                   </span>
                   <span style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-semibold)' }}>
                     {formatCurrency(creditRemaining)}
@@ -1536,9 +1564,9 @@ export function CheckoutPage() {
                 {creditCoversAll && (
                   <div className="mt-1 rounded-lg px-3 py-2.5 flex items-center gap-2"
                     style={{ background: 'var(--success-surface)', border: '1px solid color-mix(in srgb, var(--success) 25%, transparent)' }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
                     <span style={{ fontSize: 'var(--text-xs)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-semibold)' }}>
-                      {creditLabel} cobre o valor total — pagamento não necessário
+                      Crédito cobre o valor total — pagamento não necessário
                     </span>
                   </div>
                 )}
