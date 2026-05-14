@@ -916,7 +916,7 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative rounded-3xl transition-all flex flex-col overflow-hidden"
+      className="relative h-full rounded-3xl transition-all flex flex-col overflow-hidden"
       style={{
         background: 'var(--card)',
         border: `1px solid ${hovered ? accent.color : 'var(--muted)'}`,
@@ -984,10 +984,16 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
           className="m-0 p-0 flex flex-col"
           style={{
             listStyle: 'none',
-            maxHeight: items.length > 4 ? 232 : 'none',
-            overflowY: items.length > 4 ? 'auto' : 'visible',
+            maxHeight: 260,
+            overflowY: 'auto',
             scrollbarWidth: 'thin',
             scrollbarColor: `${accent.color}55 transparent`,
+            WebkitMaskImage: items.length > 5
+              ? 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
+              : 'none',
+            maskImage: items.length > 5
+              ? 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
+              : 'none',
           }}
         >
           {items.map((p, idx) => (
@@ -1073,12 +1079,12 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
             </li>
           ))}
         </ul>
-        {items.length > 4 && (
+        {items.length > 5 && (
           <span
             className="block mt-2 text-center"
             style={{ fontSize: 11, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontStyle: 'italic' }}
           >
-            ↕ role a lista para ver todos
+            ↕ role para ver os {items.length} itens
           </span>
         )}
       </div>
