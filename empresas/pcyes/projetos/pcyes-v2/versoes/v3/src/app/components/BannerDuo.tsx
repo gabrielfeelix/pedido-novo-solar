@@ -55,7 +55,7 @@ export function BannerDuo() {
           >
             <Link
               to={banner.href}
-              className="group relative block aspect-[16/9] overflow-hidden rounded-lg md:aspect-[3/2] lg:aspect-[16/9]"
+              className="neon-hover-red group relative block aspect-[16/9] overflow-hidden rounded-lg md:aspect-[3/2] lg:aspect-[16/9]"
             >
               <ImageWithFallback
                 src={banner.image}

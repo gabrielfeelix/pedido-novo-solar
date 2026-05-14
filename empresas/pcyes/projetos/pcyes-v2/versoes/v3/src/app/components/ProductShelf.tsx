@@ -114,7 +114,7 @@ export function ProductShelf({
                 initial={{ opacity: 0, y: 24 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.04 * i }}
-                className="group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/[0.015] transition-all hover:border-white/20 hover:bg-white/[0.03]"
+                className="neon-hover-red group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/[0.015] transition-all hover:border-white/20 hover:bg-white/[0.03]"
               >
                 {/* Ranking badge */}
                 {showRanking && (

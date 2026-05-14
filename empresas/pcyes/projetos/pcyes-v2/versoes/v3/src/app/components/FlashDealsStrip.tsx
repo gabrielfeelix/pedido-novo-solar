@@ -170,7 +170,7 @@ export function FlashDealsStrip() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
-                  className="group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/[0.02] transition-colors hover:border-white/20"
+                  className="neon-hover-red group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/[0.02] transition-colors hover:border-white/20"
                 >
                   <Link to={`/produto/${product.id}`} className="flex flex-1 flex-col">
                     <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-white/[0.04] to-white/[0.01]">

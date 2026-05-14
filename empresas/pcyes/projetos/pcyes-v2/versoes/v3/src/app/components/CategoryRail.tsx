@@ -33,31 +33,61 @@ const items: CategoryItem[] = [
 
 export function CategoryRail() {
   return (
-    <section className="border-b border-white/5" style={{ background: "#0e0e0e" }}>
-      <div className="max-w-[1760px] mx-auto px-5 md:px-[72px] py-5">
+    <section
+      style={{
+        paddingTop: "var(--space-section-md)",
+        paddingBottom: "var(--space-section-md)",
+        background: "#0e0e0e",
+      }}
+    >
+      <div
+        className="mx-auto"
+        style={{ maxWidth: "var(--container-max)" }}
+      >
         <div
-          className="flex items-center gap-3 overflow-x-auto scrollbar-hide"
+          className="flex items-start gap-6 md:gap-8 overflow-x-auto scrollbar-hide px-6 md:px-12"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {items.map(({ label, href, Icon }) => (
             <Link
               key={label}
               to={href}
-              className="group flex flex-shrink-0 items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.02] px-4 py-2.5 text-white/70 transition-all duration-300 hover:border-primary/40 hover:bg-primary/10 hover:text-white"
-              style={{
-                fontFamily: "var(--font-family-inter)",
-                fontSize: "13px",
-                fontWeight: 500,
-              }}
+              className="group flex flex-col items-center gap-3 flex-shrink-0"
+              style={{ width: "104px" }}
             >
-              <Icon
-                size={16}
-                strokeWidth={1.6}
-                className="text-white/50 group-hover:text-primary transition-colors duration-300"
-              />
-              {label}
+              <div
+                className="neon-hover-red relative flex items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-[1.06]"
+                style={{
+                  width: "88px",
+                  height: "88px",
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                }}
+              >
+                <Icon
+                  size={32}
+                  strokeWidth={1.4}
+                  className="transition-colors duration-300"
+                  style={{ color: "rgba(255, 255, 255, 0.85)" }}
+                />
+              </div>
+              <span
+                className="text-center transition-colors duration-300 group-hover:text-white"
+                style={{
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  letterSpacing: "0.02em",
+                  color: "rgba(255, 255, 255, 0.7)",
+                  fontFamily: "var(--font-family-inter)",
+                  lineHeight: 1.2,
+                }}
+              >
+                {label}
+              </span>
             </Link>
           ))}
+          {/* Spacer for breathing room on the right */}
+          <div aria-hidden="true" className="flex-shrink-0 w-6 md:w-12" />
         </div>
       </div>
     </section>

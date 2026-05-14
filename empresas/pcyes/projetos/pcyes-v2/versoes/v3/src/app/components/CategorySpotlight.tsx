@@ -74,7 +74,7 @@ export function CategorySpotlight() {
             >
               <Link
                 to={card.href}
-                className="group relative block aspect-[4/5] overflow-hidden rounded-lg"
+                className="neon-hover-red group relative block aspect-[4/5] overflow-hidden rounded-lg"
               >
                 <ImageWithFallback
                   src={card.image}
