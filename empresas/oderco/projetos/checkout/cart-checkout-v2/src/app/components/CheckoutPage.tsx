@@ -1007,12 +1007,22 @@ export function CheckoutPage() {
   const totalES = subtotalES + shippingPriceES;
   const grandTotal = totalPR + totalES;
 
-  // Global credit: applied proportionally across both NFs
-  const totalCreditApplied = useCredit ? Math.min(mockCredit, grandTotal) : 0;
+  // Credit application — varia por fluxo:
+  //  · Single-NF (scopedNf set): credito TODO vai pra filial ativa. R$ 300 credito + R$ 760 total = −R$ 300 abatimento.
+  //  · Multi-NF legado (sem scope): split proporcional entre PR e ES, capado pelo grandTotal.
+  const effectiveTotalForCredit = scopedNf === 'PR' ? totalPR : scopedNf === 'ES' ? totalES : grandTotal;
+  const totalCreditApplied = useCredit ? Math.min(mockCredit, effectiveTotalForCredit) : 0;
   const creditRemaining = mockCredit - totalCreditApplied;
-  // Proportional split per NF (avoid division by zero)
-  const creditAmountPR = grandTotal > 0 ? totalCreditApplied * (totalPR / grandTotal) : 0;
-  const creditAmountES = grandTotal > 0 ? totalCreditApplied * (totalES / grandTotal) : 0;
+  const creditAmountPR = scopedNf === 'ES'
+    ? 0
+    : scopedNf === 'PR'
+      ? totalCreditApplied
+      : (grandTotal > 0 ? totalCreditApplied * (totalPR / grandTotal) : 0);
+  const creditAmountES = scopedNf === 'PR'
+    ? 0
+    : scopedNf === 'ES'
+      ? totalCreditApplied
+      : (grandTotal > 0 ? totalCreditApplied * (totalES / grandTotal) : 0);
   const totalPRAfterCredit = Math.max(0, totalPR - creditAmountPR);
   const totalESAfterCredit = Math.max(0, totalES - creditAmountES);
   const grandTotalAfterCredit = totalPRAfterCredit + totalESAfterCredit;

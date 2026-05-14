@@ -1245,6 +1245,20 @@ export function CartPage() {
     }
   }, [activeNf, nfsInCart, selectedV3]);
 
+  /* ── Reset completedOrders quando user entra "fresh" na cart (não veio do fluxo checkout).
+       Marker 'cart-in-flow' é setado quando user vai de cart → checkout, e consumido aqui no retorno.
+       Se ausente, é entrada nova: limpa o histórico de pedidos concluídos. ── */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const inFlow = window.sessionStorage.getItem('cart-in-flow');
+    if (inFlow) {
+      window.sessionStorage.removeItem('cart-in-flow');
+    } else if (completedOrders.length > 0) {
+      resetCompleted();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   /* ── Scroll to top on mount ── */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -1311,6 +1325,9 @@ export function CartPage() {
 
   /* ── Handlers ── */
   const handleStartCheckout = useCallback((nf: NfKey) => {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem('cart-in-flow', '1');
+    }
     navigate(`/checkout?nf=${nf}`);
   }, [navigate]);
 
@@ -1540,15 +1557,6 @@ export function CartPage() {
                 <span aria-hidden="true">←</span> Continuar comprando
               </button>
               <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
-              <button
-                type="button"
-                onClick={() => setVariant('classic')}
-                className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
-                style={{ color: 'var(--primary)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}
-              >
-                Editar carrinho
-              </button>
-              <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
               <span className="inline-flex items-center gap-1.5" style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)' }}>
                 <LockIcon size={12} /> Compra 100% segura e protegida
               </span>
@@ -1651,15 +1659,6 @@ export function CartPage() {
                 style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}
               >
                 <span aria-hidden="true">←</span> Continuar comprando
-              </button>
-              <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
-              <button
-                type="button"
-                onClick={() => setVariant('classic')}
-                className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
-                style={{ color: 'var(--primary)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}
-              >
-                Editar carrinho
               </button>
               <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
               <span className="inline-flex items-center gap-1.5" style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)' }}>
