@@ -116,8 +116,13 @@ for (const { company, project, prototype } of getAllPrototypes()) {
   }
 
   console.log(`\nBuilding ${prototype.name} at ${basePath}`);
-  run('npm', ['install', '--include=dev'], sourceDir);
-  run('npm', ['run', 'build'], sourceDir, {
+  const usesPnpm = existsSync(join(sourceDir, 'pnpm-lock.yaml'));
+  const packageManager = usesPnpm ? 'npx' : 'npm';
+  const installArgs = usesPnpm ? ['install', '--no-frozen-lockfile'] : ['install', '--include=dev'];
+  const buildArgs = usesPnpm ? ['run', 'build'] : ['run', 'build'];
+
+  run(packageManager, usesPnpm ? ['pnpm@10.32.1', ...installArgs] : installArgs, sourceDir);
+  run(packageManager, usesPnpm ? ['pnpm@10.32.1', ...buildArgs] : buildArgs, sourceDir, {
     PROTOTYPE_BASE_PATH: basePath,
     PROTOTYPE_OUT_DIR: distDir,
   });

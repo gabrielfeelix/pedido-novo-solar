@@ -150,7 +150,28 @@
       "brandColor": "#1D4ED8",
       "logo": "/brand-assets/oderco-symbol.svg",
       "description": "Projetos transversais do grupo Oderco.",
-      "projects": []
+      "projects": [
+        {
+          "slug": "checkout",
+          "name": "Checkout Oderco",
+          "status": "prototipacao",
+          "handoffUrl": "/oderco/checkout/v1",
+          "selectedPrototypeId": "oderco-checkout-v1",
+          "prototypes": [
+            {
+              "id": "oderco-checkout-v1",
+              "name": "Checkout Oderco",
+              "version": "v1",
+              "slug": "oderco-checkout-v1",
+              "url": "/oderco/checkout/v1",
+              "source": "empresas/oderco/projetos/checkout/cart-checkout-v1",
+              "notes": "Fluxo de carrinho, checkout multi-NF e revisao de pedido Oderco.",
+              "createdAt": "2026-05-13",
+              "isCurrent": true
+            }
+          ]
+        }
+      ]
     },
     {
       "slug": "crm",
