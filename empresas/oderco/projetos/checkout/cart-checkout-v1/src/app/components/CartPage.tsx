@@ -1089,9 +1089,9 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
         )}
       </div>
 
-      {/* Breakdown — boa prática AA: 12px+ pra texto financeiro */}
-      <div className="relative px-7 py-4" style={{ borderTop: '1px dashed var(--muted)', borderBottom: '1px dashed var(--muted)', background: 'var(--background)' }}>
-        <div className="flex flex-col gap-1.5">
+      {/* Breakdown + Total consolidado — 1 seção compacta pra economizar altura vertical */}
+      <div className="relative px-7 pt-3 pb-3" style={{ borderTop: '1px dashed var(--muted)', borderBottom: '1px dashed var(--muted)', background: 'var(--background)' }}>
+        <div className="flex flex-col gap-1">
           <div className="flex justify-between" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
             <span>Subtotal</span><span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--foreground)', fontWeight: 'var(--font-weight-bold)' }}>{formatCurrency(subtotal)}</span>
           </div>
@@ -1102,21 +1102,24 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
             <span>ST (13%)</span><span style={{ fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(stx)}</span>
           </div>
         </div>
-      </div>
-
-      {/* Big total + CTA */}
-      <div className="relative px-7 pt-5 pb-7 flex flex-col gap-4 flex-1">
-        <div>
-          <span className="block" style={{ fontSize: 11, fontWeight: 'var(--font-weight-bold)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '1.5px' }}>
-            TOTAL COM IMPOSTOS
-          </span>
-          <span className="block mt-1" style={{ fontSize: 36, fontWeight: 'var(--font-weight-bold)', color: accent.color, fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
+        <div className="flex items-end justify-between pt-2.5 mt-2.5"
+          style={{ borderTop: '1px dashed var(--muted)' }}>
+          <div className="flex-1 min-w-0">
+            <span className="block" style={{ fontSize: 11, fontWeight: 'var(--font-weight-bold)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '1.2px' }}>
+              TOTAL COM IMPOSTOS
+            </span>
+            <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+              + frete na próxima etapa
+            </span>
+          </div>
+          <span style={{ fontSize: 28, fontWeight: 'var(--font-weight-bold)', color: accent.color, fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
             {formatCurrency(total)}
           </span>
-          <span className="block mt-1.5" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-            Frete calculado na próxima etapa
-          </span>
         </div>
+      </div>
+
+      {/* CTA — gruda no bottom do card via flex-1+mt-auto */}
+      <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1">
 
         <button
           type="button"
