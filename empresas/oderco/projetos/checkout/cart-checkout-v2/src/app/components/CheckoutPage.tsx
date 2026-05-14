@@ -94,6 +94,89 @@ function getCondicoesByPayment(method: PaymentMethod, allConditions: string[]): 
   return allConditions;
 }
 
+
+/* ════════ COUPON INLINE COMPONENT ════════ */
+function CouponInline({ appliedCode, onApply, onRemove, validCoupons }: {
+  appliedCode: string;
+  onApply: (code: string) => void;
+  onRemove: () => void;
+  validCoupons: Record<string, { discount: number; label: string }>;
+}) {
+  const [open, setOpen] = useState(false);
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+
+  const apply = () => {
+    const upper = code.trim().toUpperCase();
+    if (validCoupons[upper]) {
+      onApply(upper);
+      setCode('');
+      setError('');
+      setOpen(false);
+    } else {
+      setError('Cupom inválido ou expirado');
+    }
+  };
+
+  if (appliedCode) {
+    return (
+      <div className="flex items-center gap-2 rounded-lg px-3 py-2"
+        style={{ background: 'var(--success-surface)', border: '1px solid var(--success)' }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span className="flex-1 block" style={{ fontSize: 'var(--text-xs)', color: 'var(--success)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
+          {appliedCode} aplicado — {validCoupons[appliedCode]?.label}
+        </span>
+        <button onClick={onRemove}
+          aria-label={`Remover cupom ${appliedCode}`}
+          className="bg-transparent border-none cursor-pointer p-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+          style={{ color: 'var(--muted-foreground)', outlineColor: 'var(--success)' }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button onClick={() => setOpen(o => !o)}
+        type="button"
+        aria-expanded={open}
+        className="flex items-center gap-2 w-full border-none bg-transparent cursor-pointer py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+        style={{ color: 'var(--primary)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" />
+        </svg>
+        <span>Adicionar cupom de desconto</span>
+        <span className="ml-auto" aria-hidden="true" style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </span>
+      </button>
+      {open && (
+        <div className="mt-2 flex gap-2">
+          <input value={code} onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
+            placeholder="Código do cupom"
+            onKeyDown={e => e.key === 'Enter' && apply()}
+            aria-label="Código do cupom"
+            className="flex-1 rounded-lg px-3 h-9 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+            style={{ background: 'var(--input-background)', border: `1px solid ${error ? 'var(--destructive-foreground)' : 'var(--muted)'}`, color: 'var(--foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', outlineColor: 'var(--primary)' }} />
+          <button onClick={apply}
+            type="button"
+            disabled={!code.trim()}
+            className="rounded-lg px-3 h-9 border-none cursor-pointer disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{ background: 'var(--primary)', color: 'var(--primary-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}>
+            Aplicar
+          </button>
+        </div>
+      )}
+      {error && (
+        <span className="block mt-1" style={{ fontSize: 'var(--text-2xs)', color: 'var(--destructive-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════
    FORMATTERS
 ═══════════════════════════════════════════════════════════ */
@@ -846,8 +929,8 @@ export function CheckoutPage() {
 
   /* ── Credit — 2 fontes combináveis: usuário pode aplicar RMA, Depósito ou AMBAS.
        Cada fonte contribui seu valor TOTAL disponível. ── */
-  const mockDeposito = 20850.00;
-  const mockRMA = 8420.50;
+  const mockDeposito = 300.00;
+  const mockRMA = 750.00;
   const [creditSources, setCreditSources] = useState<{ rma: boolean; deposito: boolean }>({ rma: false, deposito: false });
   const useCredit = creditSources.rma || creditSources.deposito;
   const mockCredit = (creditSources.rma ? mockRMA : 0) + (creditSources.deposito ? mockDeposito : 0);
@@ -856,6 +939,14 @@ export function CheckoutPage() {
     : creditSources.rma ? 'RMA'
     : creditSources.deposito ? 'Crédito Depósito'
     : 'Crédito';
+
+  /* ── Coupon — cumulativo com crédito. Aplica em cima do total após crédito. ── */
+  const VALID_COUPONS: Record<string, { discount: number; label: string }> = {
+    'ODERÇO10':       { discount: 0.10, label: '−10%' },
+    'PRIMEIRACOMPRA': { discount: 0.07, label: '−7%' },
+  };
+  const [appliedCoupon, setAppliedCoupon] = useState('');
+  const couponPct = appliedCoupon && VALID_COUPONS[appliedCoupon] ? VALID_COUPONS[appliedCoupon].discount : 0;
 
   /* ── Consultor contact request ── */
   const [wantConsultor, setWantConsultor] = useState(true);
@@ -2146,6 +2237,8 @@ export function CheckoutPage() {
     const scopedCreditApplied  = activeFiliaisInCart.reduce((s, f) => s + (f === 'PR' ? creditAmountPR  : creditAmountES),  0);
     const scopedTotal          = activeFiliaisInCart.reduce((s, f) => s + (f === 'PR' ? totalPR        : totalES),        0);
     const scopedTotalAfterCred = activeFiliaisInCart.reduce((s, f) => s + (f === 'PR' ? totalPRAfterCredit : totalESAfterCredit), 0);
+  const couponDiscount = scopedTotalAfterCred * couponPct;
+  const finalTotalAfterAll = Math.max(0, scopedTotalAfterCred - couponDiscount);
 
     return (
     <div style={{ background: 'var(--background)', fontFamily: 'var(--font-red-hat-display)' }}>
@@ -2513,15 +2606,30 @@ export function CheckoutPage() {
                 );
               })}
 
-              {/* Credit applied — scoped */}
+              {/* Credit applied — scoped (label varia conforme fontes ativas) */}
               {useCredit && scopedCreditApplied > 0 && (
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center gap-2" style={{ fontSize: 'var(--text-xs)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)' }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    Crédito Depósito
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+                    Desconto ({creditLabel})
                   </span>
                   <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
                     − {formatCurrency(scopedCreditApplied)}
+                  </span>
+                </div>
+              )}
+
+              {/* Coupon applied */}
+              {couponDiscount > 0 && (
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2" style={{ fontSize: 'var(--text-xs)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)' }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" />
+                    </svg>
+                    Cupom {appliedCoupon}
+                  </span>
+                  <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
+                    − {formatCurrency(couponDiscount)}
                   </span>
                 </div>
               )}
@@ -2549,6 +2657,11 @@ export function CheckoutPage() {
               })}
             </div>
 
+            {/* Coupon input */}
+            <div className="px-5 pb-3">
+              <CouponInline appliedCode={appliedCoupon} onApply={setAppliedCoupon} onRemove={() => setAppliedCoupon('')} validCoupons={VALID_COUPONS} />
+            </div>
+
             {/* Grand total */}
             <div className="px-5 pt-1 pb-4">
               <div className="rounded-xl px-4 py-4 flex items-end justify-between gap-3"
@@ -2570,7 +2683,7 @@ export function CheckoutPage() {
                     </span>
                   )}
                   <span style={{ fontSize: 28, fontWeight: 'var(--font-weight-bold)', color: scopedCreditApplied > 0 ? 'var(--success)' : 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>
-                    {formatCurrency(scopedTotalAfterCred)}
+                    {formatCurrency(finalTotalAfterAll)}
                   </span>
                 </div>
               </div>

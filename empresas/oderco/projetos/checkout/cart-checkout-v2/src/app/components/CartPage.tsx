@@ -728,8 +728,15 @@ function OrderCard({
             </div>
           )}
 
-          {/* Products list */}
-          <div className="pt-2 pb-2">
+          {/* Products list — capped scroll quando muitos itens (≥7) pra evitar crescimento infinito do card */}
+          <div
+            className="pt-2 pb-2"
+            style={{
+              maxHeight: items.length > 6 ? 540 : 'none',
+              overflowY: items.length > 6 ? 'auto' : 'visible',
+              scrollbarWidth: 'thin',
+            }}
+          >
             {items.map(product => (
               <ProductRow
                 key={product.id}
@@ -741,6 +748,12 @@ function OrderCard({
               />
             ))}
           </div>
+          {items.length > 6 && (
+            <span className="block text-center pb-2"
+              style={{ fontSize: 11, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontStyle: 'italic' }}>
+              ↕ role a lista para ver os {items.length} itens
+            </span>
+          )}
         </>
       )}
 
