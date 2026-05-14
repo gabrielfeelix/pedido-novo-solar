@@ -1,0 +1,350 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  
+  /* Typography Variables */
+  --font-red-hat-display: 'Red Hat Display', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --text-5xl: 48px;  /* h1 */
+  --text-4xl: 36px;  /* h2 */
+  --text-3xl: 30px;  /* h3 */
+  --text-2xl: 24px;  /* large display / price */
+  --text-xl:  20px;  /* section heading */
+  --text-base: 16px; /* h4, p */
+  --text-sm: 14px;   /* label, tag */
+  --text-xs: 12px;   /* caption */
+  --text-2xs: 10px;  /* micro-caption / badge label */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-normal: 400;
+  
+  /* The default background color for the application. */
+  --background: rgba(248, 250, 252, 1.00);
+  /* The default color for elements or text that appears on top of the background. */
+  --foreground: rgba(13, 29, 82, 1.00);
+  /* The background color for cards, modals, and other containers. */
+  --card: rgba(255, 255, 255, 1.00);
+  /* The default color for text or elements that appear on top of cards, modals and other background containers. */
+  --card-foreground: rgba(13, 29, 82, 1.00);
+  /* The background color for dropdowns and tooltips. */
+  --popover: rgba(255, 255, 255, 1.00);
+  /* The default color for text or elements that appear on top of dropdowns and tooltips. */
+  --popover-foreground: rgba(13, 29, 82, 1.00);
+  /* The primary color used for buttons, links, and other interactive elements. */
+  --primary: rgba(0, 90, 255, 1.00);
+  /* The default color for text or elements that appear on top of primary colored elements. */
+  --primary-foreground: rgba(255, 255, 255, 1.00);
+  /* The secondary color used for secondary(but NOT-DESTRUCTIVE) buttons and interactive elements. */
+  --secondary: rgba(0, 0, 0, 0);
+  /* The default color for text or elements that appear on top of secondary colored elements. */
+  --secondary-foreground: rgba(158, 165, 186, 1.00);
+  /* The muted color used for less prominent elements, such as disabled buttons or disabled text. */
+  --muted: rgba(231, 232, 238, 1.00);
+  /* The default color for text or elements that appear on top of muted colored elements. */
+  --muted-foreground: rgba(134, 142, 168, 1.00);
+  /* The accent color used for highlights, links, and other interactive elements. */
+  --accent: rgba(102, 156, 255, 1.00);
+  /* The default color for text or elements that appear on top of accent colored elements. */
+  --accent-foreground: rgba(255, 255, 255, 1.00);
+  /* The color used for background in destructive actions, such as delete buttons or error messages. */
+  --destructive: rgba(0, 0, 0, 0);
+  /* The default color for text or elements that appear on top of destructive colored elements. */
+  --destructive-foreground: rgba(251, 133, 127, 1.00);
+  /* The default border color for elements such as inputs, buttons, and other containers. */
+  --border: rgba(134, 142, 168, 1.00);
+  /* The default background color for input fields once the text has been filled. Should be either transparent or match the input-background. */
+  --input: rgba(0, 0, 0, 0);
+  /* The default background color for input fields, text areas, and other input elements. */
+  --input-background: rgba(255, 255, 255, 1.00);
+  /* The color for focus rings, outlines, and other focus indicators. */
+  --ring: rgba(102, 156, 255, 1.00);
+  /* Shadow for small elevations, such as cards or modals. */
+  --elevation-sm: 0px 6px 15px 0px rgba(0, 0, 0, 0.15);
+  /* The color for chart elements, such as a bar or line in a chart. */
+  --chart-1: rgba(102, 156, 255, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-2: rgba(128, 173, 255, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-3: rgba(153, 189, 255, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-4: rgba(179, 206, 255, 1.00);
+  /* The color for another chart element, such as a bar or line in a chart. */
+  --chart-5: rgba(204, 222, 255, 1.00);
+  /* The default border radius for elements such as buttons, tooltip, and other containers. */
+  --radius: 8px;
+  /* The background color for sidebars, navigation menus, and other persistent elements. */
+  --sidebar: rgba(255, 255, 255, 1.00);
+  /* The default color for text or elements that appear on top of sidebars, navigation menus, and other persistent elements. */
+  --sidebar-foreground: rgba(13, 29, 82, 1.00);
+  /* The primary color used for buttons, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-primary: rgba(0, 90, 255, 1.00);
+  /* The default color for text or elements that appear on top of primary colored elements in sidebars and navigation menus. */
+  --sidebar-primary-foreground: rgba(255, 255, 255, 1.00);
+  /* The accent color used for highlights, links, and other interactive elements in sidebars and navigation menus. */
+  --sidebar-accent: rgba(102, 156, 255, 1.00);
+  /* The default color for text or elements that appear on top of accent colored elements in sidebars and navigation menus. */
+  --sidebar-accent-foreground: rgba(255, 255, 255, 1.00);
+  /* The default border color for elements in sidebars and navigation menus. */
+  --sidebar-border: rgba(134, 142, 168, 1.00);
+  /* The default color for focus rings, outlines, and other focus indicators in sidebars and navigation menus. */
+  --sidebar-ring: rgba(102, 156, 255, 1.00);
+
+  /* ── Primary color surface utilities (semi-transparent tints) ── */
+  --primary-surface-xs:   color-mix(in srgb, var(--primary)  3%, transparent);
+  --primary-surface-sm:   color-mix(in srgb, var(--primary)  5%, transparent);
+  --primary-surface-md:   color-mix(in srgb, var(--primary)  8%, transparent);
+  --primary-surface-lg:   color-mix(in srgb, var(--primary) 12%, transparent);
+  --primary-border-xs:    color-mix(in srgb, var(--primary) 15%, transparent);
+  --primary-border-sm:    color-mix(in srgb, var(--primary) 25%, transparent);
+  --primary-border-md:    color-mix(in srgb, var(--primary) 35%, transparent);
+
+  /* ── Accent color surface utilities ── */
+  --accent-surface-xs:    color-mix(in srgb, var(--accent)  5%, transparent);
+  --accent-surface-md:    color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-border-xs:     color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent-border-sm:     color-mix(in srgb, var(--accent) 35%, transparent);
+
+  /* ── Destructive surface utility ── */
+  --destructive-surface:  color-mix(in srgb, var(--destructive-foreground) 8%, transparent);
+
+  /* ── Warning color ── */
+  --warning: rgba(245, 158, 11, 1.00);
+  --warning-foreground: rgba(180, 83, 9, 1.00);
+  --warning-surface: color-mix(in srgb, var(--warning)  8%, transparent);
+  --warning-border:  color-mix(in srgb, var(--warning) 25%, transparent);
+
+  /* ── Overlay & shadow utilities ── */
+  --overlay-backdrop:     rgba(0, 0, 0, 0.6);
+  --overlay-shadow-lg:    0 25px 50px rgba(0, 0, 0, 0.25);
+  --toggle-knob-shadow:   0 1px 3px rgba(0, 0, 0, 0.15);
+  --dropdown-shadow:      0px 10px 22px 0px rgba(45, 77, 108, 0.15);
+  /* Semi-transparent foreground (used on dark filled backgrounds) */
+  --foreground-on-dark-muted: rgba(255, 255, 255, 0.6);
+
+  /* ── Success / positive color ── */
+  --success: rgba(34, 197, 94, 1.00);
+  --success-foreground: rgba(255, 255, 255, 1.00);
+  --success-surface: color-mix(in srgb, var(--success) 10%, transparent);
+
+  /* ══════════════════════════════════════════════════════════
+     NF DESIGN SYSTEM — NF Paraná (PR) & NF Espírito Santo (ES)
+     Cores tratadas como data fields: não seguem o DS de marca.
+  ══════════════════════════════════════════════════════════ */
+
+  /* NF Paraná — Azul institucional */
+  --nf-pr:              rgba(26, 60, 110, 1.00);   /* #1A3C6E — principal */
+  --nf-pr-fg:           rgba(255, 255, 255, 1.00); /* texto sobre o badge */
+  --nf-pr-surface:      rgba(235, 241, 250, 1.00); /* #EBF1FA — fundo de card/ativo */
+  --nf-pr-surface-md:   color-mix(in srgb, var(--nf-pr) 10%, transparent);
+  --nf-pr-border:       color-mix(in srgb, var(--nf-pr) 20%, transparent);
+  --nf-pr-border-sm:    color-mix(in srgb, var(--nf-pr) 35%, transparent);
+
+  /* NF Espírito Santo — Roxo distinto */
+  --nf-es:              rgba(91, 45, 142, 1.00);   /* #5B2D8E — principal */
+  --nf-es-fg:           rgba(255, 255, 255, 1.00); /* texto sobre o badge */
+  --nf-es-surface:      rgba(243, 238, 249, 1.00); /* #F3EEF9 — fundo de card/ativo */
+  --nf-es-surface-md:   color-mix(in srgb, var(--nf-es) 10%, transparent);
+  --nf-es-border:       color-mix(in srgb, var(--nf-es) 20%, transparent);
+  --nf-es-border-sm:    color-mix(in srgb, var(--nf-es) 35%, transparent);
+}
+
+.dark {
+  --background: rgba(13, 29, 82, 1.00);
+  --foreground: rgba(248, 250, 252, 1.00);
+  --card: rgba(30, 45, 97, 1.00);
+  --card-foreground: rgba(248, 250, 252, 1.00);
+  --popover: rgba(30, 45, 97, 1.00);
+  --popover-foreground: rgba(248, 250, 252, 1.00);
+  --primary: rgba(102, 156, 255, 1.00);
+  --primary-foreground: rgba(13, 29, 82, 1.00);
+  --secondary: rgba(231, 232, 238, 0.1);
+  --secondary-foreground: rgba(179, 206, 255, 1.00);
+  --muted: rgba(134, 142, 168, 0.2);
+  --muted-foreground: rgba(158, 165, 186, 1.00);
+  --accent: rgba(128, 173, 255, 1.00);
+  --accent-foreground: rgba(13, 29, 82, 1.00);
+  --destructive: rgba(251, 133, 127, 0.1);
+  --destructive-foreground: rgba(251, 133, 127, 1.00);
+  --border: rgba(158, 165, 186, 0.3);
+  --input: rgba(134, 142, 168, 0.1);
+  --ring: rgba(128, 173, 255, 1.00);
+  --sidebar: rgba(30, 45, 97, 1.00);
+  --sidebar-foreground: rgba(248, 250, 252, 1.00);
+  --sidebar-primary: rgba(102, 156, 255, 1.00);
+  --sidebar-primary-foreground: rgba(13, 29, 82, 1.00);
+  --sidebar-accent: rgba(128, 173, 255, 1.00);
+  --sidebar-accent-foreground: rgba(13, 29, 82, 1.00);
+  --sidebar-border: rgba(158, 165, 186, 0.3);
+  --sidebar-ring: rgba(128, 173, 255, 1.00);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --shadow-elevation-sm: var(--elevation-sm);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-red-hat-display);
+    overflow-x: hidden;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.3;
+    }
+
+    h4 {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5;
+    }
+
+    p {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    input {
+      font-family: var(--font-red-hat-display);
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    /* Caption typography */
+    .caption {
+      font-family: var(--font-inter);
+      font-size: var(--text-xs);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+    }
+
+    /* Tag typography */
+    .tag {
+      font-family: var(--font-inter);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* ── Custom Scrollbar (DS) ── */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--muted);
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}

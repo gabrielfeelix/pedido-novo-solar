@@ -155,8 +155,8 @@
           "slug": "checkout",
           "name": "Checkout Oderco",
           "status": "prototipacao",
-          "handoffUrl": "/oderco/checkout/v1",
-          "selectedPrototypeId": "oderco-checkout-v1",
+          "handoffUrl": "/oderco/checkout/v2",
+          "selectedPrototypeId": "oderco-checkout-v2",
           "prototypes": [
             {
               "id": "oderco-checkout-v1",
@@ -165,8 +165,19 @@
               "slug": "oderco-checkout-v1",
               "url": "/oderco/checkout/v1",
               "source": "empresas/oderco/projetos/checkout/cart-checkout-v1",
-              "notes": "Fluxo de carrinho, checkout multi-NF e revisao de pedido Oderco.",
+              "notes": "Fluxo de carrinho, checkout multi-filial e revisao de pedido Oderco.",
               "createdAt": "2026-05-13",
+              "isCurrent": false
+            },
+            {
+              "id": "oderco-checkout-v2",
+              "name": "Checkout Oderco — Wizard",
+              "version": "v2",
+              "slug": "oderco-checkout-v2",
+              "url": "/oderco/checkout/v2",
+              "source": "empresas/oderco/projetos/checkout/cart-checkout-v2",
+              "notes": "Checkout em wizard: Frete → Pagamento → Detalhes → Revisão, com frase guia por passo.",
+              "createdAt": "2026-05-14",
               "isCurrent": true
             }
           ]
