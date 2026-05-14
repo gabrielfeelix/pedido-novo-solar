@@ -838,7 +838,7 @@ function SuggestedCarousel() {
 /* ══════════════════════════════════════════════
    VARIANT SWITCHER — toggle discreto entre layouts
 ═══════════════════════════════════════════════ */
-type CartVariant = 'classic' | 'choice';
+type CartVariant = 'classic' | 'choice' | 'choice-v3';
 
 function VariantSwitcher({ value, onChange, disabled }: { value: CartVariant; onChange: (v: CartVariant) => void; disabled?: boolean }) {
   const groupLabel = disabled
@@ -860,9 +860,13 @@ function VariantSwitcher({ value, onChange, disabled }: { value: CartVariant; on
       <span aria-hidden="true" style={{ fontSize: 9, fontFamily: 'var(--font-red-hat-display)', color: 'var(--muted-foreground)', letterSpacing: '0.5px', padding: '0 8px' }}>
         LAYOUT
       </span>
-      {(['classic', 'choice'] as const).map((opt) => {
+      {(['classic', 'choice', 'choice-v3'] as const).map((opt) => {
         const isActive = value === opt;
-        const variantName = opt === 'classic' ? 'V1 clássico' : 'V2 escolha';
+        const variantName =
+          opt === 'classic' ? 'V1 clássico' :
+          opt === 'choice' ? 'V2 escolha (cards autônomos)' :
+                             'V3 escolha (seleção + CTA único)';
+        const label = opt === 'classic' ? 'V1' : opt === 'choice' ? 'V2' : 'V3';
         return (
           <button
             key={opt}
@@ -884,7 +888,7 @@ function VariantSwitcher({ value, onChange, disabled }: { value: CartVariant; on
               outlineColor: 'var(--primary)',
             }}
           >
-            {opt === 'classic' ? 'V1' : 'V2'}
+            {label}
           </button>
         );
       })}
@@ -901,9 +905,12 @@ interface ChoiceCardProps {
   items: ReturnType<typeof useCart>['items'];
   subtotal: number;
   onSelect: () => void;
+  /** V3 mode: card whole is clickable, no internal CTA, shows radio top-right. */
+  selectable?: boolean;
+  isSelected?: boolean;
 }
 
-function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
+function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: ChoiceCardProps) {
   const { updateQuantity, removeItem } = useCart();
   const [hovered, setHovered] = useState(false);
   const accent = NF_ACCENT[nf];
@@ -912,18 +919,29 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
   const total = subtotal + ipi + stx;
   const itemsCount = items.reduce((s, i) => s + i.quantity, 0);
 
+  /* V3 mode: card é radio button — clicar = selecionar. Borda destaque + glow quando isSelected. */
+  const isV3 = !!selectable;
+  const isActive = hovered || (isV3 && !!isSelected);
+
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative h-full rounded-3xl transition-all flex flex-col overflow-hidden"
+      onClick={isV3 ? onSelect : undefined}
+      onKeyDown={isV3 ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(); } } : undefined}
+      role={isV3 ? 'radio' : undefined}
+      aria-checked={isV3 ? !!isSelected : undefined}
+      aria-label={isV3 ? `Selecionar Filial ${nf} — ${FILIAL_FULL_NAME[nf]}` : undefined}
+      tabIndex={isV3 ? 0 : undefined}
+      className={`relative h-full rounded-3xl transition-all flex flex-col overflow-hidden ${isV3 ? 'cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4' : ''}`}
       style={{
         background: 'var(--card)',
-        border: `1px solid ${hovered ? accent.color : 'var(--muted)'}`,
-        boxShadow: hovered
+        border: `${isV3 && isSelected ? 2 : 1}px solid ${isActive ? accent.color : 'var(--muted)'}`,
+        boxShadow: isActive
           ? `0 30px 70px ${nf === 'PR' ? 'rgba(26,60,110,0.22)' : 'rgba(91,45,142,0.22)'}, 0 0 0 1px ${accent.color}`
           : 'var(--elevation-sm)',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
+        outlineColor: accent.color,
       }}
     >
       {/* Decorative gradient band — só visível ao hover, sutil */}
@@ -960,13 +978,31 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
           </div>
         </div>
 
-        {/* Items count chip */}
-        <span
-          className="rounded-full px-3 py-1.5 shrink-0"
-          style={{ background: accent.surfaceTint, border: `1px solid ${accent.color}40`, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: accent.color, fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}
-        >
-          {itemsCount} {itemsCount === 1 ? 'item' : 'itens'}
-        </span>
+        {/* Top-right: items count chip (V2) ou radio indicator (V3) */}
+        {isV3 ? (
+          <span
+            className="rounded-full flex items-center justify-center shrink-0 transition-all"
+            style={{
+              width: 28, height: 28,
+              border: `2px solid ${isSelected ? accent.color : 'var(--muted-foreground)'}`,
+              background: isSelected ? accent.color : 'var(--card)',
+            }}
+            aria-hidden="true"
+          >
+            {isSelected && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary-foreground)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            )}
+          </span>
+        ) : (
+          <span
+            className="rounded-full px-3 py-1.5 shrink-0"
+            style={{ background: accent.surfaceTint, border: `1px solid ${accent.color}40`, fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: accent.color, fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}
+          >
+            {itemsCount} {itemsCount === 1 ? 'item' : 'itens'}
+          </span>
+        )}
       </div>
 
       {/* Items list — todos itens visíveis, scroll interno se > 4 linhas (~232px).
@@ -1118,31 +1154,38 @@ function ChoiceCard({ nf, items, subtotal, onSelect }: ChoiceCardProps) {
         </div>
       </div>
 
-      {/* CTA — gruda no bottom do card via flex-1+mt-auto */}
-      <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1">
-
-        <button
-          type="button"
-          onClick={onSelect}
-          aria-label={`Prosseguir para o pagamento da Filial ${nf} — ${FILIAL_FULL_NAME[nf]}, total ${formatCurrency(total)}`}
-          className="w-full h-14 rounded-2xl border-none cursor-pointer hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-          style={{
-            background: accent.color,
-            color: 'var(--primary-foreground)',
-            fontSize: 'var(--text-base)',
-            fontWeight: 'var(--font-weight-bold)',
-            fontFamily: 'var(--font-red-hat-display)',
-            letterSpacing: '0.2px',
-            outlineColor: accent.color,
-            boxShadow: hovered
-              ? `0 20px 40px ${nf === 'PR' ? 'rgba(26,60,110,0.45)' : 'rgba(91,45,142,0.45)'}`
-              : `0 10px 24px ${nf === 'PR' ? 'rgba(26,60,110,0.30)' : 'rgba(91,45,142,0.30)'}`,
-          }}
-        >
-          Prosseguir com Filial {nf}
-          <ArrowRightIcon size={18} />
-        </button>
-      </div>
+      {/* CTA interno (V2 standalone) OU spacer (V3 — CTA fica fora compartilhado) */}
+      {isV3 ? (
+        <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1 items-center justify-end">
+          <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontStyle: 'italic' }}>
+            {isSelected ? '✓ Filial selecionada — clique no botão abaixo' : 'Clique no card para selecionar'}
+          </span>
+        </div>
+      ) : (
+        <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1">
+          <button
+            type="button"
+            onClick={onSelect}
+            aria-label={`Prosseguir para o pagamento da Filial ${nf} — ${FILIAL_FULL_NAME[nf]}, total ${formatCurrency(total)}`}
+            className="w-full h-14 rounded-2xl border-none cursor-pointer hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{
+              background: accent.color,
+              color: 'var(--primary-foreground)',
+              fontSize: 'var(--text-base)',
+              fontWeight: 'var(--font-weight-bold)',
+              fontFamily: 'var(--font-red-hat-display)',
+              letterSpacing: '0.2px',
+              outlineColor: accent.color,
+              boxShadow: hovered
+                ? `0 20px 40px ${nf === 'PR' ? 'rgba(26,60,110,0.45)' : 'rgba(91,45,142,0.45)'}`
+                : `0 10px 24px ${nf === 'PR' ? 'rgba(26,60,110,0.30)' : 'rgba(91,45,142,0.30)'}`,
+            }}
+          >
+            Prosseguir com Filial {nf}
+            <ArrowRightIcon size={18} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -1180,6 +1223,14 @@ export function CartPage() {
       setSelectedNf(activeNf);
     }
   }, [activeNf, nfsInCart, selectedNf]);
+
+  /* ── V3: filial selecionada via radio cards. Default = primeira do carrinho. ── */
+  const [selectedV3, setSelectedV3] = useState<NfKey | null>(activeNf);
+  useEffect(() => {
+    if (!selectedV3 || !nfsInCart.includes(selectedV3)) {
+      setSelectedV3(activeNf);
+    }
+  }, [activeNf, nfsInCart, selectedV3]);
 
   /* ── Scroll to top on mount ── */
   useEffect(() => {
@@ -1364,29 +1415,55 @@ export function CartPage() {
           </div>
         </div>
 
-        {/* ─── Multi-filial intro banner — só em V1, pois V2 já tem hero próprio ─── */}
-        {totalOrders > 1 && !allCompleted && !(variant === 'choice' && nfsInCart.length === 2) && (
-          <div
-            className="rounded-xl px-5 py-4 mb-5 flex items-start gap-3"
-            style={{ background: 'var(--primary-surface-md)', border: '1px solid var(--primary-border-sm)' }}
-          >
+        {/* ─── Multi-filial intro banner — copy varia conforme estado:
+              · 0 finalizados → "Você tem N pedidos independentes" (explica o conceito)
+              · 1+ finalizados (com pendentes) → "Você já finalizou X de Y — falta a Filial Z" (contextual)
+            Só em V1 (V2/V3 têm seu próprio hero). ─── */}
+        {totalOrders > 1 && !allCompleted && !(variant === 'choice' && nfsInCart.length === 2) && !(variant === 'choice-v3' && nfsInCart.length === 2) && (() => {
+          const hasCompleted = completedOrders.length > 0;
+          const pendingNf = nfsInCart[0];
+          return (
             <div
-              className="rounded-full flex items-center justify-center shrink-0"
-              style={{ width: 32, height: 32, background: 'var(--primary)', color: 'var(--primary-foreground)' }}
+              className="rounded-xl px-5 py-4 mb-5 flex items-start gap-3"
+              role={hasCompleted ? 'status' : undefined}
+              aria-live={hasCompleted ? 'polite' : undefined}
+              style={{
+                background: hasCompleted ? 'var(--success-surface)' : 'var(--primary-surface-md)',
+                border: `1px solid ${hasCompleted ? 'var(--success)' : 'var(--primary-border-sm)'}`,
+              }}
             >
-              <InfoIcon size={16} />
+              <div
+                className="rounded-full flex items-center justify-center shrink-0"
+                style={{ width: 32, height: 32, background: hasCompleted ? 'var(--success)' : 'var(--primary)', color: 'var(--primary-foreground)' }}
+                aria-hidden="true"
+              >
+                {hasCompleted ? <CheckIcon size={14} /> : <InfoIcon size={16} />}
+              </div>
+              <div className="flex-1 min-w-0">
+                {hasCompleted && pendingNf ? (
+                  <>
+                    <span className="block" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      {completedOrders.length} de {totalOrders} pedidos concluídos — falta finalizar a Filial {pendingNf}
+                    </span>
+                    <span className="block mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.5 }}>
+                      O pedido da <strong>Filial {completedOrders[completedOrders.length - 1].nf}</strong> foi confirmado. Termine o restante para fechar todos.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="block" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      Você tem {totalOrders} pedidos independentes neste carrinho
+                    </span>
+                    <span className="block mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.5 }}>
+                      Cada filial gera um pedido próprio — frete, imposto e pagamento são <strong>separados por filial</strong>.
+                      Você vai finalizar um, voltar aqui, e seguir com o próximo.
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <span className="block" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-                Você tem {totalOrders} pedidos independentes neste carrinho
-              </span>
-              <span className="block mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.5 }}>
-                Cada filial gera um pedido próprio — frete, imposto e pagamento são <strong>separados por filial</strong>.
-                Você vai finalizar um, voltar aqui, e seguir com o próximo.
-              </span>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* ─── V2 CHOICE LAYOUT — só ativa quando há 2 filiais ─── */}
         {variant === 'choice' && nfsInCart.length === 2 && !allCompleted ? (
@@ -1440,6 +1517,119 @@ export function CartPage() {
 
             {/* Footer — escape hatches.
                 "Editar carrinho" volta pra V1 (V2 é momento de DECISÃO, não edição → mantém foco). */}
+            <div className="flex items-center justify-center gap-4 mt-2 pb-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+                style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}
+              >
+                <span aria-hidden="true">←</span> Continuar comprando
+              </button>
+              <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
+              <button
+                type="button"
+                onClick={() => setVariant('classic')}
+                className="bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+                style={{ color: 'var(--primary)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)', outlineColor: 'var(--primary)' }}
+              >
+                Editar carrinho
+              </button>
+              <span aria-hidden="true" style={{ color: 'var(--muted)' }}>·</span>
+              <span className="inline-flex items-center gap-1.5" style={{ color: 'var(--muted-foreground)', fontSize: 'var(--text-xs)', fontFamily: 'var(--font-red-hat-display)' }}>
+                <LockIcon size={12} /> Compra 100% segura e protegida
+              </span>
+            </div>
+          </div>
+        ) : variant === 'choice-v3' && nfsInCart.length === 2 && !allCompleted ? (
+          /* ═══════════ V3 CHOICE LAYOUT — cards selecionáveis + CTA único compartilhado ═══════════ */
+          <div className="pb-12 flex flex-col gap-6">
+            {completedOrders.length > 0 && (
+              <div className="flex flex-col gap-3">
+                {completedOrders.map((co) => (
+                  <div key={co.nf} className="rounded-xl px-5 py-3 flex items-center gap-3"
+                    style={{ background: 'var(--success-surface)', border: '1px solid var(--success)' }}>
+                    <span className="rounded-lg flex items-center justify-center shrink-0"
+                      style={{ width: 32, height: 32, background: 'var(--success)', color: 'var(--primary-foreground)' }}
+                      aria-hidden="true">
+                      <CheckIcon size={14} />
+                    </span>
+                    <span className="flex-1 min-w-0" style={{ fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      <strong>{NF_LABEL[co.nf]}</strong> · {co.orderNumber} · Pago {formatCurrency(co.total)} via {co.paymentMethod}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Intro */}
+            <div className="text-center max-w-[720px] mx-auto pt-2">
+              <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-4"
+                style={{ background: 'var(--primary-surface-md)', border: '1px solid var(--primary-border-sm)' }}>
+                <span aria-hidden="true" className="rounded-full" style={{ width: 6, height: 6, background: 'var(--primary)' }} />
+                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.8px' }}>
+                  DUAS FILIAIS · SELECIONE UMA PARA COMEÇAR
+                </span>
+              </span>
+              <h3 className="m-0" style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.15 }}>
+                Você tem duas filiais no seu carrinho.
+                <br />
+                <span style={{ color: 'var(--primary)' }}>Qual quer finalizar primeiro?</span>
+              </h3>
+            </div>
+
+            {/* 2 selectable cards (role=radiogroup) */}
+            <div
+              role="radiogroup"
+              aria-label="Filial pra finalizar primeiro"
+              className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 mt-2"
+            >
+              {nfsInCart.map((nf) => (
+                <ChoiceCard
+                  key={nf}
+                  nf={nf}
+                  items={itemsByNf[nf]}
+                  subtotal={subtotalByNf[nf]}
+                  selectable
+                  isSelected={selectedV3 === nf}
+                  onSelect={() => setSelectedV3(nf)}
+                />
+              ))}
+            </div>
+
+            {/* Shared CTA — sempre visível, sticky-feel sem ficar fora do fluxo. Label muda por seleção. */}
+            <div className="sticky bottom-4 z-10 flex justify-center mt-2">
+              {(() => {
+                const sel = selectedV3;
+                const accent = sel ? NF_ACCENT[sel] : null;
+                return (
+                  <button
+                    type="button"
+                    disabled={!sel}
+                    onClick={() => sel && handleStartCheckout(sel)}
+                    aria-label={sel ? `Iniciar pedido da Filial ${sel}` : 'Selecione uma filial para iniciar'}
+                    className="h-14 px-10 rounded-2xl border-none cursor-pointer hover:opacity-95 hover:translate-y-[-1px] transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                    style={{
+                      background: accent ? accent.color : 'var(--muted)',
+                      color: accent ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
+                      fontSize: 'var(--text-base)',
+                      fontWeight: 'var(--font-weight-bold)',
+                      fontFamily: 'var(--font-red-hat-display)',
+                      letterSpacing: '0.2px',
+                      minWidth: 320,
+                      outlineColor: accent ? accent.color : 'var(--primary)',
+                      boxShadow: accent
+                        ? `0 18px 44px ${sel === 'PR' ? 'rgba(26,60,110,0.45)' : 'rgba(91,45,142,0.45)'}`
+                        : 'var(--elevation-sm)',
+                    }}
+                  >
+                    {sel ? <>Iniciar Filial {sel} <ArrowRightIcon size={18} /></> : 'Selecione uma filial acima'}
+                  </button>
+                );
+              })()}
+            </div>
+
+            {/* Footer secondary */}
             <div className="flex items-center justify-center gap-4 mt-2 pb-2 flex-wrap">
               <button
                 type="button"
