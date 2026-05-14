@@ -594,24 +594,30 @@ function BlockReapplyHint({ label, onApply, applied }: { label: string; onApply:
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MAIN STEP INDICATOR  —  Carrinho → Pedido → Revisão
-   Filial agora é UMA POR VEZ — não divide steps.
-   Identificação visual da filial ativa fica no badge abaixo.
+   MAIN STEP INDICATOR — V2 wizard
+   Carrinho → Frete → Pagamento → Detalhes → Revisão
+   Sub-passos do checkout viram steps de primeiro nível (sem pill duplicada).
 ═══════════════════════════════════════════════════════════ */
-function MainStepIndicator({ currentNfStep }: { currentNfStep: NfStep }) {
-  const isPR = currentNfStep === 'PR';
-  const isES = currentNfStep === 'ES';
+type SubStepKey = 'frete' | 'pagamento' | 'detalhes';
+
+function MainStepIndicator({ currentNfStep, subStep }: { currentNfStep: NfStep; subStep: SubStepKey }) {
   const isReview = currentNfStep === 'review';
-  const isPedido = isPR || isES;
+  const isPedido = currentNfStep === 'PR' || currentNfStep === 'ES';
+
+  /* Ordem linear: pedido contém os 3 sub-passos. Quando entra em review, os 3 viram done. */
+  const subOrder: SubStepKey[] = ['frete', 'pagamento', 'detalhes'];
+  const subIdx = isPedido ? subOrder.indexOf(subStep) : isReview ? subOrder.length : -1;
 
   const steps = [
-    { key: 'carrinho', label: 'Carrinho', done: true,             active: false },
-    { key: 'pedido',   label: 'Pedido',   done: isReview,         active: isPedido },
-    { key: 'revisao',  label: 'Revisão',  done: false,            active: isReview },
+    { key: 'carrinho',  label: 'Carrinho',  done: true,                   active: false },
+    { key: 'frete',     label: 'Frete',     done: subIdx > 0 || isReview, active: isPedido && subStep === 'frete' },
+    { key: 'pagamento', label: 'Pagamento', done: subIdx > 1 || isReview, active: isPedido && subStep === 'pagamento' },
+    { key: 'detalhes',  label: 'Detalhes',  done: isReview,               active: isPedido && subStep === 'detalhes' },
+    { key: 'revisao',   label: 'Revisão',   done: false,                  active: isReview },
   ];
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center flex-wrap">
       {steps.map((step, i) => (
         <div key={step.key} className="flex items-center">
           <div className="flex flex-col items-center gap-1.5">
@@ -648,8 +654,8 @@ function MainStepIndicator({ currentNfStep }: { currentNfStep: NfStep }) {
           {/* Connector */}
           {i < steps.length - 1 && (
             <div
-              className="h-[2px] mx-3 mb-[18px] rounded-full transition-colors duration-300"
-              style={{ width: 52, background: step.done ? 'var(--primary)' : 'var(--muted)' }}
+              className="h-[2px] mx-2 sm:mx-3 mb-[18px] rounded-full transition-colors duration-300"
+              style={{ width: 36, background: step.done ? 'var(--primary)' : 'var(--muted)' }}
             />
           )}
         </div>
@@ -2148,7 +2154,7 @@ export function CheckoutPage() {
         <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle at center, var(--primary-foreground) 1px, transparent 1.5px)', backgroundSize: '22px 22px' }} />
         <div className="relative max-w-[1200px] mx-auto px-4 md:px-6 pt-7 pb-10 text-center">
-          <MainStepIndicator currentNfStep="review" />
+          <MainStepIndicator currentNfStep="review" subStep="detalhes" />
           <div className="mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1"
             style={{ background: 'rgba(255,255,255,0.12)' }}>
             <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }} />
@@ -2824,7 +2830,7 @@ export function CheckoutPage() {
         <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle at center, var(--primary-foreground) 1px, transparent 1.5px)', backgroundSize: '22px 22px' }} />
         <div className="relative max-w-[1120px] mx-auto px-4 md:px-6 pt-6 pb-7 text-center">
-          <MainStepIndicator currentNfStep={nfStep} />
+          <MainStepIndicator currentNfStep={nfStep} subStep={subStep} />
           <div className="mt-5 inline-flex items-center gap-2.5 rounded-lg px-3 py-1.5"
             style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)' }}>
             <span
@@ -2842,33 +2848,7 @@ export function CheckoutPage() {
         </div>
       </div>
 
-      {/* ── V2 SUB-STEP INDICATOR — pill row mostra Frete · Pagamento · Detalhes ── */}
-      <div className="max-w-[1120px] mx-auto px-4 md:px-6 pt-5">
-        <div className="inline-flex items-center gap-1 rounded-full p-1"
-          style={{ background: 'var(--card)', border: '1px solid var(--muted)', boxShadow: 'var(--elevation-sm)' }}>
-          {(['frete', 'pagamento', 'detalhes'] as const).map((s, i) => {
-            const isActive = subStep === s;
-            const idx = ['frete', 'pagamento', 'detalhes'].indexOf(subStep);
-            const isDone = i < idx;
-            const label = s === 'frete' ? 'Frete' : s === 'pagamento' ? 'Pagamento' : 'Detalhes';
-            return (
-              <div key={s} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5"
-                style={{
-                  background: isActive ? 'var(--primary)' : 'transparent',
-                  color: isActive ? 'var(--primary-foreground)' : isDone ? 'var(--foreground)' : 'var(--muted-foreground)',
-                }}>
-                <span aria-hidden="true" className="inline-flex items-center justify-center rounded-full"
-                  style={{ width: 18, height: 18, background: isActive ? 'rgba(255,255,255,0.18)' : isDone ? 'var(--success)' : 'var(--muted)', color: isActive ? 'var(--primary-foreground)' : isDone ? 'var(--primary-foreground)' : 'var(--muted-foreground)', fontSize: 10, fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
-                  {isDone ? <CheckIcon /> : i + 1}
-                </span>
-                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.2px' }}>
-                  {label}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* Pill row sub-step removida — MainStepIndicator no topo já cobre os passos. */}
 
       {/* ── Main 2-column layout ── */}
       <div className="max-w-[1120px] mx-auto flex flex-col lg:flex-row gap-8 pt-5 pb-16 px-4 md:px-6">
