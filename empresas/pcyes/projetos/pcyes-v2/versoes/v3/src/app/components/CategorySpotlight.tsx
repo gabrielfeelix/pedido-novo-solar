@@ -29,7 +29,7 @@ export function CategorySpotlight() {
       className="px-5 py-16 md:px-[72px] md:py-20"
       style={{ background: "#0e0e0e" }}
     >
-      <div className="mx-auto max-w-[1760px]">
+      <div className="mx-auto w-full" style={{ maxWidth: "1600px" }}>
         <div className="mb-8 flex flex-col items-start gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <motion.p

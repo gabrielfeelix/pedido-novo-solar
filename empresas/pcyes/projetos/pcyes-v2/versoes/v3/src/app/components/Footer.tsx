@@ -8,6 +8,7 @@ const columns = [
     title: "AJUDA E SUPORTE",
     links: [
       { label: "F.A.Q", href: "#" },
+      { label: "Drivers e Manuais", href: "#" },
       { label: "Download e Suporte", href: "#" },
       { label: "Fale Conosco", href: "/fale-conosco" },
       { label: "Pedidos", href: "/perfil" },

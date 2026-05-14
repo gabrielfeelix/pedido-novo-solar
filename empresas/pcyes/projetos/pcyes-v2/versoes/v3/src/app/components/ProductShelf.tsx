@@ -1,13 +1,16 @@
-import { useMemo, useRef } from "react";
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
-import { Heart, ShoppingBag, Star, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useCart } from "./CartContext";
 import { useFavorites } from "./FavoritesContext";
 import { allProducts, type Product } from "./productsData";
 import {
   getPrimaryProductImage,
+  getProductSwatches,
   getVisibleCatalogProducts,
 } from "./productPresentation";
 
@@ -17,8 +20,247 @@ interface ProductShelfProps {
   productIds: number[];
   showRanking?: boolean;
   emphasizeDiscount?: boolean;
-  ctaHref?: string;
-  ctaLabel?: string;
+}
+
+function getSubtitle(product: Product): string | null {
+  if (product.tags && product.tags.length > 0) {
+    const filtered = product.tags.filter(
+      (t) => t.toLowerCase() !== product.category.toLowerCase() && t.length > 1,
+    );
+    if (filtered.length >= 2) return `${filtered[0]}  |  ${filtered[1]}`;
+    if (filtered.length === 1) return filtered[0];
+  }
+  if (product.brand && product.category) {
+    return `${product.brand}  |  ${product.category}`;
+  }
+  return product.category ?? null;
+}
+
+interface CardProps {
+  product: Product;
+  rank?: number;
+  emphasizeDiscount: boolean;
+  onAdd: (product: Product) => void;
+  onFavorite: (product: Product) => void;
+}
+
+function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: CardProps) {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [selectedSwatchId, setSelectedSwatchId] = useState<number | null>(null);
+
+  const swatches = getProductSwatches(product);
+  const selectedProduct = selectedSwatchId
+    ? allProducts.find(p => p.id === selectedSwatchId)
+    : product;
+  const image = getPrimaryProductImage(selectedProduct);
+  const subtitle = getSubtitle(product);
+
+  const oldPriceNum =
+    product.oldPriceNum ?? (emphasizeDiscount ? product.priceNum * 1.18 : 0);
+  const discount =
+    oldPriceNum > product.priceNum
+      ? Math.round(((oldPriceNum - product.priceNum) / oldPriceNum) * 100)
+      : 0;
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsFavorited(!isFavorited);
+    onFavorite(product);
+  };
+
+  return (
+    <div
+      className="snap-start flex-shrink-0 group"
+      style={{ width: "320px" }}
+    >
+      <Link to={`/produto/${product.id}`} className="block">
+        <div
+          className="relative aspect-square overflow-hidden transition-all duration-300"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%)",
+            borderRadius: "20px",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+          }}
+        >
+          {/* Subtle inner shine */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.06) 0%, transparent 55%)",
+              borderRadius: "20px",
+            }}
+          />
+
+
+          <ImageWithFallback
+            src={image}
+            alt={product.name}
+            className="absolute inset-0 h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-[1.05]"
+          />
+
+          {rank !== undefined && (
+            <span
+              className="absolute left-3 top-3 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm"
+              style={{
+                fontFamily: "var(--font-family-figtree)",
+                fontSize: "12px",
+                fontWeight: 700,
+              }}
+            >
+              {rank}
+            </span>
+          )}
+
+          {discount > 0 && (
+            <span
+              className="absolute z-20 rounded-full px-2.5 py-1 text-white"
+              style={{
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                left: rank !== undefined ? "48px" : "12px",
+                top: "12px",
+                fontFamily: "var(--font-family-inter)",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                boxShadow: "0 6px 18px -4px rgba(16, 185, 129, 0.55)",
+              }}
+            >
+              -{discount}%
+            </span>
+          )}
+
+          {/* Favorite (top-right, on hover) */}
+          <button
+            onClick={handleFavorite}
+            className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border opacity-0 transition-all duration-200 group-hover:opacity-100 cursor-pointer"
+            style={{
+              background: isFavorited ? "rgba(225, 6, 0, 0.2)" : "rgba(0, 0, 0, 0.55)",
+              border: isFavorited ? "1px solid rgba(225, 6, 0, 0.8)" : "1px solid rgba(255, 255, 255, 0.15)",
+              color: isFavorited ? "#ff2419" : "rgba(255, 255, 255, 0.85)",
+              backdropFilter: "blur(8px)",
+            }}
+            aria-label="Favoritar"
+          >
+            <Heart size={13} strokeWidth={isFavorited ? 0 : 1.8} fill={isFavorited ? "#ff2419" : "none"} />
+          </button>
+
+          {/* Quick add — floating pill */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onAdd(product);
+            }}
+            className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-5 py-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+            style={{
+              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+              color: "white",
+              fontFamily: "var(--font-family-inter)",
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
+            }}
+          >
+            <span className="inline-flex items-center gap-1.5"><ShoppingBag size={12} strokeWidth={2} /> Adicionar ao carrinho</span>
+          </button>
+        </div>
+
+        <div className="mt-4 px-1">
+          <h3
+            className="line-clamp-1 text-white"
+            style={{
+              fontFamily: "var(--font-family-figtree)",
+              fontSize: "15px",
+              fontWeight: 600,
+              lineHeight: 1.25,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            {product.name}
+          </h3>
+
+          {subtitle && (
+            <p
+              className="mt-1.5 line-clamp-1"
+              style={{
+                fontFamily: "var(--font-family-inter)",
+                fontSize: "12px",
+                color: "rgba(255, 255, 255, 0.45)",
+                letterSpacing: "0.01em",
+              }}
+            >
+              {subtitle}
+            </p>
+          )}
+
+          <div className="mt-2 flex items-baseline gap-2">
+            <p
+              className="text-white"
+              style={{
+                fontFamily: "var(--font-family-figtree)",
+                fontSize: "17px",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {product.price}
+            </p>
+            {oldPriceNum > product.priceNum && (
+              <p
+                className="line-through"
+                style={{
+                  fontFamily: "var(--font-family-inter)",
+                  fontSize: "12px",
+                  color: "rgba(255, 255, 255, 0.30)",
+                }}
+              >
+                {product.oldPrice ?? `R$ ${oldPriceNum.toFixed(2).replace(".", ",")}`}
+              </p>
+            )}
+          </div>
+
+        </div>
+      </Link>
+
+      {swatches.length > 0 && (
+        <div className="mt-2.5 px-1 flex items-center gap-1.5">
+          {swatches.slice(0, 5).map((s) => (
+            <button
+              key={s.productId}
+              onClick={() => setSelectedSwatchId(s.productId === selectedSwatchId ? null : s.productId)}
+              className="inline-block h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
+              style={{
+                background: s.color,
+                border: selectedSwatchId === s.productId
+                  ? "2px solid rgba(225, 6, 0, 0.9)"
+                  : "1px solid rgba(255, 255, 255, 0.18)",
+                boxShadow: selectedSwatchId === s.productId
+                  ? "0 0 8px rgba(225, 6, 0, 0.5)"
+                  : "none",
+              }}
+              aria-label={s.label}
+              type="button"
+            />
+          ))}
+          {swatches.length > 5 && (
+            <span
+              style={{
+                fontFamily: "var(--font-family-inter)",
+                fontSize: "11px",
+                color: "rgba(255, 255, 255, 0.45)",
+              }}
+            >
+              +{swatches.length - 5}
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function ProductShelf({
@@ -27,10 +269,11 @@ export function ProductShelf({
   productIds,
   showRanking = false,
   emphasizeDiscount = false,
-  ctaHref = "/produtos",
-  ctaLabel = "Ver mais",
 }: ProductShelfProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(true);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const { addItem } = useCart();
   const { addFavorite } = useFavorites();
@@ -40,8 +283,42 @@ export function ProductShelf({
     const resolved = productIds
       .map((id) => visible.find((p) => p.id === id))
       .filter(Boolean) as Product[];
-    return resolved.length > 0 ? resolved : visible.slice(0, 6);
+    return resolved.length > 0 ? resolved : visible.slice(0, 8);
   }, [productIds]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const update = () => {
+      setCanPrev(el.scrollLeft > 4);
+      setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    };
+    update();
+    el.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      el.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [products]);
+
+  const scrollByCards = (dir: -1 | 1) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWithGap = 320 + 24;
+    el.scrollBy({ left: dir * cardWithGap * 2, behavior: "smooth" });
+  };
+
+  const navBtn = (onClick: () => void, disabled: boolean, label: string, icon: React.ReactNode) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-white/75 backdrop-blur-md transition-all hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/10 hover:text-white hover:scale-105 active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
+      aria-label={label}
+    >
+      {icon}
+    </button>
+  );
 
   return (
     <section
@@ -49,8 +326,8 @@ export function ProductShelf({
       className="px-5 py-16 md:px-[72px] md:py-20"
       style={{ background: "#0e0e0e" }}
     >
-      <div className="mx-auto max-w-[1760px]">
-        <div className="mb-8 flex items-end justify-between gap-6">
+      <div className="mx-auto w-full" style={{ maxWidth: "1600px" }}>
+        <div className="mb-10 flex items-end justify-between gap-6">
           <div>
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -59,9 +336,9 @@ export function ProductShelf({
               className="mb-3 text-primary"
               style={{
                 fontFamily: "var(--font-family-inter)",
-                fontSize: "12px",
-                fontWeight: 600,
-                letterSpacing: "0.25em",
+                fontSize: "11px",
+                fontWeight: 700,
+                letterSpacing: "0.3em",
               }}
             >
               {label}
@@ -82,212 +359,62 @@ export function ProductShelf({
               {title}
             </motion.h2>
           </div>
-          <Link
-            to={ctaHref}
-            className="hidden items-center gap-1.5 text-white/55 hover:text-white transition-colors md:inline-flex"
-            style={{
-              fontFamily: "var(--font-family-inter)",
-              fontSize: "13px",
-              fontWeight: 500,
-            }}
-          >
-            {ctaLabel}
-            <ArrowRight size={14} strokeWidth={1.8} />
-          </Link>
+
+          <div className="hidden gap-2 md:flex">
+            {navBtn(() => scrollByCards(-1), !canPrev, "Anterior", <ChevronLeft size={18} strokeWidth={2.2} />)}
+            {navBtn(() => scrollByCards(1), !canNext, "Próximo", <ChevronRight size={18} strokeWidth={2.2} />)}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4 xl:grid-cols-6">
-          {products.map((product, i) => {
-            const oldPriceNum =
-              product.oldPriceNum ??
-              (emphasizeDiscount ? product.priceNum * 1.18 : 0);
-            const discount =
-              oldPriceNum > product.priceNum
-                ? Math.round(((oldPriceNum - product.priceNum) / oldPriceNum) * 100)
-                : 0;
-            const pixPrice = product.priceNum * 0.92;
-            const installment = product.priceNum / 10;
-
-            return (
+        <div className="relative">
+          {canNext && (
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-20 w-32"
+              style={{
+                background:
+                  "linear-gradient(to left, #0e0e0e 0%, rgba(14,14,14,0.85) 40%, rgba(14,14,14,0) 100%)",
+              }}
+            />
+          )}
+          <div
+            ref={scrollRef}
+            className="shelf-track flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {products.map((product, i) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.04 * i }}
-                className="neon-hover-red group relative flex flex-col overflow-hidden rounded-lg border border-white/8 bg-white/[0.015] transition-all hover:border-white/20 hover:bg-white/[0.03]"
+                transition={{ duration: 0.45, delay: 0.04 * i }}
               >
-                {/* Ranking badge */}
-                {showRanking && (
-                  <span
-                    className="absolute left-3 top-3 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-sm"
-                    style={{
-                      fontFamily: "var(--font-family-figtree)",
-                      fontSize: "13px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {i + 1}
-                  </span>
-                )}
-
-                {/* Discount badge */}
-                {discount > 0 && (
-                  <span
-                    className={`absolute z-20 rounded-full bg-primary px-2.5 py-1 text-white ${
-                      showRanking ? "left-12 top-3" : "left-3 top-3"
-                    }`}
-                    style={{
-                      fontFamily: "var(--font-family-inter)",
-                      fontSize: "10px",
-                      fontWeight: 700,
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    -{discount}%
-                  </span>
-                )}
-
-                {/* Favorite button */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
+                <ProductCard
+                  product={product}
+                  rank={showRanking ? i + 1 : undefined}
+                  emphasizeDiscount={emphasizeDiscount}
+                  onAdd={(p) =>
+                    addItem({
+                      id: p.id,
+                      name: p.name,
+                      price: p.price,
+                      image: getPrimaryProductImage(p),
+                    })
+                  }
+                  onFavorite={(p) =>
                     addFavorite({
-                      id: product.id,
-                      name: product.name,
-                      price: product.price,
-                      image: getPrimaryProductImage(product),
-                    });
-                  }}
-                  className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/70 backdrop-blur-sm transition-all hover:border-primary/60 hover:text-primary"
-                  aria-label="Favoritar"
-                >
-                  <Heart size={13} strokeWidth={1.6} />
-                </button>
-
-                <Link to={`/produto/${product.id}`} className="flex flex-1 flex-col">
-                  <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-white/[0.04] to-white/[0.01]">
-                    <ImageWithFallback
-                      src={getPrimaryProductImage(product)}
-                      alt={product.name}
-                      className="h-full w-full object-contain p-5 transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-1.5 p-4">
-                    <div className="flex items-center gap-1.5">
-                      <Star size={11} className="fill-primary text-primary" />
-                      <span
-                        className="text-white/65"
-                        style={{
-                          fontFamily: "var(--font-family-inter)",
-                          fontSize: "11px",
-                        }}
-                      >
-                        {product.rating}
-                      </span>
-                      <span
-                        className="text-white/30"
-                        style={{
-                          fontFamily: "var(--font-family-inter)",
-                          fontSize: "11px",
-                        }}
-                      >
-                        ({product.reviews})
-                      </span>
-                    </div>
-
-                    <p
-                      className="line-clamp-2 text-white/90 transition-colors group-hover:text-primary"
-                      style={{
-                        fontFamily: "var(--font-family-inter)",
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        lineHeight: 1.35,
-                        minHeight: 36,
-                      }}
-                    >
-                      {product.name}
-                    </p>
-
-                    <div className="mt-auto pt-2">
-                      {oldPriceNum > product.priceNum && (
-                        <p
-                          className="text-white/30 line-through"
-                          style={{
-                            fontFamily: "var(--font-family-inter)",
-                            fontSize: "11px",
-                          }}
-                        >
-                          {product.oldPrice ??
-                            `R$ ${oldPriceNum.toFixed(2).replace(".", ",")}`}
-                        </p>
-                      )}
-                      <p
-                        className="text-white"
-                        style={{
-                          fontFamily: "var(--font-family-figtree)",
-                          fontSize: "20px",
-                          fontWeight: 700,
-                          lineHeight: 1.1,
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {product.price}
-                      </p>
-                      <p
-                        className="text-white/50"
-                        style={{
-                          fontFamily: "var(--font-family-inter)",
-                          fontSize: "11px",
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        ou 10x de R$ {installment.toFixed(2).replace(".", ",")}
-                      </p>
-                      <p
-                        className="text-primary"
-                        style={{
-                          fontFamily: "var(--font-family-inter)",
-                          fontSize: "11px",
-                          fontWeight: 600,
-                        }}
-                      >
-                        R$ {pixPrice.toFixed(2).replace(".", ",")} no Pix
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-
-                <button
-                  onClick={() => addItem(product)}
-                  className="flex items-center justify-center gap-2 border-t border-white/8 bg-white/[0.02] py-2.5 text-white/75 transition-colors hover:bg-primary hover:text-white"
-                  style={{
-                    fontFamily: "var(--font-family-inter)",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                  }}
-                >
-                  <ShoppingBag size={13} strokeWidth={1.6} />
-                  Adicionar
-                </button>
+                      id: p.id,
+                      name: p.name,
+                      price: p.price,
+                      image: getPrimaryProductImage(p),
+                    })
+                  }
+                />
               </motion.div>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 flex justify-center md:hidden">
-          <Link
-            to={ctaHref}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-white/80 transition-all hover:border-white/40 hover:text-white"
-            style={{
-              fontFamily: "var(--font-family-inter)",
-              fontSize: "13px",
-              fontWeight: 500,
-            }}
-          >
-            {ctaLabel}
-            <ArrowRight size={14} strokeWidth={1.8} />
-          </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
