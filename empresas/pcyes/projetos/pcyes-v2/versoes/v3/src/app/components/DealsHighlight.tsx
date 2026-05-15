@@ -62,18 +62,19 @@ function SmallProductCard({ product, onAdd, onFavorite }: SmallCardProps) {
             className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.05]"
           />
 
-          {/* Discount pill */}
+          {/* Discount badge */}
           {discount > 0 && (
             <span
-              className="absolute top-3 left-3 z-20 inline-flex items-center rounded-md px-2 py-0.5 leading-none"
+              className="absolute top-3 left-3 z-20 inline-flex items-center text-white"
               style={{
-                fontFamily: "var(--font-family-inter)",
-                fontSize: "11px",
-                fontWeight: 800,
-                color: "#0a0a0a",
-                background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
-                boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)",
-                letterSpacing: "-0.01em",
+                background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                padding: "6px 12px",
+                borderRadius: "10px",
+                fontFamily: "var(--font-family-figtree)",
+                fontSize: "15px",
+                fontWeight: 900,
+                letterSpacing: "-0.02em",
+                boxShadow: "0 12px 28px -8px rgba(34,197,94,0.55)",
               }}
             >
               -{discount}%

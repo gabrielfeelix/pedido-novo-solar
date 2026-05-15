@@ -983,14 +983,32 @@ export function ProductsPage() {
                               </div>
                             </Link>
 
-                            {/* Top-left: rating pill */}
-                            <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full px-2.5 py-1 backdrop-blur-md"
-                              style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                              <Star size={11} className="fill-yellow-400 text-yellow-400" />
-                              <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "11.5px", fontWeight: 700, color: "rgba(255,255,255,0.95)" }}>
-                                {displayProduct.rating.toFixed(1)}
+                            {/* Top-left: discount badge (or rating pill if no discount) */}
+                            {discount > 0 ? (
+                              <span
+                                className="absolute top-3 left-3 z-10 inline-flex items-center text-white"
+                                style={{
+                                  background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                                  padding: "6px 12px",
+                                  borderRadius: "10px",
+                                  fontFamily: "var(--font-family-figtree)",
+                                  fontSize: "15px",
+                                  fontWeight: 900,
+                                  letterSpacing: "-0.02em",
+                                  boxShadow: "0 12px 28px -8px rgba(34,197,94,0.55)",
+                                }}
+                              >
+                                -{discount}%
                               </span>
-                            </div>
+                            ) : (
+                              <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full px-2.5 py-1 backdrop-blur-md"
+                                style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                                <Star size={11} className="fill-yellow-400 text-yellow-400" />
+                                <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "11.5px", fontWeight: 700, color: "rgba(255,255,255,0.95)" }}>
+                                  {displayProduct.rating.toFixed(1)}
+                                </span>
+                              </div>
+                            )}
                             {displayProduct.inStock === false && (
                               <span className="absolute top-3 right-12 z-10 px-2.5 py-1 bg-foreground/80 text-background shadow-sm" style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "600" }}>
                                 Esgotado
@@ -1084,16 +1102,9 @@ export function ProductsPage() {
                                   {displayProduct.oldPrice}
                                 </p>
                               )}
-                              <div className="flex items-baseline gap-2">
-                                <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em" }}>
-                                  {displayProduct.price}
-                                </p>
-                                {discount > 0 && (
-                                  <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
-                                    -{discount}%
-                                  </span>
-                                )}
-                              </div>
+                              <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em" }}>
+                                {displayProduct.price}
+                              </p>
                               <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", color: "rgba(255,255,255,0.6)" }}>
                                 No PIX ou 10x de {(() => {
                                   const inst = (displayProduct.priceNum / 10);

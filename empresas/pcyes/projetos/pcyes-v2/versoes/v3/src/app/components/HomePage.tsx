@@ -1,4 +1,5 @@
 import { HeroSection } from "./HeroSection";
+import { DropDoDiaSection } from "./DropDoDiaSection";
 import { CategoryShowcase } from "./CategoryShowcase";
 import { EssentialsSection } from "./EssentialsSection";
 import { IntelligentDevices } from "./IntelligentDevices";
@@ -21,18 +22,21 @@ export function HomePage() {
       {/* ── BLOCO 1: Hero ─────────────────────────────── */}
       <HeroSection />
 
-      {/* ── BLOCO 2: Oferta relâmpago ─────────────────── */}
-      <FlashDealsStrip />
+      {/* ── BLOCO 2: Drop do dia (3 deals selecionados) ── */}
+      <DropDoDiaSection />
 
-      {/* ── BLOCO 3: Promoções imperdíveis ─────────────── */}
-      <DealsHighlight
-        label="// OFERTAS"
-        title="Promoções imperdíveis"
-        productIds={dealIds}
-      />
+      {/* ── BLOCO 3: Promoções da semana ──────────────── */}
+      <FlashDealsStrip />
 
       {/* ── BLOCO 4: Banner de categorias ──────────────── */}
       <CategoryShowcase />
+
+      {/* ── BLOCO 5: Hall da meta ─────────────────────── */}
+      <DealsHighlight
+        label="// HALL DA META"
+        title="Drops mais cobiçados"
+        productIds={dealIds}
+      />
 
       {/* ── BLOCO 5: Mais vendidos + essentials + smart ── */}
       <ProductShelf

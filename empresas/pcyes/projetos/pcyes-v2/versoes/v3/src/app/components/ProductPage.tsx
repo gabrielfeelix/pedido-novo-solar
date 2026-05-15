@@ -801,7 +801,7 @@ function StickyPriceCard({
                     fontSize: "11px",
                     fontWeight: 800,
                     color: "#0a0a0a",
-                    background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
+                    background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
                     boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)",
                     letterSpacing: "-0.01em",
                   }}
@@ -970,7 +970,7 @@ function MobilePurchaseFlow({
                     fontSize: "10.5px",
                     fontWeight: 800,
                     color: "#0a0a0a",
-                    background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
+                    background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
                     boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)",
                   }}
                 >
@@ -2414,16 +2414,18 @@ export function ProductPage() {
                       />
                       {rDiscount > 0 && (
                         <span
-                          className="absolute z-20 rounded-full px-2.5 py-1 text-white"
+                          className="absolute z-20 inline-flex items-center text-white"
                           style={{
-                            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                            background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
                             top: "12px",
                             left: "12px",
-                            fontFamily: "var(--font-family-inter)",
-                            fontSize: "10px",
-                            fontWeight: 700,
-                            letterSpacing: "0.04em",
-                            boxShadow: "0 6px 18px -4px rgba(16, 185, 129, 0.55)",
+                            padding: "6px 12px",
+                            borderRadius: "10px",
+                            fontFamily: "var(--font-family-figtree)",
+                            fontSize: "15px",
+                            fontWeight: 900,
+                            letterSpacing: "-0.02em",
+                            boxShadow: "0 12px 28px -8px rgba(34,197,94,0.55)",
                           }}
                         >
                           -{rDiscount}%
@@ -2456,16 +2458,9 @@ export function ProductPage() {
                             {rProduct.oldPrice}
                           </p>
                         )}
-                        <div className="flex items-baseline gap-2">
-                          <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "20px", fontWeight: 700, letterSpacing: "-0.015em" }}>
-                            {rProduct.price}
-                          </p>
-                          {rDiscount > 0 && (
-                            <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
-                              -{rDiscount}%
-                            </span>
-                          )}
-                        </div>
+                        <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "20px", fontWeight: 700, letterSpacing: "-0.015em" }}>
+                          {rProduct.price}
+                        </p>
                         <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>
                           No PIX ou 10x de {rInstallment}
                         </p>

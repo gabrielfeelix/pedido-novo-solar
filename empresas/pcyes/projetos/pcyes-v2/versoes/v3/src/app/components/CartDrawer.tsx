@@ -106,8 +106,14 @@ export function CartDrawer() {
 
   const handleApplyCoupon = () => {
     const c = coupon.trim().toUpperCase();
-    if (COUPONS[c]) { setAppliedCoupon(c); setCouponError(""); }
-    else { setCouponError("Cupom inválido"); setAppliedCoupon(null); }
+    if (COUPONS[c]) {
+      setAppliedCoupon(c);
+      setCouponError("");
+      setCouponOpen(false);
+    } else {
+      setCouponError("Cupom inválido");
+      setAppliedCoupon(null);
+    }
   };
 
   const formatCep = (v: string) => {
@@ -374,15 +380,34 @@ export function CartDrawer() {
 
                 <div>
                   <button onClick={() => setCouponOpen(!couponOpen)}
-                    className="flex items-center justify-between w-full py-1 cursor-pointer group"
+                    className={`flex items-center justify-between w-full py-2 px-3 cursor-pointer group transition-colors ${
+                      appliedCoupon ? "rounded-[10px] border border-green-500/20 bg-green-500/5" : ""
+                    }`}
                   >
                     <div className="flex items-center gap-2">
-                      <Tag size={12} className="text-foreground/25" />
-                      <span className="text-foreground/30 group-hover:text-foreground/50 transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                        {appliedCoupon ? `Cupom: ${appliedCoupon} (-${discountPct}%)` : "Cupom de desconto"}
+                      {appliedCoupon ? (
+                        <Check size={13} className="text-green-500" />
+                      ) : (
+                        <Tag size={12} className="text-foreground/25" />
+                      )}
+                      <span
+                        className={appliedCoupon ? "text-green-400" : "text-foreground/30 group-hover:text-foreground/50 transition-colors"}
+                        style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: appliedCoupon ? 600 : 400 }}
+                      >
+                        {appliedCoupon ? `Cupom ${appliedCoupon} aplicado` : "Cupom de desconto"}
                       </span>
+                      {appliedCoupon && (
+                        <span className="text-green-500/70" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 600 }}>
+                          −{discountPct}%
+                        </span>
+                      )}
                     </div>
-                    <ChevronDown size={11} className={`text-foreground/20 transition-transform duration-300 ${couponOpen ? "rotate-180" : ""}`} />
+                    <span
+                      className={appliedCoupon ? "text-green-500/70" : "text-foreground/35 group-hover:text-foreground/55 transition-colors"}
+                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 600 }}
+                    >
+                      {appliedCoupon ? "Alterar" : <ChevronDown size={11} className={`transition-transform duration-300 ${couponOpen ? "rotate-180" : ""}`} />}
+                    </span>
                   </button>
                   <AnimatePresence>
                     {couponOpen && (
