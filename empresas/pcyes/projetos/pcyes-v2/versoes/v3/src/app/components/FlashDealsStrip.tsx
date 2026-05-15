@@ -99,8 +99,10 @@ interface DealCardProps {
 }
 
 function DealCard({ product, emphasize, onAdd }: DealCardProps) {
-  const image = getPrimaryProductImage(product);
   const swatches = getProductSwatches(product);
+  const [selectedSwatchId, setSelectedSwatchId] = useState<number | null>(null);
+  const displayProduct = (selectedSwatchId ? allProducts.find((p) => p.id === selectedSwatchId) : null) ?? product;
+  const image = getPrimaryProductImage(displayProduct);
   const oldPriceNum = product.oldPriceNum ?? (emphasize ? product.priceNum * 1.22 : 0);
   const discount =
     oldPriceNum > product.priceNum
@@ -226,23 +228,33 @@ function DealCard({ product, emphasize, onAdd }: DealCardProps) {
             </p>
           </div>
 
-          {swatches.length > 0 && (
-            <div className="mt-2.5 flex items-center gap-1.5">
-              {swatches.slice(0, 5).map((s) => (
-                <span
-                  key={s.productId}
-                  className="inline-block h-3 w-3 rounded-full"
-                  style={{
-                    background: s.color,
-                    border: "1px solid rgba(255, 255, 255, 0.18)",
-                  }}
-                  aria-label={s.label}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </Link>
+      {swatches.length > 0 && (
+        <div className="mt-2.5 px-1 flex items-center gap-1.5">
+          {swatches.slice(0, 5).map((s) => {
+            const active = s.productId === displayProduct.id;
+            return (
+              <button
+                key={s.productId}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedSwatchId(active ? null : s.productId);
+                }}
+                className="inline-block h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
+                style={{
+                  background: s.color,
+                  border: active ? "2px solid rgba(225,6,0,0.9)" : "1px solid rgba(255, 255, 255, 0.18)",
+                  boxShadow: active ? "0 0 8px rgba(225,6,0,0.5)" : "none",
+                }}
+                aria-label={s.label}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

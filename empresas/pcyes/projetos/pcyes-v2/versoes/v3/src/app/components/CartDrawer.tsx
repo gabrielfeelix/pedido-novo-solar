@@ -23,7 +23,7 @@ const COUPONS: Record<string, number> = {
   PCYES10: 10, PROMO20: 20, BEMVINDO: 15,
 };
 
-const GIFT_THRESHOLD = 350;
+const GIFT_THRESHOLD = 950;
 
 export function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalItems, lastAdded, setGiftItem } = useCart();

@@ -10,9 +10,9 @@ import { TrustStrip } from "./TrustStrip";
 import { Newsletter } from "./Newsletter";
 import { Footer } from "./Footer";
 
-const bestSellerIds = [436, 72, 329, 433, 446, 199, 30, 31, 32, 33];
-const newArrivalIds = [375, 295, 128, 30, 199, 433];
-const dealIds = [30, 128, 295, 446, 375, 329, 436, 199];
+const bestSellerIds = [30, 446, 433, 217, 164, 84, 199, 27, 129, 72];
+const newArrivalIds = [466, 295, 130, 252, 375, 217];
+const dealIds = [446, 433, 30, 217, 199, 27, 84, 164];
 
 export function HomePage() {
   return (

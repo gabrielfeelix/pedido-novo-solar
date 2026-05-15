@@ -9,6 +9,7 @@ import { useCart } from "./CartContext";
 import { useAuth } from "./AuthContext";
 import { useFavorites } from "./FavoritesContext";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "./ui/tooltip";
 import { allProducts, type Product } from "./productsData";
 import { ThemeToggle } from "./ThemeToggle";
 import { getCatalogHref, getPrimaryProductImage, getProductSubcategory, getProductSwatches, getVisibleCatalogProducts } from "./productPresentation";
@@ -601,47 +602,81 @@ export function Navbar() {
     ? (isDark ? "text-white/75 hover:text-white" : "text-foreground/80 hover:text-foreground")
     : (isDark ? "text-foreground/45 hover:text-foreground" : "text-foreground/50 hover:text-foreground");
 
+  const tooltipContentClass =
+    "border border-white/10 bg-foreground/95 px-2.5 py-1.5 text-[11px] font-semibold tracking-wide text-background backdrop-blur-md shadow-lg";
+
   const renderIcons = () => (
-    <div className="flex items-center gap-1">
-      <button onClick={() => setSearchOpen(!searchOpen)} className={`relative w-10 h-10 items-center justify-center transition-colors cursor-pointer ${!showExpanded ? "flex lg:hidden" : "flex"} ${iconColor}`}>
-        <Search size={20} strokeWidth={1.5} />
-      </button>
-      <button onClick={() => navigate("/perfil?tab=favorites")} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}>
-        <Heart size={20} strokeWidth={1.5} />
-        <AnimatePresence>
-          {favCount > 0 && (
-            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center"
-              style={{ fontSize: "9px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}
-            ><span className="text-primary-foreground">{favCount}</span></motion.span>
-          )}
-        </AnimatePresence>
-      </button>
-      <ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} />
-      <button onClick={handleUserClick} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer group ${iconColor}`}>
-        {/* Gamer scan-frame corners */}
-        <span className="absolute top-1.5 left-1.5 w-[9px] h-[9px] border-t border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
-        <span className="absolute top-1.5 right-1.5 w-[9px] h-[9px] border-t border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
-        <span className="absolute bottom-1.5 left-1.5 w-[9px] h-[9px] border-b border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
-        <span className="absolute bottom-1.5 right-1.5 w-[9px] h-[9px] border-b border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
-        {isLoggedIn ? (
-          <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-primary" style={{ fontSize: "10px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}>J</span>
-          </span>
-        ) : <User size={20} strokeWidth={1.5} />}
-      </button>
-      <button onClick={() => setCartOpen(true)} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}>
-        <ShoppingBag size={20} strokeWidth={1.5} />
-        <AnimatePresence>
-          {totalItems > 0 && (
-            <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-              className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center"
-              style={{ fontSize: "9px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}
-            ><span className="text-primary-foreground">{totalItems}</span></motion.span>
-          )}
-        </AnimatePresence>
-      </button>
-    </div>
+    <TooltipProvider delayDuration={200}>
+      <div className="flex items-center gap-1">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button onClick={() => setSearchOpen(!searchOpen)} className={`relative w-10 h-10 items-center justify-center transition-colors cursor-pointer ${!showExpanded ? "flex lg:hidden" : "flex"} ${iconColor}`}>
+              <Search size={20} strokeWidth={1.5} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6} className={tooltipContentClass}>Buscar</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button onClick={() => navigate("/perfil?tab=favorites")} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}>
+              <Heart size={20} strokeWidth={1.5} />
+              <AnimatePresence>
+                {favCount > 0 && (
+                  <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+                    className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center"
+                    style={{ fontSize: "9px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}
+                  ><span className="text-primary-foreground">{favCount}</span></motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6} className={tooltipContentClass}>Favoritos</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="inline-flex"><ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} /></span>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6} className={tooltipContentClass}>Tema</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button onClick={handleUserClick} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer group ${iconColor}`}>
+              {/* Gamer scan-frame corners */}
+              <span className="absolute top-1.5 left-1.5 w-[9px] h-[9px] border-t border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+              <span className="absolute top-1.5 right-1.5 w-[9px] h-[9px] border-t border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+              <span className="absolute bottom-1.5 left-1.5 w-[9px] h-[9px] border-b border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+              <span className="absolute bottom-1.5 right-1.5 w-[9px] h-[9px] border-b border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+              {isLoggedIn ? (
+                <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary" style={{ fontSize: "10px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}>J</span>
+                </span>
+              ) : <User size={20} strokeWidth={1.5} />}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6} className={tooltipContentClass}>{isLoggedIn ? "Minha conta" : "Entrar"}</TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button onClick={() => setCartOpen(true)} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}>
+              <ShoppingBag size={20} strokeWidth={1.5} />
+              <AnimatePresence>
+                {totalItems > 0 && (
+                  <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+                    className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center"
+                    style={{ fontSize: "9px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}
+                  ><span className="text-primary-foreground">{totalItems}</span></motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={6} className={tooltipContentClass}>Carrinho</TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 
   // ─── Right Panel Renderer ──────────────────────────────────────────────────
@@ -1733,67 +1768,98 @@ export function Navbar() {
             </div>
 
             {/* Right icons */}
-            <div className="ml-auto flex flex-shrink-0 items-center gap-1">
-              <button
-                onClick={() => navigate("/fale-conosco")}
-                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
-                aria-label="Lojas"
-              >
-                <MapPin size={20} strokeWidth={1.5} />
-              </button>
-              <button
-                onClick={() => navigate("/perfil?tab=favorites")}
-                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
-                aria-label="Favoritos"
-              >
-                <Heart size={20} strokeWidth={1.5} />
-                <AnimatePresence>
-                  {favCount > 0 && (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+            <TooltipProvider delayDuration={200}>
+              <div className="ml-auto flex flex-shrink-0 items-center gap-1">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => navigate("/fale-conosco")}
+                      className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                      aria-label="Lojas"
                     >
-                      {favCount}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </button>
-              <ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} />
-              <button
-                onClick={handleUserClick}
-                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
-                aria-label={isLoggedIn ? "Conta" : "Login"}
-              >
-                {isLoggedIn ? (
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700 }}>J</span>
-                ) : (
-                  <User size={20} strokeWidth={1.5} />
-                )}
-              </button>
-              <button
-                onClick={() => setCartOpen(true)}
-                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
-                aria-label="Carrinho"
-              >
-                <ShoppingBag size={20} strokeWidth={1.5} />
-                <AnimatePresence>
-                  {totalItems > 0 && (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+                      <MapPin size={20} strokeWidth={1.5} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6} className={tooltipContentClass}>Onde encontrar</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => navigate("/perfil?tab=favorites")}
+                      className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                      aria-label="Favoritos"
                     >
-                      {totalItems}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </button>
-            </div>
+                      <Heart size={20} strokeWidth={1.5} />
+                      <AnimatePresence>
+                        {favCount > 0 && (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0 }}
+                            className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
+                            style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+                          >
+                            {favCount}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6} className={tooltipContentClass}>Favoritos</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex"><ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} /></span>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6} className={tooltipContentClass}>Tema</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={handleUserClick}
+                      className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                      aria-label={isLoggedIn ? "Conta" : "Login"}
+                    >
+                      {isLoggedIn ? (
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700 }}>J</span>
+                      ) : (
+                        <User size={20} strokeWidth={1.5} />
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6} className={tooltipContentClass}>{isLoggedIn ? "Minha conta" : "Entrar"}</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => setCartOpen(true)}
+                      className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                      aria-label="Carrinho"
+                    >
+                      <ShoppingBag size={20} strokeWidth={1.5} />
+                      <AnimatePresence>
+                        {totalItems > 0 && (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0 }}
+                            className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
+                            style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+                          >
+                            {totalItems}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent sideOffset={6} className={tooltipContentClass}>Carrinho</TooltipContent>
+                </Tooltip>
+              </div>
+            </TooltipProvider>
           </div>
 
           {/* Category links (expanded or desktop hamburger open) */}

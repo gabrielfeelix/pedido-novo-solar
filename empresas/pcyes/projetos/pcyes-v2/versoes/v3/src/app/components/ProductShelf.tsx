@@ -226,7 +226,11 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
           {swatches.slice(0, 5).map((s) => (
             <button
               key={s.productId}
-              onClick={() => setSelectedSwatchId(s.productId === selectedSwatchId ? null : s.productId)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setSelectedSwatchId(s.productId === selectedSwatchId ? null : s.productId);
+              }}
               className="inline-block h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
               style={{
                 background: s.color,
