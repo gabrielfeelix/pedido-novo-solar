@@ -2019,11 +2019,11 @@ export function ProductPage() {
 
   const related = visibleProducts
     .filter((p) => p.category === product.category && getProductSubcategory(p) === productSubcategory && p.id !== product.id)
-    .slice(0, 4);
-  if (related.length < 4) {
+    .slice(0, 8);
+  if (related.length < 8) {
     const extras = visibleProducts
       .filter((p) => p.category === product.category && p.id !== product.id && !related.find((r) => r.id === p.id))
-      .slice(0, 4 - related.length);
+      .slice(0, 8 - related.length);
     related.push(...extras);
   }
 
@@ -2316,7 +2316,7 @@ export function ProductPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden w-full lg:col-start-2 lg:row-start-1 lg:block lg:sticky lg:top-[130px] lg:self-start"
+              className="hidden w-full lg:col-start-2 lg:row-start-1 lg:block lg:sticky lg:top-[150px] lg:self-start"
             >
               <StickyPriceCard
                 product={product}
@@ -2352,15 +2352,15 @@ export function ProductPage() {
               className="flex items-end justify-between mb-10"
             >
               <div>
-                <span
-                  className="text-foreground/30 tracking-[0.25em] block mb-3"
-                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "var(--text-label)", fontWeight: "var(--font-weight-medium)" }}
+                <p
+                  className="mb-3 text-primary"
+                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.3em" }}
                 >
-                  VOCÊ TAMBÉM VAI GOSTAR
-                </span>
+                  // VOCÊ TAMBÉM VAI GOSTAR
+                </p>
                 <h2
                   className="text-foreground"
-                  style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: "var(--font-weight-light)" }}
+                  style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 600, lineHeight: 1.05, letterSpacing: "-0.02em" }}
                 >
                   Produtos Relacionados
                 </h2>
@@ -2375,50 +2375,103 @@ export function ProductPage() {
             </motion.div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-              {related.map((rProduct, i) => (
-                <motion.div
-                  key={rProduct.id}
-                  initial={{ opacity: 0, y: 28 }}
-                  animate={relatedInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: i * 0.08 }}
-                  className="group cursor-pointer"
-                  onClick={() => { navigate(`/produto/${rProduct.id}`); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                >
-                  <div
-                    className="relative overflow-hidden aspect-square mb-3.5"
-                    style={{ borderRadius: "var(--radius-card)", background: isDark ? "rgba(22,22,23,0.5)" : "#f5f5f5" }}
+              {related.map((rProduct, i) => {
+                const rDiscount = rProduct.oldPriceNum && rProduct.oldPriceNum > rProduct.priceNum
+                  ? Math.round(((rProduct.oldPriceNum - rProduct.priceNum) / rProduct.oldPriceNum) * 100)
+                  : 0;
+                const rInstallment = `R$ ${(rProduct.priceNum / 10).toFixed(2).replace(".", ",")}`;
+                return (
+                  <motion.div
+                    key={rProduct.id}
+                    initial={{ opacity: 0, y: 28 }}
+                    animate={relatedInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: i * 0.06 }}
+                    className="group cursor-pointer"
+                    onClick={() => { navigate(`/produto/${rProduct.id}`); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                   >
-                    <ImageWithFallback
-                      src={getPrimaryProductImage(rProduct)}
-                      alt={rProduct.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.2s] ease-out"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                    <div className="absolute bottom-3 left-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <div
+                      className="relative overflow-hidden aspect-[5/6] mb-4 transition-all duration-300"
+                      style={{
+                        borderRadius: "20px",
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                      }}
+                    >
+                      <div
+                        className="pointer-events-none absolute inset-0"
+                        style={{
+                          background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+                          borderRadius: "20px",
+                        }}
+                      />
+                      <ImageWithFallback
+                        src={getPrimaryProductImage(rProduct)}
+                        alt={rProduct.name}
+                        className="absolute inset-0 h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-[1.05]"
+                      />
+                      {rDiscount > 0 && (
+                        <span
+                          className="absolute z-20 rounded-full px-2.5 py-1 text-white"
+                          style={{
+                            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                            top: "12px",
+                            left: "12px",
+                            fontFamily: "var(--font-family-inter)",
+                            fontSize: "10px",
+                            fontWeight: 700,
+                            letterSpacing: "0.04em",
+                            boxShadow: "0 6px 18px -4px rgba(16, 185, 129, 0.55)",
+                          }}
+                        >
+                          -{rDiscount}%
+                        </span>
+                      )}
                       <button
-                        onClick={(e) => { e.stopPropagation(); addItem({ id: rProduct.id, name: rProduct.name, price: rProduct.price, image: getPrimaryProductImage(rProduct) }); toast.success("Adicionado!"); }}
-                        className="w-full py-2.5 bg-white/95 backdrop-blur-sm text-black flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-colors duration-300 cursor-pointer"
-                        style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); addItem({ id: rProduct.id, name: rProduct.name, price: rProduct.price, image: getPrimaryProductImage(rProduct) }); toast.success("Adicionado!"); }}
+                        className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-10 py-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+                        style={{
+                          background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                          color: "white",
+                          fontFamily: "var(--font-family-inter)",
+                          fontSize: "13px",
+                          fontWeight: 700,
+                          letterSpacing: "0.04em",
+                          boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
+                        }}
                       >
-                        <ShoppingBag size={12} strokeWidth={2} /> Adicionar
+                        <span className="inline-flex items-center gap-2"><ShoppingBag size={14} strokeWidth={2} /> Comprar</span>
                       </button>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1 mb-1.5">
-                    <Star size={11} className="fill-[#FFB800] text-[#FFB800]" />
-                    <span className="text-foreground/45" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>{rProduct.rating}</span>
-                  </div>
-                  <p
-                    className="text-foreground group-hover:text-primary transition-colors duration-300 mb-1 truncate"
-                    style={{ fontFamily: "var(--font-family-figtree)", fontSize: "14px", fontWeight: "var(--font-weight-medium)" }}
-                  >
-                    {rProduct.name}
-                  </p>
-                  <p className="text-foreground/50" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
-                    {rProduct.price}
-                  </p>
-                </motion.div>
-              ))}
+
+                    <div className="px-1">
+                      <h3 className="line-clamp-1 text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "15px", fontWeight: 600, lineHeight: 1.25, letterSpacing: "-0.01em" }}>
+                        {rProduct.name}
+                      </h3>
+                      <div className="mt-3">
+                        {rProduct.oldPrice && (
+                          <p className="line-through leading-none mb-1" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", color: "rgba(255,255,255,0.38)" }}>
+                            {rProduct.oldPrice}
+                          </p>
+                        )}
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "20px", fontWeight: 700, letterSpacing: "-0.015em" }}>
+                            {rProduct.price}
+                          </p>
+                          {rDiscount > 0 && (
+                            <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
+                              -{rDiscount}%
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>
+                          No PIX ou 10x de {rInstallment}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>

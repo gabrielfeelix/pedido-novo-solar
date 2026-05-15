@@ -5,6 +5,7 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ShoppingBag, Heart, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useCart } from "./CartContext";
 import { useFavorites } from "./FavoritesContext";
+import { useAuth } from "./AuthContext";
 import { Link } from "react-router";
 import { allProducts, type Product } from "./productsData";
 import { findProductBySwatch, getPrimaryProductImage, getProductHoverMedia, getProductSwatches, getVisibleCatalogProducts } from "./productPresentation";
@@ -34,6 +35,7 @@ export function ProductCarousel({
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const { addItem } = useCart();
   const { addFavorite } = useFavorites();
+  const { isLoggedIn } = useAuth();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark" || resolvedTheme === undefined;
 
@@ -307,18 +309,17 @@ export function ProductCarousel({
                     </button>
                   </div>
 
-                  <div className="absolute top-4 right-4 opacity-100 transition-all duration-300">
-                    <button
-                      className="w-9 h-9 bg-black/35 backdrop-blur-sm border border-white/10 rounded-full flex items-center justify-center text-white/85 hover:text-white hover:bg-black/50 transition-all duration-300"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); addFavorite({ id: displayProduct.id, name: displayProduct.name, price: displayProduct.price, image: getPrimaryProductImage(displayProduct) }); }}
-                    >
-                      <Heart
-                        size={14}
-                        className="text-current"
-                        strokeWidth={1.6}
-                      />
-                    </button>
-                  </div>
+                  {isLoggedIn && (
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <button
+                        className="w-9 h-9 bg-black/35 backdrop-blur-sm border border-white/10 rounded-full flex items-center justify-center text-white/85 hover:text-white hover:bg-black/50 transition-all duration-300"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); addFavorite({ id: displayProduct.id, name: displayProduct.name, price: displayProduct.price, image: getPrimaryProductImage(displayProduct) }); }}
+                        aria-label="Favoritar"
+                      >
+                        <Heart size={14} className="text-current" strokeWidth={1.6} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </Link>
                 );

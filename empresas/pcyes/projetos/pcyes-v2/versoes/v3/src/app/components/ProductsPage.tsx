@@ -309,7 +309,7 @@ export function ProductsPage() {
   const [priceMin, setPriceMin] = useState(GLOBAL_MIN);
   const [priceMax, setPriceMax] = useState(GLOBAL_MAX);
   const [onlyDiscount, setOnlyDiscount] = useState(false);
-  const [minDiscount, setMinDiscount] = useState<number | null>(null);
+  const [selectedDiscounts, setSelectedDiscounts] = useState<Set<number>>(new Set());
   const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("relevance");
@@ -406,7 +406,7 @@ export function ProductsPage() {
 
   const clearAll = () => {
     setSelectedCategories(new Set()); setSelectedFeaturedCategories(new Set()); setSelectedSubcategories(new Set()); setSelectedTags(new Set()); setSelectedBrands(new Set()); setSelectedColors(new Set());
-    setPriceMin(GLOBAL_MIN); setPriceMax(GLOBAL_MAX); setOnlyDiscount(false); setMinDiscount(null); setSelectedRatings(new Set());
+    setPriceMin(GLOBAL_MIN); setPriceMax(GLOBAL_MAX); setOnlyDiscount(false); setSelectedDiscounts(new Set()); setSelectedRatings(new Set());
     setInStockOnly(false); setSearchQuery(""); setSelectedVariantIds({});
     const sp = new URLSearchParams(searchParams); sp.delete("category"); sp.delete("subcategory"); sp.delete("search"); setSearchParams(sp, { replace: true });
   };
@@ -414,8 +414,20 @@ export function ProductsPage() {
   const productsWithoutPriceFilter = useMemo(() => {
     let result = [...validProducts];
     if (searchQuery) {
-      const lowerQ = searchQuery.toLowerCase();
-      result = result.filter(p => p.name.toLowerCase().includes(lowerQ) || p.category.toLowerCase().includes(lowerQ));
+      const lowerQ = searchQuery.toLowerCase().trim();
+      const singularized = lowerQ.endsWith("s") ? lowerQ.slice(0, -1) : lowerQ;
+      const matchTerm = (text: string | undefined) => {
+        if (!text) return false;
+        const t = text.toLowerCase();
+        return t.includes(lowerQ) || t.includes(singularized);
+      };
+      result = result.filter((p) =>
+        matchTerm(p.name) ||
+        matchTerm(p.category) ||
+        matchTerm(getProductSubcategory(p)) ||
+        matchTerm(p.brand) ||
+        (p.tags ?? []).some((tag) => matchTerm(tag))
+      );
     }
     if (selectedCategories.size > 0) result = result.filter((p) => selectedCategories.has(p.category));
     if (selectedFeaturedCategories.size > 0) {
@@ -427,7 +439,10 @@ export function ProductsPage() {
     if (selectedTags.size > 0) result = result.filter((p) => p.tags.some((t) => selectedTags.has(t)));
     if (selectedBrands.size > 0) result = result.filter((p) => p.brand && selectedBrands.has(p.brand));
     if (onlyDiscount) result = result.filter((p) => getDiscount(getColorMatchedProduct(p)) > 0);
-    if (minDiscount !== null) result = result.filter((p) => getDiscount(getColorMatchedProduct(p)) >= minDiscount);
+    if (selectedDiscounts.size > 0) {
+      const minSelected = Math.min(...selectedDiscounts);
+      result = result.filter((p) => getDiscount(getColorMatchedProduct(p)) >= minSelected);
+    }
     if (selectedRatings.size > 0) {
       result = result.filter((p) => {
         for (const r of selectedRatings) {
@@ -440,7 +455,7 @@ export function ProductsPage() {
     if (inStockOnly) result = result.filter((p) => p.inStock !== false);
 
     return result;
-  }, [selectedCategories, selectedFeaturedCategories, selectedSubcategories, selectedTags, selectedBrands, onlyDiscount, minDiscount, selectedRatings, inStockOnly, searchQuery]);
+  }, [selectedCategories, selectedFeaturedCategories, selectedSubcategories, selectedTags, selectedBrands, onlyDiscount, selectedDiscounts, selectedRatings, inStockOnly, searchQuery]);
 
   const priceBounds = useMemo(() => {
     const productsForPrice = selectedColors.size > 0
@@ -465,7 +480,7 @@ export function ProductsPage() {
 
   const activeFilterCount = selectedCategories.size + selectedFeaturedCategories.size + selectedSubcategories.size + selectedTags.size + selectedBrands.size + selectedColors.size
     + (priceFilterActive ? 1 : 0) + (onlyDiscount ? 1 : 0)
-    + (minDiscount !== null ? 1 : 0)
+    + selectedDiscounts.size
     + selectedRatings.size + (searchQuery ? 1 : 0) + (inStockOnly ? 1 : 0);
 
   const productsBeforeColorFilter = useMemo(() => {
@@ -540,7 +555,9 @@ export function ProductsPage() {
       {[...selectedColors].map((color) => <FilterPill key={color} label={color} onRemove={() => toggleColor(color)} />)}
       {priceFilterActive && <FilterPill label={`R$ ${priceMin} – R$ ${priceMax}`} onRemove={() => { setPriceMin(priceBounds.min); setPriceMax(priceBounds.max); }} />}
       {onlyDiscount && <FilterPill label="Promoção" onRemove={() => setOnlyDiscount(false)} />}
-      {minDiscount !== null && <FilterPill label={`> ${minDiscount}% OFF`} onRemove={() => setMinDiscount(null)} />}
+      {[...selectedDiscounts].sort((a, b) => a - b).map((d) => (
+        <FilterPill key={`disc-${d}`} label={`${d}% OFF`} onRemove={() => setSelectedDiscounts((prev) => { const n = new Set(prev); n.delete(d); return n; })} />
+      ))}
       {[...selectedRatings].sort((a, b) => b - a).map((r) => (
         <FilterPill key={`rating-${r}`} label={`${r} ⭐`} onRemove={() => setSelectedRatings((prev) => { const n = new Set(prev); n.delete(r); return n; })} />
       ))}
@@ -680,10 +697,10 @@ export function ProductsPage() {
         </label>
         {[10, 20, 30, 40].map((pct) => {
           const count = productsBeforeColorFilter.filter((pr) => getDiscount(getColorMatchedProduct(pr)) >= pct).length;
-          const active = minDiscount === pct;
+          const active = selectedDiscounts.has(pct);
           return (
             <label key={pct} className="flex items-center gap-3 py-2 cursor-pointer group/item">
-              <input type="checkbox" className="hidden" checked={active} onChange={() => setMinDiscount(active ? null : pct)} />
+              <input type="checkbox" className="hidden" checked={active} onChange={() => toggleSet(setSelectedDiscounts, pct)} />
               <span className={`w-4 h-4 border flex items-center justify-center flex-shrink-0 transition-colors ${active ? "border-foreground bg-foreground" : "border-foreground/20 group-hover/item:border-foreground/40"}`} style={{ borderRadius: "4px" }}>
                 {active && <svg width="10" height="10" viewBox="0 0 8 8"><path d="M1.5 4L3 5.5L6.5 2.5" stroke={isDark ? "#0a0a0a" : "#fff"} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>}
               </span>

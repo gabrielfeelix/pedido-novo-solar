@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useCart } from "./CartContext";
 import { useFavorites } from "./FavoritesContext";
+import { useAuth } from "./AuthContext";
 import { allProducts, type Product } from "./productsData";
 import {
   getPrimaryProductImage,
@@ -47,6 +48,7 @@ interface CardProps {
 function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: CardProps) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [selectedSwatchId, setSelectedSwatchId] = useState<number | null>(null);
+  const { isLoggedIn } = useAuth();
 
   const swatches = getProductSwatches(product);
   const selectedProduct = selectedSwatchId
@@ -134,20 +136,22 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
             </span>
           )}
 
-          {/* Favorite (top-right, on hover) */}
-          <button
-            onClick={handleFavorite}
-            className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border opacity-0 transition-all duration-200 group-hover:opacity-100 cursor-pointer"
-            style={{
-              background: isFavorited ? "rgba(225, 6, 0, 0.2)" : "rgba(0, 0, 0, 0.55)",
-              border: isFavorited ? "1px solid rgba(225, 6, 0, 0.8)" : "1px solid rgba(255, 255, 255, 0.15)",
-              color: isFavorited ? "#ff2419" : "rgba(255, 255, 255, 0.85)",
-              backdropFilter: "blur(8px)",
-            }}
-            aria-label="Favoritar"
-          >
-            <Heart size={13} strokeWidth={isFavorited ? 0 : 1.8} fill={isFavorited ? "#ff2419" : "none"} />
-          </button>
+          {/* Favorite (top-right, on hover) — only when logged in */}
+          {isLoggedIn && (
+            <button
+              onClick={handleFavorite}
+              className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border opacity-0 transition-all duration-200 group-hover:opacity-100 cursor-pointer"
+              style={{
+                background: isFavorited ? "rgba(225, 6, 0, 0.2)" : "rgba(0, 0, 0, 0.55)",
+                border: isFavorited ? "1px solid rgba(225, 6, 0, 0.8)" : "1px solid rgba(255, 255, 255, 0.15)",
+                color: isFavorited ? "#ff2419" : "rgba(255, 255, 255, 0.85)",
+                backdropFilter: "blur(8px)",
+              }}
+              aria-label="Favoritar"
+            >
+              <Heart size={13} strokeWidth={isFavorited ? 0 : 1.8} fill={isFavorited ? "#ff2419" : "none"} />
+            </button>
+          )}
 
           {/* Quick add — floating pill */}
           <button

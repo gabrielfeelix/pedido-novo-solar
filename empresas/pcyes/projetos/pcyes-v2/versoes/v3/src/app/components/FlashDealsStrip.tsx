@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 import { motion, useInView } from "motion/react";
-import { ChevronLeft, ChevronRight, Flame, ShoppingBag, Timer } from "lucide-react";
+import { ChevronLeft, ChevronRight, Flame, Heart, ShoppingBag, Timer } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { allProducts, type Product } from "./productsData";
 import {
@@ -12,6 +12,8 @@ import {
   getVisibleCatalogProducts,
 } from "./productPresentation";
 import { useCart } from "./CartContext";
+import { useAuth } from "./AuthContext";
+import { useFavorites } from "./FavoritesContext";
 
 const DEAL_IDS = [436, 72, 199, 329, 446, 433, 30, 295, 375];
 
@@ -101,6 +103,9 @@ interface DealCardProps {
 function DealCard({ product, emphasize, onAdd }: DealCardProps) {
   const swatches = getProductSwatches(product);
   const [selectedSwatchId, setSelectedSwatchId] = useState<number | null>(null);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const { isLoggedIn } = useAuth();
+  const { addFavorite } = useFavorites();
   const displayProduct = (selectedSwatchId ? allProducts.find((p) => p.id === selectedSwatchId) : null) ?? product;
   const image = getPrimaryProductImage(displayProduct);
   const oldPriceNum = product.oldPriceNum ?? (emphasize ? product.priceNum * 1.22 : 0);
@@ -156,6 +161,28 @@ function DealCard({ product, emphasize, onAdd }: DealCardProps) {
             alt={product.name}
             className="absolute inset-0 h-full w-full object-contain p-9 transition-transform duration-500 group-hover:scale-[1.06]"
           />
+
+          {/* Favorite (top-right, on hover) — only when logged in */}
+          {isLoggedIn && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsFavorited(!isFavorited);
+                addFavorite({ id: product.id, name: product.name, price: product.price, image });
+              }}
+              className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border opacity-0 transition-all duration-200 group-hover:opacity-100 cursor-pointer"
+              style={{
+                background: isFavorited ? "rgba(225, 6, 0, 0.2)" : "rgba(0, 0, 0, 0.55)",
+                border: isFavorited ? "1px solid rgba(225, 6, 0, 0.8)" : "1px solid rgba(255, 255, 255, 0.15)",
+                color: isFavorited ? "#ff2419" : "rgba(255, 255, 255, 0.85)",
+                backdropFilter: "blur(8px)",
+              }}
+              aria-label="Favoritar"
+            >
+              <Heart size={13} strokeWidth={isFavorited ? 0 : 1.8} fill={isFavorited ? "#ff2419" : "none"} />
+            </button>
+          )}
 
           {/* Quick add on hover */}
           <button
