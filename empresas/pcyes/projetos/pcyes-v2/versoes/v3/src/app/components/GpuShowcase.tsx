@@ -26,7 +26,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "RTX 2060",
     tagline: "Ray Tracing + DLSS 3 em 4K",
     metric: "+85% FPS",
-    scene: "https://images.unsplash.com/photo-1493514789931-586cb221d7a7?w=2000&q=90&auto=format&fit=crop",
+    scene: "/assets/cod.png",
   },
   {
     id: "rtx-3060",
@@ -35,7 +35,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "GTX 1660",
     tagline: "12GB GDDR6 + Ampere Cores",
     metric: "+60% FPS",
-    scene: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=2000&q=90&auto=format&fit=crop",
+    scene: "/assets/god-of-war.png",
   },
   {
     id: "rtx-3050",
@@ -44,7 +44,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "GTX 1050 Ti",
     tagline: "Ray Tracing acessível em Full HD",
     metric: "+72% FPS",
-    scene: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=2000&q=90&auto=format&fit=crop",
+    scene: "/assets/mario.png",
   },
   {
     id: "rtx-3060-w",
@@ -53,12 +53,12 @@ const COMPARISONS: Comparison[] = [
     previousName: "RTX 2060",
     tagline: "Build clean + Ray Tracing",
     metric: "+45% FPS",
-    scene: "https://images.unsplash.com/photo-1601814933824-fd0b574dd592?w=2000&q=90&auto=format&fit=crop",
+    scene: "/assets/rdr2.png",
   },
 ];
 
-const BEFORE_FILTER = "saturate(0.2) brightness(0.55) contrast(0.85) blur(0.5px)";
-const AFTER_FILTER = "saturate(1.6) contrast(1.18) brightness(1.05)";
+const BEFORE_FILTER = "blur(7px) contrast(0.78) brightness(0.82) saturate(0.85)";
+const AFTER_FILTER = "saturate(1.15) contrast(1.05)";
 const ACCENT = "#ff2419";
 const ACCENT_GLOW = "rgba(225, 6, 0, 0.55)";
 const ACCENT_BG = "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)";
