@@ -2063,7 +2063,7 @@ export function ProductPage() {
         image: getPrimaryProductImage(product),
       });
     }
-    navigate("/checkout");
+    navigate("/carrinho");
   };
 
   const handleShare = () => {
