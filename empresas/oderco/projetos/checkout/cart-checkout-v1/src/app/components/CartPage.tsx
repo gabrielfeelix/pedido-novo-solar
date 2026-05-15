@@ -20,7 +20,8 @@ const FILIAL_FULL_NAME: Record<NfKey, string> = {
 /* DS Figma — NF é data-field. Aplicar APENAS como acento (badge fill, border-left, accent text).
    Surface do card permanece branco/card padrão para não competir com Brand/Blue/Default. */
 const NF_ACCENT: Record<NfKey, { color: string; surfaceTint: string; fg: string }> = {
-  PR: { color: 'var(--nf-pr)', surfaceTint: 'var(--nf-pr-surface)', fg: 'var(--nf-pr-fg)' },
+  /* PR usa --primary (azul vivo do brand) pra alinhar com CheckoutPage NF_STYLE. */
+  PR: { color: 'var(--primary)', surfaceTint: 'var(--nf-pr-surface)', fg: 'var(--primary-foreground)' },
   ES: { color: 'var(--nf-es)', surfaceTint: 'var(--nf-es-surface)', fg: 'var(--nf-es-fg)' },
 };
 
@@ -951,7 +952,7 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
         background: 'var(--card)',
         border: `${isV3 && isSelected ? 2 : 1}px solid ${isActive ? accent.color : 'var(--muted)'}`,
         boxShadow: isActive
-          ? `0 30px 70px ${nf === 'PR' ? 'rgba(26,60,110,0.22)' : 'rgba(91,45,142,0.22)'}, 0 0 0 1px ${accent.color}`
+          ? `0 30px 70px ${nf === 'PR' ? 'rgba(0,90,255,0.22)' : 'rgba(91,45,142,0.22)'}, 0 0 0 1px ${accent.color}`
           : 'var(--elevation-sm)',
         transform: isActive ? 'translateY(-4px)' : 'translateY(0)',
         outlineColor: accent.color,
@@ -1019,8 +1020,9 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
       </div>
 
       {/* Items list — todos itens visíveis, scroll interno se > 4 linhas (~232px).
-          Cada linha: thumb 36×36 + nome truncado + qty/preço unitário + subtotal linha. */}
-      <div className="relative px-7 pb-5">
+          flex-1 garante que quando items são poucos, o breakdown abaixo é empurrado
+          pro bottom do card alinhando com o outro ChoiceCard. */}
+      <div className="relative px-7 pb-5 flex-1">
         <div className="flex items-center justify-between mb-2.5">
           <span style={{ fontSize: 11, fontWeight: 'var(--font-weight-bold)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '1.2px' }}>
             ITENS DESTE PEDIDO
@@ -1033,8 +1035,8 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
           className="m-0 p-0 flex flex-col"
           style={{
             listStyle: 'none',
-            /* Altura ≈ 4 linhas + recorte do 5º como affordance de scroll. */
-            maxHeight: 280,
+            /* Altura ≈ 3 linhas + recorte do 4º como affordance de scroll. */
+            maxHeight: 215,
             overflowY: 'auto',
             scrollbarWidth: 'thin',
             scrollbarColor: `${accent.color}55 transparent`,
@@ -1075,7 +1077,9 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
                     onClick={() => updateQuantity(p.id, Math.max(1, p.quantity - 1))}
                     disabled={p.quantity <= 1}
                     aria-label={`Diminuir quantidade de ${p.name}`}
-                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+                    onMouseEnter={(e) => { if (!e.currentTarget.disabled) { e.currentTarget.style.background = accent.surfaceTint; e.currentTarget.style.borderColor = accent.color; e.currentTarget.style.color = accent.color; } }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--muted)'; e.currentTarget.style.color = 'var(--foreground)'; }}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
                     style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--foreground)', outlineColor: accent.color }}
                   >
                     <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1089,7 +1093,9 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
                     type="button"
                     onClick={() => updateQuantity(p.id, p.quantity + 1)}
                     aria-label={`Aumentar quantidade de ${p.name}`}
-                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+                    onMouseEnter={(e) => { e.currentTarget.style.background = accent.surfaceTint; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; }}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
                     style={{ width: 22, height: 22, background: 'var(--card)', border: `1px solid ${accent.color}55`, color: accent.color, outlineColor: accent.color }}
                   >
                     <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -1100,7 +1106,9 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
                     type="button"
                     onClick={() => removeItem(p.id)}
                     aria-label={`Remover ${p.name} do carrinho`}
-                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--destructive-surface,_var(--muted))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ml-1"
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--destructive-surface)'; e.currentTarget.style.borderColor = 'var(--destructive-foreground)'; e.currentTarget.style.color = 'var(--destructive-foreground)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--muted)'; e.currentTarget.style.color = 'var(--muted-foreground)'; }}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ml-1"
                     style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--muted-foreground)', outlineColor: 'var(--destructive-foreground)' }}
                   >
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -1161,18 +1169,18 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
 
       {/* CTA interno (V2 standalone) OU spacer (V3 — CTA fica fora compartilhado) */}
       {isV3 ? (
-        <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1 items-center justify-end">
+        <div className="relative px-7 pt-3 pb-5 flex flex-col items-center justify-end">
           <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontStyle: 'italic' }}>
             {isSelected ? '✓ Filial selecionada — clique no botão abaixo' : 'Clique no card para selecionar'}
           </span>
         </div>
       ) : (
-        <div className="relative px-7 pt-3 pb-5 flex flex-col flex-1">
+        <div className="relative px-7 pt-3 pb-5 flex flex-col">
           <button
             type="button"
             onClick={onSelect}
             aria-label={`Prosseguir para o pagamento da Filial ${nf} — ${FILIAL_FULL_NAME[nf]}, total ${formatCurrency(total)}`}
-            className="w-full h-14 rounded-2xl border-none cursor-pointer hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="w-full h-14 rounded-2xl border-none cursor-pointer hover:opacity-95 transition-all flex items-center justify-center gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{
               background: accent.color,
               color: 'var(--primary-foreground)',
@@ -1182,8 +1190,8 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
               letterSpacing: '0.2px',
               outlineColor: accent.color,
               boxShadow: hovered
-                ? `0 20px 40px ${nf === 'PR' ? 'rgba(26,60,110,0.45)' : 'rgba(91,45,142,0.45)'}`
-                : `0 10px 24px ${nf === 'PR' ? 'rgba(26,60,110,0.30)' : 'rgba(91,45,142,0.30)'}`,
+                ? `0 20px 40px ${nf === 'PR' ? 'rgba(0,90,255,0.45)' : 'rgba(91,45,142,0.45)'}`
+                : `0 10px 24px ${nf === 'PR' ? 'rgba(0,90,255,0.30)' : 'rgba(91,45,142,0.30)'}`,
             }}
           >
             Prosseguir com Filial {nf}
@@ -1510,13 +1518,6 @@ export function CartPage() {
 
             {/* Intro */}
             <div className="text-center max-w-[720px] mx-auto pt-2">
-              <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-4"
-                style={{ background: 'var(--primary-surface-md)', border: '1px solid var(--primary-border-sm)' }}>
-                <span aria-hidden="true" className="rounded-full" style={{ width: 6, height: 6, background: 'var(--primary)' }} />
-                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.8px' }}>
-                  DUAS FILIAIS · ESCOLHA UMA PARA COMEÇAR
-                </span>
-              </span>
               <h3 className="m-0" style={{ fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.15 }}>
                 Você tem duas filiais no seu carrinho.
                 <br />
@@ -1632,7 +1633,7 @@ export function CartPage() {
                       minWidth: 320,
                       outlineColor: accent ? accent.color : 'var(--primary)',
                       boxShadow: accent
-                        ? `0 18px 44px ${sel === 'PR' ? 'rgba(26,60,110,0.45)' : 'rgba(91,45,142,0.45)'}`
+                        ? `0 18px 44px ${sel === 'PR' ? 'rgba(0,90,255,0.45)' : 'rgba(91,45,142,0.45)'}`
                         : 'var(--elevation-sm)',
                     }}
                   >
@@ -1796,7 +1797,7 @@ export function CartPage() {
                             fontWeight: 'var(--font-weight-bold)',
                             fontFamily: 'var(--font-red-hat-display)',
                             letterSpacing: '0.3px',
-                            boxShadow: `0 8px 20px ${nf === 'PR' ? 'rgba(26,60,110,0.30)' : 'rgba(91,45,142,0.30)'}`,
+                            boxShadow: `0 8px 20px ${nf === 'PR' ? 'rgba(0,90,255,0.30)' : 'rgba(91,45,142,0.30)'}`,
                           }}
                         >
                           Iniciar Filial {nf}

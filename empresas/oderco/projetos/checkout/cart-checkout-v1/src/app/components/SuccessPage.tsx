@@ -122,8 +122,9 @@ function FilledSquareIcon({ children, color = 'var(--primary)', size = 40 }: { c
 
 /* ─── PIX brand mark ─── */
 function PixIcon({ color = '#32BCAD', size = 18 }: { color?: string; size?: number }) {
+  /* viewBox ajustado pro bbox real do path — original 512x512 deixava ícone desalinhado. */
   return (
-    <svg width={size} height={size} viewBox="0 0 512 512" fill={color} aria-label="PIX">
+    <svg width={size} height={size} viewBox="116 82 340 340" fill={color} aria-label="PIX">
       <path d="M398.07,338.45c-19.34,0-37.52-7.53-51.18-21.2L301.27,272a13.61,13.61,0,0,0-17.65,0l-46.06,46.06c-13.66,13.66-31.84,21.2-51.18,21.2H170.7l58.5,58.5a45.85,45.85,0,0,0,64.86,0l58.66-58.66ZM186.38,167.61c19.34,0,37.52,7.53,51.18,21.2l46.06,46.06a12.85,12.85,0,0,0,17.79,0L347.05,189c13.66-13.66,31.84-21.2,51.18-21.2h6.69L346.26,109.13a45.85,45.85,0,0,0-64.86,0L222.85,167.61Z"/>
       <path d="M438.62,217.86,403,182.23a13,13,0,0,1-2.49.49H385.16a36.21,36.21,0,0,0-25.46,10.54l-46.06,46.06a35.27,35.27,0,0,1-49.93,0L217.5,193.11A36.22,36.22,0,0,0,192,182.57H173.09a13.07,13.07,0,0,1-2.36-.45l-35.85,35.85a51.55,51.55,0,0,0,0,72.91l35.85,35.85a13.07,13.07,0,0,1,2.36-.45h18.86a36.22,36.22,0,0,0,25.51-10.54l46.21-46.21a35.27,35.27,0,0,1,49.93,0l46.06,46.06A36.21,36.21,0,0,0,385.16,326h15.32a13,13,0,0,1,2.49.49l35.65-35.62A51.59,51.59,0,0,0,438.62,217.86Z"/>
     </svg>
@@ -1049,8 +1050,46 @@ export function SuccessPage() {
         </div>
       )}
 
-      {/* ═════════ TIMELINE STRIP — overlapping hero edge ═════════ */}
-      <div className={`max-w-[960px] mx-auto px-4 md:px-6 relative z-[1] ${hasPendingOrder && activeNf ? 'mt-6' : '-mt-12'}`}>
+      {/* ═════════ DETALHES DO PEDIDO — vem antes do acompanhamento.
+            Wellington (UAT): após pagamento o usuário quer ver primeiro o que comprou/pagou,
+            depois acompanhar status. ═════════ */}
+      <div className={`max-w-[960px] mx-auto px-4 md:px-6 relative z-[1] pb-2 ${hasPendingOrder && activeNf ? 'mt-6' : '-mt-12'}`}>
+        <div className="flex items-center gap-2 mb-3">
+          <FilledSquareIcon color="var(--foreground)" size={28}>
+            <IconNfDoc size={14} />
+          </FilledSquareIcon>
+          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}>
+            Detalhes {totalNfs > 1 ? 'dos pedidos' : 'do pedido'}
+          </span>
+          {totalNfs > 1 && (
+            <span className="ml-auto" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+              Total: <strong style={{ color: 'var(--foreground)' }}>{formatCurrency(grandTotal)}</strong>
+            </span>
+          )}
+        </div>
+        <div className="flex flex-col gap-4">
+          {nfs.map((nf, idx) => {
+            const isOpen = expanded[nf.abbr];
+            const isBlocked = hasBlockingPix && nf.status === 'pending-pix' && idx !== activePixIndex;
+            const isActivePix = hasBlockingPix && idx === activePixIndex;
+            return (
+              <ReceiptCard
+                key={nf.abbr}
+                nf={nf}
+                isOpen={isOpen}
+                isBlocked={isBlocked}
+                onToggle={() => toggleExpand(nf.abbr)}
+                validityDate={validityDate}
+                pixTimer={pixTimers[nf.abbr] ?? PIX_VALIDITY_SECONDS}
+                isActivePix={isActivePix}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ═════════ TIMELINE STRIP ═════════ */}
+      <div className="max-w-[960px] mx-auto px-4 md:px-6 mt-8">
         <div className="rounded-2xl px-5 md:px-8 py-6"
           style={{ background: 'var(--card)', border: '1px solid var(--muted)', boxShadow: '0 18px 40px rgba(13,29,82,0.12)' }}>
           <div className="flex items-center gap-2 mb-5">
@@ -1092,42 +1131,6 @@ export function SuccessPage() {
               </span>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* ═════════ DETALHES DO PEDIDO — full width ═════════ */}
-      <div className="max-w-[960px] mx-auto px-4 md:px-6 mt-8 pb-2">
-        <div className="flex items-center gap-2 mb-3">
-          <FilledSquareIcon color="var(--foreground)" size={28}>
-            <IconNfDoc size={14} />
-          </FilledSquareIcon>
-          <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}>
-            Detalhes {totalNfs > 1 ? 'dos pedidos' : 'do pedido'}
-          </span>
-          {totalNfs > 1 && (
-            <span className="ml-auto" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-              Total: <strong style={{ color: 'var(--foreground)' }}>{formatCurrency(grandTotal)}</strong>
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col gap-4">
-          {nfs.map((nf, idx) => {
-            const isOpen = expanded[nf.abbr];
-            const isBlocked = hasBlockingPix && nf.status === 'pending-pix' && idx !== activePixIndex;
-            const isActivePix = hasBlockingPix && idx === activePixIndex;
-            return (
-              <ReceiptCard
-                key={nf.abbr}
-                nf={nf}
-                isOpen={isOpen}
-                isBlocked={isBlocked}
-                onToggle={() => toggleExpand(nf.abbr)}
-                validityDate={validityDate}
-                pixTimer={pixTimers[nf.abbr] ?? PIX_VALIDITY_SECONDS}
-                isActivePix={isActivePix}
-              />
-            );
-          })}
         </div>
       </div>
 

@@ -431,8 +431,10 @@ function BoletoIcon({ color = 'var(--primary)' }: { color?: string }) {
   return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round"><line x1="3" y1="4" x2="3" y2="20" /><line x1="6" y1="4" x2="6" y2="20" strokeWidth="1" /><line x1="8" y1="4" x2="8" y2="20" strokeWidth="3" /><line x1="12" y1="4" x2="12" y2="20" strokeWidth="1" /><line x1="14" y1="4" x2="14" y2="20" /><line x1="17" y1="4" x2="17" y2="20" strokeWidth="1" /><line x1="19" y1="4" x2="19" y2="20" strokeWidth="3" /><line x1="22" y1="4" x2="22" y2="20" /></svg>;
 }
 function PixIcon({ color = '#32BCAD', size = 24 }: { color?: string; size?: number }) {
+  /* viewBox ajustado pro bbox real do path (x[135,438], y[109,396]) — original 512x512
+     deixava o ícone desalinhado (top deslocado pra direita, bottom pra esquerda). */
   return (
-    <svg width={size} height={size} viewBox="0 0 512 512" fill={color} aria-label="PIX">
+    <svg width={size} height={size} viewBox="116 82 340 340" fill={color} aria-label="PIX">
       <path d="M398.07,338.45c-19.34,0-37.52-7.53-51.18-21.2L301.27,272a13.61,13.61,0,0,0-17.65,0l-46.06,46.06c-13.66,13.66-31.84,21.2-51.18,21.2H170.7l58.5,58.5a45.85,45.85,0,0,0,64.86,0l58.66-58.66ZM186.38,167.61c19.34,0,37.52,7.53,51.18,21.2l46.06,46.06a12.85,12.85,0,0,0,17.79,0L347.05,189c13.66-13.66,31.84-21.2,51.18-21.2h6.69L346.26,109.13a45.85,45.85,0,0,0-64.86,0L222.85,167.61Z"/>
       <path d="M438.62,217.86,403,182.23a13,13,0,0,1-2.49.49H385.16a36.21,36.21,0,0,0-25.46,10.54l-46.06,46.06a35.27,35.27,0,0,1-49.93,0L217.5,193.11A36.22,36.22,0,0,0,192,182.57H173.09a13.07,13.07,0,0,1-2.36-.45l-35.85,35.85a51.55,51.55,0,0,0,0,72.91l35.85,35.85a13.07,13.07,0,0,1,2.36-.45h18.86a36.22,36.22,0,0,0,25.51-10.54l46.21-46.21a35.27,35.27,0,0,1,49.93,0l46.06,46.06A36.21,36.21,0,0,0,385.16,326h15.32a13,13,0,0,1,2.49.49l35.65-35.62A51.59,51.59,0,0,0,438.62,217.86Z"/>
     </svg>
@@ -2129,7 +2131,9 @@ export function CheckoutPage() {
                           onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                           disabled={item.quantity <= 1}
                           aria-label={`Diminuir quantidade de ${item.name}`}
-                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
+                          onMouseEnter={(e) => { if (!e.currentTarget.disabled) { e.currentTarget.style.background = nfStyle.surface; e.currentTarget.style.borderColor = nfStyle.color; e.currentTarget.style.color = nfStyle.color; } }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--muted)'; e.currentTarget.style.color = 'var(--foreground)'; }}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                           style={{ width: 20, height: 20, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--foreground)' }}
                         >
                           <svg width="9" height="9" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -2143,7 +2147,9 @@ export function CheckoutPage() {
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           aria-label={`Aumentar quantidade de ${item.name}`}
-                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)]"
+                          onMouseEnter={(e) => { e.currentTarget.style.background = nfStyle.surface; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; }}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors"
                           style={{ width: 20, height: 20, background: 'var(--card)', border: `1px solid ${nfStyle.color}55`, color: nfStyle.color }}
                         >
                           <svg width="9" height="9" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -2154,7 +2160,9 @@ export function CheckoutPage() {
                           type="button"
                           onClick={() => removeItem(item.id)}
                           aria-label={`Remover ${item.name} do carrinho`}
-                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] ml-1"
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--destructive-surface)'; e.currentTarget.style.borderColor = 'var(--destructive-foreground)'; e.currentTarget.style.color = 'var(--destructive-foreground)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--card)'; e.currentTarget.style.borderColor = 'var(--muted)'; e.currentTarget.style.color = 'var(--muted-foreground)'; }}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors ml-1"
                           style={{ width: 20, height: 20, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--muted-foreground)' }}
                         >
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
