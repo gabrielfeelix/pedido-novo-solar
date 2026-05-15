@@ -26,7 +26,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "RTX 2060",
     tagline: "Ray Tracing + DLSS 3 em 4K",
     metric: "+85% FPS",
-    scene: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=2000&q=85&auto=format&fit=crop",
+    scene: "https://images.unsplash.com/photo-1493514789931-586cb221d7a7?w=2000&q=90&auto=format&fit=crop",
   },
   {
     id: "rtx-3060",
@@ -35,7 +35,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "GTX 1660",
     tagline: "12GB GDDR6 + Ampere Cores",
     metric: "+60% FPS",
-    scene: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=2000&q=85&auto=format&fit=crop",
+    scene: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=2000&q=90&auto=format&fit=crop",
   },
   {
     id: "rtx-3050",
@@ -44,7 +44,7 @@ const COMPARISONS: Comparison[] = [
     previousName: "GTX 1050 Ti",
     tagline: "Ray Tracing acessível em Full HD",
     metric: "+72% FPS",
-    scene: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=2000&q=85&auto=format&fit=crop",
+    scene: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=2000&q=90&auto=format&fit=crop",
   },
   {
     id: "rtx-3060-w",
@@ -53,11 +53,12 @@ const COMPARISONS: Comparison[] = [
     previousName: "RTX 2060",
     tagline: "Build clean + Ray Tracing",
     metric: "+45% FPS",
-    scene: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=2000&q=85&auto=format&fit=crop",
+    scene: "https://images.unsplash.com/photo-1601814933824-fd0b574dd592?w=2000&q=90&auto=format&fit=crop",
   },
 ];
 
-const BEFORE_FILTER = "saturate(0.45) brightness(0.7) contrast(0.85) blur(0.5px)";
+const BEFORE_FILTER = "saturate(0.2) brightness(0.55) contrast(0.85) blur(0.5px)";
+const AFTER_FILTER = "saturate(1.6) contrast(1.18) brightness(1.05)";
 const ACCENT = "#ff2419";
 const ACCENT_GLOW = "rgba(225, 6, 0, 0.55)";
 const ACCENT_BG = "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)";
@@ -255,12 +256,21 @@ export function GpuShowcase() {
                   src={active.scene}
                   alt="Depois"
                   className="h-full w-full object-cover"
+                  style={{ filter: AFTER_FILTER }}
                 />
                 <div
                   className="pointer-events-none absolute inset-0"
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(0,0,0,0.0) 55%, rgba(0,0,0,0.55) 100%)",
+                  }}
+                />
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 50% 50%, rgba(225,6,0,0.08) 0%, transparent 60%)",
+                    mixBlendMode: "screen",
                   }}
                 />
               </div>
@@ -466,18 +476,18 @@ export function GpuShowcase() {
 
                 <Link
                   to={`/produto/${product.id}`}
-                  className="flex-shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-5 py-2.5 transition-transform hover:scale-[1.04] active:scale-[0.97]"
+                  className="flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap rounded-full px-10 py-3 transition-transform hover:scale-[1.04] active:scale-[0.97]"
                   style={{
                     background: ACCENT_BG,
                     color: "#ffffff",
                     fontFamily: "var(--font-family-inter)",
-                    fontSize: "12px",
+                    fontSize: "13px",
                     fontWeight: 700,
                     letterSpacing: "0.04em",
                     boxShadow: `0 10px 28px -8px ${ACCENT_GLOW}`,
                   }}
                 >
-                  Comprar <ArrowRight size={14} strokeWidth={2.4} />
+                  Comprar <ArrowRight size={15} strokeWidth={2.4} />
                 </Link>
               </div>
             </motion.div>
