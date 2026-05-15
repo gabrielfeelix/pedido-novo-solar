@@ -24,7 +24,7 @@ export interface Product {
   images?: string[];
 }
 
-export const allProducts: Product[] = [
+const rawProducts: Product[] = [
   {
     "id": 1,
     "sku": "29307",
@@ -26245,6 +26245,22 @@ export const allProducts: Product[] = [
     "badge": "PRÉ-VENDA"
   }
 ];
+
+function withSyntheticDiscount(p: Product): Product {
+  if (p.oldPriceNum && p.oldPriceNum > p.priceNum) return p;
+  const hash = (p.id * 17 + 23) % 100;
+  let pct = 0;
+  if (hash >= 60 && hash < 75) pct = 10 + (p.id % 8);
+  else if (hash >= 75 && hash < 87) pct = 20 + (p.id % 5);
+  else if (hash >= 87 && hash < 94) pct = 30 + (p.id % 5);
+  else if (hash >= 94) pct = 40 + (p.id % 5);
+  if (pct === 0) return p;
+  const oldPriceNum = Math.round((p.priceNum / (1 - pct / 100)) * 100) / 100;
+  const oldPrice = `R$ ${oldPriceNum.toFixed(2).replace(".", ",")}`;
+  return { ...p, oldPriceNum, oldPrice };
+}
+
+export const allProducts: Product[] = rawProducts.map(withSyntheticDiscount);
 
 export const categories = ["Periféricos","Refrigeração","Computadores","Hardware","Fontes","SSD e HD","Streaming","Monitores","Placas de Vídeo","Gabinetes","Cadeiras"];
 export const allTags = ["Escritório","Periféricos","Cabo HDMI","Cabo","Adaptador","Refrigeração","Pasta Térmica","Computadores","Mini Computador","Computador","Cabo de Áudio","Hardware","Memória","Gaming","Fontes","Fonte","Mini PC","Wireless","Teclado Mecânico","RGB","Cabo de Video","Adaptador OTG","SSD e HD","Cabo -C","Cabo de Vídeo","Cabo AV","Water Cooler","Cooler para Processador","Mouse","Streaming","Microfone","Iluminação","Cabo Adaptador","Monitores","Placas de Vídeo","Placa de Vídeo NVIDIA","Headset","Teclado","Kit Teclado e Mouse","Adaptador de Áudio","Suporte para Tablet","Gabinetes","Suporte para Gabinete","Suporte de Monitor","Organizador de Mesa","Suporte de TV","Suporte de Microfone","Suporte de Mesa","Suporte VESA","Suporte para Notebook","Suporte para CPU","Organizador de Cabos","Suporte para Monitor","Suporte","Placa-mãe","Monitor Gamer","SSD","Monitor","Memoria","Cartão de Memória","Cartão Micro SD","Mouse Pad","Mousepad","Apoio de Pulso","Fone Gamer","Volante Gamer","Placa de Rede","Acessório para SSD","Controlador LED","Kit Cooler Fan","Cooler Fan","Controlador Fan","Kit Cooler","Cabo Splitter","Contact Frame","Gabinete Gamer","Cadeiras","Cadeira Gamer","Cadeira Ergonômica","Cadeira Office","Placa de Captura","Placa de Vídeo AMD"];

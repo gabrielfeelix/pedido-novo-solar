@@ -2,7 +2,7 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router";
 import { motion, useInView, AnimatePresence } from "motion/react";
 import {
-  ShoppingBag, Heart, Star, ChevronLeft, ChevronRight, Truck,
+  ShoppingBag, Heart, Star, ChevronLeft, ChevronRight, ChevronDown, Truck,
   Check, Minus, Plus, Share2, MapPin, CreditCard, Banknote, QrCode,
   Loader2, ArrowUpRight, Zap, X, Clock, Info,
 } from "lucide-react";
@@ -736,29 +736,49 @@ function StickyPriceCard({
   return (
     <>
       <div
-        className="border border-foreground/8 bg-foreground/[0.015] p-5 lg:p-6"
+        className="p-5 lg:p-6 relative overflow-hidden"
         data-purchase-card="product-page"
-        style={{ borderRadius: "var(--radius-card)", position: "relative" }}
+        style={{
+          borderRadius: "20px",
+          background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 24px 60px -20px rgba(0,0,0,0.5)",
+        }}
       >
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(circle at 30% 0%, rgba(255,255,255,0.05) 0%, transparent 55%)",
+            borderRadius: "20px",
+          }}
+        />
         {/* Promo Timer */}
-        <div className="mb-5">
+        <div className="relative mb-5">
           <CountdownTimer />
         </div>
 
         {/* Price block */}
-        <div className="mb-5">
+        <div className="relative mb-5">
           {product.oldPrice && (
             <div className="flex items-center gap-2 mb-1.5">
               <span
-                className="text-foreground/35 line-through"
-                style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+                className="line-through leading-none"
+                style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", color: "rgba(255,255,255,0.38)" }}
               >
                 {product.oldPrice}
               </span>
               {discount > 0 && (
                 <span
-                  className="px-1.5 py-0.5 bg-red-500/12 text-red-500 font-bold"
-                  style={{ borderRadius: "4px", fontSize: "10.5px", fontFamily: "var(--font-family-inter)" }}
+                  className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none"
+                  style={{
+                    fontFamily: "var(--font-family-inter)",
+                    fontSize: "11px",
+                    fontWeight: 800,
+                    color: "#0a0a0a",
+                    background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
+                    boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)",
+                    letterSpacing: "-0.01em",
+                  }}
                 >
                   -{discount}%
                 </span>
@@ -860,19 +880,21 @@ function StickyPriceCard({
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col gap-2 mb-5">
+        <div className="relative flex flex-col gap-2 mb-5">
           <button
             onClick={onBuyNow}
             disabled={!inStock}
-            className="h-12 flex items-center justify-center gap-2 bg-[#059669] text-white font-bold hover:bg-[#047857] active:scale-[0.99] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+            className="h-12 flex items-center justify-center gap-2 text-white rounded-full transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
-              borderRadius: "var(--radius-button)",
+              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
               fontFamily: "var(--font-family-inter)",
-              fontSize: "13.5px",
-              letterSpacing: "0.02em",
+              fontSize: "14px",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              boxShadow: "0 14px 32px -8px rgba(225,6,0,0.6)",
             }}
           >
-            <Zap size={15} strokeWidth={2} fill="currentColor" />
+            <Zap size={15} strokeWidth={2.4} fill="currentColor" />
             Comprar agora
           </button>
 
@@ -916,8 +938,15 @@ function MobilePurchaseFlow({
               </span>
               {discount > 0 && (
                 <span
-                  className="px-1.5 py-0.5 bg-red-500/10 text-red-500 font-bold"
-                  style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "10px" }}
+                  className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none"
+                  style={{
+                    fontFamily: "var(--font-family-inter)",
+                    fontSize: "10.5px",
+                    fontWeight: 800,
+                    color: "#0a0a0a",
+                    background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
+                    boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)",
+                  }}
                 >
                   -{discount}%
                 </span>
@@ -1008,9 +1037,17 @@ function MobilePurchaseFlow({
           <button
             onClick={onBuyNow}
             disabled={!inStock}
-            className="h-12 flex items-center justify-center gap-2 bg-[#4CAF50] text-white font-bold active:scale-[0.99] transition-all cursor-pointer disabled:opacity-40"
-            style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
+            className="h-12 flex items-center justify-center gap-2 text-white rounded-full transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{
+              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+              fontFamily: "var(--font-family-inter)",
+              fontSize: "14px",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+              boxShadow: "0 14px 32px -8px rgba(225,6,0,0.6)",
+            }}
           >
+            <Zap size={15} strokeWidth={2.4} fill="currentColor" />
             Comprar agora
           </button>
           <button
@@ -1249,6 +1286,18 @@ function ReviewsSection({ product, isDark }: { product: any; isDark: boolean }) 
     { key: "photos" as const, label: "Com fotos" },
   ];
 
+  const [ratingDropdownOpen, setRatingDropdownOpen] = useState(false);
+  const ratingDropdownRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (ratingDropdownRef.current && !ratingDropdownRef.current.contains(e.target as Node)) {
+        setRatingDropdownOpen(false);
+      }
+    };
+    if (ratingDropdownOpen) window.addEventListener("mousedown", onClick);
+    return () => window.removeEventListener("mousedown", onClick);
+  }, [ratingDropdownOpen]);
+
   return (
     <section ref={sectionRef} className="py-16 md:py-20 border-t border-foreground/5 bg-foreground/[0.01] scroll-mt-[96px]">
       <div className="max-w-[1760px] mx-auto">
@@ -1303,23 +1352,85 @@ function ReviewsSection({ product, isDark }: { product: any; isDark: boolean }) 
           {/* List */}
           <div className="flex-1">
             <div className="mb-8 pb-5 border-b border-foreground/5">
-              <div className="flex items-center gap-4 overflow-x-auto scrollbar-none">
-                {filters.map((filter) => (
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-4 overflow-x-auto scrollbar-none">
+                  {filters.map((filter) => (
+                    <button
+                      key={filter.key}
+                      onClick={() => {
+                        setActiveFilter(filter.key);
+                        setReviewPage(1);
+                      }}
+                      className={`px-4 py-1.5 text-xs font-bold rounded-full transition-colors cursor-pointer ${
+                        activeFilter === filter.key
+                          ? "bg-foreground text-background"
+                          : "bg-foreground/5 text-foreground/45 hover:text-foreground hover:bg-foreground/10"
+                      }`}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div ref={ratingDropdownRef} className="relative ml-auto">
                   <button
-                    key={filter.key}
-                    onClick={() => {
-                      setActiveFilter(filter.key);
-                      setReviewPage(1);
-                    }}
-                    className={`px-4 py-1.5 text-xs font-bold rounded-full transition-colors cursor-pointer ${
-                      activeFilter === filter.key
-                        ? "bg-foreground text-background"
-                        : "bg-foreground/5 text-foreground/45 hover:text-foreground hover:bg-foreground/10"
+                    onClick={() => setRatingDropdownOpen((v) => !v)}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
+                      activeStarFilter
+                        ? "bg-primary/15 text-primary border border-primary/35"
+                        : "bg-foreground/5 text-foreground/65 hover:text-foreground hover:bg-foreground/10 border border-transparent"
                     }`}
+                    aria-haspopup="listbox"
+                    aria-expanded={ratingDropdownOpen}
                   >
-                    {filter.label}
+                    {activeStarFilter ? (
+                      <span className="inline-flex items-center gap-1">
+                        <Star size={12} className="fill-current" /> {activeStarFilter} estrelas
+                      </span>
+                    ) : (
+                      "Qualificação"
+                    )}
+                    <ChevronDown size={13} className={`transition-transform ${ratingDropdownOpen ? "rotate-180" : ""}`} />
                   </button>
-                ))}
+                  <AnimatePresence>
+                    {ratingDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full z-30 mt-2 min-w-[180px] overflow-hidden rounded-[12px] border border-white/10 shadow-2xl"
+                        style={{ background: "#1f1c1c" }}
+                        role="listbox"
+                      >
+                        <button
+                          onClick={() => { setActiveStarFilter(null); setReviewPage(1); setRatingDropdownOpen(false); }}
+                          className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs transition-colors ${
+                            activeStarFilter === null ? "bg-primary/15 text-primary" : "text-white/75 hover:bg-white/[0.06] hover:text-white"
+                          }`}
+                        >
+                          Todas
+                          {activeStarFilter === null && <Check size={13} />}
+                        </button>
+                        {[5, 4, 3, 2, 1].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => { setActiveStarFilter(activeStarFilter === star ? null : star); setReviewPage(1); setRatingDropdownOpen(false); }}
+                            className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-xs transition-colors ${
+                              activeStarFilter === star ? "bg-primary/15 text-primary" : "text-white/75 hover:bg-white/[0.06] hover:text-white"
+                            }`}
+                          >
+                            <span className="inline-flex items-center gap-1.5">
+                              <Star size={12} className="fill-[#FFB800] text-[#FFB800]" />
+                              {star} {star === 1 ? "estrela" : "estrelas"}
+                            </span>
+                            {activeStarFilter === star && <Check size={13} />}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
 
               <div className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-none">

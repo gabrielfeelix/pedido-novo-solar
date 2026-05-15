@@ -310,7 +310,7 @@ export function ProductsPage() {
   const [priceMax, setPriceMax] = useState(GLOBAL_MAX);
   const [onlyDiscount, setOnlyDiscount] = useState(false);
   const [minDiscount, setMinDiscount] = useState<number | null>(null);
-  const [minRating, setMinRating] = useState<number | null>(null);
+  const [selectedRatings, setSelectedRatings] = useState<Set<number>>(new Set());
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState("relevance");
   const [gridMode, setGridMode] = useState<"grid" | "list">("grid");
@@ -406,7 +406,7 @@ export function ProductsPage() {
 
   const clearAll = () => {
     setSelectedCategories(new Set()); setSelectedFeaturedCategories(new Set()); setSelectedSubcategories(new Set()); setSelectedTags(new Set()); setSelectedBrands(new Set()); setSelectedColors(new Set());
-    setPriceMin(GLOBAL_MIN); setPriceMax(GLOBAL_MAX); setOnlyDiscount(false); setMinDiscount(null); setMinRating(null);
+    setPriceMin(GLOBAL_MIN); setPriceMax(GLOBAL_MAX); setOnlyDiscount(false); setMinDiscount(null); setSelectedRatings(new Set());
     setInStockOnly(false); setSearchQuery(""); setSelectedVariantIds({});
     const sp = new URLSearchParams(searchParams); sp.delete("category"); sp.delete("subcategory"); sp.delete("search"); setSearchParams(sp, { replace: true });
   };
@@ -428,11 +428,19 @@ export function ProductsPage() {
     if (selectedBrands.size > 0) result = result.filter((p) => p.brand && selectedBrands.has(p.brand));
     if (onlyDiscount) result = result.filter((p) => getDiscount(getColorMatchedProduct(p)) > 0);
     if (minDiscount !== null) result = result.filter((p) => getDiscount(getColorMatchedProduct(p)) >= minDiscount);
-    if (minRating !== null) result = result.filter((p) => p.rating >= minRating);
+    if (selectedRatings.size > 0) {
+      result = result.filter((p) => {
+        for (const r of selectedRatings) {
+          if (p.rating >= r && p.rating < r + 0.5) return true;
+          if (r === 5 && p.rating >= 4.95) return true;
+        }
+        return false;
+      });
+    }
     if (inStockOnly) result = result.filter((p) => p.inStock !== false);
 
     return result;
-  }, [selectedCategories, selectedFeaturedCategories, selectedSubcategories, selectedTags, selectedBrands, onlyDiscount, minDiscount, minRating, inStockOnly, searchQuery]);
+  }, [selectedCategories, selectedFeaturedCategories, selectedSubcategories, selectedTags, selectedBrands, onlyDiscount, minDiscount, selectedRatings, inStockOnly, searchQuery]);
 
   const priceBounds = useMemo(() => {
     const productsForPrice = selectedColors.size > 0
@@ -458,7 +466,7 @@ export function ProductsPage() {
   const activeFilterCount = selectedCategories.size + selectedFeaturedCategories.size + selectedSubcategories.size + selectedTags.size + selectedBrands.size + selectedColors.size
     + (priceFilterActive ? 1 : 0) + (onlyDiscount ? 1 : 0)
     + (minDiscount !== null ? 1 : 0)
-    + (minRating !== null ? 1 : 0) + (searchQuery ? 1 : 0) + (inStockOnly ? 1 : 0);
+    + selectedRatings.size + (searchQuery ? 1 : 0) + (inStockOnly ? 1 : 0);
 
   const productsBeforeColorFilter = useMemo(() => {
     let result = [...productsWithoutPriceFilter];
@@ -533,7 +541,9 @@ export function ProductsPage() {
       {priceFilterActive && <FilterPill label={`R$ ${priceMin} – R$ ${priceMax}`} onRemove={() => { setPriceMin(priceBounds.min); setPriceMax(priceBounds.max); }} />}
       {onlyDiscount && <FilterPill label="Promoção" onRemove={() => setOnlyDiscount(false)} />}
       {minDiscount !== null && <FilterPill label={`> ${minDiscount}% OFF`} onRemove={() => setMinDiscount(null)} />}
-      {minRating !== null && <FilterPill label={`${minRating}+ Estrelas`} onRemove={() => setMinRating(null)} />}
+      {[...selectedRatings].sort((a, b) => b - a).map((r) => (
+        <FilterPill key={`rating-${r}`} label={`${r} ⭐`} onRemove={() => setSelectedRatings((prev) => { const n = new Set(prev); n.delete(r); return n; })} />
+      ))}
       {inStockOnly && <FilterPill label="Em estoque" onRemove={() => setInStockOnly(false)} />}
       {activeFilterCount > 0 && (
         <button onClick={clearAll} className="text-foreground/50 hover:text-foreground underline px-2 py-1 text-[12px] font-inter transition-colors">Limpar tudo</button>
@@ -702,17 +712,17 @@ export function ProductsPage() {
 
       {/* Avaliação */}
       <FilterSection title="Avaliação" expanded={expandedSections.rating} onToggle={() => toggleSection("rating")}>
-        {[4.5, 4.0, 3.5].map((r) => {
-          const active = minRating === r;
+        {[5, 4.5, 4, 3.5, 3].map((r) => {
+          const active = selectedRatings.has(r);
           return (
             <label key={r} className="flex items-center gap-3 py-2 cursor-pointer group/item">
-              <input type="radio" name="rating" className="hidden" checked={active} onChange={() => setMinRating(active ? null : r)} />
-              <span className={`w-4 h-4 border-2 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${active ? "border-foreground" : "border-foreground/20 group-hover/item:border-foreground/40"}`}>
-                {active && <span className="w-2 h-2 rounded-full bg-foreground" />}
+              <input type="checkbox" className="hidden" checked={active} onChange={() => toggleSet(setSelectedRatings, r)} />
+              <span className={`w-4 h-4 border flex items-center justify-center flex-shrink-0 transition-colors ${active ? "border-foreground bg-foreground" : "border-foreground/20 group-hover/item:border-foreground/40"}`} style={{ borderRadius: "4px" }}>
+                {active && <svg width="10" height="10" viewBox="0 0 8 8"><path d="M1.5 4L3 5.5L6.5 2.5" stroke={isDark ? "#0a0a0a" : "#fff"} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>}
               </span>
               <div className="flex items-center gap-1.5">
                 <Star size={14} className="fill-foreground text-foreground" />
-                <span className="text-foreground/70 group-hover/item:text-foreground transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}>{r}+</span>
+                <span className="text-foreground/70 group-hover/item:text-foreground transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}>{r}</span>
               </div>
             </label>
           );
