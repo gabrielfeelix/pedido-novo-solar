@@ -114,11 +114,27 @@ function ProductGallery({ images, name, isDark }: { images: string[]; name: stri
     <div className="flex w-full flex-col items-center gap-4 overflow-visible md:gap-5">
       <div
         className="relative w-full max-w-[560px] aspect-square overflow-hidden group cursor-zoom-in xl:max-w-[620px]"
-        style={{ borderRadius: "var(--radius-card)", background: isDark ? "rgba(22,22,23,0.5)" : "#f5f5f5" }}
+        style={{
+          borderRadius: "20px",
+          background: isDark
+            ? "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)"
+            : "linear-gradient(135deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.01) 100%)",
+          border: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.06)",
+          boxShadow: isDark
+            ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 24px 60px -20px rgba(0,0,0,0.4)"
+            : "inset 0 1px 0 rgba(255,255,255,0.6), 0 24px 60px -20px rgba(0,0,0,0.08)",
+        }}
         onClick={() => setZoomed(true)}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+            borderRadius: "20px",
+          }}
+        />
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -380,12 +396,22 @@ function AutoShippingCalculator({ productPrice }: { productPrice: number }) {
           placeholder="Digite seu CEP"
           value={cep}
           onChange={(e) => setCep(formatCep(e.target.value))}
-          className="w-full border border-foreground/12 bg-transparent text-foreground placeholder-foreground/30 px-3.5 py-3 pr-11 focus:border-primary/50 focus:outline-none transition-colors"
+          className="w-full text-foreground placeholder-foreground/30 px-4 py-3 pr-11 focus:outline-none transition-all"
           style={{
-            borderRadius: "var(--radius-button)",
+            borderRadius: "12px",
+            border: "1px solid rgba(255,255,255,0.10)",
+            background: "rgba(255,255,255,0.04)",
             fontFamily: "var(--font-family-inter)",
             fontSize: "14px",
             letterSpacing: "0.02em",
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = "rgba(34,197,94,0.55)";
+            e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)";
+            e.currentTarget.style.background = "rgba(255,255,255,0.04)";
           }}
         />
         <div className="absolute right-3.5 top-1/2 -translate-y-1/2">
@@ -886,12 +912,12 @@ function StickyPriceCard({
             disabled={!inStock}
             className="h-12 flex items-center justify-center gap-2 text-white rounded-full transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
-              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+              background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
               fontFamily: "var(--font-family-inter)",
               fontSize: "14px",
               fontWeight: 700,
               letterSpacing: "0.04em",
-              boxShadow: "0 14px 32px -8px rgba(225,6,0,0.6)",
+              boxShadow: "0 14px 32px -8px rgba(34,197,94,0.55)",
             }}
           >
             <Zap size={15} strokeWidth={2.4} fill="currentColor" />
@@ -1039,12 +1065,12 @@ function MobilePurchaseFlow({
             disabled={!inStock}
             className="h-12 flex items-center justify-center gap-2 text-white rounded-full transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
-              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+              background: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
               fontFamily: "var(--font-family-inter)",
               fontSize: "14px",
               fontWeight: 700,
               letterSpacing: "0.04em",
-              boxShadow: "0 14px 32px -8px rgba(225,6,0,0.6)",
+              boxShadow: "0 14px 32px -8px rgba(34,197,94,0.55)",
             }}
           >
             <Zap size={15} strokeWidth={2.4} fill="currentColor" />
@@ -1103,11 +1129,10 @@ function AboutProduct({ product, onSeeDescription }: { product: any; onSeeDescri
   return (
     <section>
       <h2
-        className="text-foreground/55 font-semibold tracking-wide mb-4 flex items-center gap-2"
-        style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", letterSpacing: "0.1em" }}
+        className="text-primary font-bold tracking-wide mb-4"
+        style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", letterSpacing: "0.3em" }}
       >
-        <span className="w-1 h-1 rounded-full bg-primary" />
-        SOBRE O PRODUTO
+        // SOBRE O PRODUTO
       </h2>
 
       <ul key={product.id} className="space-y-3">
@@ -1776,104 +1801,131 @@ function ProductStandardDescription({ product, images }: { product: any; images:
   const lead = product.description?.split("\n").find((item: string) => item.trim()) ??
     `${product.name} foi desenvolvido para entregar desempenho, acabamento e confiabilidade no uso diário.`;
 
+  const productImageBg = {
+    background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+  } as const;
+
   return (
     <section className="pb-20 border-t border-foreground/5">
       <div className="mx-auto mt-10 max-w-[1120px]">
-        <div className="overflow-hidden border border-foreground/8 bg-[#111112] shadow-[0_22px_70px_rgba(0,0,0,0.24)]" style={{ borderRadius: "30px" }}>
+        <div
+          className="overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.24)]"
+          style={{
+            borderRadius: "30px",
+            background: "linear-gradient(180deg, #161617 0%, #131314 100%)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
           <section className="px-6 py-10 text-center md:px-10 md:py-14">
             <p className="mb-4 text-primary tracking-[0.24em]" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800 }}>
-              {product.category}
+              // {product.category}
             </p>
             <h2 className="mx-auto max-w-[820px] text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(30px, 5vw, 52px)", lineHeight: 1.02, fontWeight: 700, letterSpacing: "-0.04em" }}>
               {product.name}
             </h2>
-            <p className="mx-auto mt-5 max-w-[820px] text-foreground/58" style={{ fontFamily: "var(--font-family-inter)", fontSize: "17px", lineHeight: 1.65 }}>
+            <p className="mx-auto mt-5 max-w-[820px] text-foreground/65" style={{ fontFamily: "var(--font-family-inter)", fontSize: "17px", lineHeight: 1.65 }}>
               {lead}
             </p>
-            <div className="mt-9 flex min-h-[360px] items-center justify-center overflow-hidden border border-foreground/8 bg-foreground/[0.025] p-8" style={{ borderRadius: "24px" }}>
-              <ImageWithFallback src={primaryImage} alt={product.name} className="max-h-[340px] w-full object-contain drop-shadow-[0_24px_30px_rgba(0,0,0,0.32)]" />
+            <div className="relative mt-9 flex min-h-[360px] items-center justify-center overflow-hidden p-8" style={{ borderRadius: "24px", ...productImageBg }}>
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+                  borderRadius: "24px",
+                }}
+              />
+              <ImageWithFallback src={primaryImage} alt={product.name} className="relative max-h-[340px] w-full object-contain drop-shadow-[0_24px_30px_rgba(0,0,0,0.32)]" />
             </div>
           </section>
 
-          <section className="border-t border-foreground/7 px-6 py-10 md:px-10">
+          <section className="border-t border-white/5 px-6 py-10 md:px-10">
             <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-              <article className="relative min-h-[540px] overflow-hidden border border-foreground/8 bg-foreground/[0.025]" style={{ borderRadius: "24px" }}>
-                <ImageWithFallback src={secondaryImage} alt={`${product.name} em destaque`} className="absolute inset-0 h-full w-full object-cover opacity-65" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/20 to-transparent" />
+              <article className="relative min-h-[540px] overflow-hidden" style={{ borderRadius: "24px", ...productImageBg }}>
+                <ImageWithFallback src={secondaryImage} alt={`${product.name} em destaque`} className="absolute inset-0 h-full w-full object-cover opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-7">
-                  <h3 className="max-w-[420px] text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(24px, 3vw, 32px)", lineHeight: 1.08, fontWeight: 700 }}>
+                  <h3 className="max-w-[420px] text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(24px, 3vw, 32px)", lineHeight: 1.08, fontWeight: 700, textShadow: "0 2px 12px rgba(0,0,0,0.5)" }}>
                     Construção pensada para performance
                   </h3>
-                  <p className="mt-3 max-w-[520px] text-foreground/62" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.65 }}>
-                    Um produto pensado para setups exigentes, com materiais selecionados, visual limpo e desempenho consistente.
+                  <p className="mt-3 max-w-[520px] text-white/85" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.65, textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
+                    Produto pensado para setups exigentes, com materiais selecionados, visual limpo e desempenho consistente.
                   </p>
                 </div>
               </article>
 
               <div className="grid gap-6">
-                <article className="relative min-h-[260px] overflow-hidden border border-foreground/8 bg-foreground/[0.025]" style={{ borderRadius: "24px" }}>
+                <article className="relative min-h-[260px] overflow-hidden" style={{ borderRadius: "24px", ...productImageBg }}>
                   <div className="relative z-10 max-w-[58%] p-7">
                     <h3 className="text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "25px", lineHeight: 1.1, fontWeight: 700 }}>
                       Design para o dia a dia
                     </h3>
-                    <p className="mt-3 text-foreground/58" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.6 }}>
+                    <p className="mt-3 text-foreground/68" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.6 }}>
                       Visual moderno, presença equilibrada e experiência consistente para trabalho, estudo ou gameplay.
                     </p>
                   </div>
-                  <ImageWithFallback src={tertiaryImage} alt={`${product.name} detalhe`} className="absolute inset-y-0 right-0 h-full w-[52%] object-cover opacity-70" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#111112] via-[#111112]/78 to-transparent" />
+                  <ImageWithFallback src={tertiaryImage} alt={`${product.name} detalhe`} className="absolute inset-y-0 right-0 h-full w-[52%] object-contain p-6" />
+                  <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-[#161617] via-[#161617]/55 to-transparent pointer-events-none" />
                 </article>
 
-                <article className="relative min-h-[260px] overflow-hidden border border-foreground/8 bg-foreground/[0.025]" style={{ borderRadius: "24px" }}>
+                <article className="relative min-h-[260px] overflow-hidden" style={{ borderRadius: "24px", ...productImageBg }}>
                   <div className="relative z-10 max-w-[58%] p-7">
                     <h3 className="text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "25px", lineHeight: 1.1, fontWeight: 700 }}>
                       Pronto para acompanhar seu ritmo
                     </h3>
-                    <p className="mt-3 text-foreground/58" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.6 }}>
+                    <p className="mt-3 text-foreground/68" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", lineHeight: 1.6 }}>
                       Recursos essenciais reunidos em um produto confiável, bonito e fácil de integrar ao seu setup.
                     </p>
                   </div>
-                  <ImageWithFallback src={primaryImage} alt={`${product.name} em uso`} className="absolute inset-y-0 right-0 h-full w-[52%] object-cover opacity-70" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#111112] via-[#111112]/78 to-transparent" />
+                  <ImageWithFallback src={primaryImage} alt={`${product.name} em uso`} className="absolute inset-y-0 right-0 h-full w-[52%] object-contain p-6" />
+                  <div className="absolute inset-y-0 left-0 w-[60%] bg-gradient-to-r from-[#161617] via-[#161617]/55 to-transparent pointer-events-none" />
                 </article>
               </div>
             </div>
           </section>
 
-          <section className="border-t border-foreground/7 px-6 py-10 md:px-10">
+          <section className="border-t border-white/5 px-6 py-10 md:px-10">
             <div className="grid gap-7 md:grid-cols-2">
               {[primaryImage, secondaryImage].map((image, index) => (
-                <div key={`${image}-${index}`} className="aspect-[16/10] overflow-hidden border border-foreground/8 bg-foreground/[0.025]" style={{ borderRadius: "22px" }}>
-                  <ImageWithFallback src={image} alt={`${product.name} galeria ${index + 1}`} className="h-full w-full object-cover" />
+                <div key={`${image}-${index}`} className="relative aspect-[16/10] overflow-hidden" style={{ borderRadius: "22px", ...productImageBg }}>
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+                      borderRadius: "22px",
+                    }}
+                  />
+                  <ImageWithFallback src={image} alt={`${product.name} galeria ${index + 1}`} className="relative h-full w-full object-contain p-6" />
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="border-t border-foreground/7 px-6 py-10 md:px-10">
-            <article className="relative overflow-hidden border border-foreground/8 bg-foreground/[0.025]" style={{ borderRadius: "24px" }}>
+          <section className="border-t border-white/5 px-6 py-10 md:px-10">
+            <article className="relative overflow-hidden" style={{ borderRadius: "24px", ...productImageBg }}>
               <div className="relative z-10 w-full p-7 md:w-[62%] md:p-9">
                 <p className="mb-4 text-primary tracking-[0.22em]" style={{ fontFamily: "var(--font-family-inter)", fontSize: "10px", fontWeight: 800 }}>
-                  RAIO-X DO PRODUTO
+                  // RAIO-X DO PRODUTO
                 </p>
                 <h3 className="text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(28px, 4vw, 38px)", lineHeight: 1.08, fontWeight: 700 }}>
                   Especificações técnicas
                 </h3>
                 <dl className="mt-6 grid gap-3">
                   {specs.slice(0, 8).map((spec: { label: string; value: string }) => (
-                    <div key={spec.label} className="grid gap-2 border-b border-foreground/6 pb-3 sm:grid-cols-[170px_1fr]">
-                      <dt className="text-foreground/38 tracking-[0.12em]" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800 }}>
+                    <div key={spec.label} className="grid gap-2 border-b border-white/8 pb-3 sm:grid-cols-[170px_1fr]">
+                      <dt className="text-foreground/48 tracking-[0.12em]" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800 }}>
                         {spec.label}
                       </dt>
-                      <dd className="text-foreground/78" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", fontWeight: 600 }}>
+                      <dd className="text-foreground/85" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", fontWeight: 600 }}>
                         {spec.value}
                       </dd>
                     </div>
                   ))}
                 </dl>
               </div>
-              <ImageWithFallback src={tertiaryImage} alt={`${product.name} especificações`} className="absolute inset-y-0 right-0 hidden h-full w-[40%] object-cover opacity-45 md:block" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#111112] via-[#111112]/90 to-[#111112]/20" />
+              <ImageWithFallback src={tertiaryImage} alt={`${product.name} especificações`} className="absolute inset-y-0 right-0 hidden h-full w-[40%] object-contain p-6 md:block" />
+              <div className="absolute inset-y-0 left-0 w-[70%] bg-gradient-to-r from-[#161617] via-[#161617]/60 to-transparent pointer-events-none" />
             </article>
           </section>
         </div>
@@ -2165,12 +2217,12 @@ export function ProductPage() {
 
             {/* Title */}
             <h1
-              className="text-foreground mb-4 leading-[1.18]"
+              className="text-foreground mb-4 leading-[1.12]"
               style={{
                 fontFamily: "var(--font-family-figtree)",
                 fontSize: "clamp(22px, 2.6vw, 32px)",
-                fontWeight: "var(--font-weight-light)",
-                letterSpacing: "-0.01em",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
               }}
             >
               {product.name}
