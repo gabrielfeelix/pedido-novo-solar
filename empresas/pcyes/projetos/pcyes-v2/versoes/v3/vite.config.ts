@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 
 const prototypeBasePath = process.env.PROTOTYPE_BASE_PATH || '/'
 const prototypeOutDir = process.env.PROTOTYPE_OUT_DIR || 'dist'
-const prototypePublicRoots = ['home', 'pages', 'switches']
+const prototypePublicRoots = ['home', 'pages', 'switches', 'assets']
 
 function prototypePublicAssetBase() {
   const base = prototypeBasePath.endsWith('/') ? prototypeBasePath : `${prototypeBasePath}/`
