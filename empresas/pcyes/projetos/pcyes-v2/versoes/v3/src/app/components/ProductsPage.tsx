@@ -344,6 +344,9 @@ export function ProductsPage() {
 
     const sq = searchParams.get("search");
     setSearchQuery(sq ?? "");
+
+    setPriceMin(GLOBAL_MIN);
+    setPriceMax(GLOBAL_MAX);
   }, [searchParams]);
 
   /* ── Scroll to top on category change ── */
