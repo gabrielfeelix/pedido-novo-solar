@@ -175,7 +175,7 @@ export function NewReleasesSection() {
                       style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: "var(--font-weight-medium)" }}
                     >
                       <ShoppingBag size={14} strokeWidth={1.5} />
-                      Adicionar ao carrinho
+                      Comprar
                     </button>
                     <Link
                       to={`/produto/${selected.id}`}

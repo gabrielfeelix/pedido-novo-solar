@@ -317,7 +317,6 @@ export function ProductsPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [itemsPerPageDropdownOpen, setItemsPerPageDropdownOpen] = useState(false);
-  const [colsCount, setColsCount] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(36);
   const [isLoading, setIsLoading] = useState(false);
@@ -325,7 +324,7 @@ export function ProductsPage() {
   const [selectedVariantIds, setSelectedVariantIds] = useState<Record<number, number>>({});
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    categories: true, brands: true, tags: false, price: true, color: true, rating: false, promo: false,
+    categories: true, brands: true, tags: true, price: true, color: true, rating: true, promo: true,
   });
 
   const { addItem } = useCart();
@@ -346,19 +345,6 @@ export function ProductsPage() {
     const sq = searchParams.get("search");
     setSearchQuery(sq ?? "");
   }, [searchParams]);
-
-  /* ── Responsive columns ── */
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth;
-      if (w >= 1800) setColsCount(4);
-      else if (w >= 1280) setColsCount(3);
-      else setColsCount(2);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
 
   /* ── Scroll to top on category change ── */
   const mainRef = useRef<HTMLDivElement>(null);
@@ -748,7 +734,7 @@ export function ProductsPage() {
      ═══════════════════════════════════════════════════════ */
 
   return (
-    <div ref={mainRef} className="pt-[112px] md:pt-[142px] min-h-screen">
+    <div ref={mainRef} className="pt-[112px] md:pt-[142px] min-h-screen" style={{ background: "#0e0e0e" }}>
       {/* ── Breadcrumb strip ── */}
       <div className="px-5 md:px-8 py-3" style={{ background: isDark ? "#161617" : "#f5f5f7" }}>
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
@@ -779,135 +765,142 @@ export function ProductsPage() {
       {/* ── Main Content — Insider layout ── */}
       <div className="px-5 md:px-8 py-6">
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+          {/* ── Top control bar — full width above sidebar+grid ── */}
+          <div className="flex flex-col gap-4 mb-6 pb-4 border-b border-foreground/10 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex min-w-0 flex-wrap items-center gap-4">
+              <button onClick={() => setMobileFiltersOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2 border border-foreground/15 text-foreground/70 hover:text-foreground transition-colors"
+                style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+              >
+                <SlidersHorizontal size={14} /> Filtros
+                {activeFilterCount > 0 && (
+                  <span className="ml-1 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center font-bold" style={{ fontSize: "11px" }}>{activeFilterCount}</span>
+                )}
+              </button>
+              <span className="text-foreground/60" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
+                Mostrando <span className="text-foreground font-semibold">{filtered.length}</span> {filtered.length === 1 ? "produto" : "produtos"}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 xl:flex-nowrap">
+              {/* Sort */}
+              <div className="relative">
+                <button onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                  className="flex items-center gap-2 text-foreground/50 hover:text-foreground/80 transition-colors"
+                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+                >
+                  <ArrowUpDown size={14} />
+                  {sortOptions.find((s) => s.value === sortBy)?.label}
+                  <ChevronDown size={12} className={`transition-transform duration-200 ${sortDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {sortDropdownOpen && (
+                    <motion.div initial={{ opacity: 0, y: -5, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -5, scale: 0.97 }} transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-3 border border-foreground/10 shadow-xl z-30 min-w-[200px] py-2"
+                      style={{ borderRadius: "var(--radius-card)", background: isDark ? "#1e1e20" : "#fff" }}
+                    >
+                      {sortOptions.map((opt) => (
+                        <button key={opt.value} onClick={() => { setSortBy(opt.value); setSortDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 transition-colors ${sortBy === opt.value ? "text-foreground bg-foreground/[0.06]" : "text-foreground/70 hover:text-foreground hover:bg-foreground/[0.03]"
+                            }`}
+                          style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+                        >{opt.label}</button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div ref={itemsPerPageDropdownRef} className="relative flex items-center gap-2 text-foreground/70" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}>
+                <span>Mostrar:</span>
+                <button
+                  type="button"
+                  onClick={() => setItemsPerPageDropdownOpen((prev) => !prev)}
+                  className={`relative inline-flex h-9 min-w-[62px] items-center justify-between gap-2 rounded-[10px] border px-3 transition-all cursor-pointer ${
+                    itemsPerPageDropdownOpen
+                      ? "border-primary/50 bg-foreground/[0.06] text-foreground shadow-[0_0_0_1px_rgba(255,59,48,0.16)]"
+                      : "border-foreground/10 bg-foreground/[0.03] text-foreground hover:border-foreground/20"
+                  }`}
+                  aria-haspopup="listbox"
+                  aria-expanded={itemsPerPageDropdownOpen}
+                  aria-label="Quantidade de produtos por página"
+                >
+                  <span>{itemsPerPage}</span>
+                  <ChevronDown size={13} className={`text-foreground/45 transition-transform duration-200 ${itemsPerPageDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {itemsPerPageDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full z-30 mt-3 min-w-[120px] overflow-hidden border border-white/8 shadow-2xl"
+                      style={{ borderRadius: "14px", background: "#151517" }}
+                    >
+                      <div className="border-b border-white/6 px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-white/35">
+                        Itens por p&aacute;gina
+                      </div>
+                      <div className="p-2">
+                        {PAGE_SIZE_OPTIONS.map((option) => {
+                          const active = option === itemsPerPage;
+                          return (
+                            <button
+                              key={option}
+                              type="button"
+                              onClick={() => {
+                                setItemsPerPage(option);
+                                setItemsPerPageDropdownOpen(false);
+                              }}
+                              className={`flex w-full items-center justify-between rounded-[10px] px-3 py-2.5 text-left transition-colors cursor-pointer ${
+                                active
+                                  ? "bg-primary text-white"
+                                  : "text-white/72 hover:bg-white/[0.06] hover:text-white"
+                              }`}
+                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}
+                              role="option"
+                              aria-selected={active}
+                            >
+                              <span>{option}</span>
+                              {active && <Check size={14} />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Grid / List */}
+              <div className="hidden sm:flex border border-foreground/10 overflow-hidden" style={{ borderRadius: "var(--radius-button)" }}>
+                <button onClick={() => setGridMode("grid")}
+                  className={`p-2 transition-colors ${gridMode === "grid" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
+                  aria-label="Visualização em grade"
+                ><Grid3X3 size={16} /></button>
+                <button onClick={() => setGridMode("list")}
+                  className={`p-2 transition-colors ${gridMode === "list" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
+                  aria-label="Visualização em lista"
+                ><LayoutList size={16} /></button>
+              </div>
+            </div>
+          </div>
+
+          {/* Active filter pills row */}
+          {activeFilterCount > 0 && (
+            <div className="mb-6 flex min-w-0 flex-wrap items-center gap-2">
+              {activeFilterPills}
+            </div>
+          )}
+
           <div className="flex gap-8 lg:gap-14">
             {/* ── Sidebar (Insider: narrow, left-aligned, auto-height) ── */}
             <aside className="hidden lg:block w-[240px] xl:w-[280px] flex-shrink-0">
-              <div className="sticky top-[112px]">
-                {filterSidebar}
-              </div>
+              {filterSidebar}
             </aside>
 
             {/* ── Products area ── */}
             <div className="flex-1 min-w-0">
-              {/* Control bar */}
-              <div className="flex flex-col gap-4 mb-6 pb-4 border-b border-foreground/5 xl:flex-row xl:items-center xl:justify-between">
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <button onClick={() => setMobileFiltersOpen(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 border border-foreground/15 text-foreground/70 hover:text-foreground transition-colors"
-                    style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                  >
-                    <SlidersHorizontal size={14} /> Filtros
-                    {activeFilterCount > 0 && (
-                      <span className="ml-1 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center font-bold" style={{ fontSize: "11px" }}>{activeFilterCount}</span>
-                    )}
-                  </button>
-                  {activeFilterPills}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4 xl:flex-nowrap">
-                  {/* Sort */}
-                  <div className="relative">
-                    <button onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
-                      className="flex items-center gap-2 text-foreground/50 hover:text-foreground/80 transition-colors"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                    >
-                      <ArrowUpDown size={14} />
-                      {sortOptions.find((s) => s.value === sortBy)?.label}
-                      <ChevronDown size={12} className={`transition-transform duration-200 ${sortDropdownOpen ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {sortDropdownOpen && (
-                        <motion.div initial={{ opacity: 0, y: -5, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -5, scale: 0.97 }} transition={{ duration: 0.15 }}
-                          className="absolute right-0 top-full mt-3 border border-foreground/10 shadow-xl z-30 min-w-[200px] py-2"
-                          style={{ borderRadius: "var(--radius-card)", background: isDark ? "#1e1e20" : "#fff" }}
-                        >
-                          {sortOptions.map((opt) => (
-                            <button key={opt.value} onClick={() => { setSortBy(opt.value); setSortDropdownOpen(false); }}
-                              className={`w-full text-left px-4 py-2.5 transition-colors ${sortBy === opt.value ? "text-foreground bg-foreground/[0.06]" : "text-foreground/70 hover:text-foreground hover:bg-foreground/[0.03]"
-                                }`}
-                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                            >{opt.label}</button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <div ref={itemsPerPageDropdownRef} className="relative flex items-center gap-2 text-foreground/70" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}>
-                    <span>Mostrar:</span>
-                    <button
-                      type="button"
-                      onClick={() => setItemsPerPageDropdownOpen((prev) => !prev)}
-                      className={`relative inline-flex h-9 min-w-[62px] items-center justify-between gap-2 rounded-[10px] border px-3 transition-all cursor-pointer ${
-                        itemsPerPageDropdownOpen
-                          ? "border-primary/50 bg-foreground/[0.06] text-foreground shadow-[0_0_0_1px_rgba(255,59,48,0.16)]"
-                          : "border-foreground/10 bg-foreground/[0.03] text-foreground hover:border-foreground/20"
-                      }`}
-                      aria-haspopup="listbox"
-                      aria-expanded={itemsPerPageDropdownOpen}
-                      aria-label="Quantidade de produtos por página"
-                    >
-                      <span>{itemsPerPage}</span>
-                      <ChevronDown size={13} className={`text-foreground/45 transition-transform duration-200 ${itemsPerPageDropdownOpen ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {itemsPerPageDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                          transition={{ duration: 0.15 }}
-                          className="absolute right-0 top-full z-30 mt-3 min-w-[120px] overflow-hidden border border-white/8 shadow-2xl"
-                          style={{ borderRadius: "14px", background: "#151517" }}
-                        >
-                          <div className="border-b border-white/6 px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-white/35">
-                            Itens por p&aacute;gina
-                          </div>
-                          <div className="p-2">
-                            {PAGE_SIZE_OPTIONS.map((option) => {
-                              const active = option === itemsPerPage;
-                              return (
-                                <button
-                                  key={option}
-                                  type="button"
-                                  onClick={() => {
-                                    setItemsPerPage(option);
-                                    setItemsPerPageDropdownOpen(false);
-                                  }}
-                                  className={`flex w-full items-center justify-between rounded-[10px] px-3 py-2.5 text-left transition-colors cursor-pointer ${
-                                    active
-                                      ? "bg-primary text-white"
-                                      : "text-white/72 hover:bg-white/[0.06] hover:text-white"
-                                  }`}
-                                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}
-                                  role="option"
-                                  aria-selected={active}
-                                >
-                                  <span>{option}</span>
-                                  {active && <Check size={14} />}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Grid / List */}
-                  <div className="hidden sm:flex border border-foreground/10 overflow-hidden" style={{ borderRadius: "var(--radius-button)" }}>
-                    <button onClick={() => setGridMode("grid")}
-                      className={`p-2 transition-colors ${gridMode === "grid" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
-                      aria-label="Visualização em grade"
-                    ><Grid3X3 size={16} /></button>
-                    <button onClick={() => setGridMode("list")}
-                      className={`p-2 transition-colors ${gridMode === "list" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
-                      aria-label="Visualização em lista"
-                    ><LayoutList size={16} /></button>
-                  </div>
-                </div>
-              </div>
-
               {/* ── Products Area ── */}
               {filtered.length === 0 ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
@@ -929,7 +922,7 @@ export function ProductsPage() {
                     </div>
                   )}
                   {gridMode === "grid" ? (
-                    <div className={`grid gap-x-4 sm:gap-x-6 gap-y-14 grid-cols-2 xl:grid-cols-${colsCount}`}>
+                    <div className="grid gap-x-4 sm:gap-x-6 gap-y-14 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       <AnimatePresence mode="popLayout">
                     {paginatedProducts.map((product, i) => {
                       const displayProduct = getColorMatchedProduct(product);
@@ -941,11 +934,13 @@ export function ProductsPage() {
                       const switchBadgeInfo = getSwitchBadgeInfo(displayProduct);
 
                       return (
-                        <motion.div key={product.id} layout initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.96 }}
+                        <motion.div key={`grid-${product.id}`} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                           transition={{ duration: 0.3, delay: Math.min(i * 0.025, 0.35) }}
                           className="group relative"
                         >
-                          <div className={`relative overflow-hidden mb-4 aspect-square transition-all ${displayProduct.inStock === false ? 'opacity-60 grayscale-[0.5]' : ''}`} style={{ borderRadius: "var(--radius-card)", background: isDark ? "#1a1a1c" : "#f0f0f0" }}>
+                          <div className={`relative overflow-hidden mb-4 aspect-[5/6] transition-all neon-hover-red ${displayProduct.inStock === false ? 'opacity-60 grayscale-[0.5]' : ''}`} style={{ borderRadius: "20px", background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}>
+                            {/* Inner shine */}
+                            <div className="pointer-events-none absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)", borderRadius: "20px" }} />
                             <Link to={`/produto/${displayProduct.id}`} className="block h-full">
                               <div className="flex h-full w-full items-center justify-center p-4 sm:p-5 lg:p-6">
                                 <ImageWithFallback
@@ -953,35 +948,24 @@ export function ProductsPage() {
                                   alt={displayProduct.name}
                                   loading="lazy"
                                   decoding="async"
-                                  className="h-full w-full object-contain scale-[0.92] group-hover:scale-[0.96] transition-transform duration-[1s] ease-out"
+                                  className="h-full w-full object-contain scale-[0.92] group-hover:scale-[0.97] transition-transform duration-500 ease-out"
                                 />
                               </div>
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.06] transition-colors duration-500" />
                             </Link>
 
-                            {/* Badges — top-left corner */}
-                            <div className="absolute top-3 left-3 flex items-start gap-2 z-10">
-                              {switchBadgeInfo ? (
-                                <span className="flex h-12 w-12 items-center justify-center overflow-hidden border border-white/10 bg-black/35 shadow-sm backdrop-blur-sm rounded-full" title={switchBadgeInfo.label}>
-                                  <img src={switchBadgeInfo.src} alt={switchBadgeInfo.label} className="h-full w-full object-contain p-0.5" />
-                                </span>
-                              ) : displayProduct.badge && (
-                                <span className={`px-2.5 py-1 shadow-sm ${displayProduct.badge.toUpperCase().includes('BLUE') ? 'bg-blue-600 text-white' : displayProduct.badge.toUpperCase().includes('RED') ? 'bg-red-600 text-white' : displayProduct.badge.toUpperCase().includes('BROWN') ? 'bg-amber-700 text-white' : 'bg-primary text-primary-foreground'}`}
-                                  style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "600", letterSpacing: "0.03em" }}>
-                                  {displayProduct.badge}
-                                </span>
-                              )}
-                              {discount > 0 && (
-                                <span className="px-2.5 py-1 bg-emerald-500 text-white shadow-sm" style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: "700", letterSpacing: "0.03em" }}>
-                                  {discount}% OFF
-                                </span>
-                              )}
-                              {displayProduct.inStock === false && (
-                                <span className="px-2.5 py-1 bg-foreground/80 text-background shadow-sm" style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "600" }}>
-                                  Esgotado
-                                </span>
-                              )}
+                            {/* Top-left: rating pill */}
+                            <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full px-2.5 py-1 backdrop-blur-md"
+                              style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                              <Star size={11} className="fill-yellow-400 text-yellow-400" />
+                              <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "11.5px", fontWeight: 700, color: "rgba(255,255,255,0.95)" }}>
+                                {displayProduct.rating.toFixed(1)}
+                              </span>
                             </div>
+                            {displayProduct.inStock === false && (
+                              <span className="absolute top-3 right-12 z-10 px-2.5 py-1 bg-foreground/80 text-background shadow-sm" style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "600" }}>
+                                Esgotado
+                              </span>
+                            )}
 
                             {/* Favorite + Quick View — top-right */}
                             <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
@@ -1020,84 +1004,72 @@ export function ProductsPage() {
                                     <ChevronRight size={18} />
                                   </button>
                                 )}
-                                {/* Dots */}
-                                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                                  {productImages.map((_, idx) => (
-                                    <button key={idx}
-                                      onClick={(e) => { e.preventDefault(); setImageIdx(imageKey, idx, productImages.length); }}
-                                      aria-label={`Ir para imagem ${idx + 1}`}
-                                      className={`h-1.5 rounded-full transition-all ${idx === imgIdx ? "bg-white w-5" : "bg-white/50 w-1.5 hover:bg-white/80"}`}
-                                    />
-                                  ))}
-                                </div>
                               </>
                             )}
 
-                            {/* Quick add — Insider "Compra Rápida" style */}
-                            <div className="absolute bottom-0 left-0 right-0 z-10">
-                              <button
-                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(displayProduct); }}
-                                className="w-full py-3.5 bg-foreground/95 backdrop-blur-md text-background flex items-center justify-center gap-2 lg:opacity-0 lg:translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 cursor-pointer"
-                                style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}
-                              >
-                                <ShoppingBag size={14} /> Adicionar ao Carrinho
-                              </button>
-                            </div>
+                            {/* Quick add — floating pill on hover */}
+                            <button
+                              onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(displayProduct); }}
+                              className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-10 py-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+                              style={{ background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)", color: "white", fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 700, letterSpacing: "0.04em", boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)" }}
+                            >
+                              <span className="inline-flex items-center gap-2"><ShoppingBag size={14} strokeWidth={2} /> Comprar</span>
+                            </button>
                           </div>
 
-                          {/* Product info — Insider order: Swatches → Name → Rating → Price */}
-                          <div className="px-1">
-                            {/* Color swatches */}
-                            {swatches.length > 1 && (
-                              <div className="flex items-center gap-1.5 mb-3">
-                                {swatches.map((sw) => (
-                                  <button
-                                    key={sw.productId}
-                                    className={`w-4 h-4 rounded-full border border-foreground/15 transition-transform hover:scale-125 cursor-pointer ${
-                                      sw.productId === displayProduct.id ? "ring-2 ring-primary/70 ring-offset-2 ring-offset-background" : ""
-                                    }`}
-                                    style={{ backgroundColor: sw.color }}
-                                    title={sw.label}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      const variant = getProductVariantByColor(product, sw.label) ?? productById.get(sw.productId) ?? null;
-                                      if (variant) setSelectedVariantIds((prev) => ({ ...prev, [product.id]: variant.id }));
-                                    }}
-                                  />
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Name */}
+                          {/* Product info */}
+                          <div className="mt-4 px-1">
                             <Link to={`/produto/${displayProduct.id}`}>
-                              <p className="text-foreground group-hover:text-foreground/70 transition-colors mb-2 truncate leading-snug"
-                                style={{ fontFamily: "var(--font-family-figtree)", fontSize: "16px", fontWeight: "var(--font-weight-medium)", lineHeight: 1.4 }}>
+                              <h3 className="line-clamp-1 text-white"
+                                style={{ fontFamily: "var(--font-family-figtree)", fontSize: "16px", fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.01em" }}>
                                 {displayProduct.name}
-                              </p>
+                              </h3>
                             </Link>
 
-                            {/* Rating + Price inline */}
-                            <div className="flex items-center justify-between mt-1">
-                              <div className="flex items-center gap-1.5">
-                                <Star size={12} className="fill-foreground text-foreground" />
-                                <span className="text-foreground/60 font-medium" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
-                                  {displayProduct.rating}
-                                </span>
-                                <span className="text-foreground/30" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                                  ({displayProduct.reviews})
-                                </span>
-                              </div>
-                              <div className="text-right">
-                                {displayProduct.oldPrice && (
-                                  <p className="text-foreground/40 line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                                    {displayProduct.oldPrice}
-                                  </p>
-                                )}
-                                <p className="text-foreground" style={{ fontFamily: "var(--font-family-inter)", fontSize: "16px", fontWeight: "700" }}>
+                            <div className="mt-3">
+                              {swatches.length > 1 && (
+                                <div className="mb-2 flex items-center gap-1.5">
+                                  {swatches.map((sw) => (
+                                    <button
+                                      key={sw.productId}
+                                      className="h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
+                                      style={{
+                                        backgroundColor: sw.color,
+                                        border: sw.productId === displayProduct.id ? "2px solid rgba(225,6,0,0.9)" : "1px solid rgba(255,255,255,0.18)",
+                                        boxShadow: sw.productId === displayProduct.id ? "0 0 8px rgba(225,6,0,0.5)" : "none",
+                                      }}
+                                      title={sw.label}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const variant = getProductVariantByColor(product, sw.label) ?? productById.get(sw.productId) ?? null;
+                                        if (variant) setSelectedVariantIds((prev) => ({ ...prev, [product.id]: variant.id }));
+                                      }}
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                              {displayProduct.oldPrice && (
+                                <p className="line-through leading-none mb-1" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", color: "rgba(255,255,255,0.38)" }}>
+                                  {displayProduct.oldPrice}
+                                </p>
+                              )}
+                              <div className="flex items-baseline gap-2">
+                                <p className="text-white leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em" }}>
                                   {displayProduct.price}
                                 </p>
+                                {discount > 0 && (
+                                  <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
+                                    -{discount}%
+                                  </span>
+                                )}
                               </div>
+                              <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", color: "rgba(255,255,255,0.6)" }}>
+                                No PIX ou 10x de {(() => {
+                                  const inst = (displayProduct.priceNum / 10);
+                                  return `R$ ${inst.toFixed(2).replace(".", ",")}`;
+                                })()}
+                              </p>
                             </div>
                           </div>
                         </motion.div>
@@ -1113,7 +1085,7 @@ export function ProductsPage() {
                       const displayProduct = getColorMatchedProduct(product);
                       const discount = getDiscount(displayProduct);
                       return (
-                        <motion.div key={product.id} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -20 }}
+                        <motion.div key={`list-${product.id}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                           transition={{ duration: 0.25, delay: i * 0.02 }}
                           className="group flex flex-col sm:flex-row sm:items-center gap-5 border border-foreground/10 hover:border-foreground/20 p-4 transition-all duration-300"
                           style={{ borderRadius: "var(--radius-card)" }}
@@ -1272,77 +1244,165 @@ export function ProductsPage() {
           const quickViewImageIndex = getImageIndex(quickViewProduct.id, quickViewImages.length);
           const quickViewDiscount = getDiscount(quickViewProduct);
           const quickViewBullets = getProductAboutBullets(quickViewProduct).slice(0, 6);
+          const quickViewSwatches = getProductSwatches(quickViewProduct);
 
           return (
           <>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/85 backdrop-blur-md z-50"
               onClick={() => setQuickViewProduct(null)}
             />
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[800px] md:max-h-[85vh] z-50 overflow-y-auto p-8 shadow-2xl"
-              style={{ background: isDark ? "#161617" : "#fff", borderRadius: "var(--radius-card)" }}
+            <motion.div initial={{ opacity: 0, scale: 0.96, y: 16 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ type: "spring", damping: 26, stiffness: 320 }}
+              className="fixed inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[1040px] md:max-w-[95vw] md:max-h-[90vh] z-50 overflow-y-auto p-6 md:p-8 shadow-2xl"
+              style={{ background: "#0f0f10", borderRadius: "22px", border: "1px solid rgba(255,255,255,0.06)" }}
             >
               <button onClick={() => setQuickViewProduct(null)}
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-foreground/5 rounded-full text-foreground/50 hover:text-foreground hover:bg-foreground/10 transition-colors z-10 cursor-pointer"
+                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-white/55 hover:text-white hover:bg-white/8 transition-colors z-20 cursor-pointer"
                 aria-label="Fechar"
               ><X size={20} /></button>
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="relative aspect-square overflow-hidden" style={{ borderRadius: "var(--radius-card)", background: isDark ? "#161617" : "#fff" }}>
-                  <ImageWithFallback src={quickViewImages[quickViewImageIndex]} alt={quickViewProduct.name} loading="lazy" decoding="async" className="h-full w-full object-contain p-6" />
-                  {quickViewDiscount > 0 && (
-                    <span className="absolute top-4 left-4 px-3 py-1.5 bg-emerald-500 text-white shadow-sm" style={{ borderRadius: "4px", fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: "700", letterSpacing: "0.03em" }}>
-                      {quickViewDiscount}% OFF
-                    </span>
-                  )}
+
+              <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+                {/* Left: thumbs + main image */}
+                <div className="flex gap-3">
                   {quickViewImages.length > 1 && (
-                    <>
-                      {quickViewImageIndex > 0 && (
+                    <div className="flex flex-col gap-2 w-[68px] md:w-[76px] flex-shrink-0">
+                      {quickViewImages.slice(0, 5).map((img, idx) => (
                         <button
-                          onClick={(e) => { e.preventDefault(); setImageIdx(quickViewProduct.id, quickViewImageIndex - 1, quickViewImages.length); }}
-                          className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-md transition-colors hover:bg-black/55 cursor-pointer"
-                          aria-label="Imagem anterior"
+                          key={idx}
+                          onClick={(e) => { e.preventDefault(); setImageIdx(quickViewProduct.id, idx, quickViewImages.length); }}
+                          className="aspect-square overflow-hidden transition-all cursor-pointer"
+                          style={{
+                            borderRadius: "12px",
+                            background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                            border: idx === quickViewImageIndex
+                              ? "2px solid rgba(225,6,0,0.85)"
+                              : "1px solid rgba(255,255,255,0.06)",
+                          }}
+                          aria-label={`Imagem ${idx + 1}`}
                         >
-                          <ChevronLeft size={20} />
+                          <ImageWithFallback src={img} alt={`thumb ${idx + 1}`} className="h-full w-full object-contain p-2" />
                         </button>
-                      )}
-                      {quickViewImageIndex < quickViewImages.length - 1 && (
-                        <button
-                          onClick={(e) => { e.preventDefault(); setImageIdx(quickViewProduct.id, quickViewImageIndex + 1, quickViewImages.length); }}
-                          className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-md transition-colors hover:bg-black/55 cursor-pointer"
-                          aria-label="Próxima imagem"
-                        >
-                          <ChevronRight size={20} />
-                        </button>
-                      )}
-                    </>
+                      ))}
+                    </div>
                   )}
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-foreground/40 uppercase mb-3 font-semibold tracking-wider" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>{quickViewProduct.category}</p>
-                  <h3 className="text-foreground mb-3 text-2xl md:text-3xl" style={{ fontFamily: "var(--font-family-figtree)", fontWeight: "var(--font-weight-medium)", lineHeight: 1.2 }}>{quickViewProduct.name}</h3>
-                  <div className="flex items-center gap-2 mb-5">
-                    <Star size={16} className="fill-yellow-400 text-yellow-400" />
-                    <span className="text-foreground/70 font-medium" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}>{quickViewProduct.rating}</span>
-                    <span className="text-foreground/40" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>({quickViewProduct.reviews} avaliações)</span>
-                  </div>
-                  <div className="flex flex-col gap-1 mb-6">
-                    {quickViewProduct.oldPrice && (
-                      <p className="text-foreground/40 line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "15px" }}>{quickViewProduct.oldPrice}</p>
-                    )}
-                    <p className="text-foreground" style={{ fontFamily: "var(--font-family-inter)", fontSize: "28px", fontWeight: "700" }}>{quickViewProduct.price}</p>
-                  </div>
-                  {quickViewBullets.length > 0 && (
-                    <div className="mb-8">
-                      <h4
-                        className="text-foreground/55 font-semibold tracking-wide mb-4 flex items-center gap-2"
-                        style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", letterSpacing: "0.1em" }}
+
+                  <div
+                    className="relative flex-1 aspect-square overflow-hidden"
+                    style={{
+                      borderRadius: "18px",
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                    }}
+                  >
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      style={{ background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)", borderRadius: "18px" }}
+                    />
+                    <ImageWithFallback
+                      src={quickViewImages[quickViewImageIndex]}
+                      alt={quickViewProduct.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="relative z-10 h-full w-full object-contain p-8"
+                    />
+                    {quickViewDiscount > 0 && (
+                      <span
+                        className="absolute top-4 left-4 z-20 px-3 py-1.5 text-white"
+                        style={{
+                          background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                          borderRadius: "999px",
+                          fontFamily: "var(--font-family-inter)",
+                          fontSize: "11px",
+                          fontWeight: "700",
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                        }}
                       >
+                        {quickViewDiscount}% OFF
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: info */}
+                <div className="flex flex-col">
+                  <p className="uppercase mb-3 tracking-[0.18em]" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700, color: "var(--primary)" }}>
+                    {quickViewProduct.category}
+                  </p>
+                  <h3 className="text-white mb-3" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(22px, 2.4vw, 30px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.02em" }}>
+                    {quickViewProduct.name}
+                  </h3>
+
+                  <div className="flex items-center gap-2 mb-5">
+                    <Star size={15} className="fill-yellow-400 text-yellow-400" />
+                    <span className="text-white/80 font-medium" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}>{quickViewProduct.rating}</span>
+                    <span className="text-white/40" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>({quickViewProduct.reviews} avaliações)</span>
+                  </div>
+
+                  <div className="flex items-baseline gap-3 mb-4">
+                    <p className="text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "30px", fontWeight: 700, letterSpacing: "-0.01em" }}>
+                      {quickViewProduct.price}
+                    </p>
+                    {quickViewProduct.oldPrice && (
+                      <p className="line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "15px", color: "rgba(255,255,255,0.35)" }}>
+                        {quickViewProduct.oldPrice}
+                      </p>
+                    )}
+                  </div>
+
+                  {(() => {
+                    const stockLeft = ((quickViewProduct.id * 7) % 13) + 2;
+                    const urgent = stockLeft <= 5;
+                    return (
+                      <div className="mb-5 flex items-center gap-2">
+                        <span className={`relative flex h-2 w-2`}>
+                          <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${urgent ? "bg-[#ff2419]" : "bg-emerald-500"}`} />
+                          <span className={`relative inline-flex h-2 w-2 rounded-full ${urgent ? "bg-[#ff2419]" : "bg-emerald-500"}`} />
+                        </span>
+                        <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "12.5px", fontWeight: 600, color: urgent ? "#ff5a52" : "rgba(255,255,255,0.85)" }}>
+                          {urgent ? `Últimas ${stockLeft} unidades em estoque` : `${stockLeft} em estoque · envio em 24h`}
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  {quickViewSwatches.length > 1 && (
+                    <div className="mb-6">
+                      <p className="mb-2.5" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.6)" }}>
+                        Cores:
+                      </p>
+                      <div className="flex items-center gap-2">
+                        {quickViewSwatches.map((sw) => (
+                          <button
+                            key={sw.productId}
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const variant = productById.get(sw.productId) ?? null;
+                              if (variant) setQuickViewProduct(variant);
+                            }}
+                            className="h-4 w-4 rounded-full cursor-pointer transition-all hover:scale-110"
+                            style={{
+                              backgroundColor: sw.color,
+                              border: sw.productId === quickViewProduct.id ? "2px solid rgba(225,6,0,0.9)" : "1px solid rgba(255,255,255,0.22)",
+                              boxShadow: sw.productId === quickViewProduct.id ? "0 0 10px rgba(225,6,0,0.5)" : "none",
+                            }}
+                            title={sw.label}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {quickViewBullets.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="font-semibold mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", letterSpacing: "0.18em", color: "rgba(255,255,255,0.55)" }}>
                         <span className="w-1 h-1 rounded-full bg-primary" />
                         SOBRE O PRODUTO
                       </h4>
-                      <ul className="space-y-3">
+                      <ul className="space-y-2.5">
                         {quickViewBullets.map((bullet, index) => (
                           <motion.li
                             key={`${quickViewProduct.id}-${index}-${bullet.slice(0, 20)}`}
@@ -1351,13 +1411,10 @@ export function ProductsPage() {
                             transition={{ duration: 0.18, delay: Math.min(index, 5) * 0.025 }}
                             className="flex items-start gap-3"
                           >
-                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center mt-1">
+                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary/15 flex items-center justify-center mt-0.5">
                               <Check size={9} className="text-primary" strokeWidth={2.5} />
                             </span>
-                            <span
-                              className="text-foreground/65 leading-relaxed"
-                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "13.5px", lineHeight: "1.65" }}
-                            >
+                            <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", lineHeight: "1.6", color: "rgba(255,255,255,0.7)" }}>
                               {bullet}
                             </span>
                           </motion.li>
@@ -1365,20 +1422,24 @@ export function ProductsPage() {
                       </ul>
                     </div>
                   )}
-                  <div className="flex gap-4 mt-auto">
-                    <button onClick={() => { handleAddToCart(quickViewProduct); setQuickViewProduct(null); }}
-                      className="flex-1 py-3.5 bg-foreground text-background flex items-center justify-center gap-2 font-bold transition-opacity hover:opacity-90 shadow-md cursor-pointer"
-                      style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "14px", letterSpacing: "0.04em", textTransform: "uppercase" }}
-                    >
-                      <ShoppingBag size={16} /> Adicionar
-                    </button>
-                    <Link to={`/produto/${quickViewProduct.id}`}
-                      className="py-3.5 px-6 border border-foreground/15 text-foreground/70 hover:text-foreground hover:border-foreground/30 transition-colors flex items-center justify-center font-semibold cursor-pointer"
-                      style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
-                    >
-                      Detalhes <ArrowUpRight size={16} className="ml-1" />
-                    </Link>
-                  </div>
+
+                  <button
+                    onClick={() => { handleAddToCart(quickViewProduct); setQuickViewProduct(null); }}
+                    className="w-full py-4 flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer mt-auto"
+                    style={{
+                      background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                      color: "white",
+                      borderRadius: "999px",
+                      fontFamily: "var(--font-family-inter)",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      boxShadow: "0 12px 32px -10px rgba(225,6,0,0.6)",
+                    }}
+                  >
+                    <ShoppingBag size={16} strokeWidth={2} /> Comprar
+                  </button>
                 </div>
               </div>
             </motion.div>

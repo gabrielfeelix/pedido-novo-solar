@@ -139,8 +139,14 @@ export function CartDrawer() {
             className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
 
           <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed top-0 right-0 bottom-0 z-[61] flex w-full max-w-[460px] flex-col border-l border-border/10"
-            style={{ background: isDark ? "#161617" : "white" }}
+            className="fixed top-0 right-0 bottom-0 z-[61] flex w-full max-w-[460px] flex-col overflow-hidden"
+            style={{
+              background: isDark ? "#161617" : "white",
+              borderTopLeftRadius: "22px",
+              borderBottomLeftRadius: "22px",
+              borderLeft: "1px solid rgba(255,255,255,0.06)",
+              boxShadow: "-24px 0 60px -12px rgba(0,0,0,0.55)",
+            }}
           >
             <div className="flex items-center justify-between border-b border-foreground/5 px-7 py-5">
               <div className="flex items-center gap-3">
@@ -287,17 +293,39 @@ export function CartDrawer() {
             {items.length > 0 && (
               <div className="border-t border-foreground/5 px-7 py-5 space-y-3 max-h-[55vh] overflow-y-auto" style={{ scrollbarWidth: "none" }}>
                 <div>
-                  <button onClick={() => setShippingOpen(!shippingOpen)}
-                    className="flex items-center justify-between w-full py-1 cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-2">
-                      <MapPin size={12} className="text-foreground/25" />
-                      <span className="text-foreground/30 group-hover:text-foreground/50 transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                        {shippingOptions && selectedShipping !== null ? `Frete: ${shippingOptions[selectedShipping].name}` : "Calcular frete"}
-                      </span>
+                  {shippingOptions && selectedShipping !== null && !shippingOpen ? (
+                    <div className="flex items-center justify-between w-full py-1.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Truck size={12} className="text-primary flex-shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-foreground/75 truncate" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}>
+                            {shippingOptions[selectedShipping].name} · {shippingOptions[selectedShipping].price === 0 ? "Grátis" : formatPrice(shippingOptions[selectedShipping].price)}
+                          </p>
+                          <p className="text-foreground/35" style={{ fontFamily: "var(--font-family-inter)", fontSize: "10.5px" }}>
+                            CEP {cep} · {shippingOptions[selectedShipping].days}
+                          </p>
+                        </div>
+                      </div>
+                      <button onClick={() => setShippingOpen(true)}
+                        className="flex-shrink-0 text-primary/85 hover:text-primary transition-colors cursor-pointer"
+                        style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.02em" }}
+                      >
+                        Alterar
+                      </button>
                     </div>
-                    <ChevronDown size={11} className={`text-foreground/20 transition-transform duration-300 ${shippingOpen ? "rotate-180" : ""}`} />
-                  </button>
+                  ) : (
+                    <button onClick={() => setShippingOpen(!shippingOpen)}
+                      className="flex items-center justify-between w-full py-1 cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2">
+                        <MapPin size={12} className="text-foreground/25" />
+                        <span className="text-foreground/30 group-hover:text-foreground/50 transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
+                          Calcular frete
+                        </span>
+                      </div>
+                      <ChevronDown size={11} className={`text-foreground/20 transition-transform duration-300 ${shippingOpen ? "rotate-180" : ""}`} />
+                    </button>
+                  )}
                   <AnimatePresence>
                     {shippingOpen && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
@@ -317,7 +345,7 @@ export function CartDrawer() {
                             {shippingOptions && (
                               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-1">
                                 {shippingOptions.map((opt, idx) => (
-                                  <button key={opt.name} onClick={() => setSelectedShipping(idx)}
+                                  <button key={opt.name} onClick={() => { setSelectedShipping(idx); setShippingOpen(false); }}
                                     className={`w-full flex items-center justify-between px-3 py-2 border transition-all duration-300 cursor-pointer ${
                                       selectedShipping === idx ? "border-primary/30 bg-primary/5" : "border-foreground/5 hover:border-foreground/10"
                                     }`}

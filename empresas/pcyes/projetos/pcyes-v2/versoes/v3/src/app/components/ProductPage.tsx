@@ -876,27 +876,6 @@ function StickyPriceCard({
             Comprar agora
           </button>
 
-          <button
-            onClick={onAddToCart}
-            disabled={!inStock}
-            className={`h-12 flex items-center justify-center gap-2 font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed ${
-              addedToCart
-                ? "bg-green-500/10 text-green-600 border border-green-500/30"
-                : "bg-white text-black border border-foreground/10 hover:bg-zinc-50 active:scale-[0.99]"
-            }`}
-            style={{
-              borderRadius: "var(--radius-button)",
-              fontFamily: "var(--font-family-inter)",
-              fontSize: "13.5px",
-              letterSpacing: "0.02em",
-            }}
-          >
-            {addedToCart ? (
-              <><Check size={15} strokeWidth={2.2} /> Adicionado ao carrinho</>
-            ) : (
-              <><ShoppingBag size={15} strokeWidth={1.8} /> Adicionar ao carrinho</>
-            )}
-          </button>
         </div>
 
         <div className="h-px bg-foreground/6 mb-5" />
@@ -1047,7 +1026,7 @@ function MobilePurchaseFlow({
             {addedToCart ? (
               <><Check size={15} strokeWidth={2.2} /> Adicionado ao carrinho</>
             ) : (
-              <><ShoppingBag size={15} strokeWidth={1.9} /> Adicionar ao carrinho</>
+              <><ShoppingBag size={15} strokeWidth={1.9} /> Comprar</>
             )}
           </button>
         </div>

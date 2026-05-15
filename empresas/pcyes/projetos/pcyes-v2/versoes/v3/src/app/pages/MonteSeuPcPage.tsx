@@ -1030,7 +1030,7 @@ export function MonteSeuPcPage() {
                 className="h-14 w-full rounded-2xl bg-white text-base font-semibold text-black transition hover:bg-white/90"
               >
                 <ShoppingCart className="mr-2 h-4 w-4" />
-                Adicionar ao Carrinho
+                Comprar
               </Button>
             </div>
           </div>

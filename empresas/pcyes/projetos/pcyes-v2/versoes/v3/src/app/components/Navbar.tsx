@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef, type ReactNode } from "react";
+import React, { useState, useEffect, useRef, useMemo, type ReactNode } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
-import { Search, ShoppingBag, User, Menu, X, Clock, TrendingUp, ArrowUpRight, Heart, ChevronRight, ChevronLeft, Download, FileText, Sparkles, Grid2x2, Box, Monitor, Cpu, Radio, Globe2, MapPin } from "lucide-react";
+import { Search, ShoppingBag, User, Menu, X, Clock, TrendingUp, ArrowUpRight, Heart, ChevronRight, ChevronLeft, ChevronDown, Download, FileText, Sparkles, Grid2x2, Box, Monitor, Cpu, Radio, Globe2, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "./ThemeProvider";
 import { useCart } from "./CartContext";
@@ -11,7 +11,7 @@ import { useFavorites } from "./FavoritesContext";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { allProducts, type Product } from "./productsData";
 import { ThemeToggle } from "./ThemeToggle";
-import { getCatalogHref, getPrimaryProductImage, getProductSubcategory, getVisibleCatalogProducts } from "./productPresentation";
+import { getCatalogHref, getPrimaryProductImage, getProductSubcategory, getProductSwatches, getVisibleCatalogProducts } from "./productPresentation";
 
 const PCYES_LOGO = "https://pcyes-cdn.oderco.com.br/Logotipos/PCYES/Simbolo-Logo-Horiz-Vermelho.png";
 
@@ -365,24 +365,25 @@ const megaMenus: Record<string, MegaMenu> = {
 
 // ─── Nav Items ───────────────────────────────────────────────────────────────
 
-interface NavItem { label: string; href?: string; mega?: string }
+interface NavItem { label: string; href?: string; mega?: string; emphasis?: "green" | "build" }
 
 const navItems: NavItem[] = [
-  { label: "Novidades", href: "/produtos" },
+  { label: "Novidades", href: "/produtos", emphasis: "green" },
   { label: "Hardware", mega: "hardware", href: getCatalogHref({ category: "Hardware" }) },
   { label: "Periféricos", mega: "perifericos", href: getCatalogHref({ category: "Periféricos" }) },
   { label: "Computadores", mega: "computadores", href: getCatalogHref({ category: "Computadores" }) },
   { label: "PC Gamer", mega: "pcgamer", href: getCatalogHref({ category: "Computadores" }) },
   { label: "Collab", mega: "collab", href: "/maringa-fc" },
-  { label: "Monte seu PC", href: "/monte-seu-pc" },
-  { label: "Seja Influenciador", href: "/influenciadores" },
-  { label: "Seja Revendedor", href: "/revendedor" },
-  { label: "Drivers e Manuais", mega: "drivers", href: "#" },
-  { label: "Fale Conosco", href: "/fale-conosco" },
+  { label: "Monte seu PC", href: "/monte-seu-pc", emphasis: "build" },
 ];
 
 const trending = ["Gabinete Spectrum", "Mouse Cobra", "Teclado Mecânico", "Headset 7.1"];
 const recent = ["Fontes modulares", "Cadeiras gaming"];
+
+const mostSearchedKeywords = ["Headsets", "Teclados", "Mouses", "Monitores", "Gabinetes", "Cadeiras", "Placas de Vídeo", "SSDs"];
+const mostSearchedProductIds = [436, 72, 329, 199, 446];
+
+const searchCategories = ["Todas as categorias", "Hardware", "Periféricos", "Computadores", "PC Gamer"];
 
 const isPlaceholderHref = (href?: string) => !href || href === "#";
 const resolveMenuHref = (href?: string) => (isPlaceholderHref(href) ? "/produtos" : href);
@@ -440,10 +441,14 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchPanelOpen, setSearchPanelOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState(searchCategories[0]);
+  const [searchCategoryOpen, setSearchCategoryOpen] = useState(false);
   const [promoDismissed, setPromoDismissed] = useState(false);
   const [promoHovered, setPromoHovered] = useState(false);
   const [countdown, setCountdown] = useState({ h: 0, m: 0, s: 0 });
   const [activeMega, setActiveMega] = useState<string | null>(null);
+  const [desktopCatOpen, setDesktopCatOpen] = useState(false);
   const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
   const megaTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -456,6 +461,7 @@ export function Navbar() {
   const isHome = location.pathname === "/";
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchDropdownRef = useRef<HTMLDivElement>(null);
+  const searchPanelRef = useRef<HTMLDivElement>(null);
 
   // Countdown
   useEffect(() => {
@@ -472,7 +478,11 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      const s = window.scrollY > 60;
+      setScrolled(s);
+      if (!s) setDesktopCatOpen(false);
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -484,18 +494,46 @@ export function Navbar() {
   useEffect(() => {
     if (megaTimeout.current) clearTimeout(megaTimeout.current);
     setActiveMega(null);
+    setSearchPanelOpen(false);
+    setSearchCategoryOpen(false);
   }, [location.pathname, location.search]);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); setSearchOpen((p) => !p); }
-      if (e.key === "Escape" && searchOpen) { setSearchOpen(false); setSearchQuery(""); }
+      if (e.key === "Escape") {
+        if (searchOpen) { setSearchOpen(false); setSearchQuery(""); }
+        if (searchPanelOpen) { setSearchPanelOpen(false); setSearchCategoryOpen(false); searchInputRef.current?.blur(); }
+      }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [searchOpen]);
+  }, [searchOpen, searchPanelOpen]);
 
   useEffect(() => { if (searchOpen) setTimeout(() => searchInputRef.current?.focus(), 100); else setSearchQuery(""); }, [searchOpen]);
+
+  useEffect(() => {
+    if (!searchPanelOpen) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (searchPanelRef.current && !searchPanelRef.current.contains(target)) {
+        setSearchPanelOpen(false);
+        setSearchCategoryOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [searchPanelOpen]);
+
+  useEffect(() => {
+    if (searchPanelOpen) setSearchCategoryOpen(false);
+  }, [searchPanelOpen]);
+
+  const mostSearchedProducts = useMemo(() => {
+    return mostSearchedProductIds
+      .map((id) => visibleCatalogProducts.find((p) => p.id === id))
+      .filter(Boolean) as Product[];
+  }, []);
 
   // Auto-select first subitem when mega menu changes
   useEffect(() => {
@@ -507,7 +545,7 @@ export function Navbar() {
     }
   }, [activeMega]);
 
-  const showExpanded = !scrolled;
+  const showExpanded = true;
   const showPromoBanner = false;
   const promoTop = (promoDismissed || !showExpanded || !showPromoBanner) ? 0 : 36;
   const isDark = resolvedTheme === "dark" || resolvedTheme === undefined;
@@ -554,13 +592,13 @@ export function Navbar() {
   };
 
   const iconColor = showExpanded
-    ? (promoHovered ? (isDark ? "text-white/60 hover:text-white" : "text-black/60 hover:text-black") : (isDark ? "text-white/40 hover:text-white" : "text-black/40 hover:text-black"))
+    ? (promoHovered ? (isDark ? "text-white/80 hover:text-white" : "text-black/80 hover:text-black") : (isDark ? "text-white/70 hover:text-white" : "text-black/70 hover:text-black"))
     : (isDark ? "text-white/62 hover:text-white" : "text-foreground/60 hover:text-foreground");
   const navTextColor = showExpanded
-    ? (promoHovered ? (isDark ? "text-white/70 hover:text-white" : "text-black/70 hover:text-black") : (isDark ? "text-white/45 hover:text-white" : "text-black/45 hover:text-black"))
+    ? (promoHovered ? (isDark ? "text-white/90 hover:text-white" : "text-black/90 hover:text-black") : (isDark ? "text-white/75 hover:text-white" : "text-black/75 hover:text-black"))
     : (isDark ? "text-foreground/40 hover:text-foreground" : "text-foreground/50 hover:text-foreground");
   const categoryLinkColor = showExpanded
-    ? (isDark ? "text-white/45 hover:text-white" : "text-foreground/55 hover:text-foreground")
+    ? (isDark ? "text-white/75 hover:text-white" : "text-foreground/80 hover:text-foreground")
     : (isDark ? "text-foreground/45 hover:text-foreground" : "text-foreground/50 hover:text-foreground");
 
   const renderIcons = () => (
@@ -580,7 +618,12 @@ export function Navbar() {
         </AnimatePresence>
       </button>
       <ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} />
-      <button onClick={handleUserClick} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}>
+      <button onClick={handleUserClick} className={`relative w-10 h-10 flex items-center justify-center transition-colors cursor-pointer group ${iconColor}`}>
+        {/* Gamer scan-frame corners */}
+        <span className="absolute top-1.5 left-1.5 w-[9px] h-[9px] border-t border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+        <span className="absolute top-1.5 right-1.5 w-[9px] h-[9px] border-t border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+        <span className="absolute bottom-1.5 left-1.5 w-[9px] h-[9px] border-b border-l border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
+        <span className="absolute bottom-1.5 right-1.5 w-[9px] h-[9px] border-b border-r border-current opacity-30 group-hover:opacity-65 transition-opacity duration-200 pointer-events-none" />
         {isLoggedIn ? (
           <span className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
             <span className="text-primary" style={{ fontSize: "10px", fontFamily: "var(--font-family-inter)", fontWeight: "var(--font-weight-medium)" }}>J</span>
@@ -1097,13 +1140,8 @@ export function Navbar() {
         {/* Main nav */}
         <nav className="transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
-            backgroundColor: showExpanded
-              ? (promoHovered ? (isDark ? "rgba(0,0,0,0.95)" : "rgba(255,255,255,0.95)") : "transparent")
-              : (isDark ? "rgba(4,4,4,0.72)" : "rgba(248,249,251,0.62)"),
-            backdropFilter: showExpanded ? (promoHovered ? "blur(40px)" : "none") : "blur(22px)",
-            borderBottom: showExpanded
-              ? "1px solid transparent"
-              : `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
+            backgroundColor: "#000000",
+            borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}
 	        >
 	          {/* Mobile header */}
@@ -1248,164 +1286,591 @@ export function Navbar() {
 	            </div>
 	          </div>
 
-	          {/* Top row */}
-	          <div className="max-w-[1760px] mx-auto px-5 md:px-8 hidden lg:flex items-center justify-between transition-all duration-700"
-	            style={{ height: showExpanded ? 50 : 72 }}
-	          >
-            {/* Left: logo (compact) or Brasil + Lojas (expanded) */}
-            <div className="flex min-w-0 items-center lg:w-[150px] xl:w-[170px]">
-              <div className="transition-all duration-700 overflow-hidden" style={{ maxWidth: showExpanded ? 0 : 200, opacity: showExpanded ? 0 : 1 }}>
-                <Link to="/" className="block flex-shrink-0">
-                  <img src={PCYES_LOGO} alt="PCYES" className="h-[24px] w-auto object-contain" />
-                </Link>
-              </div>
-              <div className="flex items-center gap-5 transition-all duration-700 overflow-hidden whitespace-nowrap" style={{ maxWidth: showExpanded ? 300 : 0, opacity: showExpanded ? 1 : 0 }}>
-                <button className={`flex items-center gap-1.5 transition-colors hover:opacity-70 cursor-pointer ${categoryLinkColor}`} style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                  <span>🇧🇷</span>
-                  <span className="opacity-30">|</span>
-                  <span>Brasil</span>
-                </button>
-                <Link
-                  to="/revendedor"
-                  className={`transition-colors hover:opacity-70 ${categoryLinkColor}`}
-                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}
-                >
-                  Lojas
-                </Link>
-              </div>
+          {/* Top row — desktop */}
+          <div
+            className="max-w-[1760px] mx-auto px-5 md:px-8 hidden lg:flex relative items-center transition-all duration-500"
+            style={{ height: showExpanded ? 96 : 92 }}
+          >
+            {/* Left: logo */}
+            <div className="flex items-center flex-shrink-0">
+              <Link to="/" className="flex-shrink-0">
+                <img src={PCYES_LOGO} alt="PCYES" className="h-[34px] w-auto object-contain" />
+              </Link>
             </div>
 
-            {/* Center: compact search */}
-            <form
-              onSubmit={handleSearchSubmit}
-              className="relative hidden lg:flex flex-1 items-center justify-center mx-5 xl:mx-7 transition-all duration-700"
-              style={{ opacity: showExpanded ? 0 : 1, pointerEvents: showExpanded ? "none" : "auto" }}
-            >
-              <div className="flex h-[36px] w-full max-w-[1120px] items-center overflow-hidden rounded-[10px] border border-white/18 bg-white/[0.18] shadow-[0_12px_30px_rgba(0,0,0,0.22)] backdrop-blur-xl ring-1 ring-white/10 transition-all focus-within:border-white/35 focus-within:bg-white/[0.24] focus-within:ring-2 focus-within:ring-primary/55">
-                <Search size={17} className="ml-4 flex-shrink-0 text-white/70" strokeWidth={1.8} />
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="O que você está procurando? Digite aqui..."
-                  className="h-full min-w-0 flex-1 bg-transparent px-3 text-white outline-none placeholder:text-white/58"
-                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
-                />
-                {searchQuery && (
+            {/* Search (absolute center) */}
+            <div ref={searchPanelRef} className="absolute left-1/2 -translate-x-1/2 w-full max-w-[680px]">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="relative w-full"
+              >
+                <div
+                  className="flex h-[40px] items-center overflow-hidden rounded-full border transition-all"
+                  style={{
+                    background: "#1f1c1c",
+                    borderColor: searchPanelOpen ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.08)",
+                    boxShadow: searchPanelOpen
+                      ? "0 10px 32px rgba(0, 0, 0, 0.55)"
+                      : "0 4px 16px rgba(0, 0, 0, 0.4)",
+                  }}
+                >
+                  {/* All categories dropdown */}
+                  <div className="relative h-full flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSearchCategoryOpen((p) => !p);
+                      }}
+                      className="flex h-full items-center gap-1.5 pl-5 pr-3 text-white/85 transition-colors hover:text-white"
+                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}
+                    >
+                      <span className="hidden xl:inline">{searchCategory}</span>
+                      <span className="xl:hidden">Categorias</span>
+                      <ChevronDown size={14} strokeWidth={2} className={`transition-transform duration-200 ${searchCategoryOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    <span className="absolute right-0 top-1/2 h-5 w-px -translate-y-1/2 bg-white/15" />
+                  </div>
+
+                  <input
+                    ref={searchInputRef}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onFocus={() => setSearchPanelOpen(true)}
+                    placeholder="O que você está procurando?"
+                    className="h-full min-w-0 flex-1 bg-transparent px-4 text-white outline-none placeholder:text-white/40"
+                    style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
+                  />
+
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="flex h-full w-9 items-center justify-center text-white/40 transition-colors hover:text-white/70"
+                      aria-label="Limpar busca"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+
                   <button
-                    type="button"
-                    onClick={() => setSearchQuery("")}
-                    className="flex h-full w-10 items-center justify-center text-white/45 transition-colors hover:text-white/80"
-                    aria-label="Limpar busca"
+                    type="submit"
+                    className={`flex h-full w-12 items-center justify-center transition-colors ${
+                      searchPanelOpen ? "text-white" : "text-white/70 hover:text-white"
+                    }`}
+                    aria-label="Buscar"
                   >
-                    <X size={14} />
+                    <Search size={18} strokeWidth={searchPanelOpen ? 2.4 : 2} />
                   </button>
-                )}
-                <button
-                  type="submit"
-                  className="flex h-full w-[48px] items-center justify-center bg-primary text-white transition-colors hover:bg-[#d90012]"
-                  aria-label="Buscar"
-                >
-                  <Search size={19} strokeWidth={2.2} />
-                </button>
-              </div>
-              <AnimatePresence>
-                {!showExpanded && searchQuery.trim().length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -6, scale: 0.985 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -6, scale: 0.985 }}
-                    transition={{ duration: 0.16 }}
-                    className="absolute left-0 right-0 top-[44px] z-[60] mx-auto w-full max-w-[1120px] overflow-hidden border border-white/10 bg-[#121214]/98 shadow-2xl"
-                    style={{ borderRadius: "12px", backdropFilter: "blur(24px)" }}
-                  >
-                    {searchResults.length > 0 ? (
-                      <div className="max-h-[380px] overflow-y-auto p-2">
-                        <p className="px-3 pb-2 pt-1 text-white/35" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>
-                          {searchResults.length} resultado{searchResults.length !== 1 ? "s" : ""}
-                        </p>
-                        {searchResults.map((product) => (
-                          <Link
-                            key={product.id}
-                            to={`/produto/${product.id}`}
-                            onClick={() => setSearchQuery("")}
-                            className="group flex items-center gap-3 rounded-[10px] p-2.5 transition-colors hover:bg-white/[0.06]"
-                          >
-                            <div className="h-11 w-11 flex-shrink-0 overflow-hidden bg-white/[0.04]" style={{ borderRadius: "8px" }}>
-                              <ImageWithFallback src={getPrimaryProductImage(product)} alt={product.name} className="h-full w-full object-cover" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-white/85 transition-colors group-hover:text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "14px", fontWeight: 500 }}>
-                                {product.name}
-                              </p>
-                              <p className="truncate text-white/35" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>
-                                {product.category}
-                              </p>
-                            </div>
-                            <span className="flex-shrink-0 text-white/55" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}>
-                              {product.price}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="px-5 py-6 text-center">
-                        <p className="text-white/45" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
-                          Nenhum produto encontrado
-                        </p>
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </form>
+                </div>
 
-            {/* Right */}
-            <div className="flex items-center justify-end gap-2 lg:w-[170px] xl:w-[190px]">
-              {renderIcons()}
-              <button className={`lg:hidden w-10 h-10 flex items-center justify-center transition-colors cursor-pointer ${iconColor}`}
-                onClick={() => setMobileOpen(!mobileOpen)}
-              >{mobileOpen ? <X size={22} /> : <Menu size={22} />}</button>
+                {/* X close (when panel open) */}
+                <AnimatePresence>
+                  {searchPanelOpen && (
+                    <motion.button
+                      key="search-close"
+                      type="button"
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.6 }}
+                      transition={{ duration: 0.15 }}
+                      onClick={() => {
+                        setSearchPanelOpen(false);
+                        setSearchQuery("");
+                        setSearchCategoryOpen(false);
+                        searchInputRef.current?.blur();
+                      }}
+                      className={`absolute -right-12 top-1/2 z-[61] flex h-10 w-10 -translate-y-1/2 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                      aria-label="Fechar busca"
+                    >
+                      <X size={22} strokeWidth={1.7} />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+
+                {/* Category dropdown */}
+                <AnimatePresence>
+                  {searchCategoryOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.14 }}
+                      className="absolute left-0 top-[48px] z-[70] w-[220px] overflow-hidden rounded-[14px] border border-white/10 bg-[#0f0f10] shadow-2xl"
+                    >
+                      {searchCategories.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setSearchCategory(cat);
+                            setSearchCategoryOpen(false);
+                          }}
+                          className={`flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors ${
+                            searchCategory === cat
+                              ? "bg-primary/15 text-white"
+                              : "text-white/70 hover:bg-white/[0.06] hover:text-white"
+                          }`}
+                          style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 500 }}
+                        >
+                          {cat}
+                          {searchCategory === cat && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Search panel — most searched products + keywords */}
+                <AnimatePresence>
+                  {searchPanelOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="absolute left-1/2 top-[58px] z-[60] w-[min(1320px,calc(100vw-64px))] -translate-x-1/2 overflow-hidden rounded-[22px] shadow-[0_28px_80px_rgba(0,0,0,0.55)]"
+                      style={{
+                        background: "#1f1c1c",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                      }}
+                    >
+                      {searchQuery.trim().length === 0 ? (
+                        <div className="grid grid-cols-[1fr_260px] gap-0">
+                          {/* Left: produtos */}
+                          <div className="border-r border-white/[0.08] px-10 py-9">
+                            <h4
+                              className="mb-7 text-white"
+                              style={{
+                                fontFamily: "var(--font-family-figtree)",
+                                fontSize: "20px",
+                                fontWeight: 700,
+                                letterSpacing: "-0.015em",
+                              }}
+                            >
+                              Produtos mais buscados
+                            </h4>
+                            <div className="grid grid-cols-5 gap-6">
+                              {mostSearchedProducts.map((p) => {
+                                const img = getPrimaryProductImage(p);
+                                const swatches = getProductSwatches(p);
+                                const hasDiscount = p.oldPriceNum && p.oldPriceNum > p.priceNum;
+                                const discount = hasDiscount
+                                  ? Math.round(((p.oldPriceNum! - p.priceNum) / p.oldPriceNum!) * 100)
+                                  : 0;
+                                return (
+                                  <Link
+                                    key={p.id}
+                                    to={`/produto/${p.id}`}
+                                    onClick={() => setSearchPanelOpen(false)}
+                                    className="group block"
+                                  >
+                                    <div
+                                      className="relative aspect-square overflow-hidden transition-all"
+                                      style={{
+                                        background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
+                                        borderRadius: "16px",
+                                        border: "1px solid rgba(255,255,255,0.08)",
+                                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                                      }}
+                                    >
+                                      {discount > 0 && (
+                                        <span
+                                          className="absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-white"
+                                          style={{
+                                            background: "var(--primary)",
+                                            fontFamily: "var(--font-family-inter)",
+                                            fontSize: "10px",
+                                            fontWeight: 700,
+                                            letterSpacing: "0.02em",
+                                          }}
+                                        >
+                                          -{discount}%
+                                        </span>
+                                      )}
+                                      <ImageWithFallback
+                                        src={img}
+                                        alt={p.name}
+                                        className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.06]"
+                                      />
+                                    </div>
+                                    <p
+                                      className="mt-4 line-clamp-2 text-white/85 transition-colors group-hover:text-white"
+                                      style={{
+                                        fontFamily: "var(--font-family-figtree)",
+                                        fontSize: "14px",
+                                        fontWeight: 600,
+                                        lineHeight: 1.3,
+                                        letterSpacing: "-0.005em",
+                                      }}
+                                    >
+                                      {p.name}
+                                    </p>
+                                    <div className="mt-2 flex items-baseline gap-1.5">
+                                      <span
+                                        className={hasDiscount ? "" : "text-white"}
+                                        style={{
+                                          fontFamily: "var(--font-family-figtree)",
+                                          fontSize: "15px",
+                                          fontWeight: 700,
+                                          letterSpacing: "-0.01em",
+                                          color: hasDiscount ? "var(--primary)" : undefined,
+                                        }}
+                                      >
+                                        {p.price}
+                                      </span>
+                                      {hasDiscount && p.oldPrice && (
+                                        <span
+                                          className="line-through text-white/35"
+                                          style={{
+                                            fontFamily: "var(--font-family-inter)",
+                                            fontSize: "11px",
+                                          }}
+                                        >
+                                          {p.oldPrice}
+                                        </span>
+                                      )}
+                                    </div>
+                                    {swatches.length > 0 && (
+                                      <div className="mt-2.5 flex items-center gap-1.5">
+                                        {swatches.slice(0, 4).map((s) => (
+                                          <span
+                                            key={s.productId}
+                                            className="inline-block h-3 w-3 rounded-full"
+                                            style={{
+                                              background: s.color,
+                                              border: "1px solid rgba(255,255,255,0.18)",
+                                            }}
+                                            aria-label={s.label}
+                                          />
+                                        ))}
+                                      </div>
+                                    )}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Right: keywords */}
+                          <div className="px-7 py-9">
+                            <h4
+                              className="mb-6 text-white"
+                              style={{
+                                fontFamily: "var(--font-family-figtree)",
+                                fontSize: "20px",
+                                fontWeight: 700,
+                                letterSpacing: "-0.015em",
+                              }}
+                            >
+                              Termos mais buscados
+                            </h4>
+                            <div className="flex flex-col">
+                              {mostSearchedKeywords.map((kw) => (
+                                <Link
+                                  key={kw}
+                                  to={`/produtos?search=${encodeURIComponent(kw)}`}
+                                  onClick={() => {
+                                    setSearchPanelOpen(false);
+                                    setSearchQuery("");
+                                  }}
+                                  className="group flex items-center justify-between py-2.5 text-left text-white/70 transition-colors hover:text-[var(--primary)]"
+                                  style={{
+                                    fontFamily: "var(--font-family-inter)",
+                                    fontSize: "14px",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  <span>{kw}</span>
+                                  <ArrowUpRight
+                                    size={14}
+                                    strokeWidth={1.8}
+                                    className="text-white/25 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--primary)]"
+                                  />
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ) : searchResults.length > 0 ? (
+                        <div className="px-10 py-9">
+                          <div className="mb-7 flex items-baseline justify-between">
+                            <h4
+                              className="text-white"
+                              style={{
+                                fontFamily: "var(--font-family-figtree)",
+                                fontSize: "20px",
+                                fontWeight: 700,
+                                letterSpacing: "-0.015em",
+                              }}
+                            >
+                              Resultados para "{searchQuery}"
+                            </h4>
+                            <span
+                              className="text-white/50"
+                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em" }}
+                            >
+                              {searchResults.length} {searchResults.length === 1 ? "PRODUTO" : "PRODUTOS"}
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-5 gap-6 max-h-[520px] overflow-y-auto pr-1">
+                            {searchResults.map((p) => {
+                              const img = getPrimaryProductImage(p);
+                              const swatches = getProductSwatches(p);
+                              const hasDiscount = p.oldPriceNum && p.oldPriceNum > p.priceNum;
+                              const discount = hasDiscount
+                                ? Math.round(((p.oldPriceNum! - p.priceNum) / p.oldPriceNum!) * 100)
+                                : 0;
+                              return (
+                                <Link
+                                  key={p.id}
+                                  to={`/produto/${p.id}`}
+                                  onClick={() => {
+                                    setSearchQuery("");
+                                    setSearchPanelOpen(false);
+                                  }}
+                                  className="group block"
+                                >
+                                  <div
+                                    className="relative aspect-square overflow-hidden transition-all"
+                                    style={{
+                                      background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
+                                      borderRadius: "16px",
+                                      border: "1px solid rgba(255,255,255,0.08)",
+                                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                                    }}
+                                  >
+                                    {discount > 0 && (
+                                      <span
+                                        className="absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-white"
+                                        style={{
+                                          background: "var(--primary)",
+                                          fontFamily: "var(--font-family-inter)",
+                                          fontSize: "10px",
+                                          fontWeight: 700,
+                                          letterSpacing: "0.02em",
+                                        }}
+                                      >
+                                        -{discount}%
+                                      </span>
+                                    )}
+                                    <ImageWithFallback
+                                      src={img}
+                                      alt={p.name}
+                                      className="absolute inset-0 h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.06]"
+                                    />
+                                  </div>
+                                  <p
+                                    className="mt-4 line-clamp-2 text-white/85 transition-colors group-hover:text-white"
+                                    style={{
+                                      fontFamily: "var(--font-family-figtree)",
+                                      fontSize: "14px",
+                                      fontWeight: 600,
+                                      lineHeight: 1.3,
+                                      letterSpacing: "-0.005em",
+                                    }}
+                                  >
+                                    {p.name}
+                                  </p>
+                                  <div className="mt-2 flex items-baseline gap-1.5">
+                                    <span
+                                      style={{
+                                        fontFamily: "var(--font-family-figtree)",
+                                        fontSize: "15px",
+                                        fontWeight: 700,
+                                        letterSpacing: "-0.01em",
+                                        color: hasDiscount ? "var(--primary)" : "#fff",
+                                      }}
+                                    >
+                                      {p.price}
+                                    </span>
+                                    {hasDiscount && p.oldPrice && (
+                                      <span
+                                        className="line-through text-white/35"
+                                        style={{
+                                          fontFamily: "var(--font-family-inter)",
+                                          fontSize: "11px",
+                                        }}
+                                      >
+                                        {p.oldPrice}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {swatches.length > 0 && (
+                                    <div className="mt-2.5 flex items-center gap-1.5">
+                                      {swatches.slice(0, 4).map((s) => (
+                                        <span
+                                          key={s.productId}
+                                          className="inline-block h-3 w-3 rounded-full"
+                                          style={{
+                                            background: s.color,
+                                            border: "1px solid rgba(255,255,255,0.18)",
+                                          }}
+                                          aria-label={s.label}
+                                        />
+                                      ))}
+                                    </div>
+                                  )}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="px-10 py-16 text-center">
+                          <p className="text-white/65" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "18px", fontWeight: 600 }}>
+                            Nenhum produto encontrado
+                          </p>
+                          <p className="mt-2 text-white/40" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
+                            Tente outro termo ou veja os produtos mais buscados
+                          </p>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </form>
+            </div>
+
+            {/* Right icons */}
+            <div className="ml-auto flex flex-shrink-0 items-center gap-1">
+              <button
+                onClick={() => navigate("/fale-conosco")}
+                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                aria-label="Lojas"
+              >
+                <MapPin size={20} strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={() => navigate("/perfil?tab=favorites")}
+                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                aria-label="Favoritos"
+              >
+                <Heart size={20} strokeWidth={1.5} />
+                <AnimatePresence>
+                  {favCount > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
+                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+                    >
+                      {favCount}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+              <ThemeToggle showExpanded={showExpanded} navbarIsDark={isDark} />
+              <button
+                onClick={handleUserClick}
+                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                aria-label={isLoggedIn ? "Conta" : "Login"}
+              >
+                {isLoggedIn ? (
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700 }}>J</span>
+                ) : (
+                  <User size={20} strokeWidth={1.5} />
+                )}
+              </button>
+              <button
+                onClick={() => setCartOpen(true)}
+                className={`relative flex h-10 w-10 items-center justify-center transition-colors cursor-pointer ${iconColor}`}
+                aria-label="Carrinho"
+              >
+                <ShoppingBag size={20} strokeWidth={1.5} />
+                <AnimatePresence>
+                  {totalItems > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-primary-foreground"
+                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 600 }}
+                    >
+                      {totalItems}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
             </div>
           </div>
 
-          {/* Big logo (expanded) */}
-          <div className="hidden lg:block text-center overflow-hidden transition-all duration-700"
-            style={{ maxHeight: showExpanded ? 96 : 0, opacity: showExpanded ? 1 : 0, paddingTop: showExpanded ? 14 : 0, paddingBottom: showExpanded ? 14 : 0 }}
+          {/* Category links (expanded or desktop hamburger open) */}
+          <div
+            className="hidden md:flex items-center justify-center gap-0 overflow-hidden transition-all duration-300"
+            style={{
+              maxHeight: (showExpanded || desktopCatOpen) ? 48 : 0,
+              opacity: searchPanelOpen ? 0 : ((showExpanded || desktopCatOpen) ? 1 : 0),
+              paddingBottom: (showExpanded || desktopCatOpen) ? 12 : 0,
+              pointerEvents: searchPanelOpen ? "none" : ((showExpanded || desktopCatOpen) ? "auto" : "none"),
+            }}
           >
-            <Link to="/" className="inline-block">
-              <img src={PCYES_LOGO} alt="PCYES" className="h-[42px] w-auto object-contain mx-auto" />
-            </Link>
-          </div>
-
-          {/* Category links (expanded) */}
-          <div className="hidden md:flex items-center justify-center gap-0 overflow-hidden transition-all duration-300"
-            style={{ maxHeight: showExpanded ? 44 : 0, opacity: showExpanded ? 1 : 0, paddingBottom: showExpanded ? 10 : 0, pointerEvents: showExpanded ? "auto" : "none" }}
-          >
-            {navItems.map((item) => (
-              <div key={item.label}
-                onMouseEnter={() => {
-                    if (item.mega) handleMegaEnter(item.mega);
+            {navItems.map((item) => {
+              const hasMega = !!item.mega;
+              const isActiveItem = activeMega === item.mega;
+              const isGreen = item.emphasis === "green";
+              const isBuild = item.emphasis === "build";
+              const baseClass = `relative flex items-center gap-1 px-4 py-1.5 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:bg-primary after:transition-transform after:duration-300 ${
+                isActiveItem
+                  ? "text-foreground after:scale-x-100"
+                  : `${isGreen || isBuild ? "" : categoryLinkColor} after:scale-x-0 hover:after:scale-x-100`
+              }`;
+              const customStyle: React.CSSProperties = {
+                fontFamily: "var(--font-family-inter)",
+                fontSize: "14px",
+                fontWeight: isBuild ? 700 : 500,
+              };
+              if (isGreen) {
+                customStyle.color = "#34d399";
+              }
+              if (isBuild) {
+                customStyle.color = "#ff2419";
+                customStyle.letterSpacing = "0.02em";
+              }
+              const content = (
+                <>
+                  <span>{item.label}</span>
+                  {hasMega && (
+                    <ChevronDown
+                      size={12}
+                      strokeWidth={2}
+                      className={`transition-transform duration-200 ${isActiveItem ? "rotate-180" : ""}`}
+                    />
+                  )}
+                </>
+              );
+              const cls = `${baseClass} cursor-pointer`;
+              return (
+                <div
+                  key={item.label}
+                  onMouseEnter={() => {
+                    if (hasMega) handleMegaEnter(item.mega!);
                     else closeMegaMenu();
                   }}
-                onMouseLeave={handleMegaLeave}
-              >
-                {!isPlaceholderHref(item.href) ? (
-                  <Link to={resolveMenuHref(item.href)}
-                    onClick={closeMegaMenu}
-                    className={`relative px-4 py-1.5 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:bg-primary after:transition-transform after:duration-300 ${activeMega === item.mega
-                      ? "text-foreground after:scale-x-100"
-                      : `${categoryLinkColor} after:scale-x-0 hover:after:scale-x-100`}`}
-                    style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
-                  >{item.label}</Link>
-                ) : (
-                  <button onClick={closeMegaMenu} className={`relative px-4 py-1.5 transition-colors duration-300 cursor-pointer after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:bg-primary after:transition-transform after:duration-300 ${activeMega === item.mega
-                    ? "text-foreground after:scale-x-100"
-                    : `${categoryLinkColor} after:scale-x-0 hover:after:scale-x-100`}`}
-                    style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px" }}
-                  >{item.label}</button>
-                )}
-              </div>
-            ))}
+                  onMouseLeave={handleMegaLeave}
+                >
+                  {!isPlaceholderHref(item.href) ? (
+                    <Link
+                      to={resolveMenuHref(item.href)}
+                      onClick={closeMegaMenu}
+                      className={cls}
+                      style={customStyle}
+                    >
+                      {content}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={closeMegaMenu}
+                      className={cls}
+                      style={customStyle}
+                    >
+                      {content}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* ─── Mega Menu ──────────────────────────────────────────────────────── */}
@@ -1641,7 +2106,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="fixed inset-0 z-[70] bg-background lg:hidden"
+            className="fixed inset-0 z-[70] bg-background"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileMenuView === "region" ? (

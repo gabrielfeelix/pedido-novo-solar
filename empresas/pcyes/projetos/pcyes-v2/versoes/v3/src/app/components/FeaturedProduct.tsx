@@ -182,7 +182,7 @@ export function FeaturedProduct({ label, title, description, image, imageAlt, re
                 onClick={() => addItem({ id: activeProductId, name: activeProduct.title, price: activeProduct.price, image: activeProduct.image })}
               >
                 <ShoppingBag size={14} strokeWidth={1.5} className="relative z-10" />
-                <span className="relative z-10">Adicionar ao carrinho</span>
+                <span className="relative z-10">Comprar</span>
                 <span className="absolute inset-0 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               </button>
               <Link

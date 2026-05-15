@@ -58,6 +58,112 @@
   /* Font family variables */
   --font-family-figtree: 'Figtree', sans-serif;
   --font-family-inter: 'Inter', sans-serif;
+  /* Layout */
+  --container-max: 1760px;
+  --space-section-sm: 56px;
+  --space-section-md: 88px;
+  --space-section-lg: 128px;
+  --space-section-xl: 168px;
+}
+
+/* Homepage shelves — hide scrollbars on horizontal carousels */
+.shelf-track::-webkit-scrollbar,
+.deals-track::-webkit-scrollbar,
+.essentials-track::-webkit-scrollbar { display: none; }
+
+/* Essentials card hover treatment */
+.essential-card { transition: border-color 300ms ease, box-shadow 300ms ease; }
+.essential-card:hover {
+  border-color: rgba(225, 6, 0, 0.45);
+  box-shadow: 0 0 0 1px rgba(225, 6, 0, 0.18), 0 24px 60px -28px rgba(225, 6, 0, 0.5);
+}
+.essential-card-glow { transition: opacity 500ms ease; }
+.essential-card:hover .essential-card-glow { opacity: 1; }
+
+/* Deal card hover treatment */
+.deal-card-img { transition: border-color 300ms ease, box-shadow 300ms ease; }
+.deal-card-img:hover {
+  border-color: rgba(225, 6, 0, 0.4);
+  box-shadow: 0 0 0 1px rgba(225, 6, 0, 0.15), 0 22px 50px -28px rgba(225, 6, 0, 0.45);
+}
+
+/* Glitch word — matrix/hack aesthetic */
+.glitch-word {
+  position: relative;
+  display: inline-block;
+  color: white;
+  padding-right: 8px;
+  animation: glitch-flicker 1500ms steps(1, end);
+  text-shadow: 0 0 6px rgba(255, 36, 25, 0.25);
+}
+.glitch-word-base {
+  position: relative;
+  z-index: 2;
+  animation: glitch-clip 1500ms steps(1, end);
+}
+.glitch-word-r {
+  position: absolute;
+  inset: 0;
+  color: #ff2419;
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: glitch-shift-r 1500ms steps(1, end);
+  text-shadow: 0 0 12px rgba(255, 36, 25, 0.85);
+}
+@keyframes glitch-flicker {
+  0%   { transform: none; filter: none; }
+  18%  { transform: translateX(2px) skewX(-2deg); filter: blur(0.4px); }
+  20%  { transform: none; filter: none; }
+  32%  { transform: translateX(-3px) skewX(3deg); filter: brightness(1.2); }
+  34%  { transform: none; filter: none; }
+  48%  { transform: translateX(4px); }
+  52%  { transform: translateX(-2px); }
+  56%  { transform: none; }
+  62%  { transform: translateX(-6px) skewX(-6deg); filter: brightness(1.4); }
+  66%  { transform: translateX(5px) skewX(4deg); }
+  70%  { transform: translateX(-3px) skewY(2deg); }
+  72%  { transform: translateX(2px); }
+  76%  { transform: translateX(-1px) skewX(-1deg); }
+  78%  { transform: none; }
+  84%  { transform: translateX(4px) skewX(2deg); filter: brightness(1.3); }
+  86%  { transform: translateX(-2px); }
+  88%  { transform: none; }
+  94%  { transform: translateX(1px); }
+  100% { transform: none; filter: none; }
+}
+@keyframes glitch-shift-r {
+  0%   { transform: none; opacity: 0; }
+  16%  { transform: translate(-3px, 0); opacity: 0.6; }
+  20%  { transform: none; opacity: 0; }
+  30%  { transform: translate(4px, 1px); opacity: 0.75; }
+  34%  { transform: none; opacity: 0; }
+  48%  { transform: translate(-5px, -2px); opacity: 0.85; }
+  52%  { transform: translate(3px, 2px); opacity: 0.7; }
+  56%  { transform: none; opacity: 0; }
+  62%  { transform: translate(-8px, -2px); opacity: 0.95; }
+  66%  { transform: translate(7px, 2px); opacity: 0.9; }
+  70%  { transform: translate(-4px, 1px); opacity: 0.8; }
+  72%  { transform: translate(3px, -1px); opacity: 0.7; }
+  76%  { transform: translate(-2px, 0); opacity: 0.55; }
+  78%  { transform: none; opacity: 0; }
+  84%  { transform: translate(6px, -2px); opacity: 0.85; }
+  86%  { transform: translate(-3px, 1px); opacity: 0.7; }
+  88%  { transform: none; opacity: 0; }
+  94%  { transform: translate(2px, 0); opacity: 0.4; }
+  100% { transform: none; opacity: 0; }
+}
+@keyframes glitch-clip {
+  0%   { clip-path: none; }
+  62%  { clip-path: none; }
+  64%  { clip-path: polygon(0 12%, 100% 12%, 100% 32%, 0 32%); }
+  66%  { clip-path: none; }
+  70%  { clip-path: polygon(0 55%, 100% 55%, 100% 75%, 0 75%); }
+  72%  { clip-path: none; }
+  76%  { clip-path: polygon(0 5%, 100% 5%, 100% 18%, 0 18%); }
+  78%  { clip-path: none; }
+  84%  { clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+  86%  { clip-path: none; }
+  100% { clip-path: none; }
 }
 
 .dark {
@@ -206,4 +312,53 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/* === Hero carousel card stroke ===
+   Gray gradient default. Red gradient on hover. */
+.hero-card-stroke {
+  background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%);
+}
+.hero-card {
+  transition: box-shadow 320ms ease;
+}
+.hero-card:hover .hero-card-stroke {
+  background: linear-gradient(135deg, var(--primary) 0%, #ff2419 35%, rgba(225,6,0,0.55) 65%, rgba(225,6,0,0.15) 100%);
+}
+.hero-card:hover {
+  box-shadow:
+    0 30px 80px -24px rgba(0,0,0,0.75),
+    0 0 50px -10px rgba(225,6,0,0.35);
+}
+
+/* === Category showcase active card hover ===
+   Red stroke + outer glow on hover. Image zoom handled in component. */
+.category-active:hover {
+  border-color: rgba(225, 6, 0, 0.55) !important;
+  box-shadow:
+    0 0 0 1px rgba(225, 6, 0, 0.45),
+    0 30px 80px -20px rgba(0,0,0,0.7),
+    0 0 32px -4px rgba(225, 6, 0, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+/* === V3 Neon hover (gamer aesthetic) ===
+   Subtle layered box-shadow with brand red. Modern, not 90s.
+   Opts in via className="neon-hover-red". Animates over 320ms. */
+.neon-hover-red {
+  transition: box-shadow 320ms ease-out, transform 320ms ease-out;
+}
+.neon-hover-red:hover {
+  box-shadow:
+    0 0 0 1px rgba(225, 6, 0, 0.55),
+    0 0 0 4px rgba(225, 6, 0, 0.10),
+    0 0 22px -2px rgba(225, 6, 0, 0.45),
+    0 0 60px -8px rgba(225, 6, 0, 0.25),
+    0 16px 44px -16px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 40px 35px -24px rgba(255, 255, 255, 0.05);
+}
+.neon-hover-red:hover .neon-glow-deepen {
+  box-shadow:
+    inset 0 0 80px -16px rgba(225, 6, 0, 0.18);
 }
