@@ -14,6 +14,8 @@ import {
   getProductSwatches,
   getVisibleCatalogProducts,
 } from "./productPresentation";
+import { getPreOrderInfo } from "./PreOrderData";
+import { PreOrderBadge } from "./PreOrderBanner";
 
 interface ProductShelfProps {
   label: string;
@@ -62,6 +64,7 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
     oldPriceNum > product.priceNum
       ? Math.round(((oldPriceNum - product.priceNum) / oldPriceNum) * 100)
       : 0;
+  const preOrderInfo = getPreOrderInfo(product.id);
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -117,7 +120,7 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
             </span>
           )}
 
-          {discount > 0 && (
+          {discount > 0 && !preOrderInfo && (
             <span
               className="absolute z-20 inline-flex items-center text-white"
               style={{
@@ -134,6 +137,18 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
               }}
             >
               -{discount}%
+            </span>
+          )}
+
+          {preOrderInfo && (
+            <span
+              className="absolute z-20"
+              style={{
+                left: rank !== undefined ? "60px" : "12px",
+                top: "12px",
+              }}
+            >
+              <PreOrderBadge info={preOrderInfo} />
             </span>
           )}
 

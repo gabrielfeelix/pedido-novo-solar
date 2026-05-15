@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /carrinho
+Disallow: /checkout
+Disallow: /perfil
+Disallow: /produtos?
+
+Sitemap: https://pcyes.com.br/sitemap.xml

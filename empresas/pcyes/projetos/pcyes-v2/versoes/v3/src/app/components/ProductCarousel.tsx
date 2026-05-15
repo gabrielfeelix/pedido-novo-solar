@@ -9,6 +9,8 @@ import { useAuth } from "./AuthContext";
 import { Link } from "react-router";
 import { allProducts, type Product } from "./productsData";
 import { findProductBySwatch, getPrimaryProductImage, getProductHoverMedia, getProductSwatches, getVisibleCatalogProducts } from "./productPresentation";
+import { getPreOrderInfo } from "./PreOrderData";
+import { PreOrderBadge } from "./PreOrderBanner";
 
 interface ProductCarouselProps {
   label?: string;
@@ -233,7 +235,8 @@ export function ProductCarousel({
             >
               {(() => {
                 const displayProduct = selectedVariants[key] ?? product;
-                const discountBadge = getDiscountBadge(displayProduct);
+                const preOrderInfo = getPreOrderInfo(displayProduct.id);
+                const discountBadge = preOrderInfo ? null : getDiscountBadge(displayProduct);
                 const hoverMedia = getProductHoverMedia(displayProduct);
 
                 return (
@@ -277,8 +280,9 @@ export function ProductCarousel({
 
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/18 transition-colors duration-500" />
 
-                  {(discountBadge || showNoveltyTag) && (
+                  {(discountBadge || showNoveltyTag || preOrderInfo) && (
                     <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                      {preOrderInfo && <PreOrderBadge info={preOrderInfo} />}
                       {discountBadge && (
                         <span
                           className="inline-flex items-center text-white"

@@ -26,7 +26,7 @@ const COUPONS: Record<string, number> = {
 const GIFT_THRESHOLD = 950;
 
 export function CartDrawer() {
-  const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalItems, lastAdded, setGiftItem } = useCart();
+  const { items, isOpen, setIsOpen, removeItem, updateQuantity, totalItems, lastAdded, setGiftItem, clearCart } = useCart();
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark" || resolvedTheme === undefined;
   const navigate = useNavigate();
@@ -321,15 +321,15 @@ export function CartDrawer() {
                     </div>
                   ) : (
                     <button onClick={() => setShippingOpen(!shippingOpen)}
-                      className="flex items-center justify-between w-full py-1 cursor-pointer group"
+                      className="flex items-center justify-between w-full py-2 px-3 cursor-pointer group transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin size={12} className="text-foreground/25" />
-                        <span className="text-foreground/30 group-hover:text-foreground/50 transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
+                        <MapPin size={12} className="text-foreground/45" />
+                        <span className="text-foreground/65 group-hover:text-foreground/85 transition-colors" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}>
                           Calcular frete
                         </span>
                       </div>
-                      <ChevronDown size={11} className={`text-foreground/20 transition-transform duration-300 ${shippingOpen ? "rotate-180" : ""}`} />
+                      <ChevronDown size={11} className={`text-foreground/35 transition-transform duration-300 ${shippingOpen ? "rotate-180" : ""}`} />
                     </button>
                   )}
                   <AnimatePresence>
@@ -388,11 +388,11 @@ export function CartDrawer() {
                       {appliedCoupon ? (
                         <Check size={13} className="text-green-500" />
                       ) : (
-                        <Tag size={12} className="text-foreground/25" />
+                        <Tag size={12} className="text-foreground/45" />
                       )}
                       <span
-                        className={appliedCoupon ? "text-green-400" : "text-foreground/30 group-hover:text-foreground/50 transition-colors"}
-                        style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: appliedCoupon ? 600 : 400 }}
+                        className={appliedCoupon ? "text-green-400" : "text-foreground/65 group-hover:text-foreground/85 transition-colors"}
+                        style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: appliedCoupon ? 600 : 600 }}
                       >
                         {appliedCoupon ? `Cupom ${appliedCoupon} aplicado` : "Cupom de desconto"}
                       </span>
@@ -473,14 +473,34 @@ export function CartDrawer() {
                 </div>
 
                 <button
-                  className="w-full py-4 bg-primary text-primary-foreground hover:shadow-[0_0_40px_rgba(255,43,46,0.25)] transition-all duration-500 flex items-center justify-center gap-2 cursor-pointer"
-                  style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "14px", fontWeight: "var(--font-weight-medium)" }}
-                  onClick={() => { setIsOpen(false); navigate("/checkout"); }}
-                >Finalizar compra</button>
-                <button onClick={() => setIsOpen(false)}
-                  className="w-full py-2 text-foreground/30 hover:text-foreground/50 transition-colors cursor-pointer"
-                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                >Continuar comprando</button>
+                  className="w-full py-4 rounded-full text-white transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                  style={{
+                    background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                    fontFamily: "var(--font-family-inter)",
+                    fontSize: "13.5px",
+                    fontWeight: 800,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    boxShadow: "0 14px 32px -8px rgba(225,6,0,0.55)",
+                  }}
+                  onClick={() => { setIsOpen(false); navigate("/carrinho"); }}
+                  aria-label="Revisar pedido no carrinho completo"
+                >Revisar pedido</button>
+                <div className="flex items-center justify-between gap-3 pt-1">
+                  <button onClick={() => setIsOpen(false)}
+                    className="text-foreground/35 hover:text-foreground/65 transition-colors cursor-pointer"
+                    style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}
+                  >Continuar comprando</button>
+                  <button
+                    onClick={() => clearCart()}
+                    className="inline-flex items-center gap-1 text-foreground/35 hover:text-primary transition-colors cursor-pointer"
+                    style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600 }}
+                    aria-label="Limpar carrinho"
+                  >
+                    <Trash2 size={12} strokeWidth={2} />
+                    Limpar carrinho
+                  </button>
+                </div>
               </div>
             )}
           </motion.div>

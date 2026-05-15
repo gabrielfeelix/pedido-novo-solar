@@ -22,6 +22,8 @@ import {
   getProductSwatches,
   getVisibleCatalogProducts,
 } from "./productPresentation";
+import { getPreOrderInfo } from "./PreOrderData";
+import { PreOrderBadge } from "./PreOrderBanner";
 
 const categoryMap: Record<string, string> = {
   ...Object.fromEntries(productCategories.map((category) => [category, category])),
@@ -962,6 +964,7 @@ export function ProductsPage() {
                       const imgIdx = getImageIndex(imageKey, productImages.length);
                       const swatches = getProductSwatchesCached(product);
                       const switchBadgeInfo = getSwitchBadgeInfo(displayProduct);
+                      const preOrderInfo = getPreOrderInfo(displayProduct.id);
 
                       return (
                         <motion.div key={`grid-${product.id}`} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
@@ -983,8 +986,12 @@ export function ProductsPage() {
                               </div>
                             </Link>
 
-                            {/* Top-left: discount badge (or rating pill if no discount) */}
-                            {discount > 0 ? (
+                            {/* Top-left: pre-order > discount > rating */}
+                            {preOrderInfo ? (
+                              <span className="absolute top-3 left-3 z-10">
+                                <PreOrderBadge info={preOrderInfo} />
+                              </span>
+                            ) : discount > 0 ? (
                               <span
                                 className="absolute top-3 left-3 z-10 inline-flex items-center text-white"
                                 style={{

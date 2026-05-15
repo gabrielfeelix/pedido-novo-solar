@@ -3,7 +3,9 @@ import { RootLayout } from "./components/RootLayout";
 import { HomePage } from "./components/HomePage";
 import { ProductsPage } from "./components/ProductsPage";
 import { ProductPage } from "./components/ProductPage";
+import { CartPage } from "./components/CartPage";
 import { CheckoutPage } from "./components/CheckoutPage";
+import { PreOrderPage } from "./components/PreOrderPage";
 import { ProfilePage } from "./components/ProfilePage";
 import { InfluencersPage } from "./components/pages/InfluencersPage";
 import { ResellerPage } from "./components/pages/ResellerPage";
@@ -27,7 +29,9 @@ export const router = createBrowserRouter([
       { index: true, Component: HomePage },
       { path: "produtos", Component: ProductsPage },
       { path: "produto/:id", Component: ProductPage },
+      { path: "carrinho", Component: CartPage },
       { path: "checkout", Component: CheckoutPage },
+      { path: "pre-venda", Component: PreOrderPage },
       { path: "perfil", Component: ProfilePage },
       { path: "influenciadores", Component: InfluencersPage },
       { path: "revendedor", Component: ResellerPage },

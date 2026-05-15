@@ -375,6 +375,7 @@ const navItems: NavItem[] = [
   { label: "Computadores", mega: "computadores", href: getCatalogHref({ category: "Computadores" }) },
   { label: "PC Gamer", mega: "pcgamer", href: getCatalogHref({ category: "Computadores" }) },
   { label: "Collab", mega: "collab", href: "/maringa-fc" },
+  { label: "Pré-venda", href: "/pre-venda", emphasis: "build" },
   { label: "Monte seu PC", href: "/monte-seu-pc", emphasis: "build" },
 ];
 
@@ -1130,7 +1131,7 @@ export function Navbar() {
   return (
     <>
       {/* Header wrapper with unified hover */}
-      <div className="fixed top-0 left-0 right-0 z-50" onMouseEnter={() => setPromoHovered(true)} onMouseLeave={() => setPromoHovered(false)}>
+      <div className="fixed top-[40px] left-0 right-0 z-50" onMouseEnter={() => setPromoHovered(true)} onMouseLeave={() => setPromoHovered(false)}>
         {/* Promo banner */}
         <AnimatePresence>
           {!promoDismissed && showExpanded && showPromoBanner && (

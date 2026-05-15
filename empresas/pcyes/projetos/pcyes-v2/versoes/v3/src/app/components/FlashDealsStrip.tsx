@@ -11,6 +11,8 @@ import {
   getProductSwatches,
   getVisibleCatalogProducts,
 } from "./productPresentation";
+import { getPreOrderInfo } from "./PreOrderData";
+import { PreOrderBadge } from "./PreOrderBanner";
 import { useCart } from "./CartContext";
 import { useAuth } from "./AuthContext";
 import { useFavorites } from "./FavoritesContext";
@@ -113,6 +115,7 @@ function DealCard({ product, emphasize, onAdd }: DealCardProps) {
     oldPriceNum > product.priceNum
       ? Math.round(((oldPriceNum - product.priceNum) / oldPriceNum) * 100)
       : 0;
+  const preOrderInfo = getPreOrderInfo(product.id);
 
   return (
     <div
@@ -138,7 +141,7 @@ function DealCard({ product, emphasize, onAdd }: DealCardProps) {
             }}
           />
 
-          {discount > 0 && (
+          {discount > 0 && !preOrderInfo && (
             <span
               className="absolute z-20 inline-flex items-center text-white"
               style={{
@@ -155,6 +158,12 @@ function DealCard({ product, emphasize, onAdd }: DealCardProps) {
               }}
             >
               -{discount}%
+            </span>
+          )}
+
+          {preOrderInfo && (
+            <span className="absolute z-20" style={{ top: "14px", left: "14px" }}>
+              <PreOrderBadge info={preOrderInfo} />
             </span>
           )}
 

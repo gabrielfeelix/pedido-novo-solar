@@ -18,6 +18,8 @@ import {
   getVisibleCatalogProducts,
 } from "./productPresentation";
 import { toast } from "sonner";
+import { getPreOrderInfo } from "./PreOrderData";
+import { PreOrderBanner } from "./PreOrderBanner";
 
 /* ── helpers ─────────────────────────────────────────── */
 
@@ -2033,6 +2035,7 @@ export function ProductPage() {
 
   const pixPrice = product.priceNum * 0.9;
   const installment = product.priceNum / 12;
+  const preOrderInfo = getPreOrderInfo(product.id);
 
   const handleAdd = () => {
     for (let i = 0; i < qty; i++) {
@@ -2149,19 +2152,29 @@ export function ProductPage() {
             </div>
           )}
 
-          <MobilePurchaseFlow
-            product={product}
-            qty={qty}
-            setQty={setQty}
-            onBuyNow={handleBuyNow}
-            onAddToCart={handleAdd}
-            addedToCart={addedToCart}
-            pixPrice={pixPrice}
-            installment={installment}
-            discount={discount}
-            onSeeDescription={scrollToDescription}
-            shippingRef={mobileShippingRef}
-          />
+          {preOrderInfo ? (
+            <section className="order-4 lg:hidden w-full mt-2 mb-10">
+              <PreOrderBanner
+                info={preOrderInfo}
+                productPrice={product.price}
+                onReserve={handleBuyNow}
+              />
+            </section>
+          ) : (
+            <MobilePurchaseFlow
+              product={product}
+              qty={qty}
+              setQty={setQty}
+              onBuyNow={handleBuyNow}
+              onAddToCart={handleAdd}
+              addedToCart={addedToCart}
+              pixPrice={pixPrice}
+              installment={installment}
+              discount={discount}
+              onSeeDescription={scrollToDescription}
+              shippingRef={mobileShippingRef}
+            />
+          )}
 
           {/* Middle column: title, rating, share/like, description */}
           <motion.div
@@ -2318,17 +2331,25 @@ export function ProductPage() {
               transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="hidden w-full lg:col-start-2 lg:row-start-1 lg:block lg:sticky lg:top-[150px] lg:self-start"
             >
-              <StickyPriceCard
-                product={product}
-                qty={qty}
-                setQty={setQty}
-                onBuyNow={handleBuyNow}
-                onAddToCart={handleAdd}
-                addedToCart={addedToCart}
-                pixPrice={pixPrice}
-                installment={installment}
-                discount={discount}
-              />
+              {preOrderInfo ? (
+                <PreOrderBanner
+                  info={preOrderInfo}
+                  productPrice={product.price}
+                  onReserve={handleBuyNow}
+                />
+              ) : (
+                <StickyPriceCard
+                  product={product}
+                  qty={qty}
+                  setQty={setQty}
+                  onBuyNow={handleBuyNow}
+                  onAddToCart={handleAdd}
+                  addedToCart={addedToCart}
+                  pixPrice={pixPrice}
+                  installment={installment}
+                  discount={discount}
+                />
+              )}
             </motion.div>
 
           <div className="min-w-0 lg:col-start-1 lg:row-start-2">
