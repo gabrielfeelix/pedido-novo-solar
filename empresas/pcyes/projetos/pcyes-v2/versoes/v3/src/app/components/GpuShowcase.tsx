@@ -57,7 +57,7 @@ const COMPARISONS: Comparison[] = [
   },
 ];
 
-const BEFORE_FILTER = "blur(7px) contrast(0.78) brightness(0.82) saturate(0.85)";
+const BEFORE_FILTER = "blur(8px)";
 const AFTER_FILTER = "saturate(1.15) contrast(1.05)";
 const ACCENT = "#ff2419";
 const ACCENT_GLOW = "rgba(225, 6, 0, 0.55)";
