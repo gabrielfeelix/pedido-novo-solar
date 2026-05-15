@@ -116,7 +116,7 @@ export function ProfilePage() {
 
   if (!isLoggedIn || !user) {
     return (
-      <div className="pt-[140px] md:pt-[180px] min-h-screen flex items-center justify-center px-8">
+      <div className="pt-[180px] md:pt-[220px] min-h-screen flex items-center justify-center px-8">
         <div className="text-center max-w-md">
           <User size={40} className="text-foreground/15 mx-auto mb-6" />
           <h2 className="text-foreground mb-3" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "28px", fontWeight: "var(--font-weight-light)" }}>
@@ -140,7 +140,7 @@ export function ProfilePage() {
   const inputStyle = { borderRadius: "var(--radius-button)" as const, fontFamily: "var(--font-family-inter)", fontSize: "13px" };
 
   return (
-    <div className="pt-[140px] md:pt-[180px]">
+    <div className="pt-[180px] md:pt-[220px]">
       {/* Header */}
       <div className="px-5 md:px-8 pt-12 pb-8" style={{ background: isDark ? "#161617" : "#f5f5f7" }}>
         <div className="max-w-[1760px] mx-auto flex items-center gap-5">

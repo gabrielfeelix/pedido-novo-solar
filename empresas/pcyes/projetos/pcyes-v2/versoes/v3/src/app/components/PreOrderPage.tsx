@@ -277,7 +277,7 @@ function PreOrderCard({ info }: { info: PreOrderInfo }) {
 
 export function PreOrderPage() {
   return (
-    <div className="pt-[80px] md:pt-[110px] min-h-screen bg-background">
+    <div className="pt-[120px] md:pt-[150px] min-h-screen bg-background">
       {/* hero */}
       <section
         className="relative overflow-hidden"

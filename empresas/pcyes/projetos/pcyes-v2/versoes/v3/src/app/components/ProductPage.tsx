@@ -2077,7 +2077,7 @@ export function ProductPage() {
   const liked = isFavorite(product.id);
 
   return (
-    <div className="pt-[70px] lg:pt-[180px]">
+    <div className="pt-[110px] lg:pt-[220px]">
       {/* Breadcrumb */}
       <div className="px-5 md:px-8 pt-1 pb-0 lg:pt-6 lg:pb-2">
         <div className="max-w-[1760px] mx-auto hidden lg:flex items-center gap-1.5 flex-wrap">
@@ -2329,7 +2329,7 @@ export function ProductPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden w-full lg:col-start-2 lg:row-start-1 lg:block lg:sticky lg:top-[150px] lg:self-start"
+              className="hidden w-full lg:col-start-2 lg:row-start-1 lg:block lg:sticky lg:top-[190px] lg:self-start"
             >
               {preOrderInfo ? (
                 <PreOrderBanner

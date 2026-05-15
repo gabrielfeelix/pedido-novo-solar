@@ -766,7 +766,7 @@ export function ProductsPage() {
      ═══════════════════════════════════════════════════════ */
 
   return (
-    <div ref={mainRef} className="pt-[112px] md:pt-[142px] min-h-screen" style={{ background: "#0e0e0e" }}>
+    <div ref={mainRef} className="pt-[152px] md:pt-[182px] min-h-screen" style={{ background: "#0e0e0e" }}>
       {/* ── Breadcrumb strip ── */}
       <div className="px-5 md:px-8 py-3" style={{ background: isDark ? "#161617" : "#f5f5f7" }}>
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
