@@ -191,13 +191,15 @@ const FREE_SHIPPING_THRESHOLD = 800;
 ═══════════════════════════════════════════════════════════ */
 const NF_STYLE = {
   PR: {
-    color:     'var(--nf-pr)',
+    /* PR usa --primary (azul vivo do brand), não o nf-pr navy escuro.
+       Wellington (UAT): azul que aparece na tela de revisão. */
+    color:     'var(--primary)',
     surface:   'var(--nf-pr-surface)',
     surfaceMd: 'var(--nf-pr-surface-md)',
     border:    'var(--nf-pr-border)',
     borderSm:  'var(--nf-pr-border-sm)',
-    badgeBg:   'var(--nf-pr)',
-    badgeFg:   'var(--nf-pr-fg)',
+    badgeBg:   'var(--primary)',
+    badgeFg:   'var(--primary-foreground)',
   },
   ES: {
     color:     'var(--nf-es)',
@@ -465,8 +467,8 @@ function UserIcon() {
 function MapPinIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>;
 }
-function NoteIcon() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>;
+function NoteIcon({ color = 'var(--primary)' }: { color?: string } = {}) {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>;
 }
 function PackageIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" /><path d="M12 8v4l3 3" /></svg>;
@@ -857,18 +859,19 @@ function NfSubIndicator({
 /* ═══════════════════════════════════════════════════════════
    BLOCK HEADING
 ═══════════════════════════════════════════════════════════ */
-function BlockHeading({ icon, title, subtitle, action, accentSurface }: {
+function BlockHeading({ icon, title, subtitle, action, accentBg }: {
   icon: ReactNode;
   title: string;
   subtitle?: string;
   action?: ReactNode;
-  accentSurface?: string;
+  /** Filled-square bg cor — alinha visual com FilledSquareIcon da revisão. Ícone deve usar primary-foreground. */
+  accentBg?: string;
 }) {
   return (
     <div className="flex items-start justify-between gap-3 mb-5">
       <div className="flex items-center gap-3">
         <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center shrink-0"
-          style={{ background: accentSurface || 'var(--primary-surface-md)' }}>
+          style={{ background: accentBg || 'var(--primary)' }}>
           {icon}
         </div>
         <div>
@@ -1349,10 +1352,10 @@ export function CheckoutPage() {
       <div className="rounded-xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--muted)' }}>
         <div className="p-5 md:p-6">
         <BlockHeading
-          icon={<LogisticsBlockIcon size={18} color={nfStyle.color} />}
+          icon={<LogisticsBlockIcon size={18} color="var(--primary-foreground)" />}
           title="Logística e Frete"
           subtitle={`Entrega para CEP ${formatCep(address.cep)} — ${address.city}, ${address.state}`}
-          accentSurface={nfStyle.surfaceMd}
+          accentBg={nfStyle.color}
         />
 
         {/* Logistics type selector */}
@@ -1497,8 +1500,8 @@ export function CheckoutPage() {
         {s.logisticsType === 'retirada' && (
           <div className="rounded-xl p-5" style={{ background: 'var(--background)', border: '1px solid var(--muted)' }}>
             <div className="flex items-start gap-4">
-              <div className="w-[48px] h-[48px] rounded-xl flex items-center justify-center shrink-0" style={{ background: nfStyle.surfaceMd }}>
-                <WarehouseIcon color={nfStyle.color} />
+              <div className="w-[48px] h-[48px] rounded-xl flex items-center justify-center shrink-0" style={{ background: nfStyle.color }}>
+                <WarehouseIcon color="var(--primary-foreground)" />
               </div>
               <div>
                 <span className="block mb-1" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)' }}>Centro de Distribuição Oderço</span>
@@ -1553,10 +1556,10 @@ export function CheckoutPage() {
         <div className="flex items-center gap-3 px-5 pt-4 pb-3">
           <div
             className="w-[34px] h-[34px] rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: useCredit ? 'var(--primary-surface-lg)' : 'var(--primary-surface-md)' }}
+            style={{ background: 'var(--success)' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="var(--primary)"
+              stroke="var(--primary-foreground)"
               strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 1v22" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
             </svg>
@@ -1713,10 +1716,10 @@ export function CheckoutPage() {
       <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: 'var(--card)', border: '1px solid var(--muted)' }}>
       <div className="p-5 md:p-6 flex flex-col gap-5">
         <BlockHeading
-          icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={nfStyle.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>}
+          icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>}
           title="Forma de Pagamento"
           subtitle="Selecione como este pedido será pago"
-          accentSurface={nfStyle.surfaceMd}
+          accentBg={nfStyle.color}
         />
 
         {/* Payment method cards — selection herda cor da filial pra manter identidade */}
@@ -1895,8 +1898,8 @@ export function CheckoutPage() {
           style={{ fontFamily: 'var(--font-red-hat-display)' }}>
           <div className="flex items-center gap-3">
             <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center shrink-0"
-              style={{ background: 'var(--primary-surface-sm)' }}>
-              <NoteIcon />
+              style={{ background: NF_STYLE[filial].color }}>
+              <NoteIcon color="var(--primary-foreground)" />
             </div>
             <div className="text-left">
               {s.obsVenda || s.obsNF ? (
@@ -1992,7 +1995,7 @@ export function CheckoutPage() {
     const otherLabel = filial === 'PR' ? 'Filial ES' : 'Filial PR';
 
     return (
-      <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 order-first lg:order-last">
+      <div className="w-full lg:w-[380px] xl:w-[400px] shrink-0 order-first lg:order-last">
         <div className="lg:sticky lg:top-5 flex flex-col gap-3">
 
           {/* Completed NF PR — collapsible summary card (shown on ES step) */}
@@ -2611,7 +2614,7 @@ export function CheckoutPage() {
         </div>
 
         {/* Right sidebar — "Pronto para finalizar" */}
-        <div className="w-full lg:w-[340px] shrink-0 order-first lg:order-last">
+        <div className="w-full lg:w-[380px] xl:w-[400px] shrink-0 order-first lg:order-last">
           <div className="lg:sticky lg:top-5 rounded-2xl overflow-hidden"
             style={{ background: 'var(--card)', border: '1px solid var(--muted)', boxShadow: 'var(--elevation-sm)' }}>
 
@@ -3100,10 +3103,10 @@ export function CheckoutPage() {
             >
               <div
                 className="w-[38px] h-[38px] rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: wantConsultor ? 'var(--primary-surface-lg)' : 'var(--primary-surface-md)' }}
+                style={{ background: 'var(--primary)' }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
                 </svg>
               </div>
