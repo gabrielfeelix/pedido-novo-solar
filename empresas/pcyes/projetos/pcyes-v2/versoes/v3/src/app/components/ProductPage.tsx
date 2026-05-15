@@ -2019,11 +2019,11 @@ export function ProductPage() {
 
   const related = visibleProducts
     .filter((p) => p.category === product.category && getProductSubcategory(p) === productSubcategory && p.id !== product.id)
-    .slice(0, 8);
-  if (related.length < 8) {
+    .slice(0, 5);
+  if (related.length < 5) {
     const extras = visibleProducts
       .filter((p) => p.category === product.category && p.id !== product.id && !related.find((r) => r.id === p.id))
-      .slice(0, 8 - related.length);
+      .slice(0, 5 - related.length);
     related.push(...extras);
   }
 
@@ -2376,7 +2376,7 @@ export function ProductPage() {
               </Link>
             </motion.div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
               {related.map((rProduct, i) => {
                 const rDiscount = rProduct.oldPriceNum && rProduct.oldPriceNum > rProduct.priceNum
                   ? Math.round(((rProduct.oldPriceNum - rProduct.priceNum) / rProduct.oldPriceNum) * 100)
