@@ -317,7 +317,6 @@ export function ProductsPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [itemsPerPageDropdownOpen, setItemsPerPageDropdownOpen] = useState(false);
-  const [colsCount, setColsCount] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState<(typeof PAGE_SIZE_OPTIONS)[number]>(36);
   const [isLoading, setIsLoading] = useState(false);
@@ -325,7 +324,7 @@ export function ProductsPage() {
   const [selectedVariantIds, setSelectedVariantIds] = useState<Record<number, number>>({});
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    categories: true, brands: true, tags: false, price: true, color: true, rating: false, promo: false,
+    categories: true, brands: true, tags: true, price: true, color: true, rating: true, promo: true,
   });
 
   const { addItem } = useCart();
@@ -346,19 +345,6 @@ export function ProductsPage() {
     const sq = searchParams.get("search");
     setSearchQuery(sq ?? "");
   }, [searchParams]);
-
-  /* ── Responsive columns ── */
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth;
-      if (w >= 1800) setColsCount(4);
-      else if (w >= 1280) setColsCount(3);
-      else setColsCount(2);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
 
   /* ── Scroll to top on category change ── */
   const mainRef = useRef<HTMLDivElement>(null);
@@ -779,135 +765,142 @@ export function ProductsPage() {
       {/* ── Main Content — Insider layout ── */}
       <div className="px-5 md:px-8 py-6">
         <div style={{ maxWidth: "1600px", margin: "0 auto" }}>
+          {/* ── Top control bar — full width above sidebar+grid ── */}
+          <div className="flex flex-col gap-4 mb-6 pb-4 border-b border-foreground/10 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex min-w-0 flex-wrap items-center gap-4">
+              <button onClick={() => setMobileFiltersOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2 border border-foreground/15 text-foreground/70 hover:text-foreground transition-colors"
+                style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+              >
+                <SlidersHorizontal size={14} /> Filtros
+                {activeFilterCount > 0 && (
+                  <span className="ml-1 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center font-bold" style={{ fontSize: "11px" }}>{activeFilterCount}</span>
+                )}
+              </button>
+              <span className="text-foreground/60" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
+                Mostrando <span className="text-foreground font-semibold">{filtered.length}</span> {filtered.length === 1 ? "produto" : "produtos"}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 xl:flex-nowrap">
+              {/* Sort */}
+              <div className="relative">
+                <button onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                  className="flex items-center gap-2 text-foreground/50 hover:text-foreground/80 transition-colors"
+                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+                >
+                  <ArrowUpDown size={14} />
+                  {sortOptions.find((s) => s.value === sortBy)?.label}
+                  <ChevronDown size={12} className={`transition-transform duration-200 ${sortDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {sortDropdownOpen && (
+                    <motion.div initial={{ opacity: 0, y: -5, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -5, scale: 0.97 }} transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-3 border border-foreground/10 shadow-xl z-30 min-w-[200px] py-2"
+                      style={{ borderRadius: "var(--radius-card)", background: isDark ? "#1e1e20" : "#fff" }}
+                    >
+                      {sortOptions.map((opt) => (
+                        <button key={opt.value} onClick={() => { setSortBy(opt.value); setSortDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 transition-colors ${sortBy === opt.value ? "text-foreground bg-foreground/[0.06]" : "text-foreground/70 hover:text-foreground hover:bg-foreground/[0.03]"
+                            }`}
+                          style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
+                        >{opt.label}</button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div ref={itemsPerPageDropdownRef} className="relative flex items-center gap-2 text-foreground/70" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}>
+                <span>Mostrar:</span>
+                <button
+                  type="button"
+                  onClick={() => setItemsPerPageDropdownOpen((prev) => !prev)}
+                  className={`relative inline-flex h-9 min-w-[62px] items-center justify-between gap-2 rounded-[10px] border px-3 transition-all cursor-pointer ${
+                    itemsPerPageDropdownOpen
+                      ? "border-primary/50 bg-foreground/[0.06] text-foreground shadow-[0_0_0_1px_rgba(255,59,48,0.16)]"
+                      : "border-foreground/10 bg-foreground/[0.03] text-foreground hover:border-foreground/20"
+                  }`}
+                  aria-haspopup="listbox"
+                  aria-expanded={itemsPerPageDropdownOpen}
+                  aria-label="Quantidade de produtos por página"
+                >
+                  <span>{itemsPerPage}</span>
+                  <ChevronDown size={13} className={`text-foreground/45 transition-transform duration-200 ${itemsPerPageDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {itemsPerPageDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full z-30 mt-3 min-w-[120px] overflow-hidden border border-white/8 shadow-2xl"
+                      style={{ borderRadius: "14px", background: "#151517" }}
+                    >
+                      <div className="border-b border-white/6 px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-white/35">
+                        Itens por p&aacute;gina
+                      </div>
+                      <div className="p-2">
+                        {PAGE_SIZE_OPTIONS.map((option) => {
+                          const active = option === itemsPerPage;
+                          return (
+                            <button
+                              key={option}
+                              type="button"
+                              onClick={() => {
+                                setItemsPerPage(option);
+                                setItemsPerPageDropdownOpen(false);
+                              }}
+                              className={`flex w-full items-center justify-between rounded-[10px] px-3 py-2.5 text-left transition-colors cursor-pointer ${
+                                active
+                                  ? "bg-primary text-white"
+                                  : "text-white/72 hover:bg-white/[0.06] hover:text-white"
+                              }`}
+                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}
+                              role="option"
+                              aria-selected={active}
+                            >
+                              <span>{option}</span>
+                              {active && <Check size={14} />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Grid / List */}
+              <div className="hidden sm:flex border border-foreground/10 overflow-hidden" style={{ borderRadius: "var(--radius-button)" }}>
+                <button onClick={() => setGridMode("grid")}
+                  className={`p-2 transition-colors ${gridMode === "grid" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
+                  aria-label="Visualização em grade"
+                ><Grid3X3 size={16} /></button>
+                <button onClick={() => setGridMode("list")}
+                  className={`p-2 transition-colors ${gridMode === "list" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
+                  aria-label="Visualização em lista"
+                ><LayoutList size={16} /></button>
+              </div>
+            </div>
+          </div>
+
+          {/* Active filter pills row */}
+          {activeFilterCount > 0 && (
+            <div className="mb-6 flex min-w-0 flex-wrap items-center gap-2">
+              {activeFilterPills}
+            </div>
+          )}
+
           <div className="flex gap-8 lg:gap-14">
             {/* ── Sidebar (Insider: narrow, left-aligned, auto-height) ── */}
             <aside className="hidden lg:block w-[240px] xl:w-[280px] flex-shrink-0">
-              <div className="sticky top-[112px]">
-                {filterSidebar}
-              </div>
+              {filterSidebar}
             </aside>
 
             {/* ── Products area ── */}
             <div className="flex-1 min-w-0">
-              {/* Control bar */}
-              <div className="flex flex-col gap-4 mb-6 pb-4 border-b border-foreground/5 xl:flex-row xl:items-center xl:justify-between">
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <button onClick={() => setMobileFiltersOpen(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2 border border-foreground/15 text-foreground/70 hover:text-foreground transition-colors"
-                    style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                  >
-                    <SlidersHorizontal size={14} /> Filtros
-                    {activeFilterCount > 0 && (
-                      <span className="ml-1 w-5 h-5 rounded-full bg-foreground text-background flex items-center justify-center font-bold" style={{ fontSize: "11px" }}>{activeFilterCount}</span>
-                    )}
-                  </button>
-                  {activeFilterPills}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-4 xl:flex-nowrap">
-                  {/* Sort */}
-                  <div className="relative">
-                    <button onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
-                      className="flex items-center gap-2 text-foreground/50 hover:text-foreground/80 transition-colors"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                    >
-                      <ArrowUpDown size={14} />
-                      {sortOptions.find((s) => s.value === sortBy)?.label}
-                      <ChevronDown size={12} className={`transition-transform duration-200 ${sortDropdownOpen ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {sortDropdownOpen && (
-                        <motion.div initial={{ opacity: 0, y: -5, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -5, scale: 0.97 }} transition={{ duration: 0.15 }}
-                          className="absolute right-0 top-full mt-3 border border-foreground/10 shadow-xl z-30 min-w-[200px] py-2"
-                          style={{ borderRadius: "var(--radius-card)", background: isDark ? "#1e1e20" : "#fff" }}
-                        >
-                          {sortOptions.map((opt) => (
-                            <button key={opt.value} onClick={() => { setSortBy(opt.value); setSortDropdownOpen(false); }}
-                              className={`w-full text-left px-4 py-2.5 transition-colors ${sortBy === opt.value ? "text-foreground bg-foreground/[0.06]" : "text-foreground/70 hover:text-foreground hover:bg-foreground/[0.03]"
-                                }`}
-                              style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}
-                            >{opt.label}</button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  <div ref={itemsPerPageDropdownRef} className="relative flex items-center gap-2 text-foreground/70" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}>
-                    <span>Mostrar:</span>
-                    <button
-                      type="button"
-                      onClick={() => setItemsPerPageDropdownOpen((prev) => !prev)}
-                      className={`relative inline-flex h-9 min-w-[62px] items-center justify-between gap-2 rounded-[10px] border px-3 transition-all cursor-pointer ${
-                        itemsPerPageDropdownOpen
-                          ? "border-primary/50 bg-foreground/[0.06] text-foreground shadow-[0_0_0_1px_rgba(255,59,48,0.16)]"
-                          : "border-foreground/10 bg-foreground/[0.03] text-foreground hover:border-foreground/20"
-                      }`}
-                      aria-haspopup="listbox"
-                      aria-expanded={itemsPerPageDropdownOpen}
-                      aria-label="Quantidade de produtos por página"
-                    >
-                      <span>{itemsPerPage}</span>
-                      <ChevronDown size={13} className={`text-foreground/45 transition-transform duration-200 ${itemsPerPageDropdownOpen ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {itemsPerPageDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                          transition={{ duration: 0.15 }}
-                          className="absolute right-0 top-full z-30 mt-3 min-w-[120px] overflow-hidden border border-white/8 shadow-2xl"
-                          style={{ borderRadius: "14px", background: "#151517" }}
-                        >
-                          <div className="border-b border-white/6 px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-white/35">
-                            Itens por p&aacute;gina
-                          </div>
-                          <div className="p-2">
-                            {PAGE_SIZE_OPTIONS.map((option) => {
-                              const active = option === itemsPerPage;
-                              return (
-                                <button
-                                  key={option}
-                                  type="button"
-                                  onClick={() => {
-                                    setItemsPerPage(option);
-                                    setItemsPerPageDropdownOpen(false);
-                                  }}
-                                  className={`flex w-full items-center justify-between rounded-[10px] px-3 py-2.5 text-left transition-colors cursor-pointer ${
-                                    active
-                                      ? "bg-primary text-white"
-                                      : "text-white/72 hover:bg-white/[0.06] hover:text-white"
-                                  }`}
-                                  style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 600 }}
-                                  role="option"
-                                  aria-selected={active}
-                                >
-                                  <span>{option}</span>
-                                  {active && <Check size={14} />}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Grid / List */}
-                  <div className="hidden sm:flex border border-foreground/10 overflow-hidden" style={{ borderRadius: "var(--radius-button)" }}>
-                    <button onClick={() => setGridMode("grid")}
-                      className={`p-2 transition-colors ${gridMode === "grid" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
-                      aria-label="Visualização em grade"
-                    ><Grid3X3 size={16} /></button>
-                    <button onClick={() => setGridMode("list")}
-                      className={`p-2 transition-colors ${gridMode === "list" ? "bg-foreground/[0.08] text-foreground" : "text-foreground/40 hover:text-foreground/60"}`}
-                      aria-label="Visualização em lista"
-                    ><LayoutList size={16} /></button>
-                  </div>
-                </div>
-              </div>
-
               {/* ── Products Area ── */}
               {filtered.length === 0 ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
@@ -929,7 +922,7 @@ export function ProductsPage() {
                     </div>
                   )}
                   {gridMode === "grid" ? (
-                    <div className={`grid gap-x-4 sm:gap-x-6 gap-y-14 grid-cols-2 xl:grid-cols-${colsCount}`}>
+                    <div className="grid gap-x-4 sm:gap-x-6 gap-y-14 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       <AnimatePresence mode="popLayout">
                     {paginatedProducts.map((product, i) => {
                       const displayProduct = getColorMatchedProduct(product);
@@ -945,7 +938,7 @@ export function ProductsPage() {
                           transition={{ duration: 0.3, delay: Math.min(i * 0.025, 0.35) }}
                           className="group relative"
                         >
-                          <div className={`relative overflow-hidden mb-4 aspect-square transition-all neon-hover-red ${displayProduct.inStock === false ? 'opacity-60 grayscale-[0.5]' : ''}`} style={{ borderRadius: "20px", background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}>
+                          <div className={`relative overflow-hidden mb-4 aspect-[5/6] transition-all neon-hover-red ${displayProduct.inStock === false ? 'opacity-60 grayscale-[0.5]' : ''}`} style={{ borderRadius: "20px", background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}>
                             {/* Inner shine */}
                             <div className="pointer-events-none absolute inset-0 z-[1]" style={{ background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.06) 0%, transparent 55%)", borderRadius: "20px" }} />
                             <Link to={`/produto/${displayProduct.id}`} className="block h-full">
@@ -1017,10 +1010,10 @@ export function ProductsPage() {
                             {/* Quick add — floating pill on hover */}
                             <button
                               onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(displayProduct); }}
-                              className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-6 py-2.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
-                              style={{ background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)", color: "white", fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.04em", boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)" }}
+                              className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-10 py-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+                              style={{ background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)", color: "white", fontFamily: "var(--font-family-inter)", fontSize: "13px", fontWeight: 700, letterSpacing: "0.04em", boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)" }}
                             >
-                              <span className="inline-flex items-center gap-2"><ShoppingBag size={13} strokeWidth={2} /> Adicionar ao carrinho</span>
+                              <span className="inline-flex items-center gap-2"><ShoppingBag size={14} strokeWidth={2} /> Comprar</span>
                             </button>
                           </div>
 
@@ -1034,6 +1027,28 @@ export function ProductsPage() {
                             </Link>
 
                             <div className="mt-3">
+                              {swatches.length > 1 && (
+                                <div className="mb-2 flex items-center gap-1.5">
+                                  {swatches.map((sw) => (
+                                    <button
+                                      key={sw.productId}
+                                      className="h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
+                                      style={{
+                                        backgroundColor: sw.color,
+                                        border: sw.productId === displayProduct.id ? "2px solid rgba(225,6,0,0.9)" : "1px solid rgba(255,255,255,0.18)",
+                                        boxShadow: sw.productId === displayProduct.id ? "0 0 8px rgba(225,6,0,0.5)" : "none",
+                                      }}
+                                      title={sw.label}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const variant = getProductVariantByColor(product, sw.label) ?? productById.get(sw.productId) ?? null;
+                                        if (variant) setSelectedVariantIds((prev) => ({ ...prev, [product.id]: variant.id }));
+                                      }}
+                                    />
+                                  ))}
+                                </div>
+                              )}
                               {displayProduct.oldPrice && (
                                 <p className="line-through leading-none mb-1" style={{ fontFamily: "var(--font-family-inter)", fontSize: "14px", color: "rgba(255,255,255,0.38)" }}>
                                   {displayProduct.oldPrice}
@@ -1056,29 +1071,6 @@ export function ProductsPage() {
                                 })()}
                               </p>
                             </div>
-
-                            {swatches.length > 1 && (
-                              <div className="mt-2.5 flex items-center gap-1.5">
-                                {swatches.map((sw) => (
-                                  <button
-                                    key={sw.productId}
-                                    className="h-3 w-3 rounded-full cursor-pointer transition-all hover:scale-110"
-                                    style={{
-                                      backgroundColor: sw.color,
-                                      border: sw.productId === displayProduct.id ? "2px solid rgba(225,6,0,0.9)" : "1px solid rgba(255,255,255,0.18)",
-                                      boxShadow: sw.productId === displayProduct.id ? "0 0 8px rgba(225,6,0,0.5)" : "none",
-                                    }}
-                                    title={sw.label}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      const variant = getProductVariantByColor(product, sw.label) ?? productById.get(sw.productId) ?? null;
-                                      if (variant) setSelectedVariantIds((prev) => ({ ...prev, [product.id]: variant.id }));
-                                    }}
-                                  />
-                                ))}
-                              </div>
-                            )}
                           </div>
                         </motion.div>
                       );
@@ -1446,7 +1438,7 @@ export function ProductsPage() {
                       boxShadow: "0 12px 32px -10px rgba(225,6,0,0.6)",
                     }}
                   >
-                    <ShoppingBag size={16} strokeWidth={2} /> Adicionar ao carrinho
+                    <ShoppingBag size={16} strokeWidth={2} /> Comprar
                   </button>
                 </div>
               </div>

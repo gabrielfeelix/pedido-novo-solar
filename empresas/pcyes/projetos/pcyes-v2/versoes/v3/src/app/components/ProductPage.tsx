@@ -1026,7 +1026,7 @@ function MobilePurchaseFlow({
             {addedToCart ? (
               <><Check size={15} strokeWidth={2.2} /> Adicionado ao carrinho</>
             ) : (
-              <><ShoppingBag size={15} strokeWidth={1.9} /> Adicionar ao carrinho</>
+              <><ShoppingBag size={15} strokeWidth={1.9} /> Comprar</>
             )}
           </button>
         </div>

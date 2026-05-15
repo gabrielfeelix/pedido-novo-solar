@@ -273,7 +273,7 @@ export function EssentialsSection() {
               marginBottom: "10px",
             }}
           >
-            ITENS EM DESTAQUE
+            // ITENS EM DESTAQUE
           </p>
           <h2
             className="text-white"

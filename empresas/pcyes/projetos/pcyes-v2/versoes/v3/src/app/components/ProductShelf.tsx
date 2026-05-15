@@ -71,11 +71,11 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
   return (
     <div
       className="snap-start flex-shrink-0 group"
-      style={{ width: "320px" }}
+      style={{ width: "380px" }}
     >
       <Link to={`/produto/${product.id}`} className="block">
         <div
-          className="relative aspect-square overflow-hidden transition-all duration-300"
+          className="relative aspect-[5/6] overflow-hidden transition-all duration-300"
           style={{
             background:
               "linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%)",
@@ -93,7 +93,6 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
               borderRadius: "20px",
             }}
           />
-
 
           <ImageWithFallback
             src={image}
@@ -154,18 +153,18 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
               e.stopPropagation();
               onAdd(product);
             }}
-            className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-5 py-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+            className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-10 py-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
             style={{
               background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
               color: "white",
               fontFamily: "var(--font-family-inter)",
-              fontSize: "11px",
+              fontSize: "13px",
               fontWeight: 700,
               letterSpacing: "0.04em",
               boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
             }}
           >
-            <span className="inline-flex items-center gap-1.5"><ShoppingBag size={12} strokeWidth={2} /> Adicionar ao carrinho</span>
+            <span className="inline-flex items-center gap-2"><ShoppingBag size={14} strokeWidth={2} /> Comprar</span>
           </button>
         </div>
 
@@ -183,44 +182,40 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
             {product.name}
           </h3>
 
-          {subtitle && (
-            <p
-              className="mt-1.5 line-clamp-1"
-              style={{
-                fontFamily: "var(--font-family-inter)",
-                fontSize: "12px",
-                color: "rgba(255, 255, 255, 0.45)",
-                letterSpacing: "0.01em",
-              }}
-            >
-              {subtitle}
-            </p>
-          )}
-
-          <div className="mt-2 flex items-baseline gap-2">
-            <p
-              className="text-white"
-              style={{
-                fontFamily: "var(--font-family-figtree)",
-                fontSize: "17px",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-              }}
-            >
-              {product.price}
-            </p>
+          <div className="mt-3">
             {oldPriceNum > product.priceNum && (
               <p
-                className="line-through"
+                className="line-through leading-none mb-1"
                 style={{
                   fontFamily: "var(--font-family-inter)",
-                  fontSize: "12px",
-                  color: "rgba(255, 255, 255, 0.30)",
+                  fontSize: "13px",
+                  color: "rgba(255, 255, 255, 0.38)",
                 }}
               >
                 {product.oldPrice ?? `R$ ${oldPriceNum.toFixed(2).replace(".", ",")}`}
               </p>
             )}
+            <div className="flex items-baseline gap-2">
+              <p
+                className="text-white leading-none"
+                style={{
+                  fontFamily: "var(--font-family-figtree)",
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                {product.price}
+              </p>
+              {discount > 0 && (
+                <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
+                  -{discount}%
+                </span>
+              )}
+            </div>
+            <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>
+              No PIX ou 10x de R$ {(product.priceNum / 10).toFixed(2).replace(".", ",")}
+            </p>
           </div>
 
         </div>
@@ -305,15 +300,15 @@ export function ProductShelf({
   const scrollByCards = (dir: -1 | 1) => {
     const el = scrollRef.current;
     if (!el) return;
-    const cardWithGap = 320 + 24;
+    const cardWithGap = 380 + 24;
     el.scrollBy({ left: dir * cardWithGap * 2, behavior: "smooth" });
   };
 
-  const navBtn = (onClick: () => void, disabled: boolean, label: string, icon: React.ReactNode) => (
+  const navBtn = (onClick: () => void, disabled: boolean, label: string, icon: React.ReactNode, side: "left" | "right") => (
     <button
       onClick={onClick}
       disabled={disabled}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-white/75 backdrop-blur-md transition-all hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/10 hover:text-white hover:scale-105 active:scale-95 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer"
+      className={`absolute top-[228px] z-30 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white/85 backdrop-blur-md transition-all hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/15 hover:text-white hover:scale-105 active:scale-95 disabled:opacity-0 disabled:pointer-events-none cursor-pointer md:flex ${side === "left" ? "left-0 -translate-x-1/2" : "right-0 translate-x-1/2"}`}
       aria-label={label}
     >
       {icon}
@@ -360,22 +355,11 @@ export function ProductShelf({
             </motion.h2>
           </div>
 
-          <div className="hidden gap-2 md:flex">
-            {navBtn(() => scrollByCards(-1), !canPrev, "Anterior", <ChevronLeft size={18} strokeWidth={2.2} />)}
-            {navBtn(() => scrollByCards(1), !canNext, "Próximo", <ChevronRight size={18} strokeWidth={2.2} />)}
-          </div>
         </div>
 
         <div className="relative">
-          {canNext && (
-            <div
-              className="pointer-events-none absolute inset-y-0 right-0 z-20 w-32"
-              style={{
-                background:
-                  "linear-gradient(to left, #0e0e0e 0%, rgba(14,14,14,0.85) 40%, rgba(14,14,14,0) 100%)",
-              }}
-            />
-          )}
+          {navBtn(() => scrollByCards(-1), !canPrev, "Anterior", <ChevronLeft size={20} strokeWidth={2.2} />, "left")}
+          {navBtn(() => scrollByCards(1), !canNext, "Próximo", <ChevronRight size={20} strokeWidth={2.2} />, "right")}
           <div
             ref={scrollRef}
             className="shelf-track flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"

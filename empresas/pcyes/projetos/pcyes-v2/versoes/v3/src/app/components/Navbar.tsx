@@ -1429,18 +1429,18 @@ export function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute left-1/2 top-[58px] z-[60] w-[min(1320px,calc(100vw-64px))] -translate-x-1/2 overflow-hidden rounded-[22px] shadow-[0_28px_80px_rgba(0,0,0,0.35)]"
+                      className="absolute left-1/2 top-[58px] z-[60] w-[min(1320px,calc(100vw-64px))] -translate-x-1/2 overflow-hidden rounded-[22px] shadow-[0_28px_80px_rgba(0,0,0,0.55)]"
                       style={{
-                        background: "#ffffff",
-                        border: "1px solid rgba(0,0,0,0.06)",
+                        background: "#1f1c1c",
+                        border: "1px solid rgba(255,255,255,0.08)",
                       }}
                     >
                       {searchQuery.trim().length === 0 ? (
                         <div className="grid grid-cols-[1fr_260px] gap-0">
                           {/* Left: produtos */}
-                          <div className="border-r border-black/[0.06] px-10 py-9">
+                          <div className="border-r border-white/[0.08] px-10 py-9">
                             <h4
-                              className="mb-7 text-black"
+                              className="mb-7 text-white"
                               style={{
                                 fontFamily: "var(--font-family-figtree)",
                                 fontSize: "20px",
@@ -1468,8 +1468,10 @@ export function Navbar() {
                                     <div
                                       className="relative aspect-square overflow-hidden transition-all"
                                       style={{
-                                        background: "#f2f3f5",
+                                        background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
                                         borderRadius: "16px",
+                                        border: "1px solid rgba(255,255,255,0.08)",
+                                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                                       }}
                                     >
                                       {discount > 0 && (
@@ -1493,7 +1495,7 @@ export function Navbar() {
                                       />
                                     </div>
                                     <p
-                                      className="mt-4 line-clamp-2 text-black/85 transition-colors group-hover:text-black"
+                                      className="mt-4 line-clamp-2 text-white/85 transition-colors group-hover:text-white"
                                       style={{
                                         fontFamily: "var(--font-family-figtree)",
                                         fontSize: "14px",
@@ -1506,7 +1508,7 @@ export function Navbar() {
                                     </p>
                                     <div className="mt-2 flex items-baseline gap-1.5">
                                       <span
-                                        className={hasDiscount ? "" : "text-black"}
+                                        className={hasDiscount ? "" : "text-white"}
                                         style={{
                                           fontFamily: "var(--font-family-figtree)",
                                           fontSize: "15px",
@@ -1519,7 +1521,7 @@ export function Navbar() {
                                       </span>
                                       {hasDiscount && p.oldPrice && (
                                         <span
-                                          className="line-through text-black/35"
+                                          className="line-through text-white/35"
                                           style={{
                                             fontFamily: "var(--font-family-inter)",
                                             fontSize: "11px",
@@ -1537,7 +1539,7 @@ export function Navbar() {
                                             className="inline-block h-3 w-3 rounded-full"
                                             style={{
                                               background: s.color,
-                                              border: "1px solid rgba(0,0,0,0.12)",
+                                              border: "1px solid rgba(255,255,255,0.18)",
                                             }}
                                             aria-label={s.label}
                                           />
@@ -1553,7 +1555,7 @@ export function Navbar() {
                           {/* Right: keywords */}
                           <div className="px-7 py-9">
                             <h4
-                              className="mb-6 text-black"
+                              className="mb-6 text-white"
                               style={{
                                 fontFamily: "var(--font-family-figtree)",
                                 fontSize: "20px",
@@ -1572,7 +1574,7 @@ export function Navbar() {
                                     setSearchPanelOpen(false);
                                     setSearchQuery("");
                                   }}
-                                  className="group flex items-center justify-between py-2.5 text-left text-black/70 transition-colors hover:text-[var(--primary)]"
+                                  className="group flex items-center justify-between py-2.5 text-left text-white/70 transition-colors hover:text-[var(--primary)]"
                                   style={{
                                     fontFamily: "var(--font-family-inter)",
                                     fontSize: "14px",
@@ -1583,7 +1585,7 @@ export function Navbar() {
                                   <ArrowUpRight
                                     size={14}
                                     strokeWidth={1.8}
-                                    className="text-black/25 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--primary)]"
+                                    className="text-white/25 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--primary)]"
                                   />
                                 </Link>
                               ))}
@@ -1594,7 +1596,7 @@ export function Navbar() {
                         <div className="px-10 py-9">
                           <div className="mb-7 flex items-baseline justify-between">
                             <h4
-                              className="text-black"
+                              className="text-white"
                               style={{
                                 fontFamily: "var(--font-family-figtree)",
                                 fontSize: "20px",
@@ -1605,7 +1607,7 @@ export function Navbar() {
                               Resultados para "{searchQuery}"
                             </h4>
                             <span
-                              className="text-black/50"
+                              className="text-white/50"
                               style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em" }}
                             >
                               {searchResults.length} {searchResults.length === 1 ? "PRODUTO" : "PRODUTOS"}
@@ -1632,8 +1634,10 @@ export function Navbar() {
                                   <div
                                     className="relative aspect-square overflow-hidden transition-all"
                                     style={{
-                                      background: "#f2f3f5",
+                                      background: "linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%)",
                                       borderRadius: "16px",
+                                      border: "1px solid rgba(255,255,255,0.08)",
+                                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                                     }}
                                   >
                                     {discount > 0 && (
@@ -1657,7 +1661,7 @@ export function Navbar() {
                                     />
                                   </div>
                                   <p
-                                    className="mt-4 line-clamp-2 text-black/85 transition-colors group-hover:text-black"
+                                    className="mt-4 line-clamp-2 text-white/85 transition-colors group-hover:text-white"
                                     style={{
                                       fontFamily: "var(--font-family-figtree)",
                                       fontSize: "14px",
@@ -1675,14 +1679,14 @@ export function Navbar() {
                                         fontSize: "15px",
                                         fontWeight: 700,
                                         letterSpacing: "-0.01em",
-                                        color: hasDiscount ? "var(--primary)" : "#000",
+                                        color: hasDiscount ? "var(--primary)" : "#fff",
                                       }}
                                     >
                                       {p.price}
                                     </span>
                                     {hasDiscount && p.oldPrice && (
                                       <span
-                                        className="line-through text-black/35"
+                                        className="line-through text-white/35"
                                         style={{
                                           fontFamily: "var(--font-family-inter)",
                                           fontSize: "11px",
@@ -1700,7 +1704,7 @@ export function Navbar() {
                                           className="inline-block h-3 w-3 rounded-full"
                                           style={{
                                             background: s.color,
-                                            border: "1px solid rgba(0,0,0,0.12)",
+                                            border: "1px solid rgba(255,255,255,0.18)",
                                           }}
                                           aria-label={s.label}
                                         />
@@ -1714,10 +1718,10 @@ export function Navbar() {
                         </div>
                       ) : (
                         <div className="px-10 py-16 text-center">
-                          <p className="text-black/65" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "18px", fontWeight: 600 }}>
+                          <p className="text-white/65" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "18px", fontWeight: 600 }}>
                             Nenhum produto encontrado
                           </p>
-                          <p className="mt-2 text-black/40" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
+                          <p className="mt-2 text-white/40" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
                             Tente outro termo ou veja os produtos mais buscados
                           </p>
                         </div>

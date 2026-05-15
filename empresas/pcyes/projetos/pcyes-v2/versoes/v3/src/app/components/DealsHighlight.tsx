@@ -106,12 +106,12 @@ function SmallProductCard({ product, onAdd, onFavorite }: SmallCardProps) {
               e.stopPropagation();
               onAdd(product);
             }}
-            className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-4 py-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+            className="absolute bottom-3 left-1/2 z-20 -translate-x-1/2 translate-y-2 whitespace-nowrap rounded-full px-10 py-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
             style={{
               background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
               color: "white",
               fontFamily: "var(--font-family-inter)",
-              fontSize: "10.5px",
+              fontSize: "13px",
               fontWeight: 700,
               letterSpacing: "0.04em",
               boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
@@ -182,7 +182,6 @@ export function DealsHighlight({
     return resolved.slice(0, 8);
   }, [productIds]);
 
-  const featured = products[0];
   const rest = products.slice(1, 7); // 6 products (3 cols × 2 rows)
 
   const handleAdd = (p: Product) =>
@@ -264,159 +263,189 @@ export function DealsHighlight({
             ))}
           </div>
 
-          {/* RIGHT: Featured promo card */}
-          {featured && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.55, delay: 0.15 }}
-              className="relative overflow-hidden flex flex-col justify-between p-7 md:p-8"
+          {/* RIGHT: Promotions catalog banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.15 }}
+            className="relative overflow-hidden flex flex-col justify-between p-7 md:p-9"
+            style={{
+              background:
+                "radial-gradient(circle at 25% 15%, rgba(255,90,80,0.35) 0%, transparent 55%), radial-gradient(circle at 80% 85%, rgba(225,6,0,0.4) 0%, transparent 55%), linear-gradient(135deg, #b00500 0%, #6e0200 50%, #2a0000 100%)",
+              borderRadius: "24px",
+              border: "1.5px solid rgba(255, 90, 80, 0.45)",
+              boxShadow:
+                "0 30px 80px -20px rgba(0,0,0,0.8), 0 0 50px -10px rgba(225,6,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)",
+              minHeight: "460px",
+            }}
+          >
+            {/* Faint grid texture */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.06]"
               style={{
-                background: "#000000",
-                borderRadius: "24px",
-                border: "1.5px solid rgba(225, 6, 0, 0.55)",
-                boxShadow: "0 0 0 1px rgba(225, 6, 0, 0.15), 0 30px 80px -20px rgba(0,0,0,0.8), 0 0 40px -8px rgba(225, 6, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
-                minHeight: "460px",
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
+                backgroundSize: "44px 44px",
+              }}
+            />
+
+            {/* Giant % decoration */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute select-none"
+              style={{
+                right: "-20px",
+                bottom: "-50px",
+                fontFamily: "var(--font-family-figtree)",
+                fontSize: "360px",
+                fontWeight: 900,
+                lineHeight: 1,
+                color: "rgba(255,255,255,0.06)",
+                letterSpacing: "-0.05em",
               }}
             >
-              {/* Faint grid texture */}
+              %
+            </span>
+
+            <div className="relative">
               <div
-                className="pointer-events-none absolute inset-0 opacity-[0.05]"
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-5"
                 style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
-                  backgroundSize: "44px 44px",
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  backdropFilter: "blur(8px)",
                 }}
-              />
-
-              <div className="relative">
-                <div
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-5"
-                  style={{
-                    background: "rgba(225,6,0,0.12)",
-                    border: "1px solid rgba(225,6,0,0.4)",
-                  }}
-                >
-                  <Zap size={11} strokeWidth={2.4} className="text-primary" />
-                  <span
-                    style={{
-                      fontFamily: "var(--font-family-inter)",
-                      fontSize: "10.5px",
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      color: "rgba(255,90,80,0.95)",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Top da semana
-                  </span>
-                </div>
-
-                <h3
-                  className="text-white mb-3"
-                  style={{
-                    fontFamily: "var(--font-family-figtree)",
-                    fontSize: "clamp(28px, 2.6vw, 36px)",
-                    fontWeight: 700,
-                    lineHeight: 1.05,
-                    letterSpacing: "-0.025em",
-                  }}
-                >
-                  {featured.name.split(" ").slice(0, 4).join(" ")}
-                </h3>
-
-                <p
-                  className="mb-1.5"
+              >
+                <Zap size={11} strokeWidth={2.4} className="text-white" />
+                <span
                   style={{
                     fontFamily: "var(--font-family-inter)",
-                    fontSize: "13px",
-                    color: "rgba(255,255,255,0.55)",
-                    lineHeight: 1.5,
+                    fontSize: "10.5px",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    color: "#fff",
+                    textTransform: "uppercase",
                   }}
                 >
-                  Maior desconto da semana, até durar o estoque.
-                </p>
+                  // CATÁLOGO
+                </span>
               </div>
 
-              {/* Product image */}
-              <div className="relative flex-1 flex items-center justify-center my-6">
-                <div
-                  className="absolute inset-0 rounded-full opacity-50"
-                  style={{
-                    background:
-                      "radial-gradient(circle at center, rgba(225,6,0,0.4) 0%, transparent 60%)",
-                    filter: "blur(40px)",
-                  }}
-                />
-                <ImageWithFallback
-                  src={getPrimaryProductImage(featured)}
-                  alt={featured.name}
-                  className="relative z-10 max-h-[200px] w-auto object-contain"
-                  style={{ filter: "drop-shadow(0 24px 36px rgba(0,0,0,0.7))" }}
-                />
-              </div>
+              <h3
+                className="text-white mb-4"
+                style={{
+                  fontFamily: "var(--font-family-figtree)",
+                  fontSize: "clamp(30px, 2.8vw, 42px)",
+                  fontWeight: 800,
+                  lineHeight: 1.02,
+                  letterSpacing: "-0.03em",
+                  textShadow: "0 4px 24px rgba(0,0,0,0.4)",
+                }}
+              >
+                Todas as<br />promoções num<br />só lugar
+              </h3>
 
-              <div className="relative">
-                <div className="flex items-baseline gap-2 mb-1">
-                  {featured.oldPrice && (
-                    <p
-                      className="line-through"
-                      style={{
-                        fontFamily: "var(--font-family-inter)",
-                        fontSize: "13px",
-                        color: "rgba(255,255,255,0.35)",
-                      }}
-                    >
-                      {featured.oldPrice}
-                    </p>
-                  )}
-                  <span
-                    className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none"
+              <p
+                style={{
+                  fontFamily: "var(--font-family-inter)",
+                  fontSize: "14px",
+                  color: "rgba(255,255,255,0.78)",
+                  lineHeight: 1.55,
+                  maxWidth: "280px",
+                }}
+              >
+                Descontos imperdíveis em hardware, periféricos e setup gamer. Ofertas atualizadas todo dia.
+              </p>
+            </div>
+
+            {/* Product stack decoration */}
+            <div className="relative mt-8 flex items-center gap-4">
+              <div className="flex -space-x-3">
+                {rest.slice(0, 5).map((p, i) => (
+                  <div
+                    key={p.id}
+                    className="relative h-14 w-14 rounded-full overflow-hidden flex items-center justify-center"
                     style={{
-                      fontFamily: "var(--font-family-inter)",
-                      fontSize: "11px",
-                      fontWeight: 800,
-                      color: "#0a0a0a",
-                      background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)",
+                      background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,240,240,0.95) 100%)",
+                      border: "2px solid rgba(255,255,255,0.9)",
+                      boxShadow: "0 10px 24px -8px rgba(0,0,0,0.6)",
+                      zIndex: 10 - i,
                     }}
                   >
-                    -{featured.oldPriceNum
-                      ? Math.round(((featured.oldPriceNum - featured.priceNum) / featured.oldPriceNum) * 100)
-                      : 18}%
-                  </span>
-                </div>
-                <p
-                  className="text-white mb-5"
+                    <ImageWithFallback
+                      src={getPrimaryProductImage(p)}
+                      alt={p.name}
+                      className="h-full w-full object-contain p-1.5"
+                    />
+                  </div>
+                ))}
+                <div
+                  className="relative flex h-14 w-14 items-center justify-center rounded-full"
                   style={{
+                    background: "rgba(0,0,0,0.45)",
+                    border: "2px solid rgba(255,255,255,0.9)",
+                    backdropFilter: "blur(8px)",
+                    zIndex: 4,
                     fontFamily: "var(--font-family-figtree)",
-                    fontSize: "32px",
-                    fontWeight: 700,
+                    fontSize: "13px",
+                    fontWeight: 800,
+                    color: "#fff",
                     letterSpacing: "-0.02em",
                   }}
                 >
-                  {featured.price}
-                </p>
-
-                <Link
-                  to={`/produto/${featured.id}`}
-                  className="group/cta inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3.5 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                  +200
+                </div>
+              </div>
+              <div>
+                <p
                   style={{
-                    background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
-                    color: "white",
-                    fontFamily: "var(--font-family-inter)",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    boxShadow: "0 14px 32px -8px rgba(225,6,0,0.6)",
+                    fontFamily: "var(--font-family-figtree)",
+                    fontSize: "22px",
+                    fontWeight: 800,
+                    color: "#fff",
+                    lineHeight: 1,
+                    letterSpacing: "-0.025em",
                   }}
                 >
-                  Aproveitar oferta
-                  <ArrowRight size={14} strokeWidth={2.4} className="transition-transform group-hover/cta:translate-x-0.5" />
-                </Link>
+                  +200 itens
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-family-inter)",
+                    fontSize: "10.5px",
+                    color: "rgba(255,255,255,0.7)",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginTop: "5px",
+                    fontWeight: 600,
+                  }}
+                >
+                  em promoção agora
+                </p>
               </div>
-            </motion.div>
-          )}
+            </div>
+
+            <div className="relative mt-6">
+              <Link
+                to="/produtos?onlyDiscount=true"
+                className="group/cta inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-4 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  background: "#ffffff",
+                  color: "#1a0000",
+                  fontFamily: "var(--font-family-inter)",
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  boxShadow:
+                    "0 14px 32px -8px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.4)",
+                }}
+              >
+                Ver catálogo de ofertas
+                <ArrowRight size={15} strokeWidth={2.6} className="transition-transform group-hover/cta:translate-x-1" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

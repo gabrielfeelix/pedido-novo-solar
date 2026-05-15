@@ -392,7 +392,7 @@ export function InRealLifeSection() {
                       <button
                         onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
                         className="flex-shrink-0 w-9 h-9 rounded-full border border-foreground/15 text-foreground/40 hover:text-foreground hover:border-foreground/40 transition-all duration-300 cursor-pointer flex items-center justify-center"
-                        title="Adicionar ao carrinho"
+                        title="Comprar"
                       >
                         <ShoppingBag size={14} />
                       </button>

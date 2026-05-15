@@ -191,14 +191,6 @@ export function ProductCarousel({
             <p className="text-foreground/30 md:hidden" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px" }}>
               Arraste para navegar →
             </p>
-            <div className="hidden md:flex gap-2">
-              <button onClick={() => scroll("left")} className="w-10 h-10 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-all cursor-pointer">
-                <ChevronLeft size={16} />
-              </button>
-              <button onClick={() => scroll("right")} className="w-10 h-10 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 hover:text-foreground hover:bg-foreground/5 transition-all cursor-pointer">
-                <ChevronRight size={16} />
-              </button>
-            </div>
           </motion.div>
         </div>
       </div>
@@ -207,7 +199,22 @@ export function ProductCarousel({
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8, delay: 0.3 }}
+        className="relative"
       >
+        <button
+          onClick={() => scroll("left")}
+          aria-label="Anterior"
+          className="absolute left-0 top-[264px] z-30 hidden h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white/85 backdrop-blur-md transition-all hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/15 hover:text-white hover:scale-105 active:scale-95 cursor-pointer md:flex"
+        >
+          <ChevronLeft size={20} strokeWidth={2.2} />
+        </button>
+        <button
+          onClick={() => scroll("right")}
+          aria-label="Próximo"
+          className="absolute right-0 top-[264px] z-30 hidden h-12 w-12 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/55 text-white/85 backdrop-blur-md transition-all hover:border-[var(--primary)]/60 hover:bg-[var(--primary)]/15 hover:text-white hover:scale-105 active:scale-95 cursor-pointer md:flex"
+        >
+          <ChevronRight size={20} strokeWidth={2.2} />
+        </button>
         <div
           ref={scrollRef}
           className="flex gap-6 overflow-x-auto px-5 md:px-0 pb-4 scrollbar-hide snap-x md:snap-none"
@@ -219,7 +226,7 @@ export function ProductCarousel({
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.08 * i }}
-              className="group relative block w-[300px] flex-shrink-0 cursor-pointer snap-center md:w-[360px]"
+              className="group relative block w-[300px] flex-shrink-0 cursor-pointer snap-center md:w-[440px]"
               data-carousel-card="true"
             >
               {(() => {
@@ -230,7 +237,7 @@ export function ProductCarousel({
                 return (
               <Link to={`/produto/${displayProduct.id}`} className="block">
                 <div
-                  className="relative mb-4 aspect-square overflow-hidden"
+                  className="relative mb-4 aspect-[5/6] overflow-hidden"
                   style={{
                     borderRadius: "var(--radius-card)",
                     background: isDark
@@ -342,35 +349,40 @@ export function ProductCarousel({
                     </div>
                   ) : null;
                 })()}
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Star size={11} className="fill-primary text-primary" />
-                  <span className="text-foreground/60" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>
-                    {(selectedVariants[key] ?? product).rating}
-                  </span>
-                  <span className="text-foreground/25" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>
-                    ({(selectedVariants[key] ?? product).reviews})
-                  </span>
-                </div>
                 <Link to={`/produto/${(selectedVariants[key] ?? product).id}`}>
-                  <p className="text-foreground group-hover:text-primary transition-colors duration-300 mb-1.5 truncate" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "16px", fontWeight: "var(--font-weight-medium)" }}>
+                  <p className="text-foreground group-hover:text-primary transition-colors duration-300 mb-2 truncate" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "16px", fontWeight: "var(--font-weight-medium)" }}>
                     {(selectedVariants[key] ?? product).name}
                   </p>
                 </Link>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-foreground/90" style={{ fontFamily: "var(--font-family-inter)", fontSize: "16px", lineHeight: "21px", fontWeight: "500" }}>
-                    {(selectedVariants[key] ?? product).price}
-                  </p>
-                  {(selectedVariants[key] ?? product).oldPrice && (
-                    <p className="text-foreground/40 line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px" }}>
-                      {(selectedVariants[key] ?? product).oldPrice}
-                    </p>
-                  )}
-                </div>
-                {(selectedVariants[key] ?? product).reviews > 150 && (
-                  <p className="text-foreground/25 mt-1" style={{ fontFamily: "var(--font-family-inter)", fontSize: "10px" }}>
-                    {(selectedVariants[key] ?? product).reviews}+ vendidos
-                  </p>
-                )}
+                {(() => {
+                  const dp = selectedVariants[key] ?? product;
+                  const discount = dp.oldPriceNum && dp.priceNum && dp.oldPriceNum > dp.priceNum
+                    ? Math.round(((dp.oldPriceNum - dp.priceNum) / dp.oldPriceNum) * 100)
+                    : 0;
+                  const installment = `R$ ${(dp.priceNum / 10).toFixed(2).replace(".", ",")}`;
+                  return (
+                    <>
+                      {dp.oldPrice && (
+                        <p className="line-through leading-none mb-1" style={{ fontFamily: "var(--font-family-inter)", fontSize: "13px", color: "rgba(255,255,255,0.38)" }}>
+                          {dp.oldPrice}
+                        </p>
+                      )}
+                      <div className="flex items-baseline gap-2">
+                        <p className="text-foreground leading-none" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "20px", fontWeight: 700, letterSpacing: "-0.015em" }}>
+                          {dp.price}
+                        </p>
+                        {discount > 0 && (
+                          <span className="inline-flex items-center rounded-md px-1.5 py-0.5 leading-none" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 800, color: "#0a0a0a", background: "linear-gradient(135deg, #34d399 0%, #10b981 100%)", boxShadow: "0 4px 14px -4px rgba(16,185,129,0.6)", letterSpacing: "-0.01em" }}>
+                            -{discount}%
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1.5 leading-tight" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", color: "rgba(255,255,255,0.55)" }}>
+                        No PIX ou 10x de {installment}
+                      </p>
+                    </>
+                  );
+                })()}
               </div>
             </motion.div>
           ))}

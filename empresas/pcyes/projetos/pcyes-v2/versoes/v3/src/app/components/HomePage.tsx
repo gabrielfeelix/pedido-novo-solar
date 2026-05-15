@@ -28,7 +28,7 @@ export function HomePage() {
 
       {/* ── BLOCO 4: 3 seções ─────────────────────────── */}
       <ProductShelf
-        label="MAIS VENDIDOS"
+        label="// MAIS VENDIDOS"
         title="Top da semana"
         productIds={bestSellerIds}
         showRanking
@@ -40,15 +40,15 @@ export function HomePage() {
       <GpuShowcase />
 
       {/* ── BLOCO 6: 2 seções ─────────────────────────── */}
-      <ProductShelf
-        label="LANÇAMENTOS"
-        title="Recém-chegados"
-        productIds={newArrivalIds}
-      />
       <DealsHighlight
-        label="OFERTAS"
+        label="// OFERTAS"
         title="Promoções imperdíveis"
         productIds={dealIds}
+      />
+      <ProductShelf
+        label="// LANÇAMENTOS"
+        title="Recém-chegados"
+        productIds={newArrivalIds}
       />
 
       {/* ── BLOCO 7: Institucional ────────────────────── */}

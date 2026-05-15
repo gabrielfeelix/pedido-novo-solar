@@ -112,7 +112,7 @@ export function IntelligentDevices() {
               color: "var(--primary)",
             }}
           >
-            BUILT FOR PERFORMANCE
+            // BUILT FOR PERFORMANCE
           </p>
           <h2
             className="text-white"
@@ -257,7 +257,7 @@ export function IntelligentDevices() {
                         boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
                       }}
                     >
-                      <span className="inline-flex items-center gap-1.5"><ShoppingBag size={12} strokeWidth={2} /> Adicionar ao carrinho</span>
+                      <span className="inline-flex items-center gap-1.5"><ShoppingBag size={12} strokeWidth={2} /> Comprar</span>
                     </button>
                   </div>
                   <div className="mt-4 px-1">

@@ -225,14 +225,30 @@ export function CategoryShowcase() {
                     width: `calc((100% - ${GAP_PX * 2}px) / 3)`,
                     borderRadius: "26px",
                     border: isLit
-                      ? "1px solid rgba(255,255,255,0.10)"
+                      ? "1px solid transparent"
                       : "1px solid rgba(255,255,255,0.06)",
                     boxShadow: isFeatured
-                      ? "0 30px 80px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)"
+                      ? "0 30px 80px -20px rgba(0,0,0,0.7), 0 0 18px -6px rgba(255,36,25,0.2), inset 0 1px 0 rgba(255,255,255,0.06)"
                       : "none",
                     transition: "border-color 320ms ease, box-shadow 320ms ease",
                   }}
                 >
+                  {isLit && (
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        borderRadius: "26px",
+                        padding: "1px",
+                        background:
+                          "linear-gradient(135deg, rgba(255,36,25,0.45) 0%, rgba(255,36,25,0.05) 45%, rgba(255,36,25,0.35) 100%)",
+                        WebkitMask:
+                          "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude",
+                        zIndex: 5,
+                      }}
+                    />
+                  )}
                   <div className="absolute inset-0 overflow-hidden">
                     <ImageWithFallback
                       src={cat.image}
