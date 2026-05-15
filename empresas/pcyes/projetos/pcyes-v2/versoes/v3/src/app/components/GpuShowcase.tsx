@@ -247,10 +247,10 @@ export function GpuShowcase() {
                 />
               </div>
 
-              {/* "After" — clipped from left edge to slider */}
+              {/* "After" — clipped from slider to right edge */}
               <div
                 className="absolute inset-0"
-                style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+                style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
               >
                 <ImageWithFallback
                   src={active.scene}
