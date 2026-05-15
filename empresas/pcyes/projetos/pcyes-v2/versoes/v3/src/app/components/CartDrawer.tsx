@@ -466,101 +466,142 @@ export function CartDrawer() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[80] flex items-end justify-center bg-black/60 backdrop-blur-md p-0 md:items-center md:p-6"
+                onClick={() => { setGiftModalOpen(false); setGiftDismissed(true); setSelectedGiftId(null); }}
+                className="fixed inset-0 z-[80] flex items-end justify-center bg-black/70 backdrop-blur-md p-0 md:items-center md:p-6"
               >
                 <motion.div
                   initial={{ opacity: 0, y: 18, scale: 0.97 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 18, scale: 0.97 }}
                   transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex h-[92dvh] w-full max-w-[780px] flex-col overflow-hidden rounded-t-[28px] border border-white/10 bg-background shadow-[0_40px_120px_rgba(0,0,0,0.32)] md:h-auto md:max-h-[calc(100dvh-3rem)] md:rounded-[32px]"
+                  className="flex h-[92dvh] w-full max-w-[860px] flex-col overflow-hidden rounded-t-[28px] md:h-auto md:max-h-[calc(100dvh-3rem)] md:rounded-[24px]"
+                  style={{
+                    background: "#1f1c1c",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    boxShadow: "0 40px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)",
+                  }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="border-b border-foreground/5 px-5 py-5 md:px-8 md:py-7">
+                  <div className="border-b border-white/5 px-6 py-6 md:px-9 md:py-8">
                     <div className="flex items-start justify-between gap-5">
                       <div>
                         <div className="mb-3 flex items-center gap-2 text-primary">
-                          <Gift size={16} />
-                          <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "10px", fontWeight: "700", letterSpacing: "0.18em" }}>
-                            BRINDE DESBLOQUEADO
+                          <Gift size={14} strokeWidth={2.2} />
+                          <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.3em" }}>
+                            // BRINDE DESBLOQUEADO
                           </span>
                         </div>
-                        <h3 className="text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(24px, 7vw, 34px)", fontWeight: "600", lineHeight: 0.98 }}>
+                        <h3 className="text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(24px, 6vw, 32px)", fontWeight: 600, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
                           Escolha seu presente
                         </h3>
-                        <p className="mt-3 max-w-[560px] text-foreground/45" style={{ fontFamily: "var(--font-family-inter)", fontSize: "clamp(12px, 3.4vw, 14px)", lineHeight: 1.6 }}>
-                          Você atingiu o valor de {formatPrice(GIFT_THRESHOLD)}. Selecione um produto para entrar no carrinho com selo de presente e valor zerado.
+                        <p className="mt-3 max-w-[560px] text-white/55" style={{ fontFamily: "var(--font-family-inter)", fontSize: "clamp(12px, 3.4vw, 14px)", lineHeight: 1.6 }}>
+                          Você atingiu {formatPrice(GIFT_THRESHOLD)}. Selecione um produto pra entrar no carrinho com selo de presente e valor zerado.
                         </p>
                       </div>
-                      <button onClick={() => { setGiftModalOpen(false); setGiftDismissed(true); }} className="flex h-10 w-10 items-center justify-center rounded-full border border-foreground/8 text-foreground/35 transition-colors hover:text-foreground hover:bg-foreground/[0.04] cursor-pointer flex-shrink-0">
+                      <button onClick={() => { setGiftModalOpen(false); setGiftDismissed(true); }} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/55 transition-colors hover:text-white hover:bg-white/[0.06] cursor-pointer flex-shrink-0">
                         <X size={16} />
                       </button>
                     </div>
                   </div>
 
-                  <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-8 md:py-8">
+                  <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6 md:px-9 md:py-8">
                     <div className="grid gap-4 md:grid-cols-3 md:gap-5">
-                    {giftOptions.map((product) => (
+                    {giftOptions.map((product) => {
+                      const isSelected = selectedGiftId === product.id;
+                      return (
                       <button
                         key={`gift-option-${product.id}`}
                         onClick={() => setSelectedGiftId(product.id)}
-                        aria-pressed={selectedGiftId === product.id}
-                        className={`group overflow-hidden rounded-[22px] border bg-linear-to-b from-foreground/[0.03] to-transparent text-left transition-all duration-300 hover:border-primary/20 hover:shadow-[0_24px_80px_rgba(0,0,0,0.18)] cursor-pointer ${
-                          selectedGiftId === product.id ? "border-primary/55 shadow-[0_24px_90px_rgba(255,43,46,0.18)] ring-2 ring-primary/25" : "border-foreground/8"
-                        }`}
+                        aria-pressed={isSelected}
+                        className="group relative overflow-hidden text-left transition-all duration-300 cursor-pointer"
+                        style={{
+                          borderRadius: "20px",
+                          background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                          border: isSelected ? "1.5px solid rgba(225,6,0,0.7)" : "1px solid rgba(255,255,255,0.08)",
+                          boxShadow: isSelected
+                            ? "0 24px 60px -20px rgba(225,6,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)"
+                            : "inset 0 1px 0 rgba(255,255,255,0.05)",
+                        }}
                       >
-                        <div className="relative h-[150px] overflow-hidden border-b border-foreground/6 bg-radial-[circle_at_top] from-primary/10 via-transparent to-transparent md:h-[210px]">
+                        <div
+                          className="pointer-events-none absolute inset-0"
+                          style={{
+                            background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.05) 0%, transparent 55%)",
+                            borderRadius: "20px",
+                          }}
+                        />
+                        <div className="relative h-[150px] overflow-hidden border-b border-white/5 md:h-[210px]" style={{ background: "radial-gradient(circle at top, rgba(225,6,0,0.12) 0%, transparent 60%)" }}>
                           <ImageWithFallback src={getPrimaryProductImage(product)} alt={product.name} className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.04] md:p-6" />
-                          <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg md:left-4 md:top-4 md:h-9 md:w-9">
-                            <Gift size={14} />
+                          <div
+                            className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-white md:left-4 md:top-4 md:h-9 md:w-9"
+                            style={{
+                              background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                              boxShadow: "0 6px 18px -4px rgba(225,6,0,0.5)",
+                            }}
+                          >
+                            <Gift size={14} strokeWidth={2.2} />
                           </div>
-                          {selectedGiftId === product.id && (
-                            <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg md:right-4 md:top-4 md:h-9 md:w-9">
-                              <Check size={15} />
+                          {isSelected && (
+                            <div
+                              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-white md:right-4 md:top-4 md:h-9 md:w-9"
+                              style={{
+                                background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                                boxShadow: "0 6px 18px -4px rgba(225,6,0,0.5)",
+                              }}
+                            >
+                              <Check size={15} strokeWidth={2.4} />
                             </div>
                           )}
                         </div>
-                        <div className="px-4 py-4 md:px-5 md:py-5">
-                          <p className="line-clamp-2 text-foreground" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(17px, 5vw, 21px)", fontWeight: "600", lineHeight: 1.05 }}>
+                        <div className="relative px-4 py-4 md:px-5 md:py-5">
+                          <p className="line-clamp-2 text-white" style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(15px, 4vw, 17px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.01em" }}>
                             {product.name}
                           </p>
-                          <div className="mt-3 flex items-end gap-2 md:mt-4">
-                            <span className="text-foreground/20 line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px" }}>
+                          <div className="mt-3 flex items-baseline gap-2 md:mt-4">
+                            <span className="line-through" style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", color: "rgba(255,255,255,0.32)" }}>
                               {product.price}
                             </span>
-                            <span className="text-primary" style={{ fontFamily: "var(--font-family-inter)", fontSize: "clamp(18px, 5vw, 22px)", fontWeight: "700" }}>
+                            <span style={{ fontFamily: "var(--font-family-figtree)", fontSize: "clamp(18px, 5vw, 22px)", fontWeight: 700, color: "#22c55e", letterSpacing: "-0.015em" }}>
                               R$ 0,00
                             </span>
                           </div>
                           <div className="mt-3 flex items-center justify-between md:mt-4">
-                            <span className="text-foreground/35" style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em" }}>
+                            <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em", color: "rgba(255,255,255,0.4)" }}>
                               PRESENTE PCYES
                             </span>
-                            <span className={selectedGiftId === product.id ? "text-primary" : "text-foreground/35"} style={{ fontFamily: "var(--font-family-inter)", fontSize: "10px", fontWeight: "700", letterSpacing: "0.08em" }}>
-                              {selectedGiftId === product.id ? "SELECIONADO" : "SELECIONAR"}
+                            <span style={{ fontFamily: "var(--font-family-inter)", fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", color: isSelected ? "var(--primary)" : "rgba(255,255,255,0.45)" }}>
+                              {isSelected ? "SELECIONADO" : "SELECIONAR"}
                             </span>
                           </div>
                         </div>
                       </button>
-                    ))}
+                      );
+                    })}
                   </div>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-foreground/5 px-5 py-4 md:px-8 md:py-5">
+                  <div className="flex items-center justify-between border-t border-white/5 px-6 py-5 md:px-9 md:py-6">
                     <button
                       onClick={() => { setGiftModalOpen(false); setGiftDismissed(true); setSelectedGiftId(null); }}
-                      className="text-foreground/35 transition-colors hover:text-foreground/60 cursor-pointer"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "600", letterSpacing: "0.08em" }}
+                      className="text-white/45 transition-colors hover:text-white/75 cursor-pointer"
+                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em" }}
                     >
-                      AGORA NÃO
+                      Agora não
                     </button>
                     <button
                       onClick={confirmGift}
                       disabled={!selectedGiftId}
-                      className="rounded-[8px] bg-primary px-5 py-3 text-primary-foreground transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-35"
-                      style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "700", letterSpacing: "0.08em" }}
+                      className="rounded-full px-7 py-3 text-white transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:scale-100"
+                      style={{
+                        background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                        fontFamily: "var(--font-family-inter)",
+                        fontSize: "13px",
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        boxShadow: "0 14px 32px -8px rgba(225,6,0,0.55)",
+                      }}
                     >
-                      SELECIONAR
+                      Selecionar presente
                     </button>
                   </div>
                 </motion.div>
