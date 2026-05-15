@@ -887,7 +887,7 @@ function BlockHeading({ icon, title, subtitle, action, accentSurface }: {
 export function CheckoutPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { items, removeFilial, markNfCompleted, completedOrders } = useCart();
+  const { items, removeFilial, markNfCompleted, completedOrders, updateQuantity, removeItem } = useCart();
 
   /* ── Single-NF scope (driven by ?nf=PR|ES from CartPage) ──
      If param present, this checkout session handles ONLY that NF — exact UX
@@ -2062,12 +2062,13 @@ export function CheckoutPage() {
               </span>
             </div>
 
-            {/* Items list */}
-            <div className="max-h-[320px] overflow-y-auto">
+            {/* Items list — Wellington (UAT): controles +/-/lixeira no sidebar pra editar
+                  durante checkout sem voltar pro carrinho. */}
+            <div className="max-h-[440px] overflow-y-auto">
               {sidebarItems.map(item => (
-                <div key={item.id} className="px-4 py-3.5 flex items-start gap-3.5" style={{ borderBottom: `1px solid ${nfStyle.border}` }}>
-                  {/* Product image — fills the card */}
-                  <div className="w-[52px] h-[52px] rounded-xl overflow-hidden shrink-0"
+                <div key={item.id} className="px-4 py-3 flex items-start gap-3" style={{ borderBottom: `1px solid ${nfStyle.border}` }}>
+                  {/* Product image */}
+                  <div className="w-[44px] h-[44px] rounded-lg overflow-hidden shrink-0"
                     style={{ background: 'var(--background)', border: '1px solid var(--muted)' }}>
                     {item.image ? (
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -2076,17 +2077,60 @@ export function CheckoutPage() {
                     )}
                   </div>
 
-                  {/* Info + price */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between" style={{ minHeight: 52 }}>
-                    <span className="block" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: '1.35', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {item.name}
-                    </span>
-                    <div className="flex items-end justify-between gap-2 mt-1.5">
-                      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-                        {item.quantity} {item.unitType} × {formatCurrency(item.price)}
+                  {/* Info + controls */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="block" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: '1.35', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {item.name}
                       </span>
-                      <span className="shrink-0" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
+                      <span className="shrink-0" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
                         {formatCurrency(item.price * item.quantity)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2 mt-2">
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          disabled={item.quantity <= 1}
+                          aria-label={`Diminuir quantidade de ${item.name}`}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
+                          style={{ width: 20, height: 20, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--foreground)' }}
+                        >
+                          <svg width="9" height="9" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                            <path d="M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                          </svg>
+                        </button>
+                        <span style={{ fontSize: 11, color: 'var(--foreground)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', minWidth: 12, textAlign: 'center' }}>
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          aria-label={`Aumentar quantidade de ${item.name}`}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)]"
+                          style={{ width: 20, height: 20, background: 'var(--card)', border: `1px solid ${nfStyle.color}55`, color: nfStyle.color }}
+                        >
+                          <svg width="9" height="9" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                            <path d="M7 2.5V11.5M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeItem(item.id)}
+                          aria-label={`Remover ${item.name} do carrinho`}
+                          className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] ml-1"
+                          style={{ width: 20, height: 20, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--muted-foreground)' }}
+                        >
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2" />
+                            <rect x="5" y="6" width="14" height="14" rx="1.5" />
+                          </svg>
+                        </button>
+                      </div>
+                      <span style={{ fontSize: 10, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
+                        {formatCurrency(item.price)}/{item.unitType.toLowerCase()}
                       </span>
                     </div>
                   </div>
@@ -2176,7 +2220,6 @@ export function CheckoutPage() {
               {[
                 { label: 'Logística e Frete', done: nfState[filial].selectedShipping !== null },
                 { label: 'Forma de Pagamento', done: nfState[filial].paymentMethod !== null },
-                { label: 'Condição de Pagamento', done: nfState[filial].condicaoPgto !== '' },
               ].map((item) => (
                 <div key={item.label} className="flex items-center gap-2.5">
                   {item.done ? (
@@ -2233,7 +2276,7 @@ export function CheckoutPage() {
       <div className="relative overflow-hidden" style={{ background: 'var(--foreground)' }}>
         <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle at center, var(--primary-foreground) 1px, transparent 1.5px)', backgroundSize: '22px 22px' }} />
-        <div className="relative max-w-[1200px] mx-auto px-4 md:px-6 pt-7 pb-10 text-center">
+        <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 pt-7 pb-10 text-center">
           <MainStepIndicator currentNfStep="review" />
           <div className="mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1"
             style={{ background: 'rgba(255,255,255,0.12)' }}>
@@ -2249,7 +2292,7 @@ export function CheckoutPage() {
       </div>
 
       {/* Main layout */}
-      <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-8 pt-8 pb-16 px-4 md:px-6">
+      <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row gap-8 pt-8 pb-16 px-4 md:px-6">
 
         {/* Left column: NF cards + footer */}
         <div className="flex-1 min-w-0 flex flex-col gap-6">
@@ -2929,7 +2972,7 @@ export function CheckoutPage() {
       <div className="relative overflow-hidden" style={{ background: 'var(--foreground)' }}>
         <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle at center, var(--primary-foreground) 1px, transparent 1.5px)', backgroundSize: '22px 22px' }} />
-        <div className="relative max-w-[1120px] mx-auto px-4 md:px-6 pt-6 pb-7 text-center">
+        <div className="relative max-w-[1280px] mx-auto px-4 md:px-6 pt-6 pb-7 text-center">
           <MainStepIndicator currentNfStep={nfStep} accentColor={NF_STYLE[activeFilial].color} />
           <div className="mt-4 inline-flex items-center gap-2 rounded-md px-2.5 py-1"
             style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)' }}>
@@ -2951,7 +2994,7 @@ export function CheckoutPage() {
       {/* Smart default hints are now inline within each block (see BlockReapplyHint in renderShippingBlock / renderPaymentBlock) */}
 
       {/* ── Main 2-column layout ── */}
-      <div className="max-w-[1120px] mx-auto flex flex-col lg:flex-row gap-8 pt-6 pb-16 px-4 md:px-6">
+      <div className="max-w-[1280px] mx-auto flex flex-col lg:flex-row gap-8 pt-6 pb-16 px-4 md:px-6">
 
         {/* Left column — all 4 blocks */}
         <div className="flex-1 min-w-0 flex flex-col gap-5">

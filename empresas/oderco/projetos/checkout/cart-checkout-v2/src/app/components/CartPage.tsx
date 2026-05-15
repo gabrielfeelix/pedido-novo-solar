@@ -1034,7 +1034,7 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
           style={{
             listStyle: 'none',
             /* Altura ≈ 4 linhas + recorte do 5º como affordance de scroll. */
-            maxHeight: 210,
+            maxHeight: 280,
             overflowY: 'auto',
             scrollbarWidth: 'thin',
             scrollbarColor: `${accent.color}55 transparent`,
