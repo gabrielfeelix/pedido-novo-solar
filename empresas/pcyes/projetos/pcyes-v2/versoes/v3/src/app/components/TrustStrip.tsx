@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
-import { Truck, CreditCard, ShieldCheck, RefreshCcw, Headset } from "lucide-react";
+import { Truck, CreditCard, ShieldCheck, RefreshCcw } from "lucide-react";
 
 const features = [
   {
@@ -23,11 +23,6 @@ const features = [
     title: "Troca grátis",
     desc: "7 dias para devolver",
   },
-  {
-    icon: Headset,
-    title: "Suporte especializado",
-    desc: "Atendimento gamer pra gamer",
-  },
 ];
 
 export function TrustStrip() {
@@ -40,7 +35,7 @@ export function TrustStrip() {
       className="border-y border-white/5 px-5 py-8 md:px-[72px] md:py-10"
       style={{ background: "#0a0a0a" }}
     >
-      <div className="mx-auto grid max-w-[1760px] grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-5">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-4">
         {features.map((f, i) => (
           <motion.div
             key={f.title}

@@ -122,52 +122,70 @@ export function InRealLifeSection() {
   };
 
   return (
-    <section className="py-20">
-      {/* Title */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-12 px-8"
-      >
-        <span
-          className="text-foreground/30 tracking-[0.3em] block mb-4"
-          style={{ fontFamily: "var(--font-family-inter)", fontSize: "11px", fontWeight: "var(--font-weight-medium)" }}
+    <section className="px-5 py-16 md:px-[72px] md:py-20" style={{ background: "#0e0e0e" }}>
+      <div className="mx-auto w-full" style={{ maxWidth: "1600px" }}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.55 }}
+          className="mb-10"
         >
-          #PCYESINREALLIFE
-        </span>
-        <h2
-          className="text-foreground"
-          style={{
-            fontFamily: "var(--font-family-figtree)",
-            fontSize: "clamp(28px, 3vw, 36px)",
-            fontWeight: "var(--font-weight-light)",
-            lineHeight: "1.2",
-          }}
-        >
-          PCYES IN REAL LIFE
-        </h2>
-      </motion.div>
+          <p
+            className="mb-3 text-primary"
+            style={{
+              fontFamily: "var(--font-family-inter)",
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.3em",
+            }}
+          >
+            // PCYES IN REAL LIFE
+          </p>
+          <h2
+            className="text-white"
+            style={{
+              fontFamily: "var(--font-family-figtree)",
+              fontSize: "clamp(28px, 3vw, 36px)",
+              fontWeight: 600,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Setups reais, peças reais
+          </h2>
+          <p
+            className="mt-3 max-w-xl"
+            style={{
+              fontFamily: "var(--font-family-inter)",
+              fontSize: "14px",
+              color: "rgba(255,255,255,0.55)",
+              lineHeight: 1.5,
+            }}
+          >
+            Periféricos e componentes PCYES presentes nos melhores setups do Brasil. Clique pra explorar.
+          </p>
+        </motion.div>
 
-      {/* Horizontal scrollable gallery */}
-      <div className="relative group/carousel">
+        {/* Horizontal scrollable gallery */}
+        <div className="relative group/carousel">
         <button
           onClick={() => scroll("left")}
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-black/80 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 cursor-pointer"
+          className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/80 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 cursor-pointer"
         >
           <ChevronLeft size={18} />
         </button>
         <button
           onClick={() => scroll("right")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white hover:bg-black/80 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 cursor-pointer"
+          className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/80 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 cursor-pointer"
         >
           <ChevronRight size={18} />
         </button>
 
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto scrollbar-hide gap-1"
+          className="flex overflow-x-auto scrollbar-hide gap-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {posts.map((post, i) => (
@@ -177,7 +195,12 @@ export function InRealLifeSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="flex-shrink-0 w-[220px] md:w-[280px] aspect-[3/4] relative group/card cursor-pointer overflow-hidden"
+              className="flex-shrink-0 w-[260px] md:w-[300px] aspect-[3/4] relative group/card cursor-pointer overflow-hidden"
+              style={{
+                borderRadius: "20px",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+              }}
               onClick={() => { setSelectedPost(post); setHighlightedProduct(null); }}
             >
               <ImageWithFallback
@@ -220,27 +243,8 @@ export function InRealLifeSection() {
             </motion.div>
           ))}
         </div>
+        </div>
       </div>
-
-      {/* Subtitle */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-center mt-12 px-8"
-      >
-        <p
-          className="text-foreground/25 max-w-xl mx-auto"
-          style={{
-            fontFamily: "var(--font-family-inter)",
-            fontSize: "var(--text-sm)",
-            lineHeight: "1.7",
-          }}
-        >
-          PERIFÉRICOS E COMPONENTES DE ALTA PERFORMANCE, PRESENTES NOS MELHORES SETUPS DO BRASIL
-        </p>
-      </motion.div>
 
       {/* ─── Modal with tagged dots (Insider-style) ─── */}
       <AnimatePresence>
@@ -412,7 +416,7 @@ export function InRealLifeSection() {
                   }}
                 >
                   <ShoppingBag size={14} />
-                  Adicionar todos ao carrinho
+                  Comprar todos
                 </button>
               </div>
             </motion.div>

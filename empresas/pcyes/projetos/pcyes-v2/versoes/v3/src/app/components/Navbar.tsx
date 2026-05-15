@@ -603,7 +603,7 @@ export function Navbar() {
     : (isDark ? "text-foreground/45 hover:text-foreground" : "text-foreground/50 hover:text-foreground");
 
   const tooltipContentClass =
-    "border border-white/10 bg-foreground/95 px-2.5 py-1.5 text-[11px] font-semibold tracking-wide text-background backdrop-blur-md shadow-lg";
+    "!bg-[#1f1c1c] border border-white/10 px-2.5 py-1.5 text-[11px] font-semibold tracking-wide text-white shadow-lg [&>span]:!bg-[#1f1c1c] [&>span]:!fill-[#1f1c1c]";
 
   const renderIcons = () => (
     <TooltipProvider delayDuration={200}>

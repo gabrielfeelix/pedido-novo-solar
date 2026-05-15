@@ -102,11 +102,14 @@ function ProductCard({ product, rank, emphasizeDiscount, onAdd, onFavorite }: Ca
 
           {rank !== undefined && (
             <span
-              className="absolute left-3 top-3 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur-sm"
+              className="absolute left-3 top-3 z-20 flex h-9 w-9 items-center justify-center rounded-full text-white"
               style={{
+                background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
                 fontFamily: "var(--font-family-figtree)",
-                fontSize: "12px",
-                fontWeight: 700,
+                fontSize: "15px",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                boxShadow: "0 6px 18px -4px rgba(225,6,0,0.55), inset 0 1px 0 rgba(255,255,255,0.18)",
               }}
             >
               {rank}

@@ -1119,9 +1119,17 @@ export function ProductsPage() {
                               aria-label={isFavorite(displayProduct.id) ? "Remover dos favoritos" : "Adicionar aos favoritos"}
                             ><Heart size={16} className={isFavorite(displayProduct.id) ? "fill-red-500 text-red-500" : ""} strokeWidth={2} /></button>
                             <button onClick={() => handleAddToCart(displayProduct)}
-                              className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background hover:opacity-90 transition-all font-semibold cursor-pointer"
-                              style={{ borderRadius: "var(--radius-button)", fontFamily: "var(--font-family-inter)", fontSize: "12px", letterSpacing: "0.04em", textTransform: "uppercase" }}
-                            ><ShoppingBag size={14} /> Adicionar</button>
+                              className="flex items-center gap-2 px-7 py-3 rounded-full transition-transform hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
+                              style={{
+                                background: "linear-gradient(135deg, var(--primary) 0%, #ff2419 100%)",
+                                color: "white",
+                                fontFamily: "var(--font-family-inter)",
+                                fontSize: "13px",
+                                fontWeight: 700,
+                                letterSpacing: "0.04em",
+                                boxShadow: "0 10px 26px -6px rgba(225,6,0,0.6)",
+                              }}
+                            ><ShoppingBag size={14} strokeWidth={2} /> Comprar</button>
                           </div>
                         </motion.div>
                       );
