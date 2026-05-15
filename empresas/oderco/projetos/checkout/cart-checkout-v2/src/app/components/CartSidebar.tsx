@@ -74,6 +74,48 @@ function PackageIcon() {
   );
 }
 
+/* ── Per-filial free-shipping progress (sits adjacent to each filial group) ── */
+function ShippingProgress({ filial, subtotal }: { filial: 'PR' | 'ES'; subtotal: number }) {
+  const color = filial === 'PR' ? 'var(--nf-pr)' : 'var(--nf-es)';
+  const achieved = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const prog = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
+  const left = FREE_SHIPPING_THRESHOLD - subtotal;
+
+  if (achieved) {
+    return (
+      <div className="px-5 pt-2.5 pb-2 flex items-center gap-1.5"
+        style={{ background: 'var(--success-surface)' }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+        <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}>
+          Frete grátis nesta filial
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-5 pt-2.5 pb-2.5" style={{ background: 'var(--background)' }}>
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)' }}>
+          Faltam <span style={{ color, fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(left)}</span> para frete grátis
+        </span>
+        <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
+          {Math.round(prog)}%
+        </span>
+      </div>
+      <div className="w-full h-[5px] rounded-full overflow-hidden" style={{ background: 'var(--muted)' }}>
+        <motion.div
+          className="h-full rounded-full"
+          style={{ background: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${prog}%` }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
+        />
+      </div>
+    </div>
+  );
+}
+
 /* ── NF Badge ── */
 function NfBadge({ filial }: { filial: 'PR' | 'ES' }) {
   return (
@@ -110,11 +152,6 @@ export function CartSidebar() {
   /* ── Subtotals per NF ── */
   const subtotalPR = useMemo(() => itemsPR.reduce((s, i) => s + i.price * i.quantity, 0), [itemsPR]);
   const subtotalES = useMemo(() => itemsES.reduce((s, i) => s + i.price * i.quantity, 0), [itemsES]);
-
-  /* ── Free-shipping per NF ── */
-  const hasFreeShippingPR = subtotalPR >= FREE_SHIPPING_THRESHOLD;
-  const hasFreeShippingES = subtotalES >= FREE_SHIPPING_THRESHOLD;
-  const allFreeShipping = (itemsPR.length === 0 || hasFreeShippingPR) && (itemsES.length === 0 || hasFreeShippingES);
 
   /* ── Handlers ── */
   const handleCheckout = useCallback(() => {
@@ -185,61 +222,6 @@ export function CartSidebar() {
               </div>
             </div>
 
-            {/* ── Free-shipping progress bar — only for NFs NOT yet free.
-                 If both achieved, render single thin success strip; else hide. ── */}
-            {items.length > 0 && (() => {
-              const rows = ([
-                { key: 'PR' as const, label: 'Filial PR', qty: itemsPR.length, sub: subtotalPR, color: 'var(--nf-pr)' },
-                { key: 'ES' as const, label: 'Filial ES', qty: itemsES.length, sub: subtotalES, color: 'var(--nf-es)' },
-              ]).filter(n => n.qty > 0);
-              const pending = rows.filter(n => n.sub < FREE_SHIPPING_THRESHOLD);
-              if (pending.length === 0) {
-                /* All NFs achieved — single quiet success strip */
-                return (
-                  <div className="px-5 py-2 shrink-0 flex items-center gap-2"
-                    style={{ background: 'var(--success-surface)', borderBottom: '1px solid var(--muted)' }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--success)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.4px' }}>
-                      Frete grátis garantido em {hasMultipleNFs ? 'ambas as filiais' : 'todo o pedido'}
-                    </span>
-                  </div>
-                );
-              }
-              return (
-                <div className="px-5 pt-3 pb-3 shrink-0 flex flex-col gap-2.5"
-                  style={{ background: 'var(--background)', borderBottom: '1px solid var(--muted)' }}>
-                  {pending.map(n => {
-                    const prog = Math.min((n.sub / FREE_SHIPPING_THRESHOLD) * 100, 100);
-                    const left = FREE_SHIPPING_THRESHOLD - n.sub;
-                    return (
-                      <div key={n.key}>
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            <NfBadge filial={n.key} />
-                            <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontWeight: 'var(--font-weight-bold)' }}>
-                              Faltam <span style={{ color: n.color, fontVariantNumeric: 'tabular-nums' }}>{formatCurrency(left)}</span> para frete grátis
-                            </span>
-                          </div>
-                          <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}>
-                            {Math.round(prog)}%
-                          </span>
-                        </div>
-                        <div className="w-full h-[5px] rounded-full overflow-hidden" style={{ background: 'var(--muted)' }}>
-                          <motion.div
-                            className="h-full rounded-full"
-                            style={{ background: n.color }}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${prog}%` }}
-                            transition={{ duration: 0.55, ease: 'easeOut' }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })()}
-
             {/* ── Items list ── */}
             <div className="flex-1 overflow-y-auto min-h-0">
               {items.length === 0 ? (
@@ -286,6 +268,7 @@ export function CartSidebar() {
                           </span>
                         </div>
                       )}
+                      <ShippingProgress filial="PR" subtotal={subtotalPR} />
                       {/* Items */}
                       {itemsPR.map((item, idx) => (
                         <CartItemRow
@@ -317,6 +300,7 @@ export function CartSidebar() {
                           </span>
                         </div>
                       )}
+                      <ShippingProgress filial="ES" subtotal={subtotalES} />
                       {/* Items */}
                       {itemsES.map((item, idx) => (
                         <CartItemRow

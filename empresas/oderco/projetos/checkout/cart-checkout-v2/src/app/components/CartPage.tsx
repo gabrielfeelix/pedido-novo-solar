@@ -1033,14 +1033,15 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
           className="m-0 p-0 flex flex-col"
           style={{
             listStyle: 'none',
-            maxHeight: 260,
+            /* Altura ≈ 4 linhas + recorte do 5º como affordance de scroll. */
+            maxHeight: 210,
             overflowY: 'auto',
             scrollbarWidth: 'thin',
             scrollbarColor: `${accent.color}55 transparent`,
-            WebkitMaskImage: items.length > 5
+            WebkitMaskImage: items.length > 4
               ? 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
               : 'none',
-            maskImage: items.length > 5
+            maskImage: items.length > 4
               ? 'linear-gradient(to bottom, transparent 0, black 12px, black calc(100% - 12px), transparent 100%)'
               : 'none',
           }}
@@ -1048,7 +1049,7 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
           {items.map((p, idx) => (
             <li
               key={p.id}
-              className="group/item flex items-center gap-3 py-2"
+              className="flex items-center gap-3 py-2.5"
               style={{
                 borderBottom: idx < items.length - 1 ? '1px solid var(--muted)' : 'none',
               }}
@@ -1067,75 +1068,66 @@ function ChoiceCard({ nf, items, subtotal, onSelect, selectable, isSelected }: C
                 >
                   {p.name}
                 </span>
-                {/* Linha 2 — info default + controles em hover/focus overlapping.
-                    Mesma altura, sem shift de layout. */}
-                <div className="relative" style={{ height: 22, marginTop: 2 }}>
-                  <span
-                    className="absolute inset-0 flex items-center transition-opacity opacity-100 group-hover/item:opacity-0 group-focus-within/item:opacity-0 pointer-events-none"
-                    style={{ fontSize: 11, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}
+                {/* Linha 2 — controles sempre visíveis (descoberta sem hover). */}
+                <div className="inline-flex items-center gap-1.5 mt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(p.id, Math.max(1, p.quantity - 1))}
+                    disabled={p.quantity <= 1}
+                    aria-label={`Diminuir quantidade de ${p.name}`}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+                    style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--foreground)', outlineColor: accent.color }}
                   >
-                    {p.quantity} {p.unitType.toLowerCase()}{p.quantity > 1 ? 's' : ''} × {formatCurrency(p.price)}
+                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                  <span style={{ fontSize: 11, color: 'var(--foreground)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', minWidth: 14, textAlign: 'center' }}>
+                    {p.quantity}
                   </span>
-                  <div className="absolute inset-0 inline-flex items-center gap-1.5 opacity-0 group-hover/item:opacity-100 group-focus-within/item:opacity-100 transition-opacity">
-                    <button
-                      type="button"
-                      onClick={() => updateQuantity(p.id, Math.max(1, p.quantity - 1))}
-                      disabled={p.quantity <= 1}
-                      aria-label={`Diminuir quantidade de ${p.name}`}
-                      className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
-                      style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--foreground)', outlineColor: accent.color }}
-                    >
-                      <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                      </svg>
-                    </button>
-                    <span style={{ fontSize: 11, color: 'var(--foreground)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', minWidth: 14, textAlign: 'center' }}>
-                      {p.quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => updateQuantity(p.id, p.quantity + 1)}
-                      aria-label={`Aumentar quantidade de ${p.name}`}
-                      className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
-                      style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: accent.color, outlineColor: accent.color }}
-                    >
-                      <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M7 2.5V11.5M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => removeItem(p.id)}
-                      aria-label={`Remover ${p.name} do carrinho`}
-                      className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--destructive-surface,_var(--muted))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ml-1"
-                      style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--destructive-foreground,_var(--foreground))', outlineColor: 'var(--destructive-foreground)' }}
-                    >
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2" />
-                        <rect x="5" y="6" width="14" height="14" rx="1.5" />
-                      </svg>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => updateQuantity(p.id, p.quantity + 1)}
+                    aria-label={`Aumentar quantidade de ${p.name}`}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1"
+                    style={{ width: 22, height: 22, background: 'var(--card)', border: `1px solid ${accent.color}55`, color: accent.color, outlineColor: accent.color }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M7 2.5V11.5M2.5 7H11.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeItem(p.id)}
+                    aria-label={`Remover ${p.name} do carrinho`}
+                    className="rounded-md flex items-center justify-center cursor-pointer transition-colors hover:bg-[var(--destructive-surface,_var(--muted))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ml-1"
+                    style={{ width: 22, height: 22, background: 'var(--card)', border: '1px solid var(--muted)', color: 'var(--muted-foreground)', outlineColor: 'var(--destructive-foreground)' }}
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2" />
+                      <rect x="5" y="6" width="14" height="14" rx="1.5" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-              <span
-                className="shrink-0"
-                style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}
-              >
-                {formatCurrency(p.price * p.quantity)}
-              </span>
+              <div className="shrink-0 text-right">
+                <span
+                  className="block"
+                  style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums' }}
+                >
+                  {formatCurrency(p.price * p.quantity)}
+                </span>
+                <span
+                  className="block"
+                  style={{ fontSize: 10, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontVariantNumeric: 'tabular-nums', lineHeight: 1.2 }}
+                >
+                  {formatCurrency(p.price)}/{p.unitType.toLowerCase()}
+                </span>
+              </div>
             </li>
           ))}
         </ul>
-        {items.length > 5 && (
-          <span
-            className="block mt-2 text-center"
-            style={{ fontSize: 11, color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', fontStyle: 'italic' }}
-          >
-            ↕ role para ver os {items.length} itens
-          </span>
-        )}
       </div>
 
       {/* Breakdown + Total consolidado — 1 seção compacta pra economizar altura vertical */}

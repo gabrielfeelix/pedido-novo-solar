@@ -294,15 +294,15 @@ function TruckIcon({ size = 20 }: { size?: number }) {
 }
 
 /* ── Logistics & Freight block header — semi-truck + route pin ── */
-function LogisticsBlockIcon({ size = 18 }: { size?: number }) {
+function LogisticsBlockIcon({ size = 18, color = 'var(--primary)' }: { size?: number; color?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="1" y="6" width="13" height="10" rx="1" />
       <path d="M14 9h4l3 4v3h-7V9z" />
       <circle cx="5" cy="19" r="2" />
       <circle cx="18" cy="19" r="2" />
       <path d="M18.5 1C17.12 1 16 2.12 16 3.5c0 1.9 2.5 4.5 2.5 4.5S21 5.4 21 3.5C21 2.12 19.88 1 18.5 1z" />
-      <circle cx="18.5" cy="3.5" r="0.8" fill="var(--primary)" stroke="none" />
+      <circle cx="18.5" cy="3.5" r="0.8" fill={color} stroke="none" />
     </svg>
   );
 }
@@ -403,22 +403,21 @@ function FobCarrierIcon({ size = 20, color = 'var(--primary)' }: { size?: number
 }
 
 /* ── Carrier icon router — picks the right icon per option id ── */
-function CarrierIcon({ id, size = 20 }: { id: string; size?: number }) {
-  const c = 'var(--primary)';
-  if (id.includes('express'))   return <ExpressCarrierIcon size={size} color={c} />;
-  if (id.includes('economico')) return <EconomicoCarrierIcon size={size} color={c} />;
-  if (id.includes('pac'))       return <PacCarrierIcon size={size} color={c} />;
-  if (id.includes('sedex'))     return <SedexCarrierIcon size={size} color={c} />;
-  if (id.includes('jadlog'))    return <JadlogCarrierIcon size={size} color={c} />;
-  if (id.startsWith('fob'))     return <FobCarrierIcon size={size} color={c} />;
+function CarrierIcon({ id, size = 20, color = 'var(--primary)' }: { id: string; size?: number; color?: string }) {
+  if (id.includes('express'))   return <ExpressCarrierIcon size={size} color={color} />;
+  if (id.includes('economico')) return <EconomicoCarrierIcon size={size} color={color} />;
+  if (id.includes('pac'))       return <PacCarrierIcon size={size} color={color} />;
+  if (id.includes('sedex'))     return <SedexCarrierIcon size={size} color={color} />;
+  if (id.includes('jadlog'))    return <JadlogCarrierIcon size={size} color={color} />;
+  if (id.startsWith('fob'))     return <FobCarrierIcon size={size} color={color} />;
   return <TruckIcon size={size} />;
 }
 
-function WarehouseIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-4h6v4" /><path d="M9 9h6" /><path d="M9 13h6" /></svg>;
+function WarehouseIcon({ color = 'var(--primary)' }: { color?: string } = {}) {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18" /><path d="M5 21V7l7-4 7 4v14" /><path d="M9 21v-4h6v4" /><path d="M9 9h6" /><path d="M9 13h6" /></svg>;
 }
-function FobIcon() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>;
+function FobIcon({ color = 'var(--primary)' }: { color?: string } = {}) {
+  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /><polyline points="3.27 6.96 12 12.01 20.73 6.96" /><line x1="12" y1="22.08" x2="12" y2="12" /></svg>;
 }
 function SearchIcon() {
   return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
@@ -600,22 +599,21 @@ function SingleSelectDropdown({ value, options, onChange, placeholder = 'Selecio
   );
 }
 
-function ShippingCard({ option, isSelected, onClick, showPrice = true, hasFreeShipping = false }: {
+function ShippingCard({ option, isSelected, onClick, showPrice = true, hasFreeShipping = false, nfColor }: {
   option: ShippingOption; isSelected: boolean; onClick: () => void; showPrice?: boolean; hasFreeShipping?: boolean;
   nfColor?: string; nfSurface?: string; nfBorderSm?: string;
 }) {
   const isFreeOption = hasFreeShipping && option.id === 'cif-economico';
   const displayPrice = isFreeOption ? 0 : option.price;
-  /* DS-aligned: primary blue como única cor de seleção. Card sempre branco,
-     border + radio mudam quando selected. Sem tinted bg. */
+  const accent = nfColor || 'var(--primary)';
   return (
     <button onClick={onClick}
       className="w-full flex items-center gap-3 sm:gap-4 rounded-lg cursor-pointer transition-all duration-150 text-left"
-      style={{ border: isSelected ? '1.5px solid var(--primary)' : '1px solid var(--muted)', background: 'var(--card)', fontFamily: 'var(--font-red-hat-display)', padding: isSelected ? '11.5px' : '12px' }}>
-      <div className="w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: isSelected ? 'var(--primary)' : 'var(--muted-foreground)' }}>
-        {isSelected && <div className="w-[10px] h-[10px] rounded-full" style={{ background: 'var(--primary)' }} />}
+      style={{ border: isSelected ? `1.5px solid ${accent}` : '1px solid var(--muted)', background: 'var(--card)', fontFamily: 'var(--font-red-hat-display)', padding: isSelected ? '11.5px' : '12px' }}>
+      <div className="w-[18px] h-[18px] rounded-full border-2 flex items-center justify-center shrink-0" style={{ borderColor: isSelected ? accent : 'var(--muted-foreground)' }}>
+        {isSelected && <div className="w-[10px] h-[10px] rounded-full" style={{ background: accent }} />}
       </div>
-      <div className="shrink-0"><CarrierIcon id={option.id} size={20} /></div>
+      <div className="shrink-0"><CarrierIcon id={option.id} size={20} color={accent} /></div>
       <div className="flex-1 min-w-0">
         <span className="block truncate" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)' }}>{option.carrier}</span>
         <span className="block" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
@@ -681,11 +679,14 @@ function BlockReapplyHint({ label, onApply, applied }: { label: string; onApply:
    Filial agora é UMA POR VEZ — não divide steps.
    Identificação visual da filial ativa fica no badge abaixo.
 ═══════════════════════════════════════════════════════════ */
-function MainStepIndicator({ currentNfStep }: { currentNfStep: NfStep }) {
+function MainStepIndicator({ currentNfStep, accentColor }: { currentNfStep: NfStep; accentColor?: string }) {
   const isPR = currentNfStep === 'PR';
   const isES = currentNfStep === 'ES';
   const isReview = currentNfStep === 'review';
   const isPedido = isPR || isES;
+
+  /* Stepper takes active filial color so o usuário tem feedback visual da NF que está editando. */
+  const accent = accentColor || 'var(--primary)';
 
   const steps = [
     { key: 'carrinho', label: 'Carrinho', done: true,             active: false },
@@ -693,36 +694,39 @@ function MainStepIndicator({ currentNfStep }: { currentNfStep: NfStep }) {
     { key: 'revisao',  label: 'Revisão',  done: false,            active: isReview },
   ];
 
+  /* Stepper renderiza sobre band navy escuro — labels precisam ser claros pra leitura. */
   return (
     <div className="flex items-center justify-center">
       {steps.map((step, i) => (
         <div key={step.key} className="flex items-center">
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="flex flex-col items-center gap-2">
             {/* Circle */}
             <div
               className="flex items-center justify-center rounded-full transition-all duration-300 shrink-0"
               style={{
-                width: 28, height: 28,
-                background: step.done || step.active ? 'var(--primary)' : 'var(--muted)',
-                color: step.done || step.active ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
+                width: 34, height: 34,
+                background: step.done || step.active ? accent : 'rgba(255,255,255,0.12)',
+                color: step.done || step.active ? 'var(--primary-foreground)' : 'rgba(255,255,255,0.55)',
+                border: step.done || step.active ? 'none' : '1px solid rgba(255,255,255,0.18)',
               }}
             >
               {step.done ? (
                 <CheckIcon />
               ) : (
-                <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
                   {i + 1}
                 </span>
               )}
             </div>
-            {/* Label */}
+            {/* Label — sobre fundo navy, sempre claro */}
             <span
               className="whitespace-nowrap"
               style={{
                 fontSize: 'var(--text-xs)',
                 fontWeight: step.active ? 'var(--font-weight-bold)' : 'var(--font-weight-normal)',
-                color: step.active || step.done ? 'var(--foreground)' : 'var(--muted-foreground)',
+                color: step.active || step.done ? 'var(--primary-foreground)' : 'rgba(255,255,255,0.55)',
                 fontFamily: 'var(--font-red-hat-display)',
+                letterSpacing: '0.2px',
               }}
             >
               {step.label}
@@ -731,8 +735,8 @@ function MainStepIndicator({ currentNfStep }: { currentNfStep: NfStep }) {
           {/* Connector */}
           {i < steps.length - 1 && (
             <div
-              className="h-[2px] mx-3 mb-[18px] rounded-full transition-colors duration-300"
-              style={{ width: 52, background: step.done ? 'var(--primary)' : 'var(--muted)' }}
+              className="h-[2px] mx-3 mb-[22px] rounded-full transition-colors duration-300"
+              style={{ width: 60, background: step.done ? accent : 'rgba(255,255,255,0.18)' }}
             />
           )}
         </div>
@@ -847,17 +851,18 @@ function NfSubIndicator({
 /* ═══════════════════════════════════════════════════════════
    BLOCK HEADING
 ═══════════════════════════════════════════════════════════ */
-function BlockHeading({ icon, title, subtitle, action }: {
+function BlockHeading({ icon, title, subtitle, action, accentSurface }: {
   icon: ReactNode;
   title: string;
   subtitle?: string;
   action?: ReactNode;
+  accentSurface?: string;
 }) {
   return (
     <div className="flex items-start justify-between gap-3 mb-5">
       <div className="flex items-center gap-3">
         <div className="w-[38px] h-[38px] rounded-lg flex items-center justify-center shrink-0"
-          style={{ background: 'var(--primary-surface-md)' }}>
+          style={{ background: accentSurface || 'var(--primary-surface-md)' }}>
           {icon}
         </div>
         <div>
@@ -911,7 +916,7 @@ export function CheckoutPage() {
   }, []);
 
   /* ── Obs collapsed state per NF ── */
-  const [obsExpanded, setObsExpanded] = useState<Record<'PR' | 'ES', boolean>>({ PR: false, ES: false });
+  const [obsExpanded, setObsExpanded] = useState<Record<'PR' | 'ES', boolean>>({ PR: true, ES: true });
 
   /* ── Sidebar: PR completed card expanded state (shown on ES step) ── */
   const [prCardExpanded, setPrCardExpanded] = useState(false);
@@ -1186,8 +1191,8 @@ export function CheckoutPage() {
     grandTotal: grandTotalAfterCredit,
     subtotalPR, subtotalES,
     wantConsultor,
-    nfPR: itemsPR.length > 0 ? { paymentMethod: getFinalPaymentMethodForNf('PR'), condicaoPgto: nfState.PR.condicaoPgto, shippingPrice: shippingPricePR, total: totalPRAfterCredit, totalBeforeCredit: totalPR, creditApplied: creditAmountPR, pixPaid: nfState.PR.pixPaid, subtotal: subtotalPR } : null,
-    nfES: itemsES.length > 0 ? { paymentMethod: getFinalPaymentMethodForNf('ES'), condicaoPgto: nfState.ES.condicaoPgto, shippingPrice: shippingPriceES, total: totalESAfterCredit, totalBeforeCredit: totalES, creditApplied: creditAmountES, pixPaid: nfState.ES.pixPaid, subtotal: subtotalES } : null,
+    nfPR: itemsPR.length > 0 ? { paymentMethod: getFinalPaymentMethodForNf('PR'), condicaoPgto: nfState.PR.condicaoPgto, shippingPrice: shippingPricePR, total: totalPRAfterCredit, totalBeforeCredit: totalPR, creditApplied: creditAmountPR, pixPaid: nfState.PR.pixPaid, subtotal: subtotalPR, logisticsType: nfState.PR.logisticsType } : null,
+    nfES: itemsES.length > 0 ? { paymentMethod: getFinalPaymentMethodForNf('ES'), condicaoPgto: nfState.ES.condicaoPgto, shippingPrice: shippingPriceES, total: totalESAfterCredit, totalBeforeCredit: totalES, creditApplied: creditAmountES, pixPaid: nfState.ES.pixPaid, subtotal: subtotalES, logisticsType: nfState.ES.logisticsType } : null,
   });
 
   const handleFinalize = () => {
@@ -1311,35 +1316,36 @@ export function CheckoutPage() {
       <div className="rounded-xl overflow-hidden" style={{ background: 'var(--card)', border: '1px solid var(--muted)' }}>
         <div className="p-5 md:p-6">
         <BlockHeading
-          icon={<LogisticsBlockIcon size={18} />}
+          icon={<LogisticsBlockIcon size={18} color={nfStyle.color} />}
           title="Logística e Frete"
           subtitle={`Entrega para CEP ${formatCep(address.cep)} — ${address.city}, ${address.state}`}
+          accentSurface={nfStyle.surfaceMd}
         />
 
         {/* Logistics type selector */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
           {([
-            { id: 'cif' as const, label: 'CIF', desc: 'Frete por nossa conta', icon: <CifStoreIcon size={18} /> },
-            { id: 'fob' as const, label: 'FOB', desc: 'Frete por sua conta', icon: <FobIcon /> },
-            { id: 'retirada' as const, label: 'Retirada', desc: 'No CD Maringá', icon: <WarehouseIcon /> },
+            { id: 'cif' as const, label: 'CIF', desc: 'Frete por nossa conta', icon: <CifStoreIcon size={18} color={nfStyle.color} /> },
+            { id: 'fob' as const, label: 'FOB', desc: 'Frete por sua conta', icon: <FobIcon color={nfStyle.color} /> },
+            { id: 'retirada' as const, label: 'Retirada', desc: 'No CD Maringá', icon: <WarehouseIcon color={nfStyle.color} /> },
           ]).map((t) => {
             const active = s.logisticsType === t.id;
             return (
               <button key={t.id} onClick={() => handleLogisticsChange(filial, t.id)}
                 className="relative flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-xl cursor-pointer transition-all duration-150"
                 style={{
-                  border: active ? '1.5px solid var(--primary)' : '1px solid var(--muted)',
+                  border: active ? `1.5px solid ${nfStyle.color}` : '1px solid var(--muted)',
                   background: 'var(--card)',
                   fontFamily: 'var(--font-red-hat-display)',
                 }}>
                 {active && (
                   <span className="absolute top-2 right-2 rounded-full flex items-center justify-center"
-                    style={{ width: 16, height: 16, background: 'var(--primary)', color: 'var(--primary-foreground)' }}>
+                    style={{ width: 16, height: 16, background: nfStyle.color, color: 'var(--primary-foreground)' }}>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                   </span>
                 )}
                 {t.icon}
-                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: active ? 'var(--primary)' : 'var(--foreground)' }}>{t.label}</span>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: active ? nfStyle.color : 'var(--foreground)' }}>{t.label}</span>
                 <span className="hidden sm:inline" style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', textAlign: 'center' }}>{t.desc}</span>
               </button>
             );
@@ -1393,71 +1399,73 @@ export function CheckoutPage() {
         )}
 
         {/* FOB options */}
-        {s.logisticsType === 'fob' && (
-          <div>
-            <div className="rounded-lg p-3.5 mb-4" style={{ background: 'var(--background)', border: '1px solid var(--muted)' }}>
-              <div className="flex items-start gap-2.5">
-                <InfoIcon />
-                <span className="block" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: '1.6' }}>
-                  No frete <span style={{ fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)' }}>FOB</span>, você escolhe a transportadora e o frete é por sua conta.
-                </span>
+        {s.logisticsType === 'fob' && (() => {
+          const isSearching = s.fobSearch.trim().length > 0;
+          const showAll = s.showMoreFob || isSearching;
+          const visibleOptions = showAll ? filteredFob : fobOptions.slice(0, 3);
+          return (
+            <div>
+              <div className="rounded-lg p-3.5 mb-4" style={{ background: 'var(--background)', border: '1px solid var(--muted)' }}>
+                <div className="flex items-start gap-2.5">
+                  <InfoIcon />
+                  <span className="block" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: '1.6' }}>
+                    No frete <span style={{ fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)' }}>FOB</span>, você escolhe a transportadora e o frete é por sua conta.
+                  </span>
+                </div>
               </div>
-            </div>
-            <span className="block mb-3" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Principais transportadoras</span>
-            <div className="flex flex-col gap-2.5">
-              {fobOptions.slice(0, 3).map(opt => (
-                <ShippingCard key={opt.id} option={opt} isSelected={s.selectedShipping === opt.id}
-                  onClick={() => updateNf(filial, { selectedShipping: opt.id })} showPrice={false}
-                  nfColor={nfStyle.color} nfSurface={nfStyle.surface} nfBorderSm={nfStyle.borderSm} />
-              ))}
-            </div>
-            {!s.showMoreFob && (
-              <button onClick={() => updateNf(filial, { showMoreFob: true })} className="mt-3 bg-transparent border-none cursor-pointer p-0 flex items-center gap-1.5 hover:opacity-70 transition-opacity"
-                style={{ color: nfStyle.color, fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-                Ver mais {fobOptions.length - 3} transportadoras
-              </button>
-            )}
-            {s.showMoreFob && (
-              <div className="mt-4">
-                <div className="h-px w-full mb-4" style={{ background: 'var(--muted)' }} />
-                <span className="block mb-3" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}>
-                  Todas as transportadoras ({fobOptions.length})
-                </span>
-                <div className="relative mb-3">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted-foreground)' }}><SearchIcon /></div>
-                  <input type="text" placeholder="Buscar por nome ou código..." value={s.fobSearch}
-                    onChange={(e) => updateNf(filial, { fobSearch: e.target.value })}
-                    className="w-full h-[40px] rounded-lg pl-10 pr-3 outline-none"
-                    style={{ border: '1px solid var(--muted)', background: 'var(--input-background)', fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--muted)'; }} />
-                </div>
-                <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto rounded-lg p-1">
-                  {filteredFob.length === 0 ? (
-                    <span className="block py-6 text-center" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>Nenhuma transportadora encontrada</span>
-                  ) : filteredFob.map(opt => (
-                    <ShippingCard key={opt.id} option={opt} isSelected={s.selectedShipping === opt.id}
-                      onClick={() => updateNf(filial, { selectedShipping: opt.id })} showPrice={false}
-                      nfColor={nfStyle.color} nfSurface={nfStyle.surface} nfBorderSm={nfStyle.borderSm} />
-                  ))}
-                </div>
-                <button onClick={() => updateNf(filial, { showMoreFob: false, fobSearch: '' })} className="mt-3 bg-transparent border-none cursor-pointer p-0 flex items-center gap-1.5 hover:opacity-70 transition-opacity"
+
+              {/* Search — sempre visível, discreto */}
+              <div className="relative mb-3">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted-foreground)' }}><SearchIcon /></div>
+                <input type="text" placeholder="Buscar transportadora por nome ou código..." value={s.fobSearch}
+                  onChange={(e) => updateNf(filial, { fobSearch: e.target.value })}
+                  className="w-full h-[36px] rounded-lg pl-9 pr-3 outline-none"
+                  style={{ border: '1px solid var(--muted)', background: 'var(--input-background)', fontSize: 'var(--text-xs)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)' }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = nfStyle.color; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--muted)'; }} />
+              </div>
+
+              <span className="block mb-3" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)', fontFamily: 'var(--font-red-hat-display)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                {isSearching
+                  ? `${filteredFob.length} ${filteredFob.length === 1 ? 'resultado' : 'resultados'}`
+                  : showAll
+                    ? `Todas as transportadoras (${fobOptions.length})`
+                    : 'Principais transportadoras'}
+              </span>
+              <div className={`flex flex-col gap-2.5 ${showAll ? 'max-h-[300px] overflow-y-auto rounded-lg' : ''}`}>
+                {visibleOptions.length === 0 ? (
+                  <span className="block py-6 text-center" style={{ fontSize: 'var(--text-xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>Nenhuma transportadora encontrada</span>
+                ) : visibleOptions.map(opt => (
+                  <ShippingCard key={opt.id} option={opt} isSelected={s.selectedShipping === opt.id}
+                    onClick={() => updateNf(filial, { selectedShipping: opt.id })} showPrice={false}
+                    nfColor={nfStyle.color} nfSurface={nfStyle.surface} nfBorderSm={nfStyle.borderSm} />
+                ))}
+              </div>
+
+              {!isSearching && !s.showMoreFob && fobOptions.length > 3 && (
+                <button onClick={() => updateNf(filial, { showMoreFob: true })} className="mt-3 bg-transparent border-none cursor-pointer p-0 flex items-center gap-1.5 hover:opacity-70 transition-opacity"
+                  style={{ color: nfStyle.color, fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                  Ver mais {fobOptions.length - 3} transportadoras
+                </button>
+              )}
+              {!isSearching && s.showMoreFob && (
+                <button onClick={() => updateNf(filial, { showMoreFob: false })} className="mt-3 bg-transparent border-none cursor-pointer p-0 flex items-center gap-1.5 hover:opacity-70 transition-opacity"
                   style={{ color: nfStyle.color, fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)' }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15" /></svg>
                   Ver menos
                 </button>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          );
+        })()}
 
         {/* Retirada */}
         {s.logisticsType === 'retirada' && (
           <div className="rounded-xl p-5" style={{ background: 'var(--background)', border: '1px solid var(--muted)' }}>
             <div className="flex items-start gap-4">
               <div className="w-[48px] h-[48px] rounded-xl flex items-center justify-center shrink-0" style={{ background: nfStyle.surfaceMd }}>
-                <WarehouseIcon />
+                <WarehouseIcon color={nfStyle.color} />
               </div>
               <div>
                 <span className="block mb-1" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--foreground)' }}>Centro de Distribuição Oderço</span>
@@ -1673,16 +1681,17 @@ export function CheckoutPage() {
       <div className="rounded-xl overflow-hidden flex flex-col" style={{ background: 'var(--card)', border: '1px solid var(--muted)' }}>
       <div className="p-5 md:p-6 flex flex-col gap-5">
         <BlockHeading
-          icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>}
+          icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={nfStyle.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>}
           title="Forma de Pagamento"
           subtitle="Selecione como este pedido será pago"
+          accentSurface={nfStyle.surfaceMd}
         />
 
-        {/* Payment method cards */}
+        {/* Payment method cards — selection herda cor da filial pra manter identidade */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {([
-            { id: 'transferencia' as const, label: 'Transferência / Depósito', icon: <TransferenciaIcon />, desc: 'TED ou DOC' },
-            { id: 'boleto' as const, label: 'Boleto Bancário', icon: <BoletoIcon />, desc: 'Compensação em 3 dias' },
+            { id: 'transferencia' as const, label: 'Transferência / Depósito', icon: <TransferenciaIcon color={nfStyle.color} />, desc: 'TED ou DOC' },
+            { id: 'boleto' as const, label: 'Boleto Bancário', icon: <BoletoIcon color={nfStyle.color} />, desc: 'Compensação em 3 dias' },
             { id: 'pix' as const, label: 'PIX', icon: <PixIcon />, desc: 'Pagamento instantâneo' },
           ]).map(m => {
             const sel = s.paymentMethod === m.id;
@@ -1690,18 +1699,18 @@ export function CheckoutPage() {
               <button key={m.id} onClick={() => handlePaymentChange(filial, m.id)}
                 className="relative flex flex-col items-center gap-2 p-4 rounded-xl cursor-pointer transition-all duration-150"
                 style={{
-                  border: sel ? '1.5px solid var(--primary)' : '1px solid var(--muted)',
+                  border: sel ? `1.5px solid ${nfStyle.color}` : '1px solid var(--muted)',
                   background: 'var(--card)',
                   fontFamily: 'var(--font-red-hat-display)',
                 }}>
                 {sel && (
                   <span className="absolute top-2 right-2 rounded-full flex items-center justify-center"
-                    style={{ width: 16, height: 16, background: 'var(--primary)', color: 'var(--primary-foreground)' }}>
+                    style={{ width: 16, height: 16, background: nfStyle.color, color: 'var(--primary-foreground)' }}>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                   </span>
                 )}
                 {m.icon}
-                <span className="text-center" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: sel ? 'var(--primary)' : 'var(--foreground)' }}>{m.label}</span>
+                <span className="text-center" style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: sel ? nfStyle.color : 'var(--foreground)' }}>{m.label}</span>
                 <span style={{ fontSize: 'var(--text-2xs)', color: 'var(--muted-foreground)', fontFamily: 'var(--font-red-hat-display)' }}>{m.desc}</span>
               </button>
             );
@@ -2921,18 +2930,18 @@ export function CheckoutPage() {
         <div className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle at center, var(--primary-foreground) 1px, transparent 1.5px)', backgroundSize: '22px 22px' }} />
         <div className="relative max-w-[1120px] mx-auto px-4 md:px-6 pt-6 pb-7 text-center">
-          <MainStepIndicator currentNfStep={nfStep} />
-          <div className="mt-5 inline-flex items-center gap-2.5 rounded-lg px-3 py-1.5"
-            style={{ background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)' }}>
+          <MainStepIndicator currentNfStep={nfStep} accentColor={NF_STYLE[activeFilial].color} />
+          <div className="mt-4 inline-flex items-center gap-2 rounded-md px-2.5 py-1"
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)' }}>
             <span
               className="rounded flex items-center justify-center shrink-0"
-              style={{ width: 24, height: 24, background: 'rgba(255,255,255,0.18)', color: 'var(--primary-foreground)', fontSize: 10, fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.4px' }}>
+              style={{ width: 18, height: 18, background: NF_STYLE[activeFilial].color, color: 'var(--primary-foreground)', fontSize: 9, fontWeight: 'var(--font-weight-bold)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}>
               {activeFilial}
             </span>
-            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary-foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.3px' }}>
-              Checkout Filial {activeFilial === 'PR' ? 'PR · Paraná' : 'ES · Espírito Santo'}
+            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary-foreground)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.2px' }}>
+              {activeFilial === 'PR' ? 'Paraná' : 'Espírito Santo'}
             </span>
-            <span style={{ fontSize: 'var(--text-2xs)', color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-red-hat-display)' }}>
+            <span style={{ fontSize: 'var(--text-2xs)', color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-red-hat-display)' }}>
               · {activeTotalQty} {activeTotalQty === 1 ? 'item' : 'itens'}
             </span>
           </div>

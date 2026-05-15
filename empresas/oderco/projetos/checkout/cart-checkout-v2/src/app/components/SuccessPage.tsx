@@ -45,6 +45,7 @@ interface NfData {
   creditApplied?: number;
   pixPaid: boolean;
   subtotal: number;
+  logisticsType?: 'cif' | 'fob' | 'retirada';
 }
 
 type NfStatus = 'paid' | 'pending-pix' | 'pending-async';
@@ -900,14 +901,28 @@ export function SuccessPage() {
     heroText.tone === 'warning' ? 'var(--warning)' :
     'var(--primary)';
 
-  /* ── Timeline current stage ── */
-  const stages: TimelineStage[] = useMemo(() => ([
+  /* ── Timeline current stage — adapta entre entrega (CIF/FOB) vs retirada.
+        Wellington (UAT): cliente precisa acompanhar "confirmado → separado → pronto pra retirada"
+        sem ligar pra perguntar. Quando todas as NFs são retirada, troca "Em rota" por
+        "Pronto para retirada" e "Entregue" por "Retirado". ── */
+  const allRetirada = (() => {
+    const types = [state.nfPR?.logisticsType, state.nfES?.logisticsType].filter(Boolean);
+    return types.length > 0 && types.every(t => t === 'retirada');
+  })();
+
+  const stages: TimelineStage[] = useMemo(() => allRetirada ? ([
+    { key: 'recebido',     label: 'Pedido recebido',      icon: <IconCheck size={18} /> },
+    { key: 'separacao',    label: 'Em separação',         icon: <IconBox size={18} /> },
+    { key: 'nf',           label: 'NF emitida',           sub: 'após separação', icon: <IconNfDoc size={18} /> },
+    { key: 'pronto',       label: 'Pronto para retirada', sub: 'aguardando você', icon: <IconBox size={18} /> },
+    { key: 'retirado',     label: 'Retirado',             icon: <IconHome size={18} /> },
+  ]) : ([
     { key: 'recebido',  label: 'Pedido recebido',  icon: <IconCheck size={18} /> },
-    { key: 'separacao', label: 'Separação',        icon: <IconBox size={18} /> },
+    { key: 'separacao', label: 'Em separação',     icon: <IconBox size={18} /> },
     { key: 'nf',        label: 'NF emitida',       sub: 'após separação', icon: <IconNfDoc size={18} /> },
     { key: 'rota',      label: 'Em rota',          sub: '3–5 dias úteis', icon: <IconRoute size={18} /> },
     { key: 'entregue',  label: 'Entregue',         icon: <IconHome size={18} /> },
-  ]), []);
+  ]), [allRetirada]);
 
   const pendingStage: TimelineStage = hasBlockingPix
     ? { key: 'pagamento', label: 'Pagamento', sub: 'aguardando', icon: <IconClock size={18} /> }
@@ -992,12 +1007,50 @@ export function SuccessPage() {
             </div>
           )}
 
-          {/* Hero CTA removido — banner "Próximo passo" no rodapé cumpre o papel sem empilhar. */}
+          {/* Hero CTA removido — banner "Próximo passo" abaixo do hero cumpre o papel. */}
         </div>
       </div>
 
+      {/* ═════════ NEXT-STEP BANNER — logo após hero, prioriza fechamento da outra filial.
+            Posicionado aqui (não no rodapé) pra ser o 1º elemento que o usuário vê após
+            ler "pedido pago". Usa cor da filial pendente pra reforçar identidade. ═════════ */}
+      {hasPendingOrder && activeNf && (
+        <div className="max-w-[960px] mx-auto px-4 md:px-6 -mt-8 relative z-[2]">
+          <div className="rounded-2xl px-5 md:px-7 py-5 md:py-6 flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-5"
+            style={{
+              background: NF_COLORS[activeNf],
+              boxShadow: `0 24px 50px ${activeNf === 'PR' ? 'rgba(26,60,110,0.35)' : 'rgba(91,45,142,0.35)'}`,
+            }}>
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <span className="rounded-xl flex items-center justify-center shrink-0"
+                style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.18)', color: 'var(--primary-foreground)' }}>
+                <IconBox size={22} />
+              </span>
+              <div className="flex-1 min-w-0">
+                <span className="block" style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'rgba(255,255,255,0.78)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '1.2px' }}>
+                  PRÓXIMO PASSO
+                </span>
+                <span className="block mt-0.5" style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary-foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.2 }}>
+                  Finalize o pedido da Filial {activeNf}
+                </span>
+                <span className="block mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.82)', fontFamily: 'var(--font-red-hat-display)' }}>
+                  Os itens restantes seguem aguardando seu pagamento.
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate('/carrinho')}
+              className="h-12 px-6 rounded-xl border-none cursor-pointer hover:opacity-95 hover:translate-y-[-1px] transition-all inline-flex items-center justify-center gap-2 shrink-0"
+              style={{ background: 'var(--primary-foreground)', color: NF_COLORS[activeNf], fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.2px', boxShadow: '0 12px 28px rgba(0,0,0,0.18)' }}>
+              Fechar pedido agora
+              <IconArrowRight size={16} color={NF_COLORS[activeNf]} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ═════════ TIMELINE STRIP — overlapping hero edge ═════════ */}
-      <div className="max-w-[960px] mx-auto px-4 md:px-6 -mt-12 relative z-[1]">
+      <div className={`max-w-[960px] mx-auto px-4 md:px-6 relative z-[1] ${hasPendingOrder && activeNf ? 'mt-6' : '-mt-12'}`}>
         <div className="rounded-2xl px-5 md:px-8 py-6"
           style={{ background: 'var(--card)', border: '1px solid var(--muted)', boxShadow: '0 18px 40px rgba(13,29,82,0.12)' }}>
           <div className="flex items-center gap-2 mb-5">
@@ -1114,39 +1167,8 @@ export function SuccessPage() {
         </div>
       </div>
 
-      {/* ═════════ FOOTER ACTIONS — quando há pedido pendente, CTA primário "voltar ao carrinho"
-            é destacado em card próprio pra deixar o próximo passo IMPOSSÍVEL de perder. ═════════ */}
-      {hasPendingOrder && activeNf && (
-        <div className="max-w-[960px] mx-auto px-4 md:px-6 mt-10">
-          <div className="rounded-2xl px-5 md:px-7 py-5 md:py-6 flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-5"
-            style={{ background: 'var(--primary)', boxShadow: '0 24px 50px rgba(0,90,255,0.28)' }}>
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <span className="rounded-xl flex items-center justify-center shrink-0"
-                style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.18)', color: 'var(--primary-foreground)' }}>
-                <IconBox size={22} />
-              </span>
-              <div className="flex-1 min-w-0">
-                <span className="block" style={{ fontSize: 'var(--text-2xs)', fontWeight: 'var(--font-weight-bold)', color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '1.2px' }}>
-                  PRÓXIMO PASSO
-                </span>
-                <span className="block mt-0.5" style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)', color: 'var(--primary-foreground)', fontFamily: 'var(--font-red-hat-display)', lineHeight: 1.2 }}>
-                  Finalize a Filial {activeNf} no carrinho
-                </span>
-                <span className="block mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.75)', fontFamily: 'var(--font-red-hat-display)' }}>
-                  Os itens restantes seguem aguardando seu pagamento.
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={() => navigate('/carrinho')}
-              className="h-12 px-6 rounded-xl border-none cursor-pointer hover:opacity-95 hover:translate-y-[-1px] transition-all inline-flex items-center justify-center gap-2 shrink-0"
-              style={{ background: 'var(--primary-foreground)', color: 'var(--primary)', fontWeight: 'var(--font-weight-bold)', fontSize: 'var(--text-sm)', fontFamily: 'var(--font-red-hat-display)', letterSpacing: '0.2px', boxShadow: '0 12px 28px rgba(0,0,0,0.18)' }}>
-              Voltar ao carrinho
-              <IconArrowRight size={16} color="var(--primary)" />
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Banner "Próximo passo" foi movido pra logo após o hero band — fica acima da timeline,
+            pra que seja o 1º elemento de ação visível após o usuário ler "pedido pago". */}
 
       <div className="max-w-[960px] mx-auto px-4 md:px-6 pb-14 pt-6 flex justify-center gap-3">
         {hasPendingOrder ? (
