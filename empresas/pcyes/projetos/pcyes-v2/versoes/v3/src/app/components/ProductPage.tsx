@@ -2340,8 +2340,10 @@ export function ProductPage() {
       <div ref={reviewsRef}>
         <ReviewsSection product={product} isDark={isDark} />
       </div>
+          </div>
+        </div>
 
-      {/* Related products */}
+      {/* Related products — full width below grid (sticky card stops here) */}
       {related.length > 0 && (
         <div ref={relatedRef} className="py-20 border-t border-foreground/5">
           <div className="max-w-[1760px] mx-auto">
@@ -2476,8 +2478,6 @@ export function ProductPage() {
           </div>
         </div>
       )}
-          </div>
-        </div>
       </div>
 
       {/* Mobile sticky CTA */}
